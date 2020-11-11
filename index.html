@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Page Title</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel="stylesheet" type="text/css" href="./three.css">
+</head>
+
+<body>
+  <script src="./lib/axios.min.js"></script>
+  <script src="./lib/fluent-behavior-tree-browser.js"></script>
+  <!-- <script src="./src/index.js" type="module"></script> -->
+  <script type="module">
+    import MedicalAgent from "./sim/MedicalAgent.js"
+    import crowdSetup from "./index.js"
+    import urlParser from "./urlParser.js"
+
+    let params = {};
+    params.objPath = "./node_modules/@crowdedjs/objs/hospital.obj";
+    params.arrivalPath = "./arrivals/arrivalHospital.json";
+    params.secondsOfSimulation = 300;
+    params.millisecondsBetweenFrames = 40;
+    params.locationsPath = "./locations/locationsHospital.json";
+
+    params = urlParser(window, params);
+    
+
+    let objValue;
+    let agents = [];
+    let locationValue;
+
+    axios.get(params.objPath)
+      .then(result => {
+        objValue = result.data;
+        return axios.get(params.locationsPath);
+      })
+      .then(result => {
+        locationValue = result.data;
+        return axios.get(params.arrivalPath);
+      })
+      .then(result => {
+        let arrivalValue = result.data;
+        for (let agent of arrivalValue) {
+          agents.push(new MedicalAgent(agent, locationValue));
+        }
+        for (let id = 0; id < agents.length; id++) {
+          let agent = agents[id];
+          agent.setId(id);
+        }
+        crowdSetup(objValue, agents, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, (agent) => {
+          if (agents.find(a => a.id == agent.id).name == "patient")
+            return "white";
+          else
+            return "black";
+        });
+      })
+      .catch(error => {
+        console.error("Error loading files " + error);
+      })
+
+  </script>
+</body>
+
+</html>
