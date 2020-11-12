@@ -10,19 +10,19 @@
 </head>
 
 <body>
-  
+
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@ricksteam/fluent-behavior-tree-browser/bundle.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@crowdedjs/worker/bundle.js"></script>
   <script type="module">
     //Show FPS Counter
     //Comment this line if you don't want to show the FPS counter
-    javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+    javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
 
     import MedicalAgent from "./sim/MedicalAgent.js"
     import crowdSetup from "./index.js"
     import urlParser from "./urlParser.js"
-    
+
 
     let params = {};
     //let assetBase = "./";
@@ -35,38 +35,37 @@
 
     params = urlParser(window, params, assetBase);
 
-    let objValue;
-    let agents = [];
-    let locationValue;
+    let promises = [axios.get(params.objPath), axios.get(params.locationsPath), axios.get(params.arrivalPath)];
+    Promise.all(promises)
+      .then(results => {
+        let objValue = results[0].data;
+        let locationValue = results[1].data;
+        let arrivalValue = results[2].data;
 
-    axios.get(params.objPath)
-      .then(result => {
-        objValue = result.data;
-        return axios.get(params.locationsPath);
-      })
-      .then(result => {
-        locationValue = result.data;
-        return axios.get(params.arrivalPath);
-      })
-      .then(result => {
-        let arrivalValue = result.data;
+        let agents = [];
+        //Add an agent with a behavior
         for (let agent of arrivalValue) {
           agents.push(new MedicalAgent(agent, locationValue));
         }
+        //Assign a unique id to each agent.
         for (let id = 0; id < agents.length; id++) {
           let agent = agents[id];
           agent.setId(id);
         }
+        //Start the simulation.
         crowdSetup(objValue, agents, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, (agent) => {
           if (agents.find(a => a.id == agent.id).name == "patient")
             return "white";
           else
             return "black";
         });
+
       })
       .catch(error => {
-        console.error("Error loading files " + error);
+        console.log("Error in the app " + error)
       })
+
+
 
   </script>
 </body>
