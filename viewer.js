@@ -1,12 +1,7 @@
 import * as THREE from './lib/three.module.js';
 import { OrbitControls } from './lib/OrbitControls.js';
 import { OBJLoader } from './lib/OBJLoader.js';
-//import tex from "./tex.png"
-//import * as Stats from "./lib/stats.min.js"
 
-//var stats = new Stats();
-//stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-//document.body.appendChild( stats.dom );
 
 const CylinderGeometry = function () { return new THREE.CylinderGeometry(.2, .2, 1, 8) };
 const WhiteMaterial = new THREE.MeshStandardMaterial({
@@ -81,25 +76,8 @@ function Resize(window, renderer, camera) {
   camera.updateProjectionMatrix();
 };
 
-function ShowStats() {
-  // (function () {
-  //   var script = document.createElement('script');
-  //   script.onload = function () {
-  //     var stats = new Stats();
-  //     document.body.appendChild(stats.dom);
-  //     requestAnimationFrame(
-  //       function loop() {
-  //         stats.update();
-  //         requestAnimationFrame(loop)
-  //       });
-  //   };
-  //   console.log(stats[0].path)
-  //   script.src = stats[0].path;
-  //   document.head.appendChild(script);
-  // })()
-}
 
-function boot(three) {
+function boot(three, objValue, locations) {
   three.renderer = {};
   three.raycaster = {};
   three.mouse = {};
@@ -157,8 +135,7 @@ function boot(three) {
   three.scene.add(agent4);
   three.scene.add(three.camera);
 
-  // let texture = new THREE.TextureLoader().load(tex);
-  let texture = new THREE.TextureLoader().load(`./tex.png`);
+   let texture = new THREE.TextureLoader().load("https://cdn.jsdelivr.net/npm/@crowdedjs/assets/images/tex.png");
 
   // immediately use the texture for material creation
   let material = new THREE.MeshBasicMaterial({
@@ -178,6 +155,8 @@ function boot(three) {
     three.camera, three.renderer.domElement
   );
   three.controls.update();
+  loadOBJ(three, objValue);
+  addLocations(three, locations);
 }
 
 function loadOBJ(three, path) {
@@ -265,8 +244,7 @@ export {
   BlueMaterial,
   MakeLabelCanvas,
   Resize,
-  ShowStats,
-  boot,
+   boot,
   loadOBJ,
   addLocations,
   clearAgents,

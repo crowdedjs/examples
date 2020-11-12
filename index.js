@@ -2,9 +2,6 @@ import * as viewer from "./viewer.js"
 import simulationFile from "./simulations.js"
 import ControlCreator from "./ControlCreator.js"
 
-import bootWorker from "./node_modules/@crowdedjs/worker/index.js"
-
-
 let simulations = [];
 let controls;
 
@@ -18,8 +15,7 @@ function crowdSetup(objValue, agents, secondsOfSimulation, millisecondsBetweenFr
   controls = new ControlCreator(secondsOfSimulation, millisecondsBetweenFrames);
   let agentPositions = [];
 
-  viewer.ShowStats(); //Comment this line to remove the FPS viewer
-  let locations;
+   let locations;
 
   locations = locationValue;
   let timerID = 0;
@@ -73,12 +69,11 @@ function crowdSetup(objValue, agents, secondsOfSimulation, millisecondsBetweenFr
   }
 
   function main() {
-    viewer.boot(three);
-    viewer.loadOBJ(three, objValue)
-    viewer.addLocations(three, locations);
+    viewer.boot(three, objValue, locations);
     viewer.Resize(window, three.renderer, three.camera);
     timerID = setTimeout(tick, 33);
     
+    //This needs to be included in the calling html file
     bootWorker(objValue, secondsOfSimulation, millisecondsBetweenFrames, locationValue, bootCallback, tickCallback);
   }
 
