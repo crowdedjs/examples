@@ -6,8 +6,9 @@ class ControlCreator {
   playState = this.PLAY_STATE_PLAY_FORWARD;
   playSpeed = 1;
 
-  constructor(secondsOfSimulation, millisecondsPerFrame) {
+  constructor(secondsOfSimulation, millisecondsPerFrame, simulations) {
     let self = this;
+    this.simulations = simulations;
     this.secondsOfSimulation = secondsOfSimulation;
     this.millisecondsPerFrame = millisecondsPerFrame;
     let canvas = document.createElement("canvas");
@@ -107,7 +108,7 @@ class ControlCreator {
 
     let optionsButton = document.createElement("button");
     optionsButton.innerText = "▲";
-    optionsButton.addEventListener('click', () => optionsButtonClick())
+    optionsButton.addEventListener('click', () => this.optionsButtonClick())
     divOptions.appendChild(optionsButton);
 
     let divDialog = document.createElement("div");
@@ -151,11 +152,11 @@ class ControlCreator {
     let div = document.getElementById("divDialog");
     if (div.style.visibility == "hidden") {
       div.innerHTML = '';
-      for (let i = 0; i < simulations.length; i++) {
+      for (let i = 0; i < this.simulations.length; i++) {
         let divLink = document.createElement("div");
         div.appendChild(divLink);
 
-        let simulation = simulations[i];
+        let simulation = this.simulations[i];
 
         let a = document.createElement("a");
         console.log(window.pathname);

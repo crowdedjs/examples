@@ -14,7 +14,7 @@ function replacer(key, value) {
 }
 
 function crowdSetup(objValue, agents, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, drawCallback) {
-  controls = new ControlCreator(secondsOfSimulation, millisecondsBetweenFrames);
+  controls = new ControlCreator(secondsOfSimulation, millisecondsBetweenFrames, simulations);
   let agentPositions = [];
 
   let locations;
