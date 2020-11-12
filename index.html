@@ -10,13 +10,18 @@
 </head>
 
 <body>
-  <script src="./lib/axios.min.js"></script>
-  <script src="./lib/fluent-behavior-tree-browser.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js" integrity="sha512-DZqqY3PiOvTP9HkjIWgjO6ouCbq+dxqWoJZ/Q+zPYNHmlnI2dQnbJ5bxAHpAMw+LXRm4D72EIRXzvcHQtE8/VQ==" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ricksteam/fluent-behavior-tree-browser/bundle.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@crowdedjs/recast-detour/crowded.js"></script> -->
+  <script src="./bundle.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@crowdedjs/worker/index.js"></script> -->
+  <!-- <script src="./lib/fluent-behavior-tree-browser.js"></script> -->
   <!-- <script src="./src/index.js" type="module"></script> -->
   <script type="module">
     import MedicalAgent from "./sim/MedicalAgent.js"
     import crowdSetup from "./index.js"
     import urlParser from "./urlParser.js"
+    
 
     let params = {};
     params.objPath = "./node_modules/@crowdedjs/objs/hospital.obj";
