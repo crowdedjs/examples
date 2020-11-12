@@ -180,7 +180,18 @@ class ControlCreator {
   getPlaySpeed(){
     return this.playSpeed;
   }
-  update(simulatedLength){
+  update(agentPositions, simulatedLength){
+    let state = this.getPlayState();
+    let speed = this.getPlaySpeed();
+    let advance = state * speed;
+    let currentIndex = this.getCurrentTick();
+    let newIndex = currentIndex + advance;
+    if (newIndex < 0) {
+      newIndex = 0;
+    }
+    if (newIndex >= agentPositions.length)
+      newIndex = agentPositions.length - 1;
+    this.setTick(newIndex);
     document.getElementById("counter").innerHTML = "" + this.asTime(document.getElementById("myRange").value) + "<br>" + this.asTime(simulatedLength) + "<br>" + this.asTime(this.secondsOfSimulation * 1_000 / this.millisecondsPerFrame);
   }
   getCurrentTick(){
