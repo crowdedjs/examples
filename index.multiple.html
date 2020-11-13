@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Multilpe Crowd Simulator</title>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+
+<body>
+  <div id='app'>
+    <v-app>
+      <v-main>
+        <v-container>
+          <v-row>
+            <v-col cols=12 v-for="(simulation, i) in simulations" :key="i">
+              <v-card>
+                <v-card-text>
+                  <span>{{simulation.arrivals}}</span>
+                  <span>{{simulation.locations}}</span>
+                  <span>{{simulation.OBJs}}</span>
+                  <span>{{simulation.seconds}}</span>
+                  <span>{{simulation.millisecondsPerFrame}}</span>
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols=12>
+              <v-card>
+                <v-card-title>
+                  Add a new simulation.
+                </v-card-title>
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col>
+                        <v-select :items="arrivals" label="Arrivals" v-model="toAddArrivals"></v-select>
+                      </v-col>
+                      <v-col>
+                        <v-select :items="locations" label="Locations" v-model="toAddLocations"></v-select>
+                      </v-col>
+                      <v-col>
+                        <v-select :items="objs" label="OBJs" v-model="toAddOBJs"></v-select>
+                      </v-col>
+                      <v-col>
+                        <v-text-field label="Seconds to Simulate" v-model="toAddSeconds"></v-text-field>
+                      </v-col>
+                      <v-col>
+                        <v-text-field label="Milliseconds Between Simulations" v-model="toAddMillisecondsPerFrame">
+                        </v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn @click="addSimulation()">Add Simulation</v-btn>
+                </v-card-actions>
+
+              </v-card>
+            </v-col>
+          </v-row>
+
+        </v-container>
+      </v-main>
+      <div id="canvasParent"></div>
+    </v-app>
+  </div>
+
+  <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+  <script src='https://unpkg.com/vue'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js'></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ricksteam/fluent-behavior-tree-browser/bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@crowdedjs/worker/bundle.js"></script>
+
+
+  <script type="module">
+
+    import MedicalAgent from "./sim/MedicalAgent.js"
+    import crowdSetup from "./index.js"
+    import urlParser from "./urlParser.js"
+
+    const app = new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      data: {
+        arrivals: ["arrivalHospital.json", "arrivalsFlat.json"],
+        locations: ["locationsHospital.json", "locationsFlat.json"],
+        objs: ["hospital.obj", "flat.obj"],
+        defaultSeconds: 300,
+        defaultMillisecondsPerFrame: 40,
+        toAddArrivals: "",
+        toAddLocations: "",
+        toAddOBJs: "",
+        toAddSeconds: "",
+        toAddMillisecondsPerFrame: "",
+        simulations: []
+      },
+      mounted() {
+        this.resetToAdd();
+      },
+      methods: {
+        resetToAdd() {
+          this.toAddArrivals = this.arrivals[0];
+          this.toAddLocations = this.locations[0];
+          this.toAddOBJs = this.objs[0];
+          this.toAddSeconds = this.defaultSeconds;
+          this.toAddMillisecondsPerFrame = this.defaultMillisecondsPerFrame;
+        },
+        addSimulation() {
+          let toAddSimulation = {};
+          toAddSimulation.arrivals = this.toAddArrivals;
+          toAddSimulation.locations = this.toAddLocations;
+          toAddSimulation.OBJs = this.toAddOBJs;
+          toAddSimulation.seconds = this.toAddSeconds;
+          toAddSimulation.millisecondsPerFrame = this.toAddMillisecondsPerFrame;
+          this.simulations.push(toAddSimulation);
+
+          let params = {};
+          //let assetBase = "./";
+          let assetBase = "https://cdn.jsdelivr.net/npm/@crowdedjs/assets/";
+          params.locationsPath = assetBase + "locations/" + toAddSimulation.locations;
+          params.arrivalPath = assetBase + "arrivals/" + toAddSimulation.arrivals;
+          params.objPath = assetBase + "objs/" + toAddSimulation.OBJs;
+          params.secondsOfSimulation = toAddSimulation.seconds;
+          params.millisecondsBetweenFrames = toAddSimulation.millisecondsPerFrame;
+
+
+          let promises = [axios.get(params.objPath), axios.get(params.locationsPath), axios.get(params.arrivalPath)];
+          Promise.all(promises)
+            .then(results => {
+              let objValue = results[0].data;
+              let locationValue = results[1].data;
+              let arrivalValue = results[2].data;
+
+              let agents = [];
+              //Add an agent with a behavior
+              for (let agent of arrivalValue) {
+                agents.push(new MedicalAgent(agent, locationValue));
+              }
+              //Assign a unique id to each agent.
+              for (let id = 0; id < agents.length; id++) {
+                let agent = agents[id];
+                agent.setId(id);
+              }
+              //Start the simulation.
+              crowdSetup(objValue, agents, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, this.simulations.length == 1 ? document.getElementById("canvasParent") : none, (agent) => {
+                if (agents.find(a => a.id == agent.id).name == "patient")
+                  return "white";
+                else
+                  return "black";
+              });
+
+            })
+            .catch(error => {
+              console.log("Error in the app " + error)
+            })
+
+          this.resetToAdd();
+        }
+      },
+    });
+
+  </script>
+</body>
+
+</html>

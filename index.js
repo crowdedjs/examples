@@ -13,8 +13,9 @@ function replacer(key, value) {
   return value;
 }
 
-function crowdSetup(objValue, agents, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, drawCallback) {
-  controls = new ControlCreator(secondsOfSimulation, millisecondsBetweenFrames, simulations);
+function crowdSetup(objValue, agents, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, elementParent, drawCallback) {
+  if (elementParent != null)
+    controls = new ControlCreator(secondsOfSimulation, millisecondsBetweenFrames, simulations, elementParent);
   let agentPositions = [];
 
   let locations;
@@ -48,7 +49,7 @@ function crowdSetup(objValue, agents, secondsOfSimulation, millisecondsBetweenFr
     let newDestinations = [];
     let leavingAgents = [];
 
-    
+
     for (let j = 0; j < agents.length; j++) {
       let agent = agents[j]; //Grab each agent in the list
 

@@ -6,14 +6,14 @@ class ControlCreator {
   playState = this.PLAY_STATE_PLAY_FORWARD;
   playSpeed = 1;
 
-  constructor(secondsOfSimulation, millisecondsPerFrame, simulations) {
+  constructor(secondsOfSimulation, millisecondsPerFrame, simulations, elementParent) {
     let self = this;
     this.simulations = simulations;
     this.secondsOfSimulation = secondsOfSimulation;
     this.millisecondsPerFrame = millisecondsPerFrame;
     let canvas = document.createElement("canvas");
     canvas.id = "canv";
-    document.body.appendChild(canvas);
+    elementParent.appendChild(canvas);
 
     let divRange = document.createElement("div");
     divRange.style.position = "absolute"

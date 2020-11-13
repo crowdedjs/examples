@@ -4,7 +4,7 @@
 <head>
   <meta charset='utf-8'>
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <title>Page Title</title>
+  <title>Single Crowd Simulator</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <link rel="stylesheet" type="text/css" href="./three.css">
 </head>
@@ -52,7 +52,7 @@
           agent.setId(id);
         }
         //Start the simulation.
-        crowdSetup(objValue, agents, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, (agent) => {
+        crowdSetup(objValue, agents, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, (agent) => {
           if (agents.find(a => a.id == agent.id).name == "patient")
             return "white";
           else
