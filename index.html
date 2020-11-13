@@ -20,7 +20,7 @@
     javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
 
     import MedicalAgent from "./sim/MedicalAgent.js"
-    import crowdSetup from "./index.js"
+    import CrowdSetup from "./index.js"
     import urlParser from "./urlParser.js"
 
     let params = {};
@@ -52,7 +52,7 @@
           agent.setId(id);
         }
         //Start the simulation.
-        crowdSetup(objValue, agents, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, (agent) => {
+        new CrowdSetup(objValue, agents, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, (agent) => {
           if (agents.find(a => a.id == agent.id).name == "patient")
             return "white";
           else

@@ -80,7 +80,7 @@
   <script type="module">
 
     import MedicalAgent from "./sim/MedicalAgent.js"
-    import crowdSetup from "./index.js"
+    import CrowdSetup from "./index.js"
     import urlParser from "./urlParser.js"
 
     const app = new Vue({
@@ -90,7 +90,7 @@
         arrivals: ["arrivalHospital.json", "arrivalsFlat.json"],
         locations: ["locationsHospital.json", "locationsFlat.json"],
         objs: ["hospital.obj", "flat.obj"],
-        defaultSeconds: 30,
+        defaultSeconds: 300,
         defaultMillisecondsPerFrame: 40,
         toAddArrivals: "",
         toAddLocations: "",
@@ -101,6 +101,12 @@
       },
       mounted() {
         this.resetToAdd();
+
+        this.addSimulation();
+        setTimeout(() => {
+          this.addSimulation();
+
+        }, 10000);
       },
       methods: {
         resetToAdd() {
@@ -147,7 +153,7 @@
                 agent.setId(id);
               }
               //Start the simulation.
-              crowdSetup(objValue, agents, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, this.simulations.length == 1 ? document.getElementById("canvasParent") : null, (agent) => {
+              new CrowdSetup(objValue, agents, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, this.simulations.length == 1 ? document.getElementById("canvasParent") : null, (agent) => {
                 if (agents.find(a => a.id == agent.id).name == "patient")
                   return "white";
                 else
