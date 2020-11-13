@@ -13,25 +13,42 @@ function replacer(key, value) {
   return value;
 }
 
+let allSimulations = [];
+let three = {}
+let first = true;
+
+
+
 function crowdSetup(objValue, agents, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, elementParent, drawCallback) {
-  if (elementParent != null)
+  let locations;
+  let nonce = Math.random();
+  console.log(nonce);
+  locations = locationValue;
+  if (elementParent != null) {
     controls = new ControlCreator(secondsOfSimulation, millisecondsBetweenFrames, simulations, elementParent);
+    viewer.boot(three, objValue, locations);
+
+  }
+  else {
+    first = false;
+  }
   let agentPositions = [];
 
-  let locations;
+  allSimulations.push(agentPositions);
 
-  locations = locationValue;
-  let three = {}
+
   main();
 
   //When we get our first frame, remove the loading div
   function bootCallback() {
+    console.log("Boot callback " + nonce);
     document.getElementById("loading").style.visibility = "hidden";
     document.getElementById("divRange").style.visibility = "visible";
   }
 
   //What we do every time the thread has more information for us
   async function tickCallback(event, nextTick) {
+    //console.log("tick callback " + nonce);
     //Parse the new positions
     let positions = JSON.parse(event.data.agents);
     //Assign idx numbers to each agent
@@ -43,6 +60,7 @@ function crowdSetup(objValue, agents, secondsOfSimulation, millisecondsBetweenFr
 
     //Track the frame number
     let i = event.data.frame;
+    console.log("frame " + i + " " + nonce)
 
     //Three arrays for data we will send to the next simulation frame
     let newAgents = [];
@@ -78,29 +96,34 @@ function crowdSetup(objValue, agents, secondsOfSimulation, millisecondsBetweenFr
       }
     }
     //Check to see if we need to end the simulation
-    if (i < secondsOfSimulation * 1_000 / millisecondsBetweenFrames)
+    if (i < secondsOfSimulation * 1_000 / millisecondsBetweenFrames){
+      //console.log("Call next " + nonce)
       //If the simulation needs to continue, send on the information 
       //about new agents, agents with new destinations, and agents that have left the simulation
       nextTick([JSON.stringify(newAgents, replacer), JSON.stringify(newDestinations, replacer), JSON.stringify(leavingAgents, replacer)])
+    }
+    else{
+      console.log("Done " + nonce)
+    }
   }
 
   function main() {
     //Boot the viewer
-    viewer.boot(three, objValue, locations);
     //Adapt the viewer to the window size
     viewer.Resize(window, three.renderer, three.camera);
     //Start the viewer clock
-    setTimeout(tick, 33);
+    if (first)
+      setTimeout(tick, 33);
 
     //bootWorker needs to be included in the calling html file
     //Start the threaded simulator
-    bootWorker(objValue, secondsOfSimulation, millisecondsBetweenFrames, locationValue, bootCallback, tickCallback);
+    bootWorker( objValue, secondsOfSimulation, millisecondsBetweenFrames, locationValue, bootCallback, tickCallback);
   }
 
   //Respond to the viewer timer
   async function tick() {
     //Update the controls
-    controls.update(agentPositions, agentPositions.length);
+    controls.update(allSimulations);
     //Draw the view
     draw();
   }
@@ -109,19 +132,23 @@ function crowdSetup(objValue, agents, secondsOfSimulation, millisecondsBetweenFr
     //Clear the viewer
     viewer.clearAgents(three);
 
-    //If there is nothing to draw, don't do anything
-    if (agentPositions.length == 0) return setTimeout(tick, 33);
+    for (let x = 0; x < allSimulations.length; x++) {
+      let simulationAgents = allSimulations[x];
+      //If there is nothing to draw, don't do anything
+      //if (agentPositions.length == 0) return setTimeout(tick, 33);
+      if (simulationAgents.length == 0) continue;
 
-    //Get the number of the frame we want to see
-    let index = controls.getCurrentTick();
-    index = Math.min(index, agentPositions.length - 1);
-    //Get the positional data for that frame
-    let frame = agentPositions[index];
+      //Get the number of the frame we want to see
+      let index = controls.getCurrentTick();
+      index = Math.min(index, simulationAgents.length - 1);
+      //Get the positional data for that frame
+      let frame = simulationAgents[index];
 
-    //Add each agent in the frame to the viewer
-    for (let j = 0; j < frame.length; j++) {
-      let agent = frame[j]; //Grab each agent in the list
-      viewer.addAgent(three, agent, agents[j], drawCallback)
+      //Add each agent in the frame to the viewer
+      for (let j = 0; j < frame.length; j++) {
+        let agent = frame[j]; //Grab each agent in the list
+        viewer.addAgent(three, agent, agents[j], drawCallback)
+      }
     }
     //Render the current frame
     viewer.render(three);

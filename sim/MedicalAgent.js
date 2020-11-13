@@ -54,16 +54,16 @@ class MedicalAgent {
     //     this.behavior = new BackAndForth(Agent.index++, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ]);
     // }
     if(agent.name == "patient"){
-      this.behavior = new None(Agent.index++);
+      this.behavior = new None(agent.id);
     }
     else{
       //This is where we assign behaviors based on medical position type
       if(agent.type=="Triage Nurse"){
         //We need to convert from coordinates to locations.
-        this.behavior = new BackAndForth(Agent.index++, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       }
       else{
-        this.behavior = new BackAndForth(Agent.index++, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       }
     }
   }

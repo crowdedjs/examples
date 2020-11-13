@@ -74,7 +74,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@ricksteam/fluent-behavior-tree-browser/bundle.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@crowdedjs/worker/bundle.js"></script>
+  <script src="./bundle.js"></script>
 
 
   <script type="module">
@@ -90,7 +90,7 @@
         arrivals: ["arrivalHospital.json", "arrivalsFlat.json"],
         locations: ["locationsHospital.json", "locationsFlat.json"],
         objs: ["hospital.obj", "flat.obj"],
-        defaultSeconds: 300,
+        defaultSeconds: 30,
         defaultMillisecondsPerFrame: 40,
         toAddArrivals: "",
         toAddLocations: "",
@@ -147,7 +147,7 @@
                 agent.setId(id);
               }
               //Start the simulation.
-              crowdSetup(objValue, agents, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, this.simulations.length == 1 ? document.getElementById("canvasParent") : none, (agent) => {
+              crowdSetup(objValue, agents, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, this.simulations.length == 1 ? document.getElementById("canvasParent") : null, (agent) => {
                 if (agents.find(a => a.id == agent.id).name == "patient")
                   return "white";
                 else

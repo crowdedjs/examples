@@ -181,7 +181,7 @@ class ControlCreator {
   getPlaySpeed(){
     return this.playSpeed;
   }
-  update(agentPositions, simulatedLength){
+  update(allSimulations){
     let state = this.getPlayState();
     let speed = this.getPlaySpeed();
     let advance = state * speed;
@@ -190,10 +190,10 @@ class ControlCreator {
     if (newIndex < 0) {
       newIndex = 0;
     }
-    if (newIndex >= agentPositions.length)
-      newIndex = agentPositions.length - 1;
+    if (newIndex >= Math.max(...allSimulations.map(i=>i.length)))
+      newIndex = Math.max(...allSimulations.map(i=>i.length)) - 1;
     this.setTick(newIndex);
-    document.getElementById("counter").innerHTML = "" + this.asTime(document.getElementById("myRange").value) + "<br>" + this.asTime(simulatedLength) + "<br>" + this.asTime(this.secondsOfSimulation * 1_000 / this.millisecondsPerFrame);
+    document.getElementById("counter").innerHTML = "" + this.asTime(document.getElementById("myRange").value) + "<br>" + allSimulations.map(i=>"" + this.asTime(i.length)).join(",") + "<br>" + this.asTime(this.secondsOfSimulation * 1_000 / this.millisecondsPerFrame);
   }
   getCurrentTick(){
     let rangeElement = document.getElementById("myRange");
