@@ -90,7 +90,7 @@
         arrivals: ["arrivalHospital.json", "arrivalsFlat.json"],
         locations: ["locationsHospital.json", "locationsFlat.json"],
         objs: ["hospital.obj", "flat.obj"],
-        defaultSeconds: 300,
+        defaultSeconds: 100,
         defaultMillisecondsPerFrame: 40,
         toAddArrivals: "",
         toAddLocations: "",
@@ -102,11 +102,7 @@
       mounted() {
         this.resetToAdd();
 
-        this.addSimulation();
-        setTimeout(() => {
-          this.addSimulation();
-
-        }, 10000);
+        
       },
       methods: {
         resetToAdd() {

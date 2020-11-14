@@ -62,7 +62,7 @@ class CrowdSetup {
 
       //Track the frame number
       let i = event.data.frame;
-      console.log("frame " + i + " " + self.nonce)
+      //console.log("frame " + i + " " + self.nonce)
 
       //Three arrays for data we will send to the next simulation frame
       let newAgents = [];
