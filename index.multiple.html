@@ -2,17 +2,32 @@
 <html>
 
 <head>
-  <title>Multilpe Crowd Simulator</title>
+  <title>Crowd Simulation Engine</title>
   <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
 
 <body>
   <div id='app'>
     <v-app>
-      <v-main>
+      <v-navigation-drawer v-model="drawer" app>
         <v-container>
+
+          <v-row>
+            <v-col cols=12 class="px-5">
+
+              <v-select :items="arrivals" label="Arrivals" v-model="toAddArrivals"></v-select>
+              <v-select :items="locations" label="Locations" v-model="toAddLocations"></v-select>
+              <v-select :items="objs" label="OBJs" v-model="toAddOBJs"></v-select>
+              <v-text-field label="Seconds to Simulate" v-model="toAddSeconds"></v-text-field>
+              <v-text-field label="Milliseconds Between Simulations" v-model="toAddMillisecondsPerFrame">
+              </v-text-field>
+              <v-btn @click="addSimulation()">Add Simulation</v-btn>
+
+            </v-col>
+          </v-row>
           <v-row>
             <v-col cols=12 v-for="(simulation, i) in simulations" :key="i">
               <v-card>
@@ -26,43 +41,18 @@
               </v-card>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col cols=12>
-              <v-card>
-                <v-card-title>
-                  Add a new simulation.
-                </v-card-title>
-                <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-col>
-                        <v-select :items="arrivals" label="Arrivals" v-model="toAddArrivals"></v-select>
-                      </v-col>
-                      <v-col>
-                        <v-select :items="locations" label="Locations" v-model="toAddLocations"></v-select>
-                      </v-col>
-                      <v-col>
-                        <v-select :items="objs" label="OBJs" v-model="toAddOBJs"></v-select>
-                      </v-col>
-                      <v-col>
-                        <v-text-field label="Seconds to Simulate" v-model="toAddSeconds"></v-text-field>
-                      </v-col>
-                      <v-col>
-                        <v-text-field label="Milliseconds Between Simulations" v-model="toAddMillisecondsPerFrame">
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn @click="addSimulation()">Add Simulation</v-btn>
-                </v-card-actions>
-
-              </v-card>
-            </v-col>
-          </v-row>
 
         </v-container>
+      </v-navigation-drawer>
+
+      <v-app-bar app>
+        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+
+        <v-toolbar-title>Application</v-toolbar-title>
+      </v-app-bar>
+
+      <v-main>
+
       </v-main>
       <div id="canvasParent"></div>
     </v-app>
@@ -87,6 +77,7 @@
       el: '#app',
       vuetify: new Vuetify(),
       data: {
+        drawer: null,
         arrivals: ["arrivalHospital.json", "arrivalsFlat.json"],
         locations: ["locationsHospital.json", "locationsFlat.json"],
         objs: ["hospital.obj", "flat.obj"],
@@ -102,7 +93,7 @@
       mounted() {
         this.resetToAdd();
 
-        
+
       },
       methods: {
         resetToAdd() {
@@ -154,7 +145,7 @@
                   return "white";
                 else
                   return "black";
-              });
+              }, );
 
             })
             .catch(error => {

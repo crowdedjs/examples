@@ -16,7 +16,7 @@ class ControlCreator {
     elementParent.appendChild(canvas);
 
     let divRange = document.createElement("div");
-    divRange.style.position = "absolute"
+    divRange.style.position = "fixed"
     divRange.style.top = "20px";
     divRange.style.left = "50%";
     divRange.id = "divRange";
@@ -74,7 +74,7 @@ class ControlCreator {
     document.body.appendChild(divRange);
 
     let divCounterParent = document.createElement("div");
-    divCounterParent.style.position = "absolute";
+    divCounterParent.style.position = "fixed";
     divCounterParent.style.top = "20px";
     divCounterParent.style.right = "20px";
 
