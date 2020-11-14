@@ -45,16 +45,17 @@
         </v-container>
       </v-navigation-drawer>
 
-      <v-app-bar app>
-        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-
-        <v-toolbar-title>Application</v-toolbar-title>
-      </v-app-bar>
-
+      
       <v-main>
+        <v-app-bar absolute collapse>
+          <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+  
+          <v-toolbar-title>Application</v-toolbar-title>
+        </v-app-bar>
+  
 
+        <div id="canvasParent"></div>
       </v-main>
-      <div id="canvasParent"></div>
     </v-app>
   </div>
 
