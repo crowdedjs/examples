@@ -161,7 +161,7 @@ class CrowdSetup {
       setTimeout(tick, 33);
     }
     //From https://stackoverflow.com/a/29522050/10047920
-    window.addEventListener("resize", () => viewer.Resize(window, three.renderer, three.camera));
+    window.addEventListener("resize", () => viewer.Resize(window, CrowdSetup.three.renderer, CrowdSetup.three.camera));
   }
 }
 
