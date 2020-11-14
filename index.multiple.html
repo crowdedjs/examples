@@ -14,14 +14,24 @@
   <div id='app'>
     <v-app>
       <v-navigation-drawer v-model="drawer" app>
-        <v-container>
+        <v-select :items="creationOptions" v-model="creationModel">
 
+        </v-select>
+        <v-container>
           <v-row>
             <v-col cols=12 class="px-5">
+              <div v-if="creationModel=='Baked'">
+                <v-select :items="arrivals" label="Arrivals" v-model="toAddArrivals"></v-select>
+                <v-select :items="locations" label="Locations" v-model="toAddLocations"></v-select>
+                <v-select :items="objs" label="OBJs" v-model="toAddOBJs"></v-select>
+              </div>
+              <div v-if="creationModel=='Dynamic'">
+                <v-select :items="dynamic" item-text="name" v-model="dynamicModel"></v-select>
+                <div v-for="(param,i) in getDynamicModelParams()" :key="i">
+                  <v-text-field :label="param" v-model="dynamicModelValues[param]"></v-text-field>
+                </div>
 
-              <v-select :items="arrivals" label="Arrivals" v-model="toAddArrivals"></v-select>
-              <v-select :items="locations" label="Locations" v-model="toAddLocations"></v-select>
-              <v-select :items="objs" label="OBJs" v-model="toAddOBJs"></v-select>
+              </div>
               <v-text-field label="Seconds to Simulate" v-model="toAddSeconds"></v-text-field>
               <v-text-field label="Milliseconds Between Simulations" v-model="toAddMillisecondsPerFrame">
               </v-text-field>
@@ -46,14 +56,14 @@
         </v-container>
       </v-navigation-drawer>
 
-      
+
       <v-main>
         <v-app-bar absolute collapse>
           <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-  
+
           <v-toolbar-title>Application</v-toolbar-title>
         </v-app-bar>
-  
+
 
         <div id="canvasParent"></div>
       </v-main>
@@ -67,6 +77,7 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@ricksteam/fluent-behavior-tree-browser/bundle.js"></script>
   <script src="./bundle.js"></script>
+  <!-- <script src="./dynamic.js"></script> -->
 
 
   <script type="module">
@@ -74,12 +85,19 @@
     import MedicalAgent from "./sim/MedicalAgent.js"
     import CrowdSetup from "./index.js"
     import urlParser from "./urlParser.js"
+    import dynamic from "./dynamic.js"
 
     const app = new Vue({
       el: '#app',
       vuetify: new Vuetify(),
       data: {
-        drawer: null,
+        drawer: true,
+        creationOptions: ["Baked", "Dynamic"],
+        creationModel: "Dynamic",
+        dynamic: dynamic,
+        dynamicModel: dynamic[0],
+        dynamicModelValues: {},
+
         arrivals: ["arrivalHospital.json", "arrivalsFlat.json"],
         locations: ["locationsHospital.json", "locationsFlat.json"],
         objs: ["hospital.obj", "flat.obj"],
@@ -94,8 +112,6 @@
       },
       mounted() {
         this.resetToAdd();
-
-
       },
       methods: {
         resetToAdd() {
@@ -107,58 +123,66 @@
         },
         addSimulation() {
           let toAddSimulation = {};
-          toAddSimulation.arrivals = this.toAddArrivals;
-          toAddSimulation.locations = this.toAddLocations;
-          toAddSimulation.OBJs = this.toAddOBJs;
-          toAddSimulation.seconds = this.toAddSeconds;
-          toAddSimulation.millisecondsPerFrame = this.toAddMillisecondsPerFrame;
-          this.simulations.push(toAddSimulation);
 
-          let params = {};
-          //let assetBase = "./";
-          let assetBase = "https://cdn.jsdelivr.net/npm/@crowdedjs/assets/";
-          params.locationsPath = assetBase + "locations/" + toAddSimulation.locations;
-          params.arrivalPath = assetBase + "arrivals/" + toAddSimulation.arrivals;
-          params.objPath = assetBase + "objs/" + toAddSimulation.OBJs;
-          params.secondsOfSimulation = toAddSimulation.seconds;
-          params.millisecondsBetweenFrames = toAddSimulation.millisecondsPerFrame;
+          if (this.creationModel == "Baked") {
+            toAddSimulation.arrivals = this.toAddArrivals;
+            toAddSimulation.locations = this.toAddLocations;
+            toAddSimulation.OBJs = this.toAddOBJs;
+            toAddSimulation.seconds = this.toAddSeconds;
+            toAddSimulation.millisecondsPerFrame = this.toAddMillisecondsPerFrame;
+            this.simulations.push(toAddSimulation);
 
+            let params = {};
+            //let assetBase = "./";
+            let assetBase = "https://cdn.jsdelivr.net/npm/@crowdedjs/assets/";
+            params.locationsPath = assetBase + "locations/" + toAddSimulation.locations;
+            params.arrivalPath = assetBase + "arrivals/" + toAddSimulation.arrivals;
+            params.objPath = assetBase + "objs/" + toAddSimulation.OBJs;
+            params.secondsOfSimulation = toAddSimulation.seconds;
+            params.millisecondsBetweenFrames = toAddSimulation.millisecondsPerFrame;
 
-          let promises = [axios.get(params.objPath), axios.get(params.locationsPath), axios.get(params.arrivalPath)];
-          Promise.all(promises)
-            .then(results => {
-              let objValue = results[0].data;
-              let locationValue = results[1].data;
-              let arrivalValue = results[2].data;
+            let promises = [axios.get(params.objPath), axios.get(params.locationsPath), axios.get(params.arrivalPath)];
+            Promise.all(promises)
+              .then(results => {
+                let objValue = results[0].data;
+                let locationValue = results[1].data;
+                let arrivalValue = results[2].data;
 
-              let agents = [];
-              //Add an agent with a behavior
-              for (let agent of arrivalValue) {
-                agents.push(new MedicalAgent(agent, locationValue));
-              }
-              //Assign a unique id to each agent.
-              for (let id = 0; id < agents.length; id++) {
-                let agent = agents[id];
-                agent.setId(id);
-              }
-              //Start the simulation.
-              new CrowdSetup(objValue, agents, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, this.simulations.length == 1 ? document.getElementById("canvasParent") : null, (agent) => {
-                if (agents.find(a => a.id == agent.id).name == "patient")
-                  return "white";
-                else
-                  return "black";
-              }, );
+                let agents = [];
+                //Add an agent with a behavior
+                for (let agent of arrivalValue) {
+                  agents.push(new MedicalAgent(agent, locationValue));
+                }
+                //Assign a unique id to each agent.
+                for (let id = 0; id < agents.length; id++) {
+                  let agent = agents[id];
+                  agent.setId(id);
+                }
+                //Start the simulation.
+                new CrowdSetup(objValue, agents, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, this.simulations.length == 1 ? document.getElementById("canvasParent") : null, (agent) => {
+                  if (agents.find(a => a.id == agent.id).name == "patient")
+                    return "white";
+                  else
+                    return "black";
+                });
 
-            })
-            .catch(error => {
-              console.log("Error in the app " + error)
-            })
+              })
+              .catch(error => {
+                console.log("Error in the app " + error)
+              })
+          }
+          else if(this.creationModel == "Dynamic"){
+            console.log(this.dynamicModelValues);
+          }
 
           this.resetToAdd();
+        },
+        getDynamicModelParams() {
+          if (!this.dynamicModel) return;
+          return this.dynamicModel.params;
         }
       },
     });
-
   </script>
 </body>
 
