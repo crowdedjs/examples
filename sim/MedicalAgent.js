@@ -53,15 +53,43 @@ class MedicalAgent {
     //   if (behave == "back")
     //     this.behavior = new BackAndForth(Agent.index++, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ]);
     // }
+    
+    
     if(agent.name == "patient"){
       this.behavior = new None(agent.id);
     }
+    /*
+    else if(medicianType == MedicianClass.DOCTOR) {
+				if(medicianSubclass == MedicianSubclass.ATTENDING)
+					reader = new BufferedReader(new FileReader("./data/attending.tree"));
+				else if(medicianSubclass == MedicianSubclass.RESIDENT)
+					reader = new BufferedReader(new FileReader("./data/responsibility.tree"));
+		}
+    else if(medicianType == MedicianClass.TECH){
+				if(medicianSubclass == MedicianSubclass.CT)
+					reader = new BufferedReader(new FileReader("./data/ct.tree"));
+				else if(medicianSubclass == MedicianSubclass.JANITORIAL)
+					reader = new BufferedReader(new FileReader("./data/janitorial.tree"));
+				else if(medicianSubclass == MedicianSubclass.RADIOLOGY)
+					reader = new BufferedReader(new FileReader("./data/radiology.tree"));
+				else
+					reader = new BufferedReader(new FileReader("./data/responsibility.tree"));
+    }
+    
+    else if(medicianType == MedicianClass.NURSE)
+    */
     else{
       //This is where we assign behaviors based on medical position type
       if(agent.type=="Triage Nurse"){
         //We need to convert from coordinates to locations.
         this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       }
+      /*
+      else if(medicianSubclass == MedicianSubclass.GREETER_NURSE)
+					reader = new BufferedReader(new FileReader("./data/greeterNurse.tree"));
+			else if(medicianSubclass == MedicianSubclass.NURSE)
+					reader = new BufferedReader(new FileReader("./data/responsibility.tree"));
+      */
       else{
         this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       }
