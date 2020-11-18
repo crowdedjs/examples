@@ -4,6 +4,7 @@ import { OBJLoader } from './lib/OBJLoader.js';
 
 
 const CylinderGeometry = function () { return new THREE.CylinderGeometry(.2, .2, 1, 8) };
+const CylinderGeometryThin = function () { return new THREE.CylinderGeometry(.1, .1, .5, 8) };
 const WhiteMaterial = new THREE.MeshStandardMaterial({
   roughness: 0,
   metalness: 0,
@@ -95,7 +96,7 @@ function boot(three, objValue, locations) {
   three.skydone = {};
 
 
-  three.geometry = CylinderGeometry();
+  three.geometry = CylinderGeometryThin();
   //geometryShoulder = new THREE.SphereGeometry(.2, 8, 8);
   //geometryHead = new THREE.SphereGeometry(.2, 8, 8);
   three.canvas = document.getElementById("canv");
@@ -215,6 +216,12 @@ function addAgent(three, agent, agentDefintion, materialCallback) {
   let material;
   if (materialString == "white")
     material = this.WhiteMaterial;
+  else if (materialString == "red")
+    material = this.RedMaterial;
+  else if (materialString == "green")
+    material = this.GreenMaterial;
+  else if (materialString == "blue")
+    material = this.BlueMaterial;
   else
     material = this.BlackMaterial;
   if (agent.hasEntered && !agent.inSimulation) return;

@@ -53,10 +53,17 @@
         }
         //Start the simulation.
         new CrowdSetup(objValue, agents, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, (agent) => {
-          if (agents.find(a => a.id == agent.id).name == "patient")
+          agent = agents.find(a => a.id == agent.id);
+          if (agent.name == "patient")
             return "white";
-          else
-            return "black";
+          else 
+          if(agent.name == "Tech")
+            return "green";
+          if(agent.name == "Nurse")
+            return "red";
+          if(agent.name == "Attending") 
+            return "blue";
+          return "black"
         });
 
       })
