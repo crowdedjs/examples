@@ -1,24 +1,34 @@
 // not fully ported
+import GoTo from "../behavior/GoTo.js"
+import WaitForever from "../tasks/WaitForever.js"
+
 
 class greeterNurse {
 
-    constructor(myIndex, start, end) {
+    constructor(agent, myIndex, start, end) {
       this.index = myIndex;
       this.waypoints = [];
       this.waypoints.push(start);
       this.waypoints.push(end);
   
       const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
-      this.toReturn = null;
-  
+
       let self = this;//Since we need to reference this in anonymous functions, we need a reference
+      let me = agent;
+      let myGoal = me.locations.find(l => l.name == "Check In");
+      if (!myGoal) throw new "We couldn't find a location called B_DESK";
+  
+      //this.goTo = new GoTo(self.index, myGoal.position);
+  
+  
   
       this.tree = builder
         .sequence("Greeter Nurse Behaviors")
-    
-            .do("Go to a Room", (t) => {
-                // room type CHECK_IN
-            })
+            .splice(new GoTo(self.index, myGoal.position).tree)
+            .splice(new WaitForever().tree)
+            //.do("Wait Forever", (t) => new WaitForever(agent).execute())
+
+            
             .do("Look for Arriving Patient", (t) => {
 
             })
@@ -56,3 +66,5 @@ class greeterNurse {
     }
   
   }
+
+export default greeterNurse;

@@ -1,5 +1,7 @@
 // not fully ported
 import GoTo from "../behavior/GoTo.js"
+import WaitForever from "../tasks/WaitForever.js"
+
 
 class attending {
 
@@ -23,8 +25,8 @@ class attending {
     this.tree = builder
       .sequence("Attending Tree")
       .splice(this.goTo.tree)
-      .do("Wait Forever", (t) => new WaitForever().execute())
-
+      .splice(new WaitForever().tree)
+            
       .end()
       .build();
   }

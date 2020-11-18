@@ -3,6 +3,8 @@ import BackAndForth from "./../behavior/BackAndForth.js";
 import None from "./../behavior/None.js"
 import Agent from "./Agent.js"
 import attending from "../data/attending.js"
+import greeterNurse from "../data/greeterNurse.js"
+import patient from "../data/patient.js"
 
 
 class MedicalAgent {
@@ -59,7 +61,7 @@ class MedicalAgent {
 
 
     if (agent.name == "patient") {
-      this.behavior = new None(agent.id);
+      this.behavior = new patient(agent, agent.id, null, null);
     }
     /*
     else if(medicianType == MedicianClass.DOCTOR) {
@@ -102,7 +104,7 @@ class MedicalAgent {
         else if (agent.type == "Nurse")
           this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         else if (agent.type == "Greeter Nurse")
-          this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+          this.behavior = new greeterNurse(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         else
           throw new "That nures type does not exist " + agent.type;
       }
