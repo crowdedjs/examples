@@ -181,7 +181,7 @@ class ControlCreator {
   getPlaySpeed(){
     return this.playSpeed;
   }
-  update(allSimulations){
+  update(allSimulations, firstTicks){
     let state = this.getPlayState();
     let speed = this.getPlaySpeed();
     let advance = state * speed;
@@ -193,7 +193,20 @@ class ControlCreator {
     if (newIndex >= Math.max(...allSimulations.map(i=>i.length)))
       newIndex = Math.max(...allSimulations.map(i=>i.length)) - 1;
     this.setTick(newIndex);
-    document.getElementById("counter").innerHTML = "" + this.asTime(document.getElementById("myRange").value) + "<br>" + allSimulations.map(i=>"" + this.asTime(i.length)).join(",") + "<br>" + this.asTime(this.secondsOfSimulation * 1_000 / this.millisecondsPerFrame);
+    //let elpasedTime = new Date() - this.start;
+    //let vel = Math.max(...allSimulations.map(i=>i.length) )/(elpasedTime/1000);
+    let vels = [];
+    for(let i = 0; i < allSimulations.length; i++){
+      vels.push(allSimulations[i].length / ((new Date() - firstTicks[i])/1000));
+    }
+    let value = "" + this.asTime(document.getElementById("myRange").value) 
+    + "<br>" + allSimulations.map(i=>"" + this.asTime(i.length) + " seconds calculated").join(",") 
+    + "<br>" + allSimulations.map(i=>"" + i.length + " frames calculated").join(",") 
+    + "<br>" + vels.map(i=>i.toFixed(2) + " fps").join(",")
+    + "<br>" + vels.map(i=>(this.asTime(i.length) / this.secondsOfSimulation)  + " fps").join(",")
+    + "<br>" + this.asTime(this.secondsOfSimulation * 1_000 / this.millisecondsPerFrame);
+
+    document.getElementById("counter").innerHTML = value;
   }
   getCurrentTick(){
     let rangeElement = document.getElementById("myRange");

@@ -17,6 +17,7 @@ function replacer(key, value) {
 
 class CrowdSetup {
   static allSimulations = [];
+  static firstTicks = [];
   static three = {}
 
 
@@ -39,6 +40,8 @@ class CrowdSetup {
     let agentPositions = [];
 
     CrowdSetup.allSimulations.push(agentPositions);
+    CrowdSetup.firstTicks.push(-1);
+    this.myIndex = CrowdSetup.allSimulations.length - 1;
 
 
     main();
@@ -52,6 +55,9 @@ class CrowdSetup {
 
     //What we do every time the thread has more information for us
     async function tickCallback(event, nextTick) {
+      if(CrowdSetup.firstTicks[self.myIndex] == -1){
+        CrowdSetup.firstTicks[self.myIndex] = new Date();
+      }
       //console.log("tick callback " + nonce);
       //Parse the new positions
       let positions = JSON.parse(event.data.agents);
@@ -131,7 +137,7 @@ class CrowdSetup {
     //Respond to the viewer timer
     async function tick() {
       //Update the controls
-      controls.update(CrowdSetup.allSimulations);
+      controls.update(CrowdSetup.allSimulations, CrowdSetup.firstTicks);
       //Draw the view
       draw();
     }
