@@ -150,7 +150,7 @@ function boot(three, objValue, locations) {
 
 
   three.agentGroup = new THREE.Group();
-
+  three.scene.add(three.agentGroup);
 
   three.controls = new OrbitControls(
     three.camera, three.renderer.domElement
@@ -206,12 +206,12 @@ function addLocations(three, locations) {
 }
 
 function clearAgents(three) {
-  three.scene.remove(three.agentGroup);
-  three.agentGroup = new THREE.Group();
-  three.scene.add(three.agentGroup);
+  //three.scene.remove(three.agentGroup);
+  //three.agentGroup = new THREE.Group();
+  //three.scene.add(three.agentGroup);
 }
 
-function addAgent(three, agent, agentDefintion, materialCallback) {
+function addAgent(three, agent, materialCallback) {
   let materialString = materialCallback(agent);
   let material;
   if (materialString == "white")
@@ -234,6 +234,7 @@ function addAgent(three, agent, agentDefintion, materialCallback) {
   let y = agent.y;
   let z = agent.z;
   agentMesh.position.set(x, y, z);
+  agentMesh._id = agent.id;
   three.agentGroup.add(agentMesh);
 }
 

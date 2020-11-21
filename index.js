@@ -1,6 +1,8 @@
 import * as viewer from "./viewer.js"
 import simulations from "./simulations.js"
 import ControlCreator from "./ControlCreator.js"
+import * as THREE from './lib/three.module.js';
+
 
 //let simulations = [];
 let controls;
@@ -135,13 +137,9 @@ class CrowdSetup {
     }
 
     function draw() {
-      //Clear the viewer
-      viewer.clearAgents(CrowdSetup.three);
-
       for (let x = 0; x < CrowdSetup.allSimulations.length; x++) {
         let simulationAgents = CrowdSetup.allSimulations[x];
         //If there is nothing to draw, don't do anything
-        //if (agentPositions.length == 0) return setTimeout(tick, 33);
         if (simulationAgents.length == 0) continue;
 
         //Get the number of the frame we want to see
@@ -150,10 +148,29 @@ class CrowdSetup {
         //Get the positional data for that frame
         let frame = simulationAgents[index];
 
-        //Add each agent in the frame to the viewer
+        //Add new agents
         for (let j = 0; j < frame.length; j++) {
           let agent = frame[j]; //Grab each agent in the list
-          viewer.addAgent(CrowdSetup.three, agent, agents[j], drawCallback)
+          if(!CrowdSetup.three.agentGroup.children.some(c=>c._id == agent.id)){
+            viewer.addAgent(CrowdSetup.three, agent,  drawCallback)
+          }
+        }
+        //Remove old agents
+        let toRemove = [];
+        for(let j = 0; j < CrowdSetup.three.agentGroup.children.length; j++){
+          let child = CrowdSetup.three.agentGroup.children[j];
+          if(!frame.some(f=>f.id == child._id)){
+           toRemove.push(child);
+          }
+        }
+        for(let j = 0; j < toRemove.length; j++){
+          CrowdSetup.three.agentGroup.remove(toRemove[j]);
+        }
+        //Update remaining agents
+        for(let j = 0; j < CrowdSetup.three.agentGroup.children.length; j++){
+          let child = CrowdSetup.three.agentGroup.children[j];
+          let agent = frame.find(f=>f.id == child._id);
+          child.position.set(agent.x, agent.y, agent.z);
         }
       }
       //Render the current frame
