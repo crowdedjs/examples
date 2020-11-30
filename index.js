@@ -93,11 +93,12 @@ class CrowdSetup {
           await agent.behavior.update(agents, positions, i * millisecondsBetweenFrames);
           //If the new destination is not null, send the updated destination to the 
           //path finding engine
-          if (agent.destination  != null && agent.destination != oldDestination) {
+          if (agent.destination  != null && !(agent.destination.equals(oldDestination))) {
             agent.destX = agent.destination.x;
             agent.destY = agent.destination.y;
             agent.destZ = agent.destination.z;
             newDestinations.push(agent);
+            console.log("Updating destination")
           }
           //If the agent has left the simulation, 
           //Update the simulation
