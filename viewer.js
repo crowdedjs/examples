@@ -123,10 +123,12 @@ function boot(three, objValue, locations) {
   //scene.background = new THREE.Color(0x007fff);
 
   three.light = new THREE.PointLight(0xffffff);
-  three.light.position.set(0, 250, 0);
+  three.light.position.set(250, 150, 0);
   three.scene.add(three.light);
-  var ambientLight = new THREE.AmbientLight(0x111111);
-  // scene.add(ambientLight);
+  three.scene.add(three.light);
+  three.scene.add(three.light);
+  var ambientLight = new THREE.AmbientLight(0x555555);
+  three.scene.add(ambientLight);
 
   let agent = new THREE.Mesh(three.geometry, WhiteMaterial);
   let agent2 = new THREE.Mesh(three.geometry, RedMaterial);
@@ -227,11 +229,17 @@ function addAgent(three, agent) {
 
   let url;
   if (agent.gender == "female")
-    url = './models/nurseWithShader.glb'
+    url = './models/nurseTone' + Math.ceil(Math.random() * 4) + '.glb';
   else if (agent.gender == "male")
-    url = './models/doctorWithShader.glb'
+    url = './models/doctorTone' + Math.ceil(Math.random() * 4) + '.glb';
   else
-    url = './models/doctorWithShader.glb' //update with a gender neutral model
+  {
+    //update with a gender neutral model?
+    if (Math.random() > 0.5)
+      url = './models/nurseTone' + Math.ceil(Math.random() * 4) + '.glb';
+    else
+      url = './models/doctorTone' + Math.ceil(Math.random() * 4) + '.glb';
+  }
   
   loader.load(url, function (gltf){
     gltf.scene.position.set(agent.x, agent.y, agent.z);
@@ -243,16 +251,16 @@ function addAgent(three, agent) {
     let walkAction = three.agentGroup.mixers[three.agentGroup.mixers.length - 1].clipAction(gltf.animations[1]).play();
     three.agentGroup.animations.push([idleAction, walkAction]);
 
-    // Skin Tone Variation
-    gltf.scene.traverse(function (child) {
-      if (child.name == "Armature") {
-        child.traverse(function (child2) {
-          if (child2.name == "body") { //Rename in blender to ensure correct functionality
-            child2.material.metalness = Math.random();
-          }
-        })
-      }
-    });
+    // // Skin Tone Variation
+    // gltf.scene.traverse(function (child) {
+    //   if (child.name == "Armature") {
+    //     child.traverse(function (child2) {
+    //       if (child2.name == "body") { //Rename in blender to ensure correct functionality
+    //         child2.material.metalness = Math.random();
+    //       }
+    //     })
+    //   }
+    // });
 
     gltf.scene.visible = true;
     gltf.scene._id = agent.id;
