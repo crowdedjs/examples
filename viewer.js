@@ -1,10 +1,14 @@
 import * as THREE from './lib/three.module.js';
 import { OrbitControls } from './lib/OrbitControls.js';
 import { OBJLoader } from './lib/OBJLoader.js';
+import { GLTFLoader } from './lib/GLTFLoader.js';
 
 
 const CylinderGeometry = function () { return new THREE.CylinderGeometry(.2, .2, 1, 8) };
 const CylinderGeometryThin = function () { return new THREE.CylinderGeometry(.1, .1, .5, 8) };
+const loader = new GLTFLoader();
+const clock = new THREE.Clock();
+
 const WhiteMaterial = new THREE.MeshStandardMaterial({
   roughness: 0,
   metalness: 0,
@@ -94,6 +98,8 @@ function boot(three, objValue, locations) {
   three.light = {};
   three.skydomegeo = {};
   three.skydone = {};
+  three.mixers = {};
+  three.animations = {};
 
 
   three.geometry = CylinderGeometryThin();
@@ -158,6 +164,10 @@ function boot(three, objValue, locations) {
   three.controls.update();
   loadOBJ(three, objValue);
   addLocations(three, locations);
+
+  three.agentGroup.mixers = [];
+  three.agentGroup.animations = [];
+  three.agentGroup.positions = [];
 }
 
 function loadOBJ(three, path) {
@@ -211,36 +221,78 @@ function clearAgents(three) {
   //three.scene.add(three.agentGroup);
 }
 
-function addAgent(three, agent, materialCallback) {
-  let materialString = materialCallback(agent);
-  let material;
-  if (materialString == "white")
-    material = this.WhiteMaterial;
-  else if (materialString == "red")
-    material = this.RedMaterial;
-  else if (materialString == "green")
-    material = this.GreenMaterial;
-  else if (materialString == "blue")
-    material = this.BlueMaterial;
-  else
-    material = this.BlackMaterial;
-  if (agent.hasEntered && !agent.inSimulation) return;
+function addAgent(three, agent) {
+  if (agent.hasEntered && agent.inSimulation) return;
   if (!agent.hasEntered) return;
 
-  let geometry = CylinderGeometry();
+  let url;
+  if (agent.gender == "female")
+    url = './models/nurseWithShader.glb'
+  else if (agent.gender == "male")
+    url = './models/doctorWithShader.glb'
+  else
+    url = './models/doctorWithShader.glb' //update with a gender neutral model
+  
+  loader.load(url, function (gltf){
+    gltf.scene.position.set(agent.x, agent.y, agent.z);
+    gltf.scene.scale.set(1.0, 0.8 + Math.random() * 0.3, 1.0);
+    three.agentGroup.positions.push([new THREE.Vector3(agent.x, agent.y, agent.z), 0.0]);
 
-  let agentMesh = new THREE.Mesh(geometry, material);
-  let x = agent.x;
-  let y = agent.y;
-  let z = agent.z;
-  agentMesh.position.set(x, y, z);
-  agentMesh._id = agent.id;
-  three.agentGroup.add(agentMesh);
+    three.agentGroup.mixers.push(new THREE.AnimationMixer(gltf.scene));
+    let idleAction = three.agentGroup.mixers[three.agentGroup.mixers.length - 1].clipAction(gltf.animations[0]).play();
+    let walkAction = three.agentGroup.mixers[three.agentGroup.mixers.length - 1].clipAction(gltf.animations[1]).play();
+    three.agentGroup.animations.push([idleAction, walkAction]);
+
+    // Skin Tone Variation
+    gltf.scene.traverse(function (child) {
+      if (child.name == "Armature") {
+        child.traverse(function (child2) {
+          if (child2.name == "body") { //Rename in blender to ensure correct functionality
+            child2.material.metalness = Math.random();
+          }
+        })
+      }
+    });
+
+    gltf.scene.visible = true;
+    gltf.scene._id = agent.id;
+    
+    three.object1 = gltf.scene;
+    three.agentGroup.children.push(gltf.scene);
+    three.scene.add(gltf.scene);
+  }, undefined, function(error) {
+    console.error(error)
+  });
+}
+
+function updateAgent(three, agent) {
+  let loc = three.agentGroup.children.findIndex((child) => child._id == agent.id);
+
+  // Calculate and apply a rotation for the agent based on the direction it is moving in
+  let nextPosition = new THREE.Vector3(agent.x, agent.y, agent.z);
+  let previousPosition = three.agentGroup.positions[loc][0];
+  let positionChange = new THREE.Vector3(nextPosition.x - previousPosition.x, nextPosition.y-previousPosition.y, nextPosition.z - previousPosition.z);
+  let nextAngle = (Math.atan2(positionChange.z, positionChange.x));
+  three.agentGroup.children[loc].rotation.y = Math.PI/2 - nextAngle;
+  three.agentGroup.positions[loc] = [nextPosition, nextAngle];
+
+  //Weight the idle and walking animations based on the speed of the agent
+  three.agentGroup.animations[loc][0].weight = 1 - positionChange.length() * 10;
+  three.agentGroup.animations[loc][1].weight = positionChange.length() * 10;
+}
+
+function animate(three) {
+  var delta = clock.getDelta();
+  three.agentGroup.mixers.forEach(m => {
+    m.update(delta);
+  });
 }
 
 function render(three) {
   if (three.renderer)
     three.renderer.render(three.scene, three.camera)
+  animate(three)
+  requestAnimationFrame(render);
 }
 
 export {
@@ -257,5 +309,6 @@ export {
   addLocations,
   clearAgents,
   addAgent,
+  updateAgent,
   render
 };

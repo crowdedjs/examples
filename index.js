@@ -1,7 +1,6 @@
 import * as viewer from "./viewer.js"
 import simulations from "./simulations.js"
 import ControlCreator from "./ControlCreator.js"
-import * as THREE from './lib/three.module.js';
 
 
 //let simulations = [];
@@ -85,6 +84,7 @@ class CrowdSetup {
         if (!agent.hasEntered && agent.startMSec <= i * millisecondsBetweenFrames) {
           newAgents.push(agent);
           agent.hasEntered = true;
+          viewer.addAgent(CrowdSetup.three, agent, drawCallback)
           agent.inSimulation = true;
         }
         else if (agent.hasEntered) {
@@ -158,7 +158,7 @@ class CrowdSetup {
         for (let j = 0; j < frame.length; j++) {
           let agent = frame[j]; //Grab each agent in the list
           if(!CrowdSetup.three.agentGroup.children.some(c=>c._id == agent.id)){
-            viewer.addAgent(CrowdSetup.three, agent,  drawCallback)
+            viewer.addAgent(CrowdSetup.three, agent, drawCallback)
           }
         }
         //Remove old agents
@@ -166,7 +166,7 @@ class CrowdSetup {
         for(let j = 0; j < CrowdSetup.three.agentGroup.children.length; j++){
           let child = CrowdSetup.three.agentGroup.children[j];
           if(!frame.some(f=>f.id == child._id)){
-           toRemove.push(child);
+            toRemove.push(child);
           }
         }
         for(let j = 0; j < toRemove.length; j++){
@@ -177,6 +177,7 @@ class CrowdSetup {
           let child = CrowdSetup.three.agentGroup.children[j];
           let agent = frame.find(f=>f.id == child._id);
           child.position.set(agent.x, agent.y, agent.z);
+          viewer.updateAgent(CrowdSetup.three, agent)
         }
       }
       //Render the current frame
