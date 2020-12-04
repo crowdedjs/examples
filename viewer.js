@@ -98,8 +98,6 @@ function boot(three, objValue, locations) {
   three.light = {};
   three.skydomegeo = {};
   three.skydone = {};
-  three.mixers = {};
-  three.animations = {};
 
 
   three.geometry = CylinderGeometryThin();
@@ -170,6 +168,7 @@ function boot(three, objValue, locations) {
   three.agentGroup.mixers = [];
   three.agentGroup.animations = [];
   three.agentGroup.positions = [];
+  console.log(three.agentGroup)
 }
 
 function loadOBJ(three, path) {
@@ -246,21 +245,12 @@ function addAgent(three, agent) {
     gltf.scene.scale.set(1.0, 0.8 + Math.random() * 0.3, 1.0);
     three.agentGroup.positions.push([new THREE.Vector3(agent.x, agent.y, agent.z), 0.0]);
 
-    three.agentGroup.mixers.push(new THREE.AnimationMixer(gltf.scene));
+    let mixer = new THREE.AnimationMixer(gltf.scene);
+    mixer.timeScale = 2;
+    three.agentGroup.mixers.push(mixer);
     let idleAction = three.agentGroup.mixers[three.agentGroup.mixers.length - 1].clipAction(gltf.animations[0]).play();
     let walkAction = three.agentGroup.mixers[three.agentGroup.mixers.length - 1].clipAction(gltf.animations[1]).play();
     three.agentGroup.animations.push([idleAction, walkAction]);
-
-    // // Skin Tone Variation
-    // gltf.scene.traverse(function (child) {
-    //   if (child.name == "Armature") {
-    //     child.traverse(function (child2) {
-    //       if (child2.name == "body") { //Rename in blender to ensure correct functionality
-    //         child2.material.metalness = Math.random();
-    //       }
-    //     })
-    //   }
-    // });
 
     gltf.scene.visible = true;
     gltf.scene._id = agent.id;
@@ -290,10 +280,20 @@ function updateAgent(three, agent) {
 }
 
 function animate(three) {
-  var delta = clock.getDelta();
-  three.agentGroup.mixers.forEach(m => {
-    m.update(delta);
-  });
+    var delta = clock.getDelta();
+    var list;
+    
+    try {
+      list = three.agentGroup.mixers;
+    } catch (error) {
+      //do nothing
+    }
+    
+    if (list !== undefined) {
+      list.forEach(m => {
+        m.update(delta);
+      });
+    }
 }
 
 function render(three) {
