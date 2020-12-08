@@ -20,7 +20,7 @@ class ComputerEntry {
     ekg; //string
     answeredQuestions = false;
 
-   ComputerEntry(patient, complaint)
+   ComputerEntry(patient, complaint) //APatient, string
    {
         this.patient = patient;
         chiefComplaint = complaint;

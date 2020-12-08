@@ -1,6 +1,6 @@
 // NOT FULLY PORTED
 import GoTo from "../behavior/GoTo.js"
-import WaitForever from "../tasks/WaitForever.js"
+import WaitForever from "../behavior/WaitForever.js"
 
 
 

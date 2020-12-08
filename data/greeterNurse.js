@@ -1,6 +1,6 @@
 // not fully ported
 import GoTo from "../behavior/GoTo.js"
-import WaitForever from "../tasks/WaitForever.js"
+import WaitForever from "../behavior/WaitForever.js"
 
 
 class greeterNurse {

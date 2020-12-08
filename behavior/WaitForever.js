@@ -1,4 +1,4 @@
-import Vector3 from "../behavior/Vector3.js";
+import Vector3 from "./Vector3.js";
 
 class WaitForever {
     constructor() {
