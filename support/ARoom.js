@@ -1,5 +1,7 @@
+import AThing from "./AThing.js"
+
 class ARoom extends AThing {
-    ARoom(location, locationType, name) {
+    constructor(location, locationType, name) {
         super(location);
         this.locationType = locationType;
 		this.name = name;
@@ -51,3 +53,5 @@ class ARoom extends AThing {
 		return "" + locationStatusOwner.getIdx();
 	}
 }
+
+export default ARoom;

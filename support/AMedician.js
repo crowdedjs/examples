@@ -1,3 +1,5 @@
+import APerson from "./APerson.js"
+
 class AMedician extends APerson {
     medicianType; //MedicianClass -> string
     medicianSubclass; //MedicianSublcass -> string
@@ -56,16 +58,19 @@ class AMedician extends APerson {
 	set MedicianSubclass(medicianSubclass) {
 		this.medicianSubclass = medicianSubclass;
 	}
-
-	AMedician(location, UUID, medicianType, medicianSubclass, arrivalTick) {
-		this(location, UUID, medicianType, medicianSubclass, "NONE", arrivalTick);
-	}
 	
-	AMedician(location, UUID, medicianType, medicianSubclass, doctorYear, arrivalTick) {
+	constructor(location, UUID, medicianType, medicianSubclass, doctorYear, arrivalTick) {
 		super(location, UUID, arrivalTick);
 		this.medicianType = medicianType;
 		this.medicianSubclass = medicianSubclass;
-		this.doctorYear = doctorYear;
+		if (doctorYear == null)
+		{
+			this.doctorYear = "NONE";
+		}
+		else
+		{
+			this.doctorYear = doctorYear;
+		}
 		this.myRooms = [];
 	}
     
@@ -99,3 +104,5 @@ class AMedician extends APerson {
 	}
 
 }
+
+export default AMedician;

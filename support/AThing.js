@@ -1,7 +1,7 @@
 class AThing {
     location;
 
-    AThing(location) {
+    constructor(location) {
         this.location = location;
     }
 
@@ -14,3 +14,5 @@ class AThing {
     }
 
 }
+
+export default AThing;

@@ -1,19 +1,20 @@
+import APerson from "./APerson.js";
+
 class APatient extends APerson {
 
-	APatient(location, UUID, severity, arrivalTick) {
+	constructor(location, UUID, severity, arrivalTick) {
 		super(location, UUID, arrivalTick);
 		this.severity = severity;
 	}
 
-	//protected PatientPregnancyState patientPregnancyState = PatientPregnancyState.NOT_EXPECTING;
     patientPregnancyState = "NOT_EXPECTING";
     
-	//protected PatientTempState patientTempState = PatientTempState.ARRIVING;
     patientTempState = "ARRIVED";
     
 	severity; // Severity
+	// SEVERITY LEVELS: ESI1, ESI2, ESI3, ESI4, ESI5
 	
-	instructor; // IMedician
+	instructor; // AMedician
 
 	get Instructor() {
 		return this.instructor;
@@ -45,8 +46,7 @@ class APatient extends APerson {
 
 	set PatientPregnancyState(patientPregnancyState) {
 		this.patientPregnancyState = patientPregnancyState;
-	}
-	
-	
-
+	}	
 }
+
+export default APatient;
