@@ -11,7 +11,7 @@ const expect = chai.expect;
 // var expect = require('chai').expect;
 // var should = require('chai').should();
 
-/*
+
 describe("This blank test should do something", function(){
   it("Should be happy with this test", function(){
     expect(1).to.be.equal(1);
@@ -27,9 +27,8 @@ describe("Greeter nurse", function(){
     expect(greeter).to.not.be.null;
   })
 })
-*/
 
-// how to test?
+/*
 describe("Computer", function(){
   it("Patient, ComputerEntry, and Computer Testing", function(){
     let samplePatient = new APatient(null, null, null, null);
@@ -41,5 +40,6 @@ describe("Computer", function(){
     expect(sampleEntry).to.be.equal(sampleComputer.getEntry(samplePatient));
 
   })
-
+  
 })
+*/
