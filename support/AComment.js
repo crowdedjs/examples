@@ -37,7 +37,7 @@ class AComment {
 	time; //int
 	text; //string
 	
-	AComment(owner, audience, time, text) {
+	constructor(owner, audience, time, text) {
 		super();
 		this.owner = owner;
 		this.audience = audience;
@@ -51,7 +51,6 @@ class AComment {
 		}
 		return "'" + this.text + "'";
 	}
-	
-	
-
 }
+
+export default AComment;
