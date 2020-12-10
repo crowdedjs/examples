@@ -6,7 +6,7 @@ class AMedician extends APerson {
     doctorYear; //DoctorYear -> string
     currentPatient; //IPatient -> APatient
     myRooms; //List<IRooms> -> []
-    responsibility; //IResponsibility -> ?
+    responsibility; //AResponsibility
     computer; //IRoom -> ARoom
 
     get Computer() {
