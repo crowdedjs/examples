@@ -1,3 +1,7 @@
+//
+// NOT CURRENTLY BEING USED
+//
+
 import AThing from "./AThing.js"
 
 class ARoom extends AThing {

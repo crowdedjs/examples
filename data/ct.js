@@ -1,4 +1,5 @@
-// not fully ported
+import AssignComputer from "../behavior/AssignComputer.js";
+import responsibility from "./responsibility.js";
 
 class ct {
 
@@ -15,12 +16,9 @@ class ct {
   
       this.tree = builder
         .sequence("Tech Tree")
-    
-            .do("Assign Computer", (t) => {
-                // name CT 1
-            })
-            // include subtree responsibility lazy: true
-            // .splice(new responsibility...)
+          .splice(new AssignComputer().tree) // name CT 1
+          .splice(new responsibility().tree) // lazy: true
+        
         .end()
         .build();
     }
@@ -32,3 +30,5 @@ class ct {
     }
   
   }
+
+export default ct;

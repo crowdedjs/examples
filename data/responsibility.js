@@ -1,5 +1,7 @@
 // NOT FULLY PORTED
 
+import GoTo from "../behavior/GoTo.js";
+
 class responsibility {
 
     constructor(myIndex, start, end) {
@@ -16,20 +18,19 @@ class responsibility {
       this.tree = builder
       .sequence("Responsibility")
         .do("getRooms", (t) => {
-                
+            // defunct behavior?
         })
         .do("getComputer", (t) => {
-                
+            // GetComputer behavior just sets behavior in java code?
         })        
-        // how to repeat without repeater?
+        // REPEAT
             .sequence("Computer Operations")
-                .do("Go To Computer", (t) => {
-                    
-                })
+                .splice(new GoTo(self.index, self.Computer).tree) // hopefully sets destination correctly
+            
                 .selector("Emergency")
-                    .do("Handle Emergency", (t) => new HandleEmergency().execute())
+                    .do("Handle Emergency", (t) => { return fluentBehaviorTree.BehaviorTreeStatus.Failure; }) // PLACEHOLDER?
                     .inverter("")
-                        // repeat until fail???
+                            // REPEAT
                             .sequence("Computer Stuff")
                                 .do("Go To Computer", (t) => {
                     
@@ -73,6 +74,11 @@ class responsibility {
                                         })
                                     .end()
                     .end()
+                    .do("Do Nothing", (t) => {
+                        // return running?
+                        // behavior runs once and succeeds, and if called again, returns running
+                    })
+
                 .end()
             .end()
 
@@ -87,4 +93,6 @@ class responsibility {
     }
   
   }
+
+export default responsibility;
   

@@ -24,11 +24,8 @@ class greeterNurse {
   
       this.tree = builder
         .sequence("Greeter Nurse Behaviors")
-            .splice(new GoTo(self.index, myGoal.position).tree)
-            .splice(new WaitForever().tree)
-            //.do("Wait Forever", (t) => new WaitForever(agent).execute())
-
-            
+            .splice(new GoTo(self.index, myGoal.position).tree) // FIX DESTINATION
+                        
             .do("Look for Arriving Patient", (t) => {
 
             })
