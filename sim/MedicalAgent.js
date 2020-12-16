@@ -2,12 +2,20 @@
 import BackAndForth from "./../behavior/BackAndForth.js";
 import None from "./../behavior/None.js"
 import Agent from "./Agent.js"
+import AMedician from "../support/AMedician.js"
+
 import attending from "../data/attending.js"
+//import ct from "../data/ct.js"
 import greeterNurse from "../data/greeterNurse.js"
+//import janitorial from "../data/janitorial.js"
+//import nurse from "../data/nurse.js"
 import patient from "../data/patient.js"
+//import radiology from "../data/radiology.js"
+//import resident from "../data/resident.js"
+//import tech from "../data/tech.js"
+//import triageNurse from "../data/triageNurse.js"
 
-
-class MedicalAgent {
+class MedicalAgent extends AMedician {
   startX;
   startY;
   startZ;
@@ -60,9 +68,9 @@ class MedicalAgent {
     // }
 
 
-    if (agent.name == "patient") {
-      this.behavior = new patient(agent, agent.id, null, null);
-    }
+    // if (agent.name == "patient") {
+    //   this.behavior = new patient(agent, agent.id, null, null);
+    // }
     /*
     else if(medicianType == MedicianClass.DOCTOR) {
         if(medicianSubclass == MedicianSubclass.ATTENDING)
@@ -83,7 +91,7 @@ class MedicalAgent {
     
     else if(medicianType == MedicianClass.NURSE)
     */
-    else {
+    //else {
       if (agent.name == "Tech") {
         this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         if (agent.type == "Tech")
@@ -134,7 +142,7 @@ class MedicalAgent {
       // else {
       //   this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       // }
-    }
+    //}
   }
 
 

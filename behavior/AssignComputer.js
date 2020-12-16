@@ -2,11 +2,6 @@ import AMedician from "../support/AMedician.js"
 import ARoom from "../support/ARoom.js"
 import Vector3 from "./Vector3.js";
 
-
-// MAKE ALL NEW BEHAVIORS INTO TREES LIKE BACKANDFORTH.JS, USE .DO NOT EXECUTE
-// LOCATIONS ARE RELATIVELY ARBITRARY
-
-
 class AssignComputer {
     
     //constructor(myIndex, start, end) {
@@ -24,12 +19,14 @@ class AssignComputer {
           .sequence("Assign Computer")
           //Set the computer. This is a one-shot behavior since we only want to
           //update the return value once
-          .do("Set Computer Location", (t) => {
-            let agent = t.agents.find(a => a.id == self.index);
-            //agent.destination = new Vector3(self.waypoints[1]);
-            
+            .do("Set Computer Location", (t) => {
+              let agent = t.agents.find(a => a.id == self.index);
+              //agent.destination = new Vector3(self.waypoints[1]);
+                
+              //agent.setComputer(room); Is this correct???
+              agent.setComputer(new Vector3(self.waypoints[0]));
 
-            return fluentBehaviorTree.BehaviorTreeStatus.Success;
+              return fluentBehaviorTree.BehaviorTreeStatus.Success;
           })
           .end()
           .build();
