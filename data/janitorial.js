@@ -1,4 +1,5 @@
-// NOT FULLY PORTED
+import GoTo from "../behavior/GoTo.js";
+import WaitForever from "../behavior/WaitForever.js";
 
 class janitorial {
 
@@ -14,15 +15,13 @@ class janitorial {
       let self = this;//Since we need to reference this in anonymous functions, we need a reference
   
       this.tree = builder
-        // how to set to repeat?
+      
+      // REPEAT
       .sequence("Janitorial")
-            .do("Go to Room", (t) => {
-                // FAST_TRACK type
-            })
-           
-            .do("Wait Forever", (t) => new WaitForever().execute())
-        .end()
-        .build();
+        .splice(new GoTo(self.index, myGoal.position).tree) //FAST_TRACK type
+        .splice(new WaitForever().tree)  
+      .end()
+      .build();
     }
   
     async update(agents, crowd, msec) {
@@ -32,4 +31,6 @@ class janitorial {
     }
   
   }
+
+export default janitorial;
   

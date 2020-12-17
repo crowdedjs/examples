@@ -22,9 +22,8 @@ class radiology {
 
     this.tree = builder
       .sequence("Go and Idle")
-      .splice(this.goTo.tree)
-      .splice(new WaitForever().tree)
-            
+        .splice(this.goTo.tree) //CT_ROOM
+        .splice(new WaitForever().tree)   
       .end()
       .build();
   }

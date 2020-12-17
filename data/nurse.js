@@ -1,4 +1,7 @@
-// NOT FULLY PORTED
+import AssignBed from "../behavior/AssignBed.js";
+import AssignComputer from "../behavior/AssignComputer.js";
+import responsibility from "./responsibility.js";
+
 
 class nurse {
 
@@ -16,17 +19,11 @@ class nurse {
       this.tree = builder
 
       .sequence("Assign")
-            .do("Assign Bed", (t) => {
-                // C1
-            })
-           
-            .do("Assign Computer", (t) => {
-                // Nurse Place
-
-            })
-            // include subtree responsibility (lazy: true)
-        .end()
-        .build();
+        .splice(new AssignBed().tree) // C1
+        .splice(new AssignComputer().tree) // NURSE PLACE
+        .splice(new responsibility().tree) // LAZY: TRUE
+      .end()
+      .build();
     }
   
     async update(agents, crowd, msec) {
@@ -36,4 +33,6 @@ class nurse {
     }
   
   }
+
+export default nurse;
   

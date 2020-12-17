@@ -37,3 +37,5 @@ class getPatient {
     }
   
   }
+
+export default getPatient;

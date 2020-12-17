@@ -1,4 +1,6 @@
-// NOT FULLY PORTED
+import AssignBed from "../behavior/AssignBed.js";
+import AssignComputer from "../behavior/AssignComputer.js";
+import responsibility from "./responsibility.js";
 
 class tech {
 
@@ -14,20 +16,13 @@ class tech {
       let self = this;//Since we need to reference this in anonymous functions, we need a reference
   
       this.tree = builder
-        // how to set to repeat?
-      .sequence("Assign")
-            .do("Assign Bed", (t) => {
-                
-            })
-           
-            .do("Assign Computer", (t) => {
-            
-            })
-            // include subtree responsibility (lazy: true)
 
-
-        .end()
-        .build();
+      .sequence("Tech Tree")
+        .splice(new AssignBed().tree) // C1
+        .splice(new AssignComputer().tree) // TechPlace
+        .splice(new responsibility().tree) // lazy: true
+      .end()
+      .build();
     }
   
     async update(agents, crowd, msec) {
@@ -37,4 +32,6 @@ class tech {
     }
   
   }
+
+export default tech;
   

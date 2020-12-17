@@ -21,21 +21,18 @@ class patient {
     this.goTo = new GoTo(self.index, myGoal.position);
 
     this.tree = builder
-      // how to set to repeat?
-      .sequence("Patient Actions")
-      .splice(this.goTo.tree)
-      .splice(new WaitForever().tree)
-            
+
+    .sequence("Patient Actions")         
 
       // dynamic Guard Selector ??
       .selector("Check In")
-      .do("Go to A Room", (t) => {
-        // check in room
+        .do("Go to A Room", (t) => {
+          // check in room
 
-      })
-      .do("Stop", (t) => {
+        })
+        .do("Stop", (t) => {
 
-      })
+        })
       .end()
       .do("Log Text", (t) => {
         // "I stopped"
@@ -43,10 +40,9 @@ class patient {
       .do("Follow Instructions", (t) => {
 
       })
-      .do("Wait Forever", (t) => new WaitForever().execute())
-
-      .end()
-      .build();
+      .splice(new WaitForever().tree)
+    .end()
+    .build();
   }
 
   async update(agents, crowd, msec) {
