@@ -1,0 +1,10 @@
+To Do:
+- Finish porting code
+- Test that extending MedicalAgent and PatientAgent granted them other behaviors
+- Test behavior trees
+- Able to pass in values to all the behaviors, like GoTo?
+
+Ryan's notes on features that need to be expanded or added:
+- Emergencies are simply failure placeholders currently
+- AssignBed needs a list of beds(rooms) to grab from
+- Tech and Resident have same tree but different starting place

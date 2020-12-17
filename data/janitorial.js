@@ -14,11 +14,17 @@ class janitorial {
   
       let self = this;//Since we need to reference this in anonymous functions, we need a reference
   
+      let me = agent;
+      let myGoal = me.locations.find(l => l.name == "FAST_TRACK");
+      if (!myGoal) throw new "We couldn't find a location called FAST_TRACK";
+
+      this.goTo = new GoTo(self.index, myGoal.position);
+
       this.tree = builder
       
       // REPEAT
       .sequence("Janitorial")
-        .splice(new GoTo(self.index, myGoal.position).tree) //FAST_TRACK type
+        .splice(this.goTo.tree) //FAST_TRACK type
         .splice(new WaitForever().tree)  
       .end()
       .build();

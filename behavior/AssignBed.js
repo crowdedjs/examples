@@ -16,18 +16,20 @@ class AssignBed {
         let self = this;//Since we need to reference this in anonymous functions, we need a reference
     
         this.tree = builder
-          .sequence("Assign Bed")
-          //Set the bed. This is a one-shot behavior since we only want to
-          //update the return value once
+          
+        // FINDS FIRST AVAILABLE BED, THEN ADDS ROOM TO NURSE'S LIST
+        // NEED TO HAVE LIST OF AVAILABLE BEDS/ROOMS THEN FIND
+        // ONE THAT IS AVAILABLE, AND ADD TO NURSE'S LIST
+        
+        // CURRENTLY USER FEEDS LOCATION TO THIS BEHAVIOR, THEN IT 
+        // ADDS VECTOR3 TO NURSE'S LIST
+        
+        .sequence("Assign Bed")
             .do("Set Bed Location", (t) => {
               let agent = t.agents.find(a => a.id == self.index);
               //agent.destination = new Vector3(self.waypoints[1]);
-              //agent.setComputer(room);
-              //agent.setComputer(new Vector3(self.waypoints[0]));
-
-            // FINDS FIRST AVAILABLE BED THEN ADDS ROOM IT IS IN
-            //HOW TO DO THIS?
-            // me.addRoom(room);
+              //agent.addRoom(room);
+              agent.addRoom(new Vector3(self.waypoints[0]));
 
               return fluentBehaviorTree.BehaviorTreeStatus.Success;
           })

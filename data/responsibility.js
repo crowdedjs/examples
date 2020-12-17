@@ -15,65 +15,68 @@ class responsibility {
   
       let self = this;//Since we need to reference this in anonymous functions, we need a reference
   
+      let me = agent;
+      let myGoal = me.Computer;
+      this.goTo = new GoTo(self.index, myGoal.position);
+
       this.tree = builder
       .sequence("Responsibility")
+        
         .do("getRooms", (t) => {
-            // defunct behavior?
+            // Java behavior doesn't seem like it does much?
         })
         .do("getComputer", (t) => {
-            // GetComputer behavior just sets behavior in java code?
-        })        
+            // WRITE THIS BEHAVIOR, MIGHT AFFECT THE GO TO IN HERE
+        })
+
         // REPEAT
             .sequence("Computer Operations")
-                .splice(new GoTo(self.index, self.Computer).tree) // hopefully sets destination correctly
+                .splice(this.goTo.tree) // GO TO COMPUTER
             
                 .selector("Emergency")
-                    .do("Handle Emergency", (t) => { return fluentBehaviorTree.BehaviorTreeStatus.Failure; }) // PLACEHOLDER?
-                    .inverter("")
-                            // REPEAT
-                            .sequence("Computer Stuff")
-                                .do("Go To Computer", (t) => {
-                    
-                                })
-                                .do("Get Computer Responsibility", (t) => {
-                    
-                                })
-                                .do("Handle Responsibility", (t) => {
-                    
-                                })
-                            .end()
+                    .do("Handle Emergency", (t) => { return fluentBehaviorTree.BehaviorTreeStatus.Failure; }) // PLACEHOLDER
+                    //.inverter("")
+                    .sequence("Computer Stuff")
+                        .splice(this.goTo.tree) // GO TO COMPUTER
+                        
+                        .do("Get Computer Responsibility", (t) => {
+                            // What does this do in the Java code?
+                        })
+                        .do("Handle Responsibility", (t) => {
+                            //WRITE THIS BEHAVIOR
+                        })
+
                     .end()
-                    .inverter("")
-                        // repeat until fail???
-                            .sequence("Handle Responsibility")
-                                .do("Go To Computer", (t) => {
-                                    
-                                })
-                                .do("Get Responsibility", (t) => {
-                    
-                                })
-                                .do("Go To Responsibility", (t) => {
-                    
-                                })
-                                .do("Wait For Responsibility Patient", (t) => {
-                    
-                                })
-                                .do("Set Up Transport", (t) => {
-                    
-                                })
-                                .do("Handle Responsibility", (t) => {
-                    
-                                })
-                                // repeat until fail???
-                                    .sequence("Reassess Responsibility")
-                                        .do("Reassess", (t) => {
-                    
-                                        })
-                                        .do("Handle Responsibility", (t) => {
-                    
-                                        })
-                                    .end()
-                    .end()
+                    //.end()
+                    //.inverter("")
+                    .sequence("Handle Responsibility")
+                        .splice(this.goTo.tree) // GO TO COMPUTER
+
+                        .do("Get Responsibility", (t) => {
+                            //WRITE THIS BEHAVIOR
+                        })
+                        .do("Go To Responsibility", (t) => {
+                            //WRITE THIS BEHAVIOR
+                        })
+                        .do("Wait For Responsibility Patient", (t) => {
+                            //WRITE THIS BEHAVIOR            
+                        })
+                        .do("Set Up Transport", (t) => {
+                            //WRITE THIS BEHAVIOR            
+                        })
+                        .do("Handle Responsibility", (t) => {
+                            //WRITE THIS BEHAVIOR            
+                        })
+                        // UNTIL FAIL?
+                        .sequence("Reassess Responsibility")
+                            .do("Reassess", (t) => {
+                                //WRITE THIS BEHAVIOR
+                            })
+                            .do("Handle Responsibility", (t) => {
+                                //WRITE THIS BEHAVIOR
+                            })
+                        .end()
+                    //.end()
                     .do("Do Nothing", (t) => {
                         // return running?
                         // behavior runs once and succeeds, and if called again, returns running
