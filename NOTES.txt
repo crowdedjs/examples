@@ -1,5 +1,7 @@
 To Do:
-- Finish porting code
+- Finish responsibility tree
+    - How to implement addComment in HospitalModel from Java code
+- Finish other trees
 - Test that extending MedicalAgent and PatientAgent granted them other behaviors
 - Test behavior trees
 - Able to pass in values to all the behaviors, like GoTo?

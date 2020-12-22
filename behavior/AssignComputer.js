@@ -21,9 +21,8 @@ class AssignComputer {
           //update the return value once
             .do("Set Computer Location", (t) => {
               let agent = t.agents.find(a => a.id == self.index);
-              //agent.destination = new Vector3(self.waypoints[1]);
-                
-              //agent.setComputer(room); Is this correct???
+
+              // REPLACE THIS WITH FIND ROOM BY NAME? 
               agent.setComputer(new Vector3(self.waypoints[0]));
 
               return fluentBehaviorTree.BehaviorTreeStatus.Success;
