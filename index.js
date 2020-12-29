@@ -84,7 +84,7 @@ class CrowdSetup {
         if (!agent.hasEntered && agent.startMSec <= i * millisecondsBetweenFrames) {
           newAgents.push(agent);
           agent.hasEntered = true;
-          viewer.addAgent(CrowdSetup.three, agent, drawCallback)
+          //viewer.addAgent(CrowdSetup.three, agent, drawCallback)
           agent.inSimulation = true;
         }
         else if (agent.hasEntered) {
