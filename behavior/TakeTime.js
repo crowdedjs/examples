@@ -1,20 +1,24 @@
-// not fully ported
+// NEED HELP WITH US
+
 class TakeTime {
-    
-    seconds;
-    ticksLeft;
-    
-    // need to be able to pass time to this
-    constructor()
-    {
-        // how to keep track of time in this simulation??
-        //this.ticksLeft = (int) (HospitalModel.get().getFPS()*this.seconds.nextFloat());
+    constructor() {
+        this.index = myIndex;
+        let self = this;
+        const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
+
+        this.tree = builder
+            .sequence("Take Time")
+                .do("Take Time", (t) => {
+                    
+                    return fluentBehaviorTree.BehaviorTreeStatus.Running;
+            })
+            .end()
+            .build();
+    }
+    async update(agents, positions, msec) {
+        await this.tree.tick({ agents, positions, msec }) //Call the behavior tree
     }
 
-    execute() {
-        // this.ticksLeft--;
-		// if(ticksLeft <=0)
-		// 	return Status.SUCCEEDED;
-		// return Status.RUNNING;
-    }
 }
+
+export default TakeTime;

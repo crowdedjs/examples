@@ -2,7 +2,7 @@ import Vector3 from "./Vector3.js";
 
 class WaitForever {
     constructor() {
-        //this.agent = agent;
+        this.index = myIndex;
         let self = this;
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
