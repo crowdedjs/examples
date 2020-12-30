@@ -158,7 +158,8 @@ class CrowdSetup {
         for (let j = 0; j < frame.length; j++) {
           let agent = frame[j]; //Grab each agent in the list
           if(!CrowdSetup.three.agentGroup.children.some(c=>c._id == agent.id)){
-            viewer.addAgent(CrowdSetup.three, agent, drawCallback)
+            let agentDescription = agents.find(a=>a.id == agent.id);
+            viewer.addAgent(CrowdSetup.three, agent, agentDescription, drawCallback)
           }
         }
         //Remove old agents

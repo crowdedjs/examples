@@ -244,11 +244,17 @@ function addLocations(three, locations) {
   }
 }
 
-function addAgent(three, agent) {
+function addAgent(three, agent, agentDescription) {
 
   let object = SkeletonUtils.clone(base);
   let mixer = new THREE.AnimationMixer(object);
   mixers.push(mixer);
+
+  object.traverse(child=>{
+    if(child.material){
+      child.material = child.material.clone();
+    }
+  })
 
 
   for (let a = 0; a < base.animations.length; a++) {
@@ -256,6 +262,28 @@ function addAgent(three, agent) {
   }
   const action = mixer.clipAction(object.animations[0]);
   action.play();
+
+  //Recolor
+  let color = new THREE.Color(255, 0, 255);
+  if(agentDescription.name == "patient"){
+    color = new THREE.Color(0,255,0);
+  }
+  else if(agentDescription.name == "Nurse"){
+    color = new THREE.Color(200, 200, 200);
+  }
+  else if(agentDescription.name == "Attending"){
+    color = new THREE.Color(255, 0, 0);
+  }
+  else if(agentDescription.name == "Resident"){
+    color = new THREE.Color(255, 255, 0);
+  }
+  else if(agentDescription.name == "Tech"){
+    color = new THREE.Color(0, 0, 255);
+  }
+  else{
+    color = new THREE.Color(0,0,0);
+  }
+  object.children[1].material.color = color;
 
   let toPushPosition = [new THREE.Vector3(agent.x, agent.y, agent.z), 0.0];
   three.agentGroup.children.push(object)
