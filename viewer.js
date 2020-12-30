@@ -5,8 +5,6 @@ import { OBJLoader } from './lib/OBJLoader.js';
 import { FBXLoader } from './lib/FBXLoader.js';
 import { SkeletonUtils } from './lib/SkeletonUtils.js';
 
-
-
 const CylinderGeometry = function () { return new THREE.CylinderGeometry(.2, .2, 1, 8) };
 const CylinderGeometryThin = function () { return new THREE.CylinderGeometry(.1, .1, .5, 8) };
 const clock = new THREE.Clock();
@@ -44,10 +42,7 @@ for (let i = 0; i < 20; i++) {
 
 const mixers = [];
 const loader = new FBXLoader();
-let fbxFile = "";
-
-
-
+let base;
 
 //From https://threejsfundamentals.org/threejs/lessons/threejs-billboards.html
 function MakeLabelCanvas(baseWidth, size, name) {
@@ -112,53 +107,45 @@ function boot(three, objValue, locations) {
   three.skydomegeo = {};
   three.skydone = {};
 
-  THREE.Cache.enabled = true;
-
-  
-
 
   three.geometry = CylinderGeometryThin();
-  //geometryShoulder = new THREE.SphereGeometry(.2, 8, 8);
-  //geometryHead = new THREE.SphereGeometry(.2, 8, 8);
   three.canvas = document.getElementById("canv");
   three.renderer = new THREE.WebGLRenderer({
     antialias: false,
     canvas: three.canvas
   })
+  three.scene = new THREE.Scene();
   three.renderer.setPixelRatio(window.devicePixelRatio);
   three.renderer.shadowMap.enabled = true;
-  //three.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  three.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   three.raycaster = new THREE.Raycaster();
   three.mouse = new THREE.Vector2();
   three.camera = new THREE.PerspectiveCamera(45, 1, 1, 1000);
   three.camera.position.set(100, 200, 300);
   three.camera.lookAt(0, 0, 0)
-  // camera.lookAt
-  three.scene = new THREE.Scene();
-  //scene.background = new THREE.Color(0x007fff);
+  three.scene.background = new THREE.Color(0x007fff);
+  three.scene.add(three.camera);
 
   three.light = new THREE.PointLight(0xffffff);
   three.light.position.set(250, 150, 0);
   three.scene.add(three.light);
- // three.scene.add(three.light);
- // three.scene.add(three.light);
-  var ambientLight = new THREE.AmbientLight(0x555555);
+  var ambientLight = new THREE.AmbientLight(0x333333);
   three.scene.add(ambientLight);
 
-  let agent = new THREE.Mesh(three.geometry, WhiteMaterial);
-  let agent2 = new THREE.Mesh(three.geometry, RedMaterial);
-  let agent3 = new THREE.Mesh(three.geometry, GreenMaterial);
-  let agent4 = new THREE.Mesh(three.geometry, BlueMaterial);
-  agent.position.set(0, 0, 0);
-  agent2.position.set(1, 0, 0);
-  agent3.position.set(0, 1, 0);
-  agent4.position.set(0, 0, 1);
-  three.scene.add(agent);
-  
-   three.scene.add(agent2);
-   three.scene.add(agent3);
-   three.scene.add(agent4);
-  three.scene.add(three.camera);
+  //Setup our axes
+  let origin = new THREE.Mesh(three.geometry, WhiteMaterial);
+  let xAxis = new THREE.Mesh(three.geometry, RedMaterial);
+  let yAxis = new THREE.Mesh(three.geometry, GreenMaterial);
+  let zAxis = new THREE.Mesh(three.geometry, BlueMaterial);
+  origin.position.set(0, 0, 0);
+  xAxis.position.set(1, 0, 0);
+  yAxis.position.set(0, 1, 0);
+  zAxis.position.set(0, 0, 1);
+  three.scene.add(origin);
+
+  three.scene.add(xAxis);
+  three.scene.add(yAxis);
+  three.scene.add(zAxis);
 
   let texture = new THREE.TextureLoader().load("https://cdn.jsdelivr.net/npm/@crowdedjs/assets/images/tex.png");
 
@@ -174,7 +161,6 @@ function boot(three, objValue, locations) {
 
 
   three.agentGroup = new THREE.Group();
-  //three.scene.add(three.agentGroup);
 
   three.controls = new OrbitControls(
     three.camera, three.renderer.domElement
@@ -189,7 +175,6 @@ function boot(three, objValue, locations) {
   console.log(three.agentGroup)
 
 
-  let base;
   loader.load('models/Walking.fbx', function (first) {
 
     base = first;
@@ -202,60 +187,17 @@ function boot(three, objValue, locations) {
     first.traverse(function (child) {
 
       if (child.isMesh) {
-
         child.castShadow = true;
         child.receiveShadow = true;
-
       }
 
     });
-    first.visible = true
+    first.visible = false
     first.name = "first"
     three.scene.add(first);
     first.position.set(0, 0, 0);
     first.scale.set(.01, .01, .01);
-    console.log(first);
-
-    for (let i = 0; i < 3; i++) {
-      //let object = base.clone();
-      let object = SkeletonUtils.clone(base);
-      let mixer = new THREE.AnimationMixer(object);
-      mixers.push(mixer);
-      
-
-      for(let a = 0; a < base.animations.length; a++){
-        object.animations.push(base.animations[a].clone())
-      }
-      const action = mixer.clipAction(object.animations[0]);
-      action.play();
-
-      object.traverse(function (child) {
-        //three.scene.add(child)
-        //console.log(child);
-        if (child.skeleton) {
-          //child.skeleton = child.skeleton.clone();
-
-
-        }
-
-      });
-
-     
-
-      object.visible = true
-      object.name = "object"
-      three.scene.add(object);
-      object.position.set(1 * (i + 1),0, 0);
-      object.scale.set(.01,.01,.01);
-      console.log(object);
-
-    }
-
   })
-
-
-
-
 }
 
 function loadOBJ(three, path) {
@@ -274,7 +216,6 @@ function loadOBJ(three, path) {
 function addLocations(three, locations) {
   for (let location of locations) {
     //Put a cylinder where the room markers are
-    // console.log(location.position);
     let x = location.position.x;
     let y = location.position.y;
     let z = location.position.z;
@@ -303,95 +244,34 @@ function addLocations(three, locations) {
   }
 }
 
-function clearAgents(three) {
-  //three.scene.remove(three.agentGroup);
-  //three.agentGroup = new THREE.Group();
-  //three.scene.add(three.agentGroup);
-}
-
 function addAgent(three, agent) {
 
-  loader.loadAsync('models/Walking3.fbx')
-    .then(object => {
-      //loader.parse(fbxFile, (object)=>{
-      let mixer = new THREE.AnimationMixer(object);
-      mixers.push(mixer);
+  let object = SkeletonUtils.clone(base);
+  let mixer = new THREE.AnimationMixer(object);
+  mixers.push(mixer);
 
-      const action = mixer.clipAction(object.animations[0]);
-      action.play();
 
-      object.traverse(function (child) {
+  for (let a = 0; a < base.animations.length; a++) {
+    object.animations.push(base.animations[a].clone())
+  }
+  const action = mixer.clipAction(object.animations[0]);
+  action.play();
 
-        if (child.isMesh) {
+  let toPushPosition = [new THREE.Vector3(agent.x, agent.y, agent.z), 0.0];
+  three.agentGroup.children.push(object)
+  three.agentGroup.positions.push(toPushPosition);
+  object._id = agent.id;
 
-          child.castShadow = true;
-          child.receiveShadow = true;
 
-        }
-
-      });
-      object.visible = true
-      let toPushPosition = [new THREE.Vector3(agent.x, agent.y, agent.z), 0.0];
-      //three.agentGroup.children.push(object)
-      //three.agentGroup.positions.push(toPushPosition);
-      //three.scene.add(object);
-      object.position.set(agent.x, agent.y, agent.z);
-      object.scale.set(.01, .01, .01);
-      object._id = agent.id;
-    })
-
-  // })
-  // .catch(error=>{
-  //   console.log("Error loading " + error);
-  // })
-
-  //loader.load("./models/Walking2.fbx", function (object) {
-  // let mixer = new THREE.AnimationMixer(object);
-  // mixers.push(mixer);
-
-  // const action = mixer.clipAction(object.animations[0]);
-  // action.play();
-
-  // object.traverse(function (child) {
-
-  //   if (child.isMesh) {
-
-  //     child.castShadow = true;
-  //     child.receiveShadow = true;
-
-  //   }
-
-  // });
-  // object.visible = true;
-  // three.scene.add(object);
-  // object.position.set(10, 10, 10);
-  // gltf.position.set(agent.x, agent.y, agent.z);
-  // //gltf.scale.set(1.0, 0.8 + Math.random() * 0.3, 1.0);
-  // three.agentGroup.positions.push([new THREE.Vector3(agent.x, agent.y, agent.z), 0.0]);
-
-  // let mixer = new THREE.AnimationMixer(gltf);
-  // mixer.timeScale = 2;
-  // three.agentGroup.mixers.push(mixer);
-  // // let idleAction = three.agentGroup.mixers[three.agentGroup.mixers.length - 1].clipAction(gltf.animations[0]).play();
-  // // let walkAction = three.agentGroup.mixers[three.agentGroup.mixers.length - 1].clipAction(gltf.animations[1]).play();
-  // // three.agentGroup.animations.push([idleAction, walkAction]);
-
-  // const action = mixer.clipAction(gltf.animations[0]);
-  // action.play();
-
-  // gltf.visible = true;
-  // gltf._id = agent.id;
-
-  // three.object1 = gltf;
-  // three.agentGroup.children.push(gltf);
-  // three.scene.add(gltf);
-  // }, undefined, function (error) {
-  //   console.error(error)
-  // });
+  object.visible = true
+  object.name = "object"
+  three.scene.add(object);
+  object.position.set(agent.x, agent.y, agent.z);
+  object.scale.set(.01, .01, .01);
 }
 
 function updateAgent(three, agent) {
-  if(!three.agentGroup) return;
+  if (!three.agentGroup) return;
   let loc = three.agentGroup.children.findIndex((child) => child._id == agent.id);
 
   // Calculate and apply a rotation for the agent based on the direction it is moving in
@@ -413,7 +293,7 @@ function animate(three) {
   if (mixers.length > 0) {
     for (let i = 0; i < mixers.length; i++) {
       let mixer = mixers[i];
-      mixer.update(delta * i);
+      mixer.update(delta);
     }
   }
 }
@@ -422,7 +302,6 @@ function render(three) {
   if (three.renderer)
     three.renderer.render(three.scene, three.camera)
   animate(three)
-  //requestAnimationFrame(render);
 }
 
 export {
@@ -437,7 +316,6 @@ export {
   boot,
   loadOBJ,
   addLocations,
-  clearAgents,
   addAgent,
   updateAgent,
   render
