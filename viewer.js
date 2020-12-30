@@ -1,9 +1,10 @@
-import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+import * as THREE from './lib/three.module.js';
 
 import { OrbitControls } from './lib/OrbitControls.js';
 import { OBJLoader } from './lib/OBJLoader.js';
 import { GLTFLoader } from './lib/GLTFLoader.js';
 import { FBXLoader } from 'https://unpkg.com/three/examples/jsm/loaders/FBXLoader.js';
+import { SkeletonUtils } from 'https://unpkg.com/three/examples/jsm/utils/SkeletonUtils.js';
 
 
 
@@ -45,6 +46,10 @@ for (let i = 0; i < 20; i++) {
 }
 
 const mixers = [];
+const loader = new FBXLoader();
+let fbxFile = "";
+
+
 
 
 //From https://threejsfundamentals.org/threejs/lessons/threejs-billboards.html
@@ -110,6 +115,10 @@ function boot(three, objValue, locations) {
   three.skydomegeo = {};
   three.skydone = {};
 
+  THREE.Cache.enabled = true;
+
+  
+
 
   three.geometry = CylinderGeometryThin();
   //geometryShoulder = new THREE.SphereGeometry(.2, 8, 8);
@@ -134,8 +143,8 @@ function boot(three, objValue, locations) {
   three.light = new THREE.PointLight(0xffffff);
   three.light.position.set(250, 150, 0);
   three.scene.add(three.light);
-  three.scene.add(three.light);
-  three.scene.add(three.light);
+ // three.scene.add(three.light);
+ // three.scene.add(three.light);
   var ambientLight = new THREE.AmbientLight(0x555555);
   three.scene.add(ambientLight);
 
@@ -148,9 +157,10 @@ function boot(three, objValue, locations) {
   agent3.position.set(0, 1, 0);
   agent4.position.set(0, 0, 1);
   three.scene.add(agent);
-  three.scene.add(agent2);
-  three.scene.add(agent3);
-  three.scene.add(agent4);
+  
+   three.scene.add(agent2);
+   three.scene.add(agent3);
+   three.scene.add(agent4);
   three.scene.add(three.camera);
 
   let texture = new THREE.TextureLoader().load("https://cdn.jsdelivr.net/npm/@crowdedjs/assets/images/tex.png");
@@ -163,11 +173,11 @@ function boot(three, objValue, locations) {
   three.skydomegeo = new THREE.SphereGeometry(500, 32, 32);
 
   three.skydome = new THREE.Mesh(three.skydomegeo, material);
-  three.scene.add(three.skydome);
+  //three.scene.add(three.skydome);
 
 
   three.agentGroup = new THREE.Group();
-  three.scene.add(three.agentGroup);
+  //three.scene.add(three.agentGroup);
 
   three.controls = new OrbitControls(
     three.camera, three.renderer.domElement
@@ -182,34 +192,71 @@ function boot(three, objValue, locations) {
   console.log(three.agentGroup)
 
 
-  const loader = new FBXLoader();
+  let base;
+  loader.load('models/Walking3.fbx', function (first) {
 
-  for (let i = 0; i < 10; i++) {
-    loader.load('models/Walking3.fbx', function (object) {
+    base = first;
+    let mixer = new THREE.AnimationMixer(first);
+    mixers.push(mixer);
 
+    const action = mixer.clipAction(first.animations[0]);
+    action.play();
+
+    first.traverse(function (child) {
+
+      if (child.isMesh) {
+
+        child.castShadow = true;
+        child.receiveShadow = true;
+
+      }
+
+    });
+    first.visible = true
+    first.name = "first"
+    three.scene.add(first);
+    first.position.set(0, 0, 0);
+    first.scale.set(.01, .01, .01);
+    console.log(first);
+
+    for (let i = 0; i < 3; i++) {
+      //let object = base.clone();
+      let object = SkeletonUtils.clone(base);
       let mixer = new THREE.AnimationMixer(object);
       mixers.push(mixer);
+      
 
+      for(let a = 0; a < base.animations.length; a++){
+        object.animations.push(base.animations[a].clone())
+      }
       const action = mixer.clipAction(object.animations[0]);
       action.play();
 
       object.traverse(function (child) {
+        //three.scene.add(child)
+        //console.log(child);
+        if (child.skeleton) {
+          //child.skeleton = child.skeleton.clone();
 
-        if (child.isMesh) {
-
-          child.castShadow = true;
-          child.receiveShadow = true;
 
         }
 
       });
-      object.visible = true
-      three.scene.add(object);
-      object.position.set(1 * i, 0, 0);
-      object.scale.set(.01, .01, .01);
 
-    });
-  }
+     
+
+      object.visible = true
+      object.name = "object"
+      three.scene.add(object);
+      object.position.set(1 * (i + 1),0, 0);
+      object.scale.set(.01,.01,.01);
+      console.log(object);
+
+    }
+
+  })
+
+
 
 
 }
@@ -224,7 +271,7 @@ function loadOBJ(three, path) {
   var manager = new THREE.LoadingManager(loadModel);
 
   three.object1 = new OBJLoader(manager).parse(path);
-  three.scene.add(three.object1);
+  //three.scene.add(three.object1);
 }
 
 function addLocations(three, locations) {
@@ -236,7 +283,7 @@ function addLocations(three, locations) {
     let z = location.position.z;
     let tag = new THREE.Mesh(three.geometry, WhiteMaterial);
     tag.position.set(x, y, z);
-    three.scene.add(tag);
+    //three.scene.add(tag);
 
     //Add a billboard texture above the markers
     const canvas = MakeLabelCanvas(150, 32, location.name);
@@ -255,7 +302,7 @@ function addLocations(three, locations) {
     label.position.z = location.position.z;
     label.scale.x = canvas.width * labelBaseScale;
     label.scale.y = canvas.height * labelBaseScale;
-    three.scene.add(label);
+    //three.scene.add(label);
   }
 }
 
@@ -266,21 +313,40 @@ function clearAgents(three) {
 }
 
 function addAgent(three, agent) {
-  // if (agent.hasEntered && agent.inSimulation) return;
-  // if (!agent.hasEntered) return;
 
-  let url;
-  if (agent.gender == "female")
-    url = './models/nurseTone' + Math.ceil(Math.random() * 4) + '.glb';
-  else if (agent.gender == "male")
-    url = './models/doctorTone' + Math.ceil(Math.random() * 4) + '.glb';
-  else {
-    //update with a gender neutral model?
-    if (Math.random() > 0.5)
-      url = './models/nurseTone' + Math.ceil(Math.random() * 4) + '.glb';
-    else
-      url = './models/doctorTone' + Math.ceil(Math.random() * 4) + '.glb';
-  }
+  loader.loadAsync('models/Walking3.fbx')
+    .then(object => {
+      //loader.parse(fbxFile, (object)=>{
+      let mixer = new THREE.AnimationMixer(object);
+      mixers.push(mixer);
+
+      const action = mixer.clipAction(object.animations[0]);
+      action.play();
+
+      object.traverse(function (child) {
+
+        if (child.isMesh) {
+
+          child.castShadow = true;
+          child.receiveShadow = true;
+
+        }
+
+      });
+      object.visible = true
+      let toPushPosition = [new THREE.Vector3(agent.x, agent.y, agent.z), 0.0];
+      //three.agentGroup.children.push(object)
+      //three.agentGroup.positions.push(toPushPosition);
+      //three.scene.add(object);
+      object.position.set(agent.x, agent.y, agent.z);
+      object.scale.set(.01, .01, .01);
+      object._id = agent.id;
+    })
+
+  // })
+  // .catch(error=>{
+  //   console.log("Error loading " + error);
+  // })
 
   //loader.load("./models/Walking2.fbx", function (object) {
   // let mixer = new THREE.AnimationMixer(object);
@@ -328,15 +394,16 @@ function addAgent(three, agent) {
 }
 
 function updateAgent(three, agent) {
+  if(!three.agentGroup) return;
   let loc = three.agentGroup.children.findIndex((child) => child._id == agent.id);
 
   // Calculate and apply a rotation for the agent based on the direction it is moving in
   let nextPosition = new THREE.Vector3(agent.x, agent.y, agent.z);
-  // let previousPosition = three.agentGroup.positions[loc][0];
-  // let positionChange = new THREE.Vector3(nextPosition.x - previousPosition.x, nextPosition.y - previousPosition.y, nextPosition.z - previousPosition.z);
-  // let nextAngle = (Math.atan2(positionChange.z, positionChange.x));
-  // three.agentGroup.children[loc].rotation.y = Math.PI / 2 - nextAngle;
-  // three.agentGroup.positions[loc] = [nextPosition, nextAngle];
+  let previousPosition = three.agentGroup.positions[loc][0];
+  let positionChange = new THREE.Vector3(nextPosition.x - previousPosition.x, nextPosition.y - previousPosition.y, nextPosition.z - previousPosition.z);
+  let nextAngle = (Math.atan2(positionChange.z, positionChange.x));
+  three.agentGroup.children[loc].rotation.y = Math.PI / 2 - nextAngle;
+  three.agentGroup.positions[loc] = [nextPosition, nextAngle];
 
   // //Weight the idle and walking animations based on the speed of the agent
   // three.agentGroup.animations[loc][0].weight = 1 ;
@@ -349,7 +416,7 @@ function animate(three) {
   if (mixers.length > 0) {
     for (let i = 0; i < mixers.length; i++) {
       let mixer = mixers[i];
-      mixer.update(delta);
+      mixer.update(delta * i);
     }
   }
 }
