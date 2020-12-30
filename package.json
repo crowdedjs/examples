@@ -1,7 +1,6 @@
 {
   "name": "examples",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "npx mocha"
@@ -20,11 +19,17 @@
   "dependencies": {
     "@crowdedjs/objs": "^0.1.0",
     "@crowdedjs/recast-detour": "^0.1.1",
-    "@crowdedjs/worker": "^0.1.0"
+    "@crowdedjs/worker": "^0.1.0",
+    "three": "^0.124.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^8.2.1"
   },
-  "type": "module"
+  "type": "module",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "description": ""
 }

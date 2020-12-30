@@ -2,16 +2,13 @@ import * as THREE from './lib/three.module.js';
 
 import { OrbitControls } from './lib/OrbitControls.js';
 import { OBJLoader } from './lib/OBJLoader.js';
-import { GLTFLoader } from './lib/GLTFLoader.js';
-import { FBXLoader } from 'https://unpkg.com/three/examples/jsm/loaders/FBXLoader.js';
-import { SkeletonUtils } from 'https://unpkg.com/three/examples/jsm/utils/SkeletonUtils.js';
+import { FBXLoader } from './lib/FBXLoader.js';
+import { SkeletonUtils } from './lib/SkeletonUtils.js';
 
 
 
 const CylinderGeometry = function () { return new THREE.CylinderGeometry(.2, .2, 1, 8) };
 const CylinderGeometryThin = function () { return new THREE.CylinderGeometry(.1, .1, .5, 8) };
-const GLTFloader = new GLTFLoader();
-//const loader = new FBXLoader();
 const clock = new THREE.Clock();
 
 const WhiteMaterial = new THREE.MeshStandardMaterial({
@@ -173,7 +170,7 @@ function boot(three, objValue, locations) {
   three.skydomegeo = new THREE.SphereGeometry(500, 32, 32);
 
   three.skydome = new THREE.Mesh(three.skydomegeo, material);
-  //three.scene.add(three.skydome);
+  three.scene.add(three.skydome);
 
 
   three.agentGroup = new THREE.Group();
@@ -193,7 +190,7 @@ function boot(three, objValue, locations) {
 
 
   let base;
-  loader.load('models/Walking3.fbx', function (first) {
+  loader.load('models/Walking.fbx', function (first) {
 
     base = first;
     let mixer = new THREE.AnimationMixer(first);
@@ -271,7 +268,7 @@ function loadOBJ(three, path) {
   var manager = new THREE.LoadingManager(loadModel);
 
   three.object1 = new OBJLoader(manager).parse(path);
-  //three.scene.add(three.object1);
+  three.scene.add(three.object1);
 }
 
 function addLocations(three, locations) {
@@ -283,7 +280,7 @@ function addLocations(three, locations) {
     let z = location.position.z;
     let tag = new THREE.Mesh(three.geometry, WhiteMaterial);
     tag.position.set(x, y, z);
-    //three.scene.add(tag);
+    three.scene.add(tag);
 
     //Add a billboard texture above the markers
     const canvas = MakeLabelCanvas(150, 32, location.name);
@@ -302,7 +299,7 @@ function addLocations(three, locations) {
     label.position.z = location.position.z;
     label.scale.x = canvas.width * labelBaseScale;
     label.scale.y = canvas.height * labelBaseScale;
-    //three.scene.add(label);
+    three.scene.add(label);
   }
 }
 
