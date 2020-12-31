@@ -1,40 +1,44 @@
 import Vector3 from "./Vector3.js";
 
-class GoTo {
+class AssignPatientToTriageNurse {
 
-  constructor(myIndex, start) {
+  constructor() {
     this.index = myIndex;
-    this.waypoints = [];
-    this.waypoints.push(start);
     
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
-    let self = this;//Since we need to reference this in anonymous functions, we need a reference
+    let self = this;
+    let me = agent;
 
     this.tree = builder
-      .sequence("Go To")
-      //Set the destination. This is a one-shot behavior since we only want to
-      //update the return value once
-      .do("Set destination goal", (t) => {
-        let agent = t.agents.find(a=>a.id==self.index);
-        agent.destination = new Vector3(self.waypoints[0].x,self.waypoints[0].y,self.waypoints[0].z)
-        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      })
-      //Now return null as we head to that destination
-      //We return running until we're close to it.
-      .do("Traveling to goal", (t) => {
-        let agent = t.agents.find(a=>a.id==self.index);
-        agent.destination = new Vector3(self.waypoints[0].x,self.waypoints[0].y,self.waypoints[0].z);
-        let simulationAgent = t.crowd.find(a=>a.id == self.index);
-        let loc = new Vector3(simulationAgent.x, simulationAgent.y, simulationAgent.z);
-        let waypoint = new Vector3(self.waypoints[0]);
+      .sequence("Assign Patient To Triage Nurse")
+        .do("Assign Patient", (t) => {
+          let agent = t.agents.find(a => a.id == self.index);
+          let simulationAgent = t.crowd.find(a => a.id == self.index);
+          let myLocation = new Vector3(simulationAgent.x, simulationAgent.y, simulationAgent.z);
+          
+          //
+          List<IPerson> people = hospital.activePeople;
+          IMedician closestTriageNurse = (IMedician) people.stream()
+              .filter(i->i instanceof IMedician 
+                  && ((IMedician)i).getMedicianType() == MedicianClass.NURSE 
+                  && ((IMedician)i).getDoctorType() == MedicianSubclass.TRIAGE_NURSE 
+                  &&((IMedician)i).getCurrentPatient() == null)
+              .sorted((a,b)->(int)(a.getLocation().distanceTo(myLocation) - b.getLocation().distanceTo(myLocation)))
+              .findFirst()
+              .orElse(null);
+          if(closestTriageNurse == null || closestTriageNurse.getLocation().distanceTo(myLocation) > 3)
+            return Status.RUNNING; //No triage nurse is available or close enough
+          //
 
-        let difference = Vector3.subtract(loc, waypoint)
-        let distanceToWaypoint = difference.length();
+          myPatient = me.CurrentPatient;
+          closestTriageNurse.CurrentPatient(myPatient);
+          myPatient.Instructor(closestTriageNurse);
+          myPatient.PatientTempState("FOLLOWING");
+          me.CurrentPatient(null);
+          //hospital.addComment(me, myPatient, "Follow that nurse.");
 
-        if (distanceToWaypoint < 2)
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
-        return fluentBehaviorTree.BehaviorTreeStatus.Running;
       })
       .end()
       .build();
@@ -46,4 +50,4 @@ class GoTo {
 
 }
 
-export default GoTo;
+export default AssignPatientToTriageNurse;

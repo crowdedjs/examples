@@ -1,8 +1,9 @@
 To Do:
 - Finish responsibility tree
-    - How to implement addComment in HospitalModel from Java code
+- How to implement addComment in HospitalModel from Java code and Log
 - Finish other trees
 - Question in Computer related files on how to reference computer
+- ComputerAssignPatientRoom needs list of rooms
 - Need help with TakeTime.js
 - Might be missing some imports
 

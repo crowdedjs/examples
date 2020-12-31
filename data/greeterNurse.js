@@ -56,13 +56,11 @@ class greeterNurse {
             })
             //
 
-            .do("Computer Assign Patient Room", (t) => {
+            .splice(new ComputerAssignPatientRoom().tree)
+            
+            .splice(new AssignPatientToTriageNurse().tree)
 
-            })
-            .do("Assign Patient to Triage Nurse", (t) => {
-
-            })
-            .do("Wait Forever", (t) => new WaitForever().tree)
+            .splice(new WaitForever().tree)  
                     
         .end()
         .build();

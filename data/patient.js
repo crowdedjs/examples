@@ -1,6 +1,7 @@
-// NOT FULLY PORTED
-import GoTo from "../behavior/GoTo.js"
-import WaitForever from "../behavior/WaitForever.js"
+import FollowInstructions from "../behavior/FollowInstructions.js";
+import GoTo from "../behavior/GoTo.js";
+import Stop from "../behavior/Stop.js";
+import WaitForever from "../behavior/WaitForever.js";
 
 
 
@@ -15,31 +16,29 @@ class patient {
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
     let me = agent;
-    let myGoal = me.locations.find(l => l.name == "Check In");
-    if (!myGoal) throw new "We couldn't find a location called B_DESK";
+    let myGoal = me.locations.find(l => l.name == "CHECK_IN");
+    if (!myGoal) throw new "We couldn't find a location called CHECK_IN";
 
     this.goTo = new GoTo(self.index, myGoal.position);
 
     this.tree = builder
 
     .sequence("Patient Actions")         
-
-      // dynamic Guard Selector ??
       .selector("Check In")
-        .do("Go to A Room", (t) => {
-          // check in room
+        .splice(this.goTo.tree) // CHECK_IN
 
-        })
-        .do("Stop", (t) => {
+        .splice(new Stop().tree)
 
-        })
       .end()
+      
+      //
       .do("Log Text", (t) => {
         // "I stopped"
       })
-      .do("Follow Instructions", (t) => {
+      //
 
-      })
+      .splice(new FollowInstructions().tree)
+
       .splice(new WaitForever().tree)
     .end()
     .build();
