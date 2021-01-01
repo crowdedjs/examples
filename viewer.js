@@ -6,7 +6,7 @@ import { FBXLoader } from './lib/FBXLoader.js';
 import { SkeletonUtils } from './lib/SkeletonUtils.js';
 import Vector3 from './behavior/Vector3.js';
 
-import {WhiteMaterial, BlackMaterial, RedMaterial, GreenMaterial, BlueMaterial}  from "./view/Materials.js"
+import { WhiteMaterial, BlackMaterial, RedMaterial, GreenMaterial, BlueMaterial } from "./view/Materials.js"
 import MakeLabelCanvas from "./view/MakeLabelCanvas.js"
 import Resize from "./view/Resize.js"
 import AddAxes from "./view/AddAxes.js"
@@ -54,7 +54,7 @@ function boot(three, objValue, locations) {
   three.mouse = new THREE.Vector2();
   three.camera = new THREE.PerspectiveCamera(45, 1, 1, 1000);
   three.camera.position.set(75, 10, 10);
-  
+
   //Irrelevant since we cann OrbitCamera.target.set later
   //three.camera.lookAt(50, 0, 10)
   three.scene.background = new THREE.Color(0x007fff);
@@ -66,7 +66,7 @@ function boot(three, objValue, locations) {
   var ambientLight = new THREE.AmbientLight(0x333333);
   three.scene.add(ambientLight);
 
-  
+
 
   let texture = new THREE.TextureLoader().load("https://cdn.jsdelivr.net/npm/@crowdedjs/assets/images/tex.png");
 
@@ -88,7 +88,7 @@ function boot(three, objValue, locations) {
   three.controls = new OrbitControls(
     three.camera, three.renderer.domElement
   );
-  three.controls.target.set(50,0,10)
+  three.controls.target.set(50, 0, 10)
   three.controls.update();
   loadOBJ(three, objValue);
   addLocations(three, locations);
@@ -98,19 +98,43 @@ function boot(three, objValue, locations) {
   three.agentGroup.positions = [];
   console.log(three.agentGroup)
 
-  
-  loader.load("models/Sitting.fbx", function (sitting) {
-    let mixer = new THREE.AnimationMixer(sitting);
-    mixers.push(mixer);
-    const action = mixer.clipAction(sitting.animations[0]);
-    allAnimations.push(sitting.animations[0]);
-    
-    action.play();
+  function loadPromise(url) {
 
+    let promise = new Promise((resolve, reject) => {
+      loader.load(url, function (result) {
+        if (result) {
+          resolve(result);
+        }
+        else
+          reject(result);
+      })
 
+    })
+    return promise;
+  }
 
-    loader.load('models/Walking.fbx', function (first) {
+  let allPromises = [];
+  allPromises.push(loadPromise("models/sitting.fbx"));
+  allPromises.push(loadPromise("models/Sit To Stand.fbx"));
+  allPromises.push(loadPromise("models/Sitting Idle.fbx"));
+  allPromises.push(loadPromise("models/Sitting.fbx"));
+  allPromises.push(loadPromise("models/Stand To Sit.fbx"));
+  allPromises.push(loadPromise("models/Type To Sit.fbx"));
+  allPromises.push(loadPromise("models/Typing.fbx"));
 
+  Promise.all(allPromises)
+    .then(results => {
+      for (let result of results) {
+        let mixer = new THREE.AnimationMixer(result);
+        mixers.push(mixer);
+        const action = mixer.clipAction(result.animations[0]);
+        allAnimations.push(result.animations[0]);
+
+        action.play();
+      }
+      return loadPromise("models/Walking.fbx");
+    })
+    .then(first => {
       base = first;
       let mixer = new THREE.AnimationMixer(first);
       mixers.push(mixer);
@@ -133,7 +157,12 @@ function boot(three, objValue, locations) {
       first.position.set(0, 0, 0);
       first.scale.set(.01, .01, .01);
     })
-  })
+    .catch(err => {
+      console.error("There was an error in the load promise " + err);
+    })
+
+
+  
 
 }
 
@@ -202,7 +231,7 @@ function addAgent(three, agent, agentDescription, color) {
   }
 
   //Recolor
-  
+
   object.children[1].material.color = color;
 
   let toPushPosition = [new THREE.Vector3(agent.x, agent.y, agent.z), 0.0];
