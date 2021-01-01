@@ -15,8 +15,9 @@ class greeterNurse {
 
       let self = this;//Since we need to reference this in anonymous functions, we need a reference
       let me = agent;
-      let myGoal = me.locations.find(l => l.name == "Check In");
-      if (!myGoal) throw new "We couldn't find a location called B_DESK";
+      let goToName = "Greeter Nurse Wait";
+      let myGoal = me.locations.find(l => l.name == goToName);
+      if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
   
       //this.goTo = new GoTo(self.index, myGoal.position);
   

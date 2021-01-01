@@ -4,6 +4,7 @@ import { OrbitControls } from './lib/OrbitControls.js';
 import { OBJLoader } from './lib/OBJLoader.js';
 import { FBXLoader } from './lib/FBXLoader.js';
 import { SkeletonUtils } from './lib/SkeletonUtils.js';
+import Vector3 from './behavior/Vector3.js';
 
 const CylinderGeometry = function () { return new THREE.CylinderGeometry(.2, .2, 1, 8) };
 const CylinderGeometryThin = function () { return new THREE.CylinderGeometry(.1, .1, .5, 8) };
@@ -43,6 +44,8 @@ for (let i = 0; i < 20; i++) {
 const mixers = [];
 const loader = new FBXLoader();
 let base;
+let allAnimations = [];
+
 
 //From https://threejsfundamentals.org/threejs/lessons/threejs-billboards.html
 function MakeLabelCanvas(baseWidth, size, name) {
@@ -121,8 +124,10 @@ function boot(three, objValue, locations) {
   three.raycaster = new THREE.Raycaster();
   three.mouse = new THREE.Vector2();
   three.camera = new THREE.PerspectiveCamera(45, 1, 1, 1000);
-  three.camera.position.set(100, 200, 300);
-  three.camera.lookAt(0, 0, 0)
+  three.camera.position.set(75, 10, 10);
+  
+  //Irrelevant since we cann OrbitCamera.target.set later
+  //three.camera.lookAt(50, 0, 10)
   three.scene.background = new THREE.Color(0x007fff);
   three.scene.add(three.camera);
 
@@ -165,6 +170,7 @@ function boot(three, objValue, locations) {
   three.controls = new OrbitControls(
     three.camera, three.renderer.domElement
   );
+  three.controls.target.set(50,0,10)
   three.controls.update();
   loadOBJ(three, objValue);
   addLocations(three, locations);
@@ -174,30 +180,43 @@ function boot(three, objValue, locations) {
   three.agentGroup.positions = [];
   console.log(three.agentGroup)
 
-
-  loader.load('models/Walking.fbx', function (first) {
-
-    base = first;
-    let mixer = new THREE.AnimationMixer(first);
+  
+  loader.load("models/Sitting.fbx", function (sitting) {
+    let mixer = new THREE.AnimationMixer(sitting);
     mixers.push(mixer);
-
-    const action = mixer.clipAction(first.animations[0]);
+    const action = mixer.clipAction(sitting.animations[0]);
+    allAnimations.push(sitting.animations[0]);
+    
     action.play();
 
-    first.traverse(function (child) {
 
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
 
-    });
-    first.visible = false
-    first.name = "first"
-    three.scene.add(first);
-    first.position.set(0, 0, 0);
-    first.scale.set(.01, .01, .01);
+    loader.load('models/Walking.fbx', function (first) {
+
+      base = first;
+      let mixer = new THREE.AnimationMixer(first);
+      mixers.push(mixer);
+
+      const action = mixer.clipAction(first.animations[0]);
+      allAnimations.push(first.animations[0])
+      action.play();
+
+      first.traverse(function (child) {
+
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+
+      });
+      first.visible = false
+      first.name = "first"
+      three.scene.add(first);
+      first.position.set(0, 0, 0);
+      first.scale.set(.01, .01, .01);
+    })
   })
+
 }
 
 function loadOBJ(three, path) {
@@ -244,45 +263,28 @@ function addLocations(three, locations) {
   }
 }
 
-function addAgent(three, agent, agentDescription) {
+function addAgent(three, agent, agentDescription, color) {
 
   let object = SkeletonUtils.clone(base);
   let mixer = new THREE.AnimationMixer(object);
   mixers.push(mixer);
 
-  object.traverse(child=>{
-    if(child.material){
+  object.traverse(child => {
+    if (child.material) {
       child.material = child.material.clone();
     }
   })
 
 
-  for (let a = 0; a < base.animations.length; a++) {
-    object.animations.push(base.animations[a].clone())
+  for (let a = 0; a < allAnimations.length; a++) {
+    //object.animations.push(base.animations[a].clone())
+    object.animations.push(allAnimations[a].clone())
+    const action = mixer.clipAction(object.animations[a]);
+    action.play();
   }
-  const action = mixer.clipAction(object.animations[0]);
-  action.play();
 
   //Recolor
-  let color = new THREE.Color(255, 0, 255);
-  if(agentDescription.name == "patient"){
-    color = new THREE.Color(0,255,0);
-  }
-  else if(agentDescription.name == "Nurse"){
-    color = new THREE.Color(200, 200, 200);
-  }
-  else if(agentDescription.name == "Attending"){
-    color = new THREE.Color(255, 0, 0);
-  }
-  else if(agentDescription.name == "Resident"){
-    color = new THREE.Color(255, 255, 0);
-  }
-  else if(agentDescription.name == "Tech"){
-    color = new THREE.Color(0, 0, 255);
-  }
-  else{
-    color = new THREE.Color(0,0,0);
-  }
+  
   object.children[1].material.color = color;
 
   let toPushPosition = [new THREE.Vector3(agent.x, agent.y, agent.z), 0.0];
@@ -300,15 +302,15 @@ function addAgent(three, agent, agentDescription) {
 
 function updateAgent(three, agent) {
   if (!three.agentGroup) return;
-  let loc = three.agentGroup.children.findIndex((child) => child._id == agent.id);
+  let index = three.agentGroup.children.findIndex((child) => child._id == agent.id);
 
   // Calculate and apply a rotation for the agent based on the direction it is moving in
   let nextPosition = new THREE.Vector3(agent.x, agent.y, agent.z);
-  let previousPosition = three.agentGroup.positions[loc][0];
+  let previousPosition = three.agentGroup.positions[index][0];
   let positionChange = new THREE.Vector3(nextPosition.x - previousPosition.x, nextPosition.y - previousPosition.y, nextPosition.z - previousPosition.z);
   let nextAngle = (Math.atan2(positionChange.z, positionChange.x));
-  three.agentGroup.children[loc].rotation.y = Math.PI / 2 - nextAngle;
-  three.agentGroup.positions[loc] = [nextPosition, nextAngle];
+  three.agentGroup.children[index].rotation.y = Math.PI / 2 - nextAngle;
+  three.agentGroup.positions[index] = [nextPosition, nextAngle];
 
   // //Weight the idle and walking animations based on the speed of the agent
   // three.agentGroup.animations[loc][0].weight = 1 ;

@@ -1,4 +1,5 @@
 import Vector3 from "../behavior/Vector3.js";
+import Poses from "../models/Poses.js"
 
 class WaitForever {
     constructor() {
@@ -13,6 +14,7 @@ class WaitForever {
                 let simulationAgent = t.crowd.find(a => a.id == self.index);
                 let loc = new Vector3(simulationAgent.x, simulationAgent.y, simulationAgent.z);
                 agent.destination = new Vector3(loc.x, loc.y, loc.z);
+                agent.pose = Poses.Sitting;
 
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Running;

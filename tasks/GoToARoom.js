@@ -1,3 +1,5 @@
+import Poses from "../models/Poses.js"
+
 // not fully ported
 class GoToARoom {
     execute() {
@@ -15,6 +17,8 @@ class GoToARoom {
 
         let difference = Vector3.subtract(loc, waypoint)
         let distanceToWaypoint = difference.length();
+
+        agent.pose = Poses.Walking;
 
         if (distanceToWaypoint < 2)
           return fluentBehaviorTree.BehaviorTreeStatus.Success;

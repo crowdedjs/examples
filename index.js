@@ -1,6 +1,7 @@
 import * as viewer from "./viewer.js"
 import simulations from "./simulations.js"
 import ControlCreator from "./ControlCreator.js"
+import * as THREE from "./lib/three.module.js"
 
 
 //let simulations = [];
@@ -54,7 +55,7 @@ class CrowdSetup {
 
     //What we do every time the thread has more information for us
     async function tickCallback(event, nextTick) {
-      if(CrowdSetup.firstTicks[self.myIndex] == -1){
+      if (CrowdSetup.firstTicks[self.myIndex] == -1) {
         CrowdSetup.firstTicks[self.myIndex] = new Date();
       }
       //console.log("tick callback " + nonce);
@@ -93,7 +94,7 @@ class CrowdSetup {
           await agent.behavior.update(agents, positions, i * millisecondsBetweenFrames);
           //If the new destination is not null, send the updated destination to the 
           //path finding engine
-          if (agent.destination  != null && agent.destination != oldDestination) {
+          if (agent.destination != null && agent.destination != oldDestination) {
             agent.destX = agent.destination.x;
             agent.destY = agent.destination.y;
             agent.destZ = agent.destination.z;
@@ -131,7 +132,7 @@ class CrowdSetup {
       bootWorker(objValue, secondsOfSimulation, millisecondsBetweenFrames, locationValue, bootCallback, tickCallback, self.nonce);
 
 
-      
+
     }
 
     //Respond to the viewer timer
@@ -140,6 +141,29 @@ class CrowdSetup {
       controls.update(CrowdSetup.allSimulations, CrowdSetup.firstTicks);
       //Draw the view
       draw();
+    }
+
+    function colorFunction(agentDescription) {
+      let color = new THREE.Color(200, 0, 200);
+      if (agentDescription.name == "patient") {
+        color = new THREE.Color(0, .75, 0);
+      }
+      else if (agentDescription.name == "Nurse") {
+        color = new THREE.Color(.75, .75, .75);
+      }
+      else if (agentDescription.name == "Attending") {
+        color = new THREE.Color(.75, 0, 0);
+      }
+      else if (agentDescription.name == "Resident") {
+        color = new THREE.Color(.75, .75, 0);
+      }
+      else if (agentDescription.name == "Tech") {
+        color = new THREE.Color(0, 0, .75);
+      }
+      else {
+        color = new THREE.Color(0, 0, 0);
+      }
+      return color;
     }
 
     function draw() {
@@ -157,26 +181,26 @@ class CrowdSetup {
         //Add new agents
         for (let j = 0; j < frame.length; j++) {
           let agent = frame[j]; //Grab each agent in the list
-          if(!CrowdSetup.three.agentGroup.children.some(c=>c._id == agent.id)){
-            let agentDescription = agents.find(a=>a.id == agent.id);
-            viewer.addAgent(CrowdSetup.three, agent, agentDescription, drawCallback)
+          if (!CrowdSetup.three.agentGroup.children.some(c => c._id == agent.id)) {
+            let agentDescription = agents.find(a => a.id == agent.id);
+            viewer.addAgent(CrowdSetup.three, agent, agentDescription, colorFunction(agentDescription))
           }
         }
         //Remove old agents
         let toRemove = [];
-        for(let j = 0; j < CrowdSetup.three.agentGroup.children.length; j++){
+        for (let j = 0; j < CrowdSetup.three.agentGroup.children.length; j++) {
           let child = CrowdSetup.three.agentGroup.children[j];
-          if(!frame.some(f=>f.id == child._id)){
+          if (!frame.some(f => f.id == child._id)) {
             toRemove.push(child);
           }
         }
-        for(let j = 0; j < toRemove.length; j++){
+        for (let j = 0; j < toRemove.length; j++) {
           CrowdSetup.three.agentGroup.remove(toRemove[j]);
         }
         //Update remaining agents
-        for(let j = 0; j < CrowdSetup.three.agentGroup.children.length; j++){
+        for (let j = 0; j < CrowdSetup.three.agentGroup.children.length; j++) {
           let child = CrowdSetup.three.agentGroup.children[j];
-          let agent = frame.find(f=>f.id == child._id);
+          let agent = frame.find(f => f.id == child._id);
           child.position.set(agent.x, agent.y, agent.z);
           viewer.updateAgent(CrowdSetup.three, agent)
         }
