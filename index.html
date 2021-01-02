@@ -32,7 +32,7 @@
     params.secondsOfSimulation = 300;
     params.millisecondsBetweenFrames = 40;
     // params.locationsPath = assetBase + "locations/locationsHospital.json";
-     params.locationsPath = "./" + "locations/locationsHospital.json";
+    params.locationsPath = "./" + "locations/locationsHospital.json";
 
     params = urlParser(window, params, assetBase);
 
@@ -43,27 +43,30 @@
         let locationValue = results[1].data;
         let arrivalValue = results[2].data;
 
-        let agents = [];
+        let agentConstants = [];
         //Add an agent with a behavior
-        for (let agent of arrivalValue) {
-          agents.push(new MedicalAgent(agent, locationValue));
-        }
+        //for (let agent of arrivalValue) {
+        arrivalValue.forEach((agent, index) => {
+          if (index < 2)
+            agentConstants.push(new MedicalAgent(agent, locationValue));
+        })
+
         //Assign a unique id to each agent.
-        for (let id = 0; id < agents.length; id++) {
-          let agent = agents[id];
-          agent.setId(id);
+        for (let id = 0; id < agentConstants.length; id++) {
+          let agentConstant = agentConstants[id];
+          agentConstant.setId(id);
         }
         //Start the simulation.
-        new CrowdSetup(objValue, agents, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, (agent) => {
-          agent = agents.find(a => a.id == agent.id);
-          if (agent.name == "patient")
+        new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, (agentConstant) => {
+          agentConstant = agentConstants.find(a => a.id == agent.id);
+          if (agentConstant.name == "patient")
             return "white";
-          else 
-          if(agent.name == "Tech")
-            return "green";
-          if(agent.name == "Nurse")
+          else
+            if (agentConstant.name == "Tech")
+              return "green";
+          if (agentConstant.name == "Nurse")
             return "red";
-          if(agent.name == "Attending") 
+          if (agentConstant.name == "Attending")
             return "blue";
           return "black"
         });

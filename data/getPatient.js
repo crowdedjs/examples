@@ -30,9 +30,9 @@ class getPatient {
         .build();
     }
   
-    async update(agents, crowd, msec) {
+    async update(agentConstants, crowd, msec) {
       this.toReturn = null;//Set the default return value to null (don't change destination)
-      await this.tree.tick({ agents, crowd, msec }) //Call the behavior tree
+      await this.tree.tick({ agentConstants, crowd, msec }) //Call the behavior tree
       return this.toReturn; //Return what the behavior tree set the return value to
     }
   

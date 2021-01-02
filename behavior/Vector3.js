@@ -10,6 +10,14 @@ class Vector3 {
     y = 0;
     z = 0;
 
+    /**
+     * Take an object with x,y, and z parameters and return a new Vector3 instance
+     * @param {Vector3-like} object 
+     */
+    static fromObject(object){
+        return new Vector3(object.x, object.y, object.z || 0);
+    }
+
     constructor(x, y, z) {
         if (y!== 0 && z!== 0 && (!y || !z)) {
             this.x = x[0];
@@ -21,6 +29,10 @@ class Vector3 {
             this.y = y;
             this.z = z;
         }
+    }
+
+    clone(){
+        return new Vector3(this.x, this.y, this.z);
     }
 
     asArray() {
@@ -69,6 +81,10 @@ class Vector3 {
 
         return this;
     }
+    equals(other){
+        if(!other) return false;
+        return this.x === other.x && this.y === other.y && this.z === other.z;
+    }
 }
 
-export default Vector3
+export default Vector3;

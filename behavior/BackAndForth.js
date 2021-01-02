@@ -17,14 +17,14 @@ class BackAndForth {
       //Set the destination. This is a one-shot behavior since we only want to
       //update the return value once
       .do("Set destination to end", (t) => {
-        let agent = t.agents.find(a => a.id == self.index);
+        let agent = t.agentConstants.find(a => a.id == self.index);
         agent.destination = new Vector3(self.waypoints[1]);
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })
       //Now return null as we head to that destination
       //We return running until we're close to it.
       .do("Traveling to end", (t) => {
-        let a = t.agents.find(a => a.id == self.index);
+        let a = t.agentConstants.find(a => a.id == self.index);
         a.destination = new Vector3(self.waypoints[1]);
         let agent = t.positions.find(a => a.id == self.index);
         let loc = new Vector3(agent.x, agent.y, agent.z);
@@ -40,14 +40,14 @@ class BackAndForth {
       //Set the destination. This is a one-shot behavior since we only want to
       //update the return value once
       .do("Set destination to start", (t) => {
-        let agent = t.agents.find(a => a.id == self.index);
+        let agent = t.agentConstants.find(a => a.id == self.index);
         agent.destination = new Vector3(self.waypoints[0]);
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })
       //Now return null as we head to that destination
       //We return running until we're close to it.
       .do("Travel to End", (t) => {
-        let a = t.agents.find(a => a.id == self.index);
+        let a = t.agentConstants.find(a => a.id == self.index);
         a.destination = new Vector3(self.waypoints[0]);
         let agent = t.positions.find(a => a.id == self.index);
         let loc = new Vector3(agent.x, agent.y, agent.z);
@@ -64,8 +64,8 @@ class BackAndForth {
       .build();
   }
 
-  async update(agents, positions, msec) {
-    await this.tree.tick({ agents, positions, msec }) //Call the behavior tree
+  async update(agentConstants, positions, msec) {
+    await this.tree.tick({ agentConstants, positions, msec }) //Call the behavior tree
   }
 
 }

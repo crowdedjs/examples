@@ -7,7 +7,7 @@ import * as THREE from "./lib/three.module.js"
 //let simulations = [];
 let controls;
 
-//Strip behavior definitions out of agents when we serialize them with JSON
+//Strip behavior definitions out of agentConstants when we serialize them with JSON
 //to prevent circular loops.
 function replacer(key, value) {
   if (key === 'behavior')
@@ -22,7 +22,7 @@ class CrowdSetup {
 
 
 
-  constructor(objValue, agents, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, elementParent, drawCallback) {
+  constructor(objValue, agentConstants, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, elementParent, drawCallback) {
     let locations;
     this.first = true;
     this.nonce = Math.random();
@@ -59,14 +59,14 @@ class CrowdSetup {
         CrowdSetup.firstTicks[self.myIndex] = new Date();
       }
       //console.log("tick callback " + nonce);
-      //Parse the new positions
-      let positions = JSON.parse(event.data.agents);
+      //Parse the new frameAgentDetails
+      let frameAgentDetails = JSON.parse(event.data.agents);
       //Assign idx numbers to each agent
-      for (let position of positions) {
-        agents.find(a => a.id == position.id).idx = position.idx;
+      for (let frameAgentDetail of frameAgentDetails) {
+        agentConstants.find(a => a.id == frameAgentDetail.id).idx = frameAgentDetail.idx;
       }
-      //Add this list of positions to our array of position information
-      agentPositions.push(positions);
+      //Add this list of frameAgentDetails to our array of position information
+      agentPositions.push(frameAgentDetails);
 
       //Track the frame number
       let i = event.data.frame;
@@ -78,8 +78,8 @@ class CrowdSetup {
       let leavingAgents = [];
 
 
-      for (let j = 0; j < agents.length; j++) {
-        let agent = agents[j]; //Grab each agent in the list
+      for (let j = 0; j < agentConstants.length; j++) {
+        let agent = agentConstants[j]; //Grab each agent in the list
 
         //See if we need to add the agent to the simulation
         if (!agent.hasEntered && agent.startMSec <= i * millisecondsBetweenFrames) {
@@ -91,7 +91,7 @@ class CrowdSetup {
         else if (agent.hasEntered) {
           //Get the new destination based on the agent's behavior
           let oldDestination = agent.destination;
-          await agent.behavior.update(agents, positions, i * millisecondsBetweenFrames);
+          await agent.behavior.update(agentConstants, frameAgentDetails, i * millisecondsBetweenFrames);
           //If the new destination is not null, send the updated destination to the 
           //path finding engine
           if (agent.destination != null && agent.destination != oldDestination) {
@@ -111,7 +111,7 @@ class CrowdSetup {
       if (i < secondsOfSimulation * 1_000 / millisecondsBetweenFrames) {
         //console.log("Call next " + nonce)
         //If the simulation needs to continue, send on the information 
-        //about new agents, agents with new destinations, and agents that have left the simulation
+        //about new agentConstants, agentConstants with new destinations, and agentConstants that have left the simulation
         nextTick([JSON.stringify(newAgents, replacer), JSON.stringify(newDestinations, replacer), JSON.stringify(leavingAgents, replacer)])
       }
       else {
@@ -178,15 +178,15 @@ class CrowdSetup {
         //Get the positional data for that frame
         let frame = simulationAgents[index];
 
-        //Add new agents
+        //Add new agentConstants
         for (let j = 0; j < frame.length; j++) {
           let agent = frame[j]; //Grab each agent in the list
           if (!CrowdSetup.three.agentGroup.children.some(c => c._id == agent.id)) {
-            let agentDescription = agents.find(a => a.id == agent.id);
+            let agentDescription = agentConstants.find(a => a.id == agent.id);
             viewer.addAgent(CrowdSetup.three, agent, agentDescription, colorFunction(agentDescription))
           }
         }
-        //Remove old agents
+        //Remove old agentConstants
         let toRemove = [];
         for (let j = 0; j < CrowdSetup.three.agentGroup.children.length; j++) {
           let child = CrowdSetup.three.agentGroup.children[j];
@@ -197,7 +197,7 @@ class CrowdSetup {
         for (let j = 0; j < toRemove.length; j++) {
           CrowdSetup.three.agentGroup.remove(toRemove[j]);
         }
-        //Update remaining agents
+        //Update remaining agentConstants
         for (let j = 0; j < CrowdSetup.three.agentGroup.children.length; j++) {
           let child = CrowdSetup.three.agentGroup.children[j];
           let agent = frame.find(f => f.id == child._id);

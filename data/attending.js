@@ -25,14 +25,14 @@ class attending {
     this.tree = builder
       .sequence("Attending Tree")
       .splice(this.goTo.tree)
-      .splice(new WaitForever().tree)
+      .splice(new WaitForever(myIndex).tree)
             
       .end()
       .build();
   }
 
-  async update(agents, crowd, msec) {
-    await this.tree.tick({ agents, crowd, msec }) //Call the behavior tree
+  async update(agentConstants, crowd, msec) {
+    await this.tree.tick({ agentConstants, crowd, msec }) //Call the behavior tree
   }
 
 }

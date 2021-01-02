@@ -127,8 +127,8 @@ function boot(three, objValue, locations) {
   Promise.all(allPromises)
     .then(results => {
       results.forEach((result, index)=>{
-        let mixer = new THREE.AnimationMixer(result);
-        mixers.push(mixer);
+        // let mixer = new THREE.AnimationMixer(result);
+        // mixers.push(mixer);
         let animation = result.animations[0];
         animation._key = Poses.poseList[index].key
         allAnimations.push(animation);
@@ -229,8 +229,9 @@ function addAgent(three, agent, agentDescription, color) {
 
   for (let a = 0; a < allAnimations.length; a++) {
     //object.animations.push(base.animations[a].clone())
-    object.animations.push(allAnimations[a].clone())
-    const action = mixer.clipAction(object.animations[a]);
+    let animation = allAnimations[a].clone();
+    object.animations.push(animation)
+    const action = mixer.clipAction(animation);
     action._key = allAnimations[a]._key;
     action.play();
     object.actions.push(action)
@@ -269,23 +270,25 @@ function updateAgent(three, agent) {
   three.agentGroup.children[index].rotation.y = Math.PI / 2 - nextAngle;
   three.agentGroup.positions[index] = [nextPosition, nextAngle];
 
-  for (let i = 0; i < three.agentGroup.children.length; i++) {
-    let child = three.agentGroup.children[i];
+  //for (let i = 0; i < three.agentGroup.children.length; i++) {
+    let child = three.agentGroup.children[index];
+    //let mixer = mixers[i];
     for (let j = 0; j < child.actions.length; j++) {
       let action = child.actions[j];
+      //action = child.actions[j];
       action.setEffectiveWeight(0);
       // if (action._key == "Walking") {
       //   //animation.weight = 1;
       //   action.setEffectiveWeight(1);
       // }
-      if(!agent.pose && action._key == "Walking"){
+      if(!agent.pose && action._key == "Walking" ){
         action.setEffectiveWeight(1);
       }
       else if(agent.pose == action._key){
         action.setEffectiveWeight(1);
       }
     }
-  }
+  //}
   // //Weight the idle and walking animations based on the speed of the agent
   // three.agentGroup.animations[loc][0].weight = 1 ;
   //three.agentGroup.animations[loc][1].weight = positionChange.length() * 10;
@@ -301,10 +304,10 @@ function animate(three) {
   //   actions[4].enabled = true
   // }
 
-  for (let mixer of mixers) {
-    // let mixer = mixers[i];
+  mixers.forEach((mixer, index)=>{
     mixer.update(delta);
-  }
+  })
+  // e
 
 }
 
