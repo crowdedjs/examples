@@ -3,8 +3,15 @@ import BackAndForth from "./../behavior/BackAndForth.js";
 import None from "./../behavior/None.js"
 import Agent from "./Agent.js"
 import attending from "../data/attending.js"
+import ct from "../data/ct.js"
 import greeterNurse from "../data/greeterNurse.js"
+import janitorial from "../data/janitorial.js"
+import nurse from "../data/nurse.js"
 import patient from "../data/patient.js"
+import radiology from "../data/radiology.js"
+import resident from "../data/resident.js"
+import tech from "../data/tech.js"
+import triageNurse from "../data/triageNurse.js" 
 
 
 class MedicalAgent {
@@ -87,36 +94,42 @@ class MedicalAgent {
       if (agent.name == "Tech") {
         this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         if (agent.type == "Tech")
-          this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+          this.behavior = new tech(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         else if (agent.type == "CT")
-          this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+          this.behavior = new ct(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         else if (agent.type == "Janitorial")
-          this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+          this.behavior = new janitorial(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         else if (agent.type == "Radiology")
-          this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+          this.behavior = new radiology(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         else
           throw new "That tech type does not exist " + agent.type;
 
       }
       else if (agent.name == "Nurse") {
+        this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        
         if (agent.type == "Triage Nurse")
-          this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+          this.behavior = new triageNurse(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         else if (agent.type == "Nurse")
-          this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+          this.behavior = new nurse(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         else if (agent.type == "Greeter Nurse")
           this.behavior = new greeterNurse(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         else
           throw new "That nures type does not exist " + agent.type;
       }
       else if (agent.name == "Attending") {
+        this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        
         if (agent.type == "Attending")
           this.behavior = new attending(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         else
           throw new "That attending type does not exist " + agent.type;
       }
       else if (agent.name == "Resident") {
+        this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        
         if (agent.type == "Resident")
-          this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+          this.behavior = new resident(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         else
           throw new "That resident type does not exist " + agent.type;
       }

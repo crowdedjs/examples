@@ -130,9 +130,6 @@ class CrowdSetup {
       //bootWorker needs to be included in the calling html file
       //Start the threaded simulator
       bootWorker(objValue, secondsOfSimulation, millisecondsBetweenFrames, locationValue, bootCallback, tickCallback, self.nonce);
-
-
-
     }
 
     //Respond to the viewer timer
