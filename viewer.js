@@ -10,6 +10,7 @@ import { WhiteMaterial, BlackMaterial, RedMaterial, GreenMaterial, BlueMaterial 
 import MakeLabelCanvas from "./view/MakeLabelCanvas.js"
 import Resize from "./view/Resize.js"
 import AddAxes from "./view/AddAxes.js"
+import Poses from './models/Poses.js';
 
 const CylinderGeometry = function () { return new THREE.CylinderGeometry(.2, .2, 1, 8) };
 const CylinderGeometryThin = function () { return new THREE.CylinderGeometry(.1, .1, .5, 8) };
@@ -20,6 +21,8 @@ const mixers = [];
 const loader = new FBXLoader();
 let base;
 let allAnimations = [];
+let allActions = [];
+let allWeight = [];
 
 
 function boot(three, objValue, locations) {
@@ -96,7 +99,10 @@ function boot(three, objValue, locations) {
   three.agentGroup.mixers = [];
   three.agentGroup.animations = [];
   three.agentGroup.positions = [];
-  console.log(three.agentGroup)
+  three.agentGroup.objects = [];
+
+  three.scene.add(three.agentGroup);
+  // console.log(three.agentGroup)
 
   function loadPromise(url) {
 
@@ -114,34 +120,35 @@ function boot(three, objValue, locations) {
   }
 
   let allPromises = [];
-  allPromises.push(loadPromise("models/sitting.fbx"));
-  allPromises.push(loadPromise("models/Sit To Stand.fbx"));
-  allPromises.push(loadPromise("models/Sitting Idle.fbx"));
-  allPromises.push(loadPromise("models/Sitting.fbx"));
-  allPromises.push(loadPromise("models/Stand To Sit.fbx"));
-  allPromises.push(loadPromise("models/Type To Sit.fbx"));
-  allPromises.push(loadPromise("models/Typing.fbx"));
+  Poses.poseList.forEach((pose, index)=>{
+     allPromises.push(loadPromise(`models/${pose.file}.fbx`));
+  });
 
   Promise.all(allPromises)
     .then(results => {
-      for (let result of results) {
+      results.forEach((result, index)=>{
         let mixer = new THREE.AnimationMixer(result);
         mixers.push(mixer);
-        const action = mixer.clipAction(result.animations[0]);
-        allAnimations.push(result.animations[0]);
-
-        action.play();
-      }
-      return loadPromise("models/Walking.fbx");
+        let animation = result.animations[0];
+        animation._key = Poses.poseList[index].key
+        allAnimations.push(animation);
+        
+      });
+      return loadPromise("models/ybot.fbx");
     })
     .then(first => {
       base = first;
-      let mixer = new THREE.AnimationMixer(first);
-      mixers.push(mixer);
+      // let mixer = new THREE.AnimationMixer(first);
+      // mixers.push(mixer);
 
-      const action = mixer.clipAction(first.animations[0]);
-      allAnimations.push(first.animations[0])
-      action.play();
+      // for(let j = 0; j < first.animations.length; j++){
+      //   const action = mixer.clipAction(first.animations[j]);
+      //   allAnimations.push(first.animations[j])
+      //   allActions.push(action);
+      //   action.play();
+
+      // }
+
 
       first.traverse(function (child) {
 
@@ -160,10 +167,6 @@ function boot(three, objValue, locations) {
     .catch(err => {
       console.error("There was an error in the load promise " + err);
     })
-
-
-  
-
 }
 
 function loadOBJ(three, path) {
@@ -222,12 +225,15 @@ function addAgent(three, agent, agentDescription, color) {
     }
   })
 
+  object.actions = []
 
   for (let a = 0; a < allAnimations.length; a++) {
     //object.animations.push(base.animations[a].clone())
     object.animations.push(allAnimations[a].clone())
     const action = mixer.clipAction(object.animations[a]);
+    action._key = allAnimations[a]._key;
     action.play();
+    object.actions.push(action)
   }
 
   //Recolor
@@ -235,14 +241,15 @@ function addAgent(three, agent, agentDescription, color) {
   object.children[1].material.color = color;
 
   let toPushPosition = [new THREE.Vector3(agent.x, agent.y, agent.z), 0.0];
-  three.agentGroup.children.push(object)
+  // three.agentGroup.children.push(object)
   three.agentGroup.positions.push(toPushPosition);
   object._id = agent.id;
 
 
   object.visible = true
   object.name = "object"
-  three.scene.add(object);
+  // three.scene.add();
+  three.agentGroup.add(object);
   object.position.set(agent.x, agent.y, agent.z);
   object.scale.set(.01, .01, .01);
 }
@@ -253,12 +260,32 @@ function updateAgent(three, agent) {
 
   // Calculate and apply a rotation for the agent based on the direction it is moving in
   let nextPosition = new THREE.Vector3(agent.x, agent.y, agent.z);
+  // while(index >= three.agentGroup.positions.length){
+  //   three.agentGroup.positions.push([nextPosition, 0])
+  // }
   let previousPosition = three.agentGroup.positions[index][0];
   let positionChange = new THREE.Vector3(nextPosition.x - previousPosition.x, nextPosition.y - previousPosition.y, nextPosition.z - previousPosition.z);
   let nextAngle = (Math.atan2(positionChange.z, positionChange.x));
   three.agentGroup.children[index].rotation.y = Math.PI / 2 - nextAngle;
   three.agentGroup.positions[index] = [nextPosition, nextAngle];
 
+  for (let i = 0; i < three.agentGroup.children.length; i++) {
+    let child = three.agentGroup.children[i];
+    for (let j = 0; j < child.actions.length; j++) {
+      let action = child.actions[j];
+      action.setEffectiveWeight(0);
+      // if (action._key == "Walking") {
+      //   //animation.weight = 1;
+      //   action.setEffectiveWeight(1);
+      // }
+      if(!agent.pose && action._key == "Walking"){
+        action.setEffectiveWeight(1);
+      }
+      else if(agent.pose == action._key){
+        action.setEffectiveWeight(1);
+      }
+    }
+  }
   // //Weight the idle and walking animations based on the speed of the agent
   // three.agentGroup.animations[loc][0].weight = 1 ;
   //three.agentGroup.animations[loc][1].weight = positionChange.length() * 10;
@@ -267,12 +294,18 @@ function updateAgent(three, agent) {
 function animate(three) {
   const delta = clock.getDelta();
 
-  if (mixers.length > 0) {
-    for (let i = 0; i < mixers.length; i++) {
-      let mixer = mixers[i];
-      mixer.update(delta);
-    }
+  // for (let i = 0; i < three.agentGroup.children.length; i++) {
+  //   let actions = three.agentGroup.children[i].actions;
+  //   actions[0].weight = 0;
+  //   actions[4].weight = 1
+  //   actions[4].enabled = true
+  // }
+
+  for (let mixer of mixers) {
+    // let mixer = mixers[i];
+    mixer.update(delta);
   }
+
 }
 
 function render(three) {

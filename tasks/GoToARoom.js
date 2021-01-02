@@ -18,10 +18,12 @@ class GoToARoom {
         let difference = Vector3.subtract(loc, waypoint)
         let distanceToWaypoint = difference.length();
 
-        agent.pose = Poses.Walking;
+        agent.pose = "Walking";
 
-        if (distanceToWaypoint < 2)
+        if (distanceToWaypoint < 2){
+          agent.pose = "Idle";
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        }
         return fluentBehaviorTree.BehaviorTreeStatus.Running;
     }
 }
