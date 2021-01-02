@@ -21,8 +21,6 @@ const mixers = [];
 const loader = new FBXLoader();
 let base;
 let allAnimations = [];
-let allActions = [];
-let allWeight = [];
 
 
 function boot(three, objValue, locations) {
@@ -59,7 +57,6 @@ function boot(three, objValue, locations) {
   three.camera.position.set(75, 10, 10);
 
   //Irrelevant since we cann OrbitCamera.target.set later
-  //three.camera.lookAt(50, 0, 10)
   three.scene.background = new THREE.Color(0x007fff);
   three.scene.add(three.camera);
 
@@ -68,8 +65,6 @@ function boot(three, objValue, locations) {
   three.scene.add(three.light);
   var ambientLight = new THREE.AmbientLight(0x333333);
   three.scene.add(ambientLight);
-
-
 
   let texture = new THREE.TextureLoader().load("https://cdn.jsdelivr.net/npm/@crowdedjs/assets/images/tex.png");
 
@@ -85,7 +80,6 @@ function boot(three, objValue, locations) {
 
   AddAxes(three.scene, three.geometry);
 
-
   three.agentGroup = new THREE.Group();
 
   three.controls = new OrbitControls(
@@ -96,16 +90,16 @@ function boot(three, objValue, locations) {
   loadOBJ(three, objValue);
   addLocations(three, locations);
 
+  //Store the state of each person, including animation state
   three.agentGroup.mixers = [];
   three.agentGroup.animations = [];
   three.agentGroup.positions = [];
   three.agentGroup.objects = [];
 
   three.scene.add(three.agentGroup);
-  // console.log(three.agentGroup)
 
+  //Turn the fbx loader into a promise.
   function loadPromise(url) {
-
     let promise = new Promise((resolve, reject) => {
       loader.load(url, function (result) {
         if (result) {
@@ -114,50 +108,42 @@ function boot(three, objValue, locations) {
         else
           reject(result);
       })
-
     })
     return promise;
   }
 
+  //Go through and load all the poses
   let allPromises = [];
   Poses.poseList.forEach((pose, index)=>{
      allPromises.push(loadPromise(`models/${pose.file}.fbx`));
   });
 
+  //Wait for all the poses to be done.
   Promise.all(allPromises)
     .then(results => {
       results.forEach((result, index)=>{
-        // let mixer = new THREE.AnimationMixer(result);
-        // mixers.push(mixer);
         let animation = result.animations[0];
+        //Add a key so we track the animation later on
         animation._key = Poses.poseList[index].key
         allAnimations.push(animation);
         
       });
+      //Load the model
       return loadPromise("models/ybot.fbx");
     })
     .then(first => {
       base = first;
-      // let mixer = new THREE.AnimationMixer(first);
-      // mixers.push(mixer);
 
-      // for(let j = 0; j < first.animations.length; j++){
-      //   const action = mixer.clipAction(first.animations[j]);
-      //   allAnimations.push(first.animations[j])
-      //   allActions.push(action);
-      //   action.play();
-
-      // }
-
-
+      //Make sure that we cast shadows appropriately
       first.traverse(function (child) {
-
         if (child.isMesh) {
           child.castShadow = true;
           child.receiveShadow = true;
         }
 
       });
+
+      //Since we will only clone this object, we make it invisible.
       first.visible = false
       first.name = "first"
       three.scene.add(first);
@@ -228,7 +214,6 @@ function addAgent(three, agent, agentDescription, color) {
   object.actions = []
 
   for (let a = 0; a < allAnimations.length; a++) {
-    //object.animations.push(base.animations[a].clone())
     let animation = allAnimations[a].clone();
     object.animations.push(animation)
     const action = mixer.clipAction(animation);
@@ -242,14 +227,11 @@ function addAgent(three, agent, agentDescription, color) {
   object.children[1].material.color = color;
 
   let toPushPosition = [new THREE.Vector3(agent.x, agent.y, agent.z), 0.0];
-  // three.agentGroup.children.push(object)
   three.agentGroup.positions.push(toPushPosition);
   object._id = agent.id;
 
-
   object.visible = true
   object.name = "object"
-  // three.scene.add();
   three.agentGroup.add(object);
   object.position.set(agent.x, agent.y, agent.z);
   object.scale.set(.01, .01, .01);
@@ -261,26 +243,16 @@ function updateAgent(three, agent) {
 
   // Calculate and apply a rotation for the agent based on the direction it is moving in
   let nextPosition = new THREE.Vector3(agent.x, agent.y, agent.z);
-  // while(index >= three.agentGroup.positions.length){
-  //   three.agentGroup.positions.push([nextPosition, 0])
-  // }
   let previousPosition = three.agentGroup.positions[index][0];
   let positionChange = new THREE.Vector3(nextPosition.x - previousPosition.x, nextPosition.y - previousPosition.y, nextPosition.z - previousPosition.z);
   let nextAngle = (Math.atan2(positionChange.z, positionChange.x));
   three.agentGroup.children[index].rotation.y = Math.PI / 2 - nextAngle;
   three.agentGroup.positions[index] = [nextPosition, nextAngle];
 
-  //for (let i = 0; i < three.agentGroup.children.length; i++) {
     let child = three.agentGroup.children[index];
-    //let mixer = mixers[i];
     for (let j = 0; j < child.actions.length; j++) {
       let action = child.actions[j];
-      //action = child.actions[j];
       action.setEffectiveWeight(0);
-      // if (action._key == "Walking") {
-      //   //animation.weight = 1;
-      //   action.setEffectiveWeight(1);
-      // }
       if(!agent.pose && action._key == "Walking" ){
         action.setEffectiveWeight(1);
       }
@@ -288,27 +260,14 @@ function updateAgent(three, agent) {
         action.setEffectiveWeight(1);
       }
     }
-  //}
-  // //Weight the idle and walking animations based on the speed of the agent
-  // three.agentGroup.animations[loc][0].weight = 1 ;
-  //three.agentGroup.animations[loc][1].weight = positionChange.length() * 10;
 }
 
 function animate(three) {
   const delta = clock.getDelta();
 
-  // for (let i = 0; i < three.agentGroup.children.length; i++) {
-  //   let actions = three.agentGroup.children[i].actions;
-  //   actions[0].weight = 0;
-  //   actions[4].weight = 1
-  //   actions[4].enabled = true
-  // }
-
   mixers.forEach((mixer, index)=>{
     mixer.update(delta);
   })
-  // e
-
 }
 
 function render(three) {
@@ -319,11 +278,6 @@ function render(three) {
 
 export {
   CylinderGeometry,
-  WhiteMaterial,
-  BlackMaterial,
-  RedMaterial,
-  GreenMaterial,
-  BlueMaterial,
   MakeLabelCanvas,
   Resize,
   boot,

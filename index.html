@@ -47,8 +47,7 @@
         //Add an agent with a behavior
         //for (let agent of arrivalValue) {
         arrivalValue.forEach((agent, index) => {
-          if (index < 2)
-            agentConstants.push(new MedicalAgent(agent, locationValue));
+          agentConstants.push(new MedicalAgent(agent, locationValue));
         })
 
         //Assign a unique id to each agent.
