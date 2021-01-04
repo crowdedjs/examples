@@ -85,6 +85,10 @@ class Vector3 {
         if(!other) return false;
         return this.x === other.x && this.y === other.y && this.z === other.z;
     }
+    distanceTo(other){
+        if(!other) throw new Exception("distanceTo requires a valid Vector3 object as a parameter");
+        return this.subtract(this, other).length();
+    }
 }
 
 export default Vector3;

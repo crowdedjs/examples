@@ -61,6 +61,8 @@ class CrowdSetup {
       //console.log("tick callback " + nonce);
       //Parse the new frameAgentDetails
       let frameAgentDetails = JSON.parse(event.data.agents);
+      
+
       //Assign idx numbers to each agent
       for (let frameAgentDetail of frameAgentDetails) {
         agentConstants.find(a => a.id == frameAgentDetail.id).idx = frameAgentDetail.idx;

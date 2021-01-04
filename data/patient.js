@@ -1,7 +1,8 @@
 // NOT FULLY PORTED
 import GoTo from "../behavior/GoTo.js"
 import WaitForever from "../tasks/WaitForever.js"
-
+import PatientTempState from "../support/PatientTempState.js"
+import FollowInstructions from "../tasks/FollowInstructions.js"
 
 
 class patient {
@@ -24,6 +25,7 @@ class patient {
       // how to set to repeat?
       .sequence("Patient Actions")
       .splice(this.goTo.tree)
+      .splice(new FollowInstructions(me, myIndex).tree)
       .splice(new WaitForever(myIndex).tree)
             
 
@@ -51,7 +53,7 @@ class patient {
 
   async update(agentConstants, crowd, msec) {
     this.toReturn = null;//Set the default return value to null (don't change destination)
-    await this.tree.tick({ agentConstants, crowd, msec }) //Call the behavior tree
+    await this.tree.tick({ agentConstants, crowd, frame:crowd, msec }) //Call the behavior tree
     return this.toReturn; //Return what the behavior tree set the return value to
   }
 
