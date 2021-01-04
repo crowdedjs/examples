@@ -1,11 +1,8 @@
 // NEEDS WORK
 
 class GetResponsibility {
-    constructor(myIndex, start, end) {
+    constructor(agent, myIndex) {
         this.index = myIndex;
-        this.waypoints = [];
-        this.waypoints.push(start);
-        this.waypoints.push(end);
 
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
         let self = this;//Since we need to reference this in anonymous functions, we need a reference

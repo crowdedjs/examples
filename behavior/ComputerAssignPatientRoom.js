@@ -3,7 +3,7 @@ import ComputerEntry from "../support/ComputerEntry.js";
 
 class ComputerAssignPatientRoom {
 
-  constructor() {
+  constructor(agent, myIndex) {
     this.index = myIndex;
     
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();

@@ -112,8 +112,9 @@ class MedicalAgent extends AMedician {
         else if (agent.type == "Nurse")
           this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         else if (agent.type == "Greeter Nurse")
-          this.behavior = new greeterNurse(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-        else
+          //this.behavior = new greeterNurse(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+          this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+          else
           throw new "That nures type does not exist " + agent.type;
       }
       else if (agent.name == "Attending") {

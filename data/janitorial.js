@@ -3,7 +3,7 @@ import WaitForever from "../behavior/WaitForever.js";
 
 class janitorial {
 
-    constructor(myIndex, start, end) {
+    constructor(agent, myIndex, start, end) {
       this.index = myIndex;
       this.waypoints = [];
       this.waypoints.push(start);

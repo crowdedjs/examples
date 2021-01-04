@@ -1,7 +1,7 @@
 // NEED HELP WITH US
 
 class TakeTime {
-    constructor() {
+    constructor(myIndex) {
         this.index = myIndex;
         let self = this;
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();

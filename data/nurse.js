@@ -5,7 +5,7 @@ import responsibility from "./responsibility.js";
 
 class nurse {
 
-    constructor(myIndex, start, end) {
+    constructor(agent, myIndex, start, end) {
       this.index = myIndex;
       this.waypoints = [];
       this.waypoints.push(start);

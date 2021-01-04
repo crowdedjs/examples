@@ -2,13 +2,13 @@ import Vector3 from "./Vector3.js";
 
 class AssignPatientToTriageNurse {
 
-  constructor() {
+  constructor(myIndex) {
     this.index = myIndex;
     
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
     let self = this;
-    let me = agent;
+    //let me = agent;
 
     this.tree = builder
       .sequence("Assign Patient To Triage Nurse")
@@ -17,7 +17,7 @@ class AssignPatientToTriageNurse {
           let simulationAgent = t.crowd.find(a => a.id == self.index);
           let myLocation = new Vector3(simulationAgent.x, simulationAgent.y, simulationAgent.z);
           
-          //
+          /*
           List<IPerson> people = hospital.activePeople;
           IMedician closestTriageNurse = (IMedician) people.stream()
               .filter(i->i instanceof IMedician 
@@ -29,7 +29,7 @@ class AssignPatientToTriageNurse {
               .orElse(null);
           if(closestTriageNurse == null || closestTriageNurse.getLocation().distanceTo(myLocation) > 3)
             return Status.RUNNING; //No triage nurse is available or close enough
-          //
+          */
 
           myPatient = me.CurrentPatient;
           closestTriageNurse.CurrentPatient(myPatient);

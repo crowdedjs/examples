@@ -1,5 +1,5 @@
 class FollowInstructions {
-    constructor() {
+    constructor(myIndex) {
         this.index = myIndex;
         let self = this;
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();

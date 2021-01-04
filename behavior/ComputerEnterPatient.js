@@ -2,7 +2,7 @@ import Computer from "../support/Computer.js";
 import ComputerEntry from "../support/ComputerEntry.js";
 
 class ComputerEnterPatient {
-    constructor() {
+    constructor(agent, myIndex) {
         this.index = myIndex;
         let self = this;
         let me = agent;

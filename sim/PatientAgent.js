@@ -20,7 +20,7 @@ class PatientAgent extends APatient {
 
   constructor(agent, locations) {
     // From java code, we need this?
-    // super(location, UUID, severity, arrivalCount);
+    //super(location, UUID, severity, arrivalCount);
 
     this.name = agent.name;
     this.locations = locations;

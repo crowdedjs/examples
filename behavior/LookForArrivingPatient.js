@@ -1,7 +1,7 @@
 import Vector3 from "./Vector3.js";
 
 class LookForArrivingPatient {
-    constructor() {
+    constructor(myIndex) {
         this.index = myIndex;
         let self = this;
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
@@ -15,13 +15,13 @@ class LookForArrivingPatient {
 
                 let closestPatient = null;
                                
-                // HOW TO WRITE THIS IN JS???
+                /*
                 let closestPatient = (APatient) agents.stream()
                     .filter(i=>i instanceof APatient && ((APatient)i).getPatientTempState() == "ARRIVING")
                     .sort((a,b)=>(int)(a.getLocation().distanceTo(myLocation) - b.getLocation().distanceTo(myLocation)))
                     .findFirst()
                     .orElse(null);
-                //
+                */
 
 
                 if (closestPatient == null || closestPatient.getLocation().distanceTo(myLocation) > 1)
