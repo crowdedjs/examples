@@ -16,8 +16,8 @@ class patient {
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
     let me = agent;
-    let myGoal = me.locations.find(l => l.name == "CHECK_IN");
-    if (!myGoal) throw new "We couldn't find a location called CHECK_IN";
+    let myGoal = me.locations.find(l => l.name == "Check In");
+    if (!myGoal) throw new "We couldn't find a location called Check In";
 
     this.goTo = new GoTo(self.index, myGoal.position);
 

@@ -9,7 +9,7 @@ class APatient extends APerson {
 
     patientPregnancyState = "NOT_EXPECTING";
     
-    patientTempState = "ARRIVED";
+    patientTempState = "ARRIVING";
     
 	severity; // Severity
 	// SEVERITY LEVELS: ESI1, ESI2, ESI3, ESI4, ESI5
