@@ -144,7 +144,6 @@ class ControlCreator {
     let remainder = ticks - minutes * (60 * 25);
     let seconds = Math.floor(remainder / 25);
     remainder -= seconds * 25;
-    //return ("" + minutes).padStart(2, "0") + ":" + ("" + seconds).padStart(2, "0") + ":" + ("" + remainder).padStart(2, "0");
     return milliseconds;
   }
 
@@ -168,7 +167,6 @@ class ControlCreator {
         a.innerText = simulation.title;
         //a.addEventListener('click', ()=>window.search = `objPath=${simulation.objPath}&arrivalPath=${simulation.arrivalPath}&secondsOfSimulation=${simulation.secondsOfSimulation}&locationsPath=${simulation.locationsPath}`)
         divLink.appendChild(a);
-
       }
       div.style.visibility = "visible";
     }

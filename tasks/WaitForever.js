@@ -23,8 +23,8 @@ class WaitForever {
             .end()
             .build();
     }
-    async update(agentConstants, positions, msec) {
-        await this.tree.tick({ agentConstants, positions, msec }) //Call the behavior tree
+    async update(agent, agentConstants, frame, msec) {
+        await this.tree.tick({ agentConstants, frame, msec }) //Call the behavior tree
     }
 
 }

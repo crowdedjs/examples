@@ -2,6 +2,7 @@ import * as viewer from "./viewer.js"
 import simulations from "./simulations.js"
 import ControlCreator from "./ControlCreator.js"
 import * as THREE from "./lib/three.module.js"
+import Vector3 from "../behavior/Vector3.js"
 
 
 //let simulations = [];
@@ -20,8 +21,6 @@ class CrowdSetup {
   static firstTicks = [];
   static three = {}
 
-
-
   constructor(objValue, agentConstants, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, elementParent, drawCallback) {
     let locations;
     this.first = true;
@@ -32,7 +31,6 @@ class CrowdSetup {
     if (elementParent != null) {
       controls = new ControlCreator(secondsOfSimulation, millisecondsBetweenFrames, simulations, elementParent);
       viewer.boot(CrowdSetup.three, objValue, locations);
-
     }
     else {
       this.first = false;
@@ -42,7 +40,6 @@ class CrowdSetup {
     CrowdSetup.allSimulations.push(agentPositions);
     CrowdSetup.firstTicks.push(-1);
     this.myIndex = CrowdSetup.allSimulations.length - 1;
-
 
     main();
 
@@ -66,6 +63,8 @@ class CrowdSetup {
       //Assign idx numbers to each agent
       for (let frameAgentDetail of frameAgentDetails) {
         agentConstants.find(a => a.id == frameAgentDetail.id).idx = frameAgentDetail.idx;
+        agentConstants.find(a => a.id == frameAgentDetail.id).location = Vector3.fromObject(frameAgentDetail);
+       
       }
       //Add this list of frameAgentDetails to our array of position information
       agentPositions.push(frameAgentDetails);
@@ -89,6 +88,13 @@ class CrowdSetup {
           agent.hasEntered = true;
           //viewer.addAgent(CrowdSetup.three, agent, drawCallback)
           agent.inSimulation = true;
+        }
+      }
+     
+      for(let j = 0; j < agentConstants.length; j++){
+        let agent = agentConstants[j]
+        if(newAgents.includes(agent)){
+
         }
         else if (agent.hasEntered) {
           //Get the new destination based on the agent's behavior
@@ -173,7 +179,12 @@ class CrowdSetup {
 
         //Get the number of the frame we want to see
         let index = controls.getCurrentTick();
+
         index = Math.min(index, simulationAgents.length - 1);
+        //Force look at the current frame
+        index = simulationAgents.length -1;
+
+        
         //Get the positional data for that frame
         let frame = simulationAgents[index];
 

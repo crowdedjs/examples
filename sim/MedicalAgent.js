@@ -30,6 +30,7 @@ class MedicalAgent {
   idx; //Corresponds to the internal idx number used by recast
 
   constructor(agent, locations) {
+    //super(locations[0], agent.id, agent.medicianType, agent.medicianSubclass, agent.doctorYear, agent.arrivalLocation);
     this.name = agent.name;
     this.locations = locations;
     agent.locations = locations;
@@ -40,6 +41,7 @@ class MedicalAgent {
     this.patientName = agent.patientName;
     this.gender = agent.gender;
     this.id = agent.id;
+    this.patientTempState = undefined;
 
     let startLocation = locations.find(i => i.name == agent.arrivalLocation);
     if (!startLocation) console.error("Bad starting location " + agent.arrivalLocation);
@@ -165,6 +167,7 @@ class MedicalAgent {
    */
   isActive() { return active; }
   setActive(active) { this.active = active; }
+  getPatientTempState(){return this.patientTempState;}
 }
 
 export default MedicalAgent;

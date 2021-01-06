@@ -1,6 +1,7 @@
 // not fully ported
 import GoTo from "../behavior/GoTo.js"
 import WaitForever from "../tasks/WaitForever.js"
+import LookingForPatient from "../tasks/LookForArrivingPatient.js"
 
 
 class greeterNurse {
@@ -26,6 +27,7 @@ class greeterNurse {
       this.tree = builder
         .sequence("Greeter Nurse Behaviors")
             .splice(new GoTo(self.index, myGoal.position).tree)
+            .splice(new LookingForPatient(agent, myIndex).tree)
             .splice(new WaitForever(myIndex).tree)
             //.do("Wait Forever", (t) => new WaitForever(agent).execute())
 
@@ -62,7 +64,7 @@ class greeterNurse {
   
     async update(agentConstants, crowd, msec) {
       this.toReturn = null;//Set the default return value to null (don't change destination)
-      await this.tree.tick({ agentConstants, crowd, msec }) //Call the behavior tree
+      await this.tree.tick({ agentConstants, crowd, frame:crowd, msec }) //Call the behavior tree
       return this.toReturn; //Return what the behavior tree set the return value to
     }
   

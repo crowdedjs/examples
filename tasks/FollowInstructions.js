@@ -20,7 +20,7 @@ class FollowInstructions {
         let idx = t.agentConstants[self.index].idx;
         let simulationAgent = t.frame.find(f=>f.id == idx);
         let loc = new Vector3(simulationAgent.x, simulationAgent.y, simulationAgent.z);
-        let state = agent.getPatientTempState();
+        let state = t.self.getPatientTempState();
 
         if (state == PatientTempState.WAITING) {
           agent.destination = new Vector3(loc.x, loc.y, loc.z);

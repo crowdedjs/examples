@@ -87,7 +87,7 @@ class Vector3 {
     }
     distanceTo(other){
         if(!other) throw new Exception("distanceTo requires a valid Vector3 object as a parameter");
-        return this.subtract(this, other).length();
+        return Vector3.subtract(this, other).length();
     }
 }
 

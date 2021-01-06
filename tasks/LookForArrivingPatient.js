@@ -1,5 +1,4 @@
-import Vector3 from "../behavior/Vector3";
-import { Vector2 } from "../lib/three.module";
+import Vector3 from "../behavior/Vector3.js";
 import PatientState from "../support/PatientTempState.js";
 
 class LookForArrivingPatient {
@@ -16,13 +15,22 @@ class LookForArrivingPatient {
     this.tree = builder
       .sequence("Look For Arriving Patient")
       .do("Look For Arriving Patient", t => {
-        let simulationAgent = t.frame.find(a => a.id == self.index);
-        let myLocation = new Vector3(simulationAgent.x, simulationAgent.y, simulationAgent.z);
+        // let me = t.agentConstantPatients.find(t.)
+        let agentConstant = t.agentConstants.find(a => a.id == self.index);
+        let myLocation = agentConstant.location;
 
-        let closestPatients = t.frame.filter(p => p.name == "Patient")
-          .sort((a, b) => Vector3.fromObject(a).distanceTo(myLocation) - Vector3.fromObject(b).distanceTo(myLocation))
+        let agentConstantPatients = t.agentConstants.filter(a=>a.name == "patient" && t.frame.some(t=>t.id==a.id));
+        
+        // for(let i = 0; i < agentConstantPatients.length; i++){
+        //   let agentConstantPatient = agentConstantPatients[i];
+        //   //agentConstantPatient.location = Vector3.fromObject(t.frame.find(f=>f.id == agentConstantPatient.id));
+        // }
+
+
+        let closestPatients = agentConstantPatients
+          .sort((a, b) => a.location.distanceTo(myLocation) - b.location.distanceTo(myLocation))
         let closestPatient = closestPatients[0] || null;
-        if (closestPatient == null || Vector3.fromXYZ(closestPatient).distanceTo(myLocation) > 1)
+        if (closestPatient == null || Vector3.fromObject(closestPatient.location).distanceTo(myLocation) > 3)
           return fluentBehaviorTree.BehaviorTreeStatus.Running;
         //We found our patient
         closestPatient.patientState = PatientState.WAITING;
@@ -37,6 +45,9 @@ class LookForArrivingPatient {
       .end()
       .build()
   }
+  async update(agentConstants, positions, msec) {
+    await this.tree.tick({ agentConstants, positions, msec }) //Call the behavior tree
+}
 
 }
 
