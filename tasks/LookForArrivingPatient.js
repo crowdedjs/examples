@@ -33,10 +33,10 @@ class LookForArrivingPatient {
         if (closestPatient == null || Vector3.fromObject(closestPatient.location).distanceTo(myLocation) > 3)
           return fluentBehaviorTree.BehaviorTreeStatus.Running;
         //We found our patient
-        closestPatient.patientState = PatientState.WAITING;
-        closestPatient.instructor = me;
-        this.me.currentPatient = closestPatient;
-        return fluentBehaviorTree.BehaviorTreeStatus.Running;
+        closestPatient.patientTempState = PatientState.WAITING;
+        closestPatient.instructor = self.me;
+        self.me.currentPatient = closestPatient;
+        return fluentBehaviorTree.BehaviorTreeStatus.Success
         
 
 

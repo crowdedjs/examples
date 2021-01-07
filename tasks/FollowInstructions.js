@@ -17,10 +17,12 @@ class FollowInstructions {
     this.tree = builder
       .sequence("Follow Instructions")
       .do("Follow Instructions", t => {
+        let agentConstant = t.agentConstants.find(a => a.id == self.index);
+        
         let idx = t.agentConstants[self.index].idx;
         let simulationAgent = t.frame.find(f=>f.id == idx);
         let loc = new Vector3(simulationAgent.x, simulationAgent.y, simulationAgent.z);
-        let state = t.self.getPatientTempState();
+        let state = agentConstant.getPatientTempState();
 
         if (state == PatientTempState.WAITING) {
           agent.destination = new Vector3(loc.x, loc.y, loc.z);
