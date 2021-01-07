@@ -1,6 +1,8 @@
+import AThing from "./AThing.js";
+
 class APerson extends AThing {
 	
-	APerson(location, UUID, arrivalTick) {
+	constructor(location, UUID, arrivalTick) {
 		super(location);
 		this.UUID = UUID;
 		this.arrivalTick = arrivalTick;	
@@ -98,3 +100,5 @@ class APerson extends AThing {
 	}
 
 }
+
+export default APerson;

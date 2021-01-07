@@ -23,7 +23,6 @@ class radiology {
 
 
     this.tree = builder
-      // how to set to repeat?
       .sequence("Go and Idle")
       .splice(new GoTo(self.index, myGoal.position).tree)
       .splice(new WaitForever(myIndex).tree)

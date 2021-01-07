@@ -30,7 +30,6 @@ class MedicalAgent {
   idx; //Corresponds to the internal idx number used by recast
 
   constructor(agent, locations) {
-    //super(locations[0], agent.id, agent.medicianType, agent.medicianSubclass, agent.doctorYear, agent.arrivalLocation);
     this.name = agent.name;
     this.locations = locations;
     agent.locations = locations;

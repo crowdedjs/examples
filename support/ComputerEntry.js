@@ -20,10 +20,10 @@ class ComputerEntry {
     ekg; //string
     answeredQuestions = false;
 
-   ComputerEntry(patient, complaint)
+   constructor(patient, complaint) //APatient, string
    {
         this.patient = patient;
-        chiefComplaint = complaint;
+        this.chiefComplaint = complaint;
    }
 
    get AnsweredQuestions() {
@@ -174,7 +174,7 @@ class ComputerEntry {
         return this.bedReq;
     }
 
-    set BedReq() {
+    set BedReq(bedReq) {
         this.bedReq = bedReq;
         change();
     }
@@ -253,3 +253,5 @@ class ComputerEntry {
     }
 
 }
+
+export default ComputerEntry;
