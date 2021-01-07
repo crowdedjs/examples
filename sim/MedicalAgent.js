@@ -6,10 +6,9 @@ import AMedician from "../support/AMedician.js"
 
 import attending from "../data/attending.js"
 //import ct from "../data/ct.js"
-import greeterNurse from "../data/greeterNurse.js"
-//import janitorial from "../data/janitorial.js"
+//import greeterNurse from "../data/greeterNurse.js"
+import janitorial from "../data/janitorial.js"
 //import nurse from "../data/nurse.js"
-import patient from "../data/patient.js"
 //import radiology from "../data/radiology.js"
 //import resident from "../data/resident.js"
 //import tech from "../data/tech.js"
@@ -56,44 +55,6 @@ class MedicalAgent extends AMedician {
     this.destY = 0;
     this.destZ = 0;
 
-    //this.startMSec = Math.floor(parseFloat(splits[1]));
-
-    ///Now check to see what behavior this agent should receive
-    // if (splits.length == 8 || splits[8].trim() == "" || splits[8].trim().toLowerCase() == "none") //i.e. there is no behavior specification
-    //   this.behavior = new None(Agent.index++);
-    // else {
-    //   //In this case we have to figure it out
-    //   //The behavior is determined by the first word after the comma. Everything else can be a argument in the constructor
-    //   let behave = splits[8].trim().toLowerCase();
-    //   if (behave == "back")
-    //     this.behavior = new BackAndForth(Agent.index++, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ]);
-    // }
-
-
-    // if (agent.name == "patient") {
-    //   this.behavior = new patient(agent, agent.id, null, null);
-    // }
-    /*
-    else if(medicianType == MedicianClass.DOCTOR) {
-        if(medicianSubclass == MedicianSubclass.ATTENDING)
-          reader = new BufferedReader(new FileReader("./data/attending.tree"));
-        else if(medicianSubclass == MedicianSubclass.RESIDENT)
-          reader = new BufferedReader(new FileReader("./data/responsibility.tree"));
-    }
-    else if(medicianType == MedicianClass.TECH){
-        if(medicianSubclass == MedicianSubclass.CT)
-          reader = new BufferedReader(new FileReader("./data/ct.tree"));
-        else if(medicianSubclass == MedicianSubclass.JANITORIAL)
-          reader = new BufferedReader(new FileReader("./data/janitorial.tree"));
-        else if(medicianSubclass == MedicianSubclass.RADIOLOGY)
-          reader = new BufferedReader(new FileReader("./data/radiology.tree"));
-        else
-          reader = new BufferedReader(new FileReader("./data/responsibility.tree"));
-    }
-    
-    else if(medicianType == MedicianClass.NURSE)
-    */
-    //else {
     if (agent.name == "Tech") {
       this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       if (agent.type == "Tech")
@@ -101,7 +62,7 @@ class MedicalAgent extends AMedician {
       else if (agent.type == "CT")
         this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       else if (agent.type == "Janitorial")
-        this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new janitorial(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       else if (agent.type == "Radiology")
         this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       else
@@ -135,17 +96,6 @@ class MedicalAgent extends AMedician {
       throw new "The agent name of " + agent.name + " is not a valid agent name.";
     
       //This is where we assign behaviors based on medical position type
-
-      /*
-      else if(medicianSubclass == MedicianSubclass.GREETER_NURSE)
-					reader = new BufferedReader(new FileReader("./data/greeterNurse.tree"));
-			else if(medicianSubclass == MedicianSubclass.NURSE)
-					reader = new BufferedReader(new FileReader("./data/responsibility.tree"));
-      */
-      // else {
-      //   this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-      // }
-    //}
   }
 
 

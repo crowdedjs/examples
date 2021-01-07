@@ -1,19 +1,24 @@
 To Do:
-- Finish responsibility tree
+- Finish trees
+- Forget which update format was right in the trees, I think it was the shorter one. Fix them!
 - How to implement addComment in HospitalModel from Java code and Log
-- Finish other trees
 - Question in Computer related files on how to reference computer
 - ComputerAssignPatientRoom needs list of rooms
 - Need help with TakeTime.js
 - Might be missing some imports
+- delete Type and subClass (and location?) from patient and medical agent stuff (already represented
+with name and type)
+- There are multiple rooms of each type
 
 Testing:
+- Throwing errors doesn't work
 - Test that extending MedicalAgent and PatientAgent granted them other behaviors
 - Test behavior trees
 - Able to pass in values to all the behaviors, like GoTo?
 
 Ryan's notes on features that need to be expanded or added:
 - Emergencies are simply failure placeholders currently
+- Janitorial just goes to Fast Track and waits forever (placeholder?)
 - AssignBed needs a list of beds(rooms) to grab from
 - Tech and Resident have same tree but different starting place
 - Noticed ComputerEnterPatient.js is always "Unknown" complaint

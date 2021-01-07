@@ -1,5 +1,3 @@
-// NEED HELP WITH US
-
 class TakeTime {
     constructor(myIndex) {
         this.index = myIndex;
@@ -9,7 +7,8 @@ class TakeTime {
         this.tree = builder
             .sequence("Take Time")
                 .do("Take Time", (t) => {
-                    
+                    // milliseconds = # x 25 fps
+
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
             })
             .end()

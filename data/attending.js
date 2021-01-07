@@ -15,16 +15,15 @@ class attending {
 
     let me = agent;
     let myGoal = me.locations.find(l => l.name == "B Desk");
-    if (!myGoal) throw new "We couldn't find a location called B_DESK";
+    if (!myGoal) throw new "We couldn't find a location called B Desk";
 
     this.goTo = new GoTo(self.index, myGoal.position);
 
-
     this.tree = builder
+
       .sequence("Attending Tree")
-      .splice(this.goTo.tree)
-      .splice(new WaitForever().tree)
-            
+        .splice(this.goTo.tree)
+        .splice(new WaitForever().tree)   
       .end()
       .build();
   }
