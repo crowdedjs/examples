@@ -63,7 +63,7 @@ class CrowdSetup {
       //Assign idx numbers to each agent
       for (let frameAgentDetail of frameAgentDetails) {
         agentConstants.find(a => a.id == frameAgentDetail.id).idx = frameAgentDetail.idx;
-        agentConstants.find(a => a.id == frameAgentDetail.id).location = Vector3.fromObject(frameAgentDetail);
+        //agentConstants.find(a => a.id == frameAgentDetail.id).location = Vector3.fromObject(frameAgentDetail);
        
       }
       //Add this list of frameAgentDetails to our array of position information
