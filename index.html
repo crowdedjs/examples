@@ -57,17 +57,7 @@
         }
         //Start the simulation.
         new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, (agentConstant) => {
-          agentConstant = agentConstants.find(a => a.id == agent.id);
-          if (agentConstant.name == "patient")
-            return "white";
-          else
-            if (agentConstant.name == "Tech")
-              return "green";
-          if (agentConstant.name == "Nurse")
-            return "red";
-          if (agentConstant.name == "Attending")
-            return "blue";
-          return "black"
+          //This is no longer being used. Should it be integrated back in or dropped?
         });
 
       })
