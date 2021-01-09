@@ -24,9 +24,7 @@ class CrowdSetup {
   constructor(objValue, agentConstants, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, elementParent, drawCallback) {
     let locations;
     this.first = true;
-    this.nonce = Math.random();
     let self = this;
-    console.log(this.nonce);
     locations = locationValue;
     if (elementParent != null) {
       controls = new ControlCreator(secondsOfSimulation, millisecondsBetweenFrames, simulations, elementParent);
@@ -45,7 +43,6 @@ class CrowdSetup {
 
     //When we get our first frame, remove the loading div
     function bootCallback() {
-      console.log("Boot callback " + self.nonce);
       document.getElementById("loading").style.visibility = "hidden";
       document.getElementById("divRange").style.visibility = "visible";
     }
@@ -55,7 +52,6 @@ class CrowdSetup {
       if (CrowdSetup.firstTicks[self.myIndex] == -1) {
         CrowdSetup.firstTicks[self.myIndex] = new Date();
       }
-      //console.log("tick callback " + nonce);
       //Parse the new frameAgentDetails
       let frameAgentDetails = JSON.parse(event.data.agents);
       
@@ -71,7 +67,6 @@ class CrowdSetup {
 
       //Track the frame number
       let i = event.data.frame;
-      //console.log("frame " + i + " " + self.nonce)
 
       //Three arrays for data we will send to the next simulation frame
       let newAgents = [];
@@ -117,13 +112,12 @@ class CrowdSetup {
       }
       //Check to see if we need to end the simulation
       if (i < secondsOfSimulation * 1_000 / millisecondsBetweenFrames) {
-        //console.log("Call next " + nonce)
         //If the simulation needs to continue, send on the information 
         //about new agentConstants, agentConstants with new destinations, and agentConstants that have left the simulation
         nextTick([JSON.stringify(newAgents, replacer), JSON.stringify(newDestinations, replacer), JSON.stringify(leavingAgents, replacer)])
       }
       else {
-        console.log("Done " + self.nonce)
+        console.log("Done with tick callback.")
       }
     }
 
@@ -137,7 +131,7 @@ class CrowdSetup {
 
       //bootWorker needs to be included in the calling html file
       //Start the threaded simulator
-      bootWorker(objValue, secondsOfSimulation, millisecondsBetweenFrames, locationValue, bootCallback, tickCallback, self.nonce);
+      bootWorker(objValue, secondsOfSimulation, millisecondsBetweenFrames, locationValue, bootCallback, tickCallback, null);
     }
 
     //Respond to the viewer timer
