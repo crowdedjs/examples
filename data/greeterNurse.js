@@ -1,7 +1,12 @@
 // not fully ported
+import AssignPatientToTriageNurse from "../behavior/AssignPatientToTriageNurse.js";
+import ComputerAssignPatientRoom from "../behavior/ComputerAssignPatientRoom.js"
+import ComputerEnterPatient from "../behavior/ComputerEnterPatient.js";
+import ComputerScorePatient from "../behavior/ComputerScorePatient.js";
 import GoTo from "../behavior/GoTo.js"
-import WaitForever from "../tasks/WaitForever.js"
-import LookingForPatient from "../tasks/LookForArrivingPatient.js"
+import LookForArrivingPatient from "../behavior/LookForArrivingPatient.js";
+import TakeTime from "../behavior/TakeTime.js";
+import WaitForever from "../behavior/WaitForever.js"
 
 
 class greeterNurse {
@@ -16,9 +21,8 @@ class greeterNurse {
 
       let self = this;//Since we need to reference this in anonymous functions, we need a reference
       let me = agent;
-      let goToName = "Greeter Nurse Wait";
-      let myGoal = me.locations.find(l => l.name == goToName);
-      if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
+      let myGoal = me.locations.find(l => l.name == "Check In");
+      if (!myGoal) throw new "We couldn't find a location called Check In";
   
       //this.goTo = new GoTo(self.index, myGoal.position);
   
@@ -27,44 +31,32 @@ class greeterNurse {
       this.tree = builder
         .sequence("Greeter Nurse Behaviors")
             .splice(new GoTo(self.index, myGoal.position).tree)
-            .splice(new LookingForPatient(agent, myIndex).tree)
-            .splice(new WaitForever(myIndex).tree)
-            //.do("Wait Forever", (t) => new WaitForever(agent).execute())
+                        
+            .splice(new LookForArrivingPatient().tree)
 
+            .splice(new TakeTime(30).tree) // seconds: uniform, 30, 90
+
+            .splice(new ComputerEnterPatient().tree)
+
+            .splice(new TakeTime(30).tree) // seconds: uniform, 30, 60
+
+            .splice(new ComputerScorePatient().tree)
+
+            .splice(new TakeTime(30).tree) // seconds: uniform, 30, 60
+
+            .splice(new ComputerAssignPatientRoom().tree)
             
-            .do("Look for Arriving Patient", (t) => {
+            .splice(new AssignPatientToTriageNurse().tree)
 
-            })
-            .do("Take Time", (t) => {
-                // seconds: uniform, 30, 90
-            })
-            .do("Computer Enter Patient", (t) => {
-
-            })
-            .do("Take Time", (t) => {
-                // seconds: uniform, 30, 60
-            })
-            .do("Computer Score Patient", (t) => {
-
-            })
-            .do("Take Time", (t) => {
-                // seconds: uniform, 30, 60
-            })
-            .do("Computer Assign Patient Room", (t) => {
-
-            })
-            .do("Assign Patient to Triage Nurse", (t) => {
-
-            })
-            .do("Wait Forever", (t) => new WaitForever().execute())
+            .splice(new WaitForever().tree)  
                     
         .end()
         .build();
     }
   
-    async update(agentConstants, crowd, msec) {
+    async update(agents, crowd, msec) {
       this.toReturn = null;//Set the default return value to null (don't change destination)
-      await this.tree.tick({ agentConstants, crowd, frame:crowd, msec }) //Call the behavior tree
+      await this.tree.tick({ agents, crowd, msec }) //Call the behavior tree
       return this.toReturn; //Return what the behavior tree set the return value to
     }
   

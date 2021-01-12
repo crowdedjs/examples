@@ -1,6 +1,5 @@
-// NOT FULLY PORTED
 import GoTo from "../behavior/GoTo.js"
-import WaitForever from "../tasks/WaitForever.js"
+import WaitForever from "../behavior/WaitForever.js"
 
 
 class janitorial {
@@ -23,15 +22,10 @@ class janitorial {
 
 
     this.tree = builder
-      // how to set to repeat?
       .sequence("Janitorial")
       .splice(new GoTo(self.index, myGoal.position).tree)
       .splice(new WaitForever(myIndex).tree)
-      .do("Go to Room", (t) => {
-        // FAST_TRACK type
-      })
-
-      .do("Wait Forever", (t) => new WaitForever(myIndex).execute())
+      
       .end()
       .build();
   }

@@ -21,6 +21,7 @@
     javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
 
     import MedicalAgent from "./sim/MedicalAgent.js"
+    import PatientAgent from "./sim/PatientAgent.js"
     import CrowdSetup from "./index.js"
     import urlParser from "./urlParser.js"
 
@@ -47,7 +48,10 @@
         //Add an agent with a behavior
         //for (let agent of arrivalValue) {
         arrivalValue.forEach((agent, index) => {
-          agentConstants.push(new MedicalAgent(agent, locationValue));
+          if (agent.name == "patient")
+            agentConstants.push(new PatientAgent(agent, locationValue));
+          else
+            agentConstants.push(new MedicalAgent(agent, locationValue));
         })
 
         //Assign a unique id to each agent.

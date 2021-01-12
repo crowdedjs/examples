@@ -1,8 +1,12 @@
 // NOT FULLY PORTED
+import GetComputerResponsibility from "../behavior/GetComputerResponsibility.js";
+import GetResponsibility from "../behavior/GetResponsibility.js";
+import GoTo from "../behavior/GoTo.js";
+import HandleResponsibility from "../behavior/HandleResponsibility.js";
 
 class responsibility {
 
-    constructor(myIndex, start, end) {
+    constructor(agent, myIndex, start, end) {
       this.index = myIndex;
       this.waypoints = [];
       this.waypoints.push(start);
@@ -13,66 +17,87 @@ class responsibility {
   
       let self = this;//Since we need to reference this in anonymous functions, we need a reference
   
+      let me = agent;
+      //let myGoal = me.Computer;
+      //this.goTo = new GoTo(self.index, myGoal.position);
+
       this.tree = builder
       .sequence("Responsibility")
+        
+        // MAKE OWN FILE IF SHOWS UP ANYWHERE ELSE
         .do("getRooms", (t) => {
-                
+            me.addRoom(me.locations.find(l => l.name == "C1"));
+            return fluentBehaviorTree.BehaviorTreeStatus.Success; 
         })
+        // MAKE OWN FILE IF SHOWS UP ANYWHERE ELSE
         .do("getComputer", (t) => {
-                
-        })        
-        // how to repeat without repeater?
+            // Not sure if medician subclass is implemented
+            switch(me.getMedicianSubclass()) {
+                case TECH:
+                    me.Computer(me.locations.find(l => l.name == "TechPlace"));
+                    break;
+                case NURSE:
+                    me.Computer(me.locations.find(l => l.name == "NursePlace"));
+                    break;
+                case RESIDENT:
+                    me.Computer(me.locations.find(l => l.name == "ResidentStart"));
+                    break;
+                }
+
+            return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        })
+
+        // REPEAT
             .sequence("Computer Operations")
-                .do("Go To Computer", (t) => {
-                    
-                })
+                .splice(new GoTo(self.index, me.Computer)) // GO TO COMPUTER
+            
                 .selector("Emergency")
-                    .do("Handle Emergency", (t) => new HandleEmergency().execute())
-                    .inverter("")
-                        // repeat until fail???
-                            .sequence("Computer Stuff")
-                                .do("Go To Computer", (t) => {
-                    
-                                })
-                                .do("Get Computer Responsibility", (t) => {
-                    
-                                })
-                                .do("Handle Responsibility", (t) => {
-                    
-                                })
-                            .end()
+                    .do("Handle Emergency", (t) => { return fluentBehaviorTree.BehaviorTreeStatus.Failure; }) // PLACEHOLDER
+                    //.inverter("")
+                    .sequence("Computer Stuff")
+                        .splice(new GoTo(self.index, me.Computer)) // GO TO COMPUTER
+                        
+                        //NOT FINISHED
+                        .splice(new GetComputerResponsibility().tree)
+                        //NOT FINISHED
+                        .splice(new HandleResponsibility().tree)
+
+
                     .end()
-                    .inverter("")
-                        // repeat until fail???
-                            .sequence("Handle Responsibility")
-                                .do("Go To Computer", (t) => {
-                                    
-                                })
-                                .do("Get Responsibility", (t) => {
-                    
-                                })
-                                .do("Go To Responsibility", (t) => {
-                    
-                                })
-                                .do("Wait For Responsibility Patient", (t) => {
-                    
-                                })
-                                .do("Set Up Transport", (t) => {
-                    
-                                })
-                                .do("Handle Responsibility", (t) => {
-                    
-                                })
-                                // repeat until fail???
-                                    .sequence("Reassess Responsibility")
-                                        .do("Reassess", (t) => {
-                    
-                                        })
-                                        .do("Handle Responsibility", (t) => {
-                    
-                                        })
-                                    .end()
-                    .end()
+                    //.end()
+                    //.inverter("")
+                    .sequence("Handle Responsibility")
+                        .splice(new GoTo(self.index, me.Computer)) // GO TO COMPUTER
+
+                        //NOT FINISHED
+                        .splice(new GetResponsibility().tree)
+
+                        .do("Go To Responsibility", (t) => {
+                            //WRITE THIS BEHAVIOR
+                        })
+                        .do("Wait For Responsibility Patient", (t) => {
+                            //WRITE THIS BEHAVIOR            
+                        })
+                        .do("Set Up Transport", (t) => {
+                            //WRITE THIS BEHAVIOR            
+                        })
+                        //NOT FINISHED
+                        .splice(new HandleResponsibility().tree)
+
+                        // UNTIL FAIL?
+                        .sequence("Reassess Responsibility")
+                            .do("Reassess", (t) => {
+                                //WRITE THIS BEHAVIOR
+                            })
+                            //NOT FINISHED
+                            .splice(new HandleResponsibility().tree)
+                        .end()
+                    //.end()
+                    .do("Do Nothing", (t) => {
+                        // return running?
+                        // behavior runs once and succeeds, and if called again, returns running
+                    })
+
                 .end()
             .end()
 
@@ -80,11 +105,12 @@ class responsibility {
         .build();
     }
   
-    async update(agentConstants, crowd, msec) {
+    async update(agents, crowd, msec) {
       this.toReturn = null;//Set the default return value to null (don't change destination)
-      await this.tree.tick({ agentConstants, crowd, msec }) //Call the behavior tree
+      await this.tree.tick({ agents, crowd, msec }) //Call the behavior tree
       return this.toReturn; //Return what the behavior tree set the return value to
     }
   
   }
-  
+
+export default responsibility;

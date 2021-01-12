@@ -1,6 +1,5 @@
-// NOT FULLY PORTED
 import GoTo from "../behavior/GoTo.js"
-import WaitForever from "../tasks/WaitForever.js"
+import WaitForever from "../behavior/WaitForever.js"
 
 
 class radiology {
@@ -26,12 +25,7 @@ class radiology {
       .sequence("Go and Idle")
       .splice(new GoTo(self.index, myGoal.position).tree)
       .splice(new WaitForever(myIndex).tree)
-      .do("Go to Room", (t) => {
-
-      })
-
-      .do("Wait Forever", (t) => new WaitForever(myIndex).execute())
-
+      
       .end()
       .build();
   }
