@@ -1,15 +1,24 @@
 class TakeTime {
-    constructor(myIndex) {
-        this.index = myIndex;
-        let self = this;
+    constructor(minTime, maxTime) {
+
+        // let amountTime = time;
+
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
         this.tree = builder
             .sequence("Take Time")
                 .do("Take Time", (t) => {
                     // milliseconds = # x 25 fps
+                    // let milliseconds = amountTime * 25;
+                    
+                    let milliseconds = (Math.random() * (maxTime - minTime) + minTime) * 25;
 
-                    return fluentBehaviorTree.BehaviorTreeStatus.Running;
+                    while (milliseconds > 0)
+                    {
+                        milliseconds--;
+                    }
+
+                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
             .end()
             .build();

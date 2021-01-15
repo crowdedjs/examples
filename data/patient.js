@@ -18,7 +18,7 @@ class patient {
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
     let me = agent;
     let myGoal = me.locations.find(l => l.name == "Check In");
-    if (!myGoal) throw new "We couldn't find a location called Check In";
+    if (!myGoal) throw new Exception("We couldn't find a location called Check In");
 
     this.goTo = new GoTo(self.index, myGoal.position);
 
@@ -30,12 +30,11 @@ class patient {
 
         .splice(new Stop().tree)
      
-      //
-      .do("Log Text", (t) => {
-        // "I stopped"
-      })
-      //
-
+      // For testing purposes, relic from java codebase
+      // .do("Log Text", (t) => {
+      //   // "I stopped"
+      // })
+      
       .splice(new FollowInstructions().tree)
 
       .splice(new WaitForever().tree)
@@ -44,9 +43,9 @@ class patient {
   }
 
   async update(agentConstants, crowd, msec) {
-    this.toReturn = null;//Set the default return value to null (don't change destination)
+    //this.toReturn = null;//Set the default return value to null (don't change destination)
     await this.tree.tick({ agentConstants, crowd, msec }) //Call the behavior tree
-    return this.toReturn; //Return what the behavior tree set the return value to
+    //return this.toReturn; //Return what the behavior tree set the return value to
   }
 
 }

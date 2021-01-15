@@ -76,7 +76,7 @@ class MedicalAgent extends AMedician {
         this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         //this.behavior = new radiology(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       else
-        throw new "That tech type does not exist " + agent.type;
+        throw new Exception("That tech type does not exist " + agent.type);
     }
     else if (agent.name == "Nurse") {
       this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
@@ -91,7 +91,7 @@ class MedicalAgent extends AMedician {
         this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         //this.behavior = new greeterNurse(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       else
-        throw new "That nurse type does not exist " + agent.type;
+        throw new Exception("That nurse type does not exist " + agent.type);
     }
     else if (agent.name == "Attending") {
       this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
@@ -108,10 +108,10 @@ class MedicalAgent extends AMedician {
         this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
         //this.behavior = new resident(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       else
-        throw new "That resident type does not exist " + agent.type;
+        throw new Exception("That resident type does not exist " + agent.type);
     }
     else {
-      throw new "The agent name of " + agent.name + " is not a valid agent name."
+      throw new Exception("The agent name of " + agent.name + " is not a valid agent name.");
     }   
   }
 
