@@ -2,7 +2,6 @@ import * as viewer from "./viewer.js"
 import simulations from "./simulations.js"
 import ControlCreator from "./ControlCreator.js"
 import * as THREE from "./lib/three.module.js"
-import Vector3 from "../behavior/Vector3.js"
 
 
 //let simulations = [];
@@ -17,17 +16,20 @@ function replacer(key, value) {
 }
 
 class CrowdSetup {
-  static allSimulations = [];
-  static firstTicks = [];
-  static three = {}
+  static allSimulations = []; //Static reference to all the simulations we are running
+  static firstTicks = [];     //Static reference that tracks if each simulation is in its first frame
+  static three = {}           //Static reference to THREE.js
 
   constructor(objValue, agentConstants, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, elementParent, drawCallback) {
-    let locations;
-    this.first = true;
-    let self = this;
-    locations = locationValue;
+    let locations = locationValue; //The named locations in the environment
+    this.first = true; //Is this the first tick?
+    let self = this;  //Reference to this for use in lambdas
+    
+    //Add the html elements if the user passes in a reference for us to attach to.
     if (elementParent != null) {
+      //Create the "control" on top that has the play button, etc.
       controls = new ControlCreator(secondsOfSimulation, millisecondsBetweenFrames, simulations, elementParent);
+      //Create all the THREE.js view
       viewer.boot(CrowdSetup.three, objValue, locations);
     }
     else {
@@ -43,24 +45,22 @@ class CrowdSetup {
 
     //When we get our first frame, remove the loading div
     function bootCallback() {
-      document.getElementById("loading").style.visibility = "hidden";
-      document.getElementById("divRange").style.visibility = "visible";
+      document.getElementById("loading").style.visibility = "hidden";   //Hide the loading div
+      document.getElementById("divRange").style.visibility = "visible"; //Show the rest of the simulation
     }
 
     //What we do every time the thread has more information for us
     async function tickCallback(event, nextTick) {
-      if (CrowdSetup.firstTicks[self.myIndex] == -1) {
+      if (CrowdSetup.firstTicks[self.myIndex] == -1) { //If the time for this simulation is invalid (-1), then set the current time.
         CrowdSetup.firstTicks[self.myIndex] = new Date();
       }
+
       //Parse the new frameAgentDetails
       let frameAgentDetails = JSON.parse(event.data.agents);
-      
 
       //Assign idx numbers to each agent
       for (let frameAgentDetail of frameAgentDetails) {
         agentConstants.find(a => a.id == frameAgentDetail.id).idx = frameAgentDetail.idx;
-        //agentConstants.find(a => a.id == frameAgentDetail.id).location = Vector3.fromObject(frameAgentDetail);
-       
       }
       //Add this list of frameAgentDetails to our array of position information
       agentPositions.push(frameAgentDetails);
@@ -73,7 +73,7 @@ class CrowdSetup {
       let newDestinations = [];
       let leavingAgents = [];
 
-
+      //Loop through all the agents and update them
       for (let j = 0; j < agentConstants.length; j++) {
         let agent = agentConstants[j]; //Grab each agent in the list
 
@@ -81,19 +81,20 @@ class CrowdSetup {
         if (!agent.hasEntered && agent.startMSec <= i * millisecondsBetweenFrames) {
           newAgents.push(agent);
           agent.hasEntered = true;
-          //viewer.addAgent(CrowdSetup.three, agent, drawCallback)
           agent.inSimulation = true;
         }
       }
      
+      //Now update any agents that are in the scene
       for(let j = 0; j < agentConstants.length; j++){
         let agent = agentConstants[j]
         if(newAgents.includes(agent)){
-
+          //Ignore new agents
         }
         else if (agent.hasEntered) {
           //Get the new destination based on the agent's behavior
           let oldDestination = agent.destination;
+          //Wait for the behavior update callback
           await agent.behavior.update(agentConstants, frameAgentDetails, i * millisecondsBetweenFrames);
           //If the new destination is not null, send the updated destination to the 
           //path finding engine
@@ -142,6 +143,7 @@ class CrowdSetup {
       draw();
     }
 
+    //Color agents based on their description
     function colorFunction(agentDescription) {
       let color = new THREE.Color(200, 0, 200);
       if (agentDescription.name == "patient") {
@@ -174,9 +176,11 @@ class CrowdSetup {
         //Get the number of the frame we want to see
         let index = controls.getCurrentTick();
 
-        index = Math.min(index, simulationAgents.length - 1);
-        //Force look at the current frame
         index = simulationAgents.length -1;
+        //TODO: Override and always show the last tick.
+        //Force look at the current frame
+        //Take this line out to use the controls
+        index = Math.min(index, simulationAgents.length - 1);
 
         
         //Get the positional data for that frame
@@ -187,7 +191,7 @@ class CrowdSetup {
           let agent = frame[j]; //Grab each agent in the list
           if (!CrowdSetup.three.agentGroup.children.some(c => c._id == agent.id)) {
             let agentDescription = agentConstants.find(a => a.id == agent.id);
-            viewer.addAgent(CrowdSetup.three, agent, agentDescription, colorFunction(agentDescription))
+            viewer.addAgent(CrowdSetup.three, agent, colorFunction(agentDescription))
           }
         }
         //Remove old agentConstants

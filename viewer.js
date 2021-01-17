@@ -4,7 +4,6 @@ import { OrbitControls } from './lib/OrbitControls.js';
 import { OBJLoader } from './lib/OBJLoader.js';
 import { FBXLoader } from './lib/FBXLoader.js';
 import { SkeletonUtils } from './lib/SkeletonUtils.js';
-import Vector3 from './behavior/Vector3.js';
 
 import { WhiteMaterial, BlackMaterial, RedMaterial, GreenMaterial, BlueMaterial } from "./view/Materials.js"
 import MakeLabelCanvas from "./view/MakeLabelCanvas.js"
@@ -12,18 +11,36 @@ import Resize from "./view/Resize.js"
 import AddAxes from "./view/AddAxes.js"
 import Poses from './models/Poses.js';
 
+//Setup repeated geometry for locations, etc.
 const CylinderGeometry = function () { return new THREE.CylinderGeometry(.2, .2, 1, 8) };
 const CylinderGeometryThin = function () { return new THREE.CylinderGeometry(.1, .1, .5, 8) };
+
+//Get the internal clock from THREE.js
 const clock = new THREE.Clock();
 
 
-const mixers = [];
-const loader = new FBXLoader();
+const mixers = [];  //Each agent needs a mixer to keep track of their animation state
+const loader = new FBXLoader(); //We are using FBX files. If this ever changes, then we can just change this line
 let base;
-let allAnimations = [];
+let allAnimations = []; //All the animations we have loaded
+
+//Turn the fbx loader into a promise.
+function loadPromise(url) {
+  let promise = new Promise((resolve, reject) => {
+    loader.load(url, function (result) {
+      if (result) {
+        resolve(result);
+      }
+      else
+        reject(result);
+    })
+  })
+  return promise;
+}
 
 
-function boot(three, objValue, locations) {
+function boot(three, environment, locations) {
+  //Setup the variables we will be using later
   three.renderer = {};
   three.raycaster = {};
   three.mouse = {};
@@ -55,8 +72,7 @@ function boot(three, objValue, locations) {
   three.mouse = new THREE.Vector2();
   three.camera = new THREE.PerspectiveCamera(45, 1, 1, 1000);
   three.camera.position.set(75, 10, 10);
-
-  //Irrelevant since we cann OrbitCamera.target.set later
+  
   three.scene.background = new THREE.Color(0x007fff);
   three.scene.add(three.camera);
 
@@ -73,13 +89,14 @@ function boot(three, objValue, locations) {
     side: THREE.DoubleSide,
     map: texture
   });
-  three.skydomegeo = new THREE.SphereGeometry(500, 32, 32);
 
+  three.skydomegeo = new THREE.SphereGeometry(500, 32, 32);
   three.skydome = new THREE.Mesh(three.skydomegeo, material);
   three.scene.add(three.skydome);
 
   AddAxes(three.scene, three.geometry);
 
+  //The group that holds the agents we are rendering
   three.agentGroup = new THREE.Group();
 
   three.controls = new OrbitControls(
@@ -87,7 +104,8 @@ function boot(three, objValue, locations) {
   );
   three.controls.target.set(50, 0, 10)
   three.controls.update();
-  loadOBJ(three, objValue);
+
+  loadOBJ(three, environment);
   addLocations(three, locations);
 
   //Store the state of each person, including animation state
@@ -98,19 +116,7 @@ function boot(three, objValue, locations) {
 
   three.scene.add(three.agentGroup);
 
-  //Turn the fbx loader into a promise.
-  function loadPromise(url) {
-    let promise = new Promise((resolve, reject) => {
-      loader.load(url, function (result) {
-        if (result) {
-          resolve(result);
-        }
-        else
-          reject(result);
-      })
-    })
-    return promise;
-  }
+  
 
   //Go through and load all the poses
   let allPromises = [];
@@ -126,7 +132,6 @@ function boot(three, objValue, locations) {
         //Add a key so we track the animation later on
         animation._key = Poses.poseList[index].key
         allAnimations.push(animation);
-        
       });
       //Load the model
       return loadPromise("models/ybot.fbx");
@@ -140,7 +145,6 @@ function boot(three, objValue, locations) {
           child.castShadow = true;
           child.receiveShadow = true;
         }
-
       });
 
       //Since we will only clone this object, we make it invisible.
@@ -199,14 +203,14 @@ function addLocations(three, locations) {
   }
 }
 
-function addAgent(three, agent, agentDescription, color) {
-
-  let object = SkeletonUtils.clone(base);
+function addAgent(three, agent, color) {
+  let object = SkeletonUtils.clone(base); //Required to properly clone the skeleton
   let mixer = new THREE.AnimationMixer(object);
   mixers.push(mixer);
 
   object.traverse(child => {
     if (child.material) {
+      //Each material needs to be cloned, otherwise they wil all be the same color
       child.material = child.material.clone();
     }
   })
@@ -214,12 +218,12 @@ function addAgent(three, agent, agentDescription, color) {
   object.actions = []
 
   for (let a = 0; a < allAnimations.length; a++) {
-    let animation = allAnimations[a].clone();
-    object.animations.push(animation)
-    const action = mixer.clipAction(animation);
-    action._key = allAnimations[a]._key;
-    action.play();
-    object.actions.push(action)
+    let animation = allAnimations[a].clone(); //Grab the animation
+    object.animations.push(animation)         //...and add it to this object
+    const action = mixer.clipAction(animation); //Create an action from this animation
+    action._key = allAnimations[a]._key;        //Keep track of which key was used
+    action.play();   //Run the animation
+    object.actions.push(action) //Add to my list of actions
   }
 
   //Recolor
@@ -262,10 +266,11 @@ function updateAgent(three, agent) {
     }
 }
 
-function animate(three) {
+function animate() {
   const delta = clock.getDelta();
 
-  mixers.forEach((mixer, index)=>{
+  //Update each animation mixer with the time delta
+  mixers.forEach(mixer=>{
     mixer.update(delta);
   })
 }
@@ -273,17 +278,17 @@ function animate(three) {
 function render(three) {
   if (three.renderer)
     three.renderer.render(three.scene, three.camera)
-  animate(three)
+  animate()
 }
 
 export {
-  CylinderGeometry,
-  MakeLabelCanvas,
-  Resize,
-  boot,
-  loadOBJ,
+  //CylinderGeometry,
+  //MakeLabelCanvas,
+  Resize, //Respond to window resizing events
+  boot, //Boot function
+  //loadOBJ,
   addLocations,
-  addAgent,
-  updateAgent,
-  render
+  addAgent, //Add an agent to the simulation
+  updateAgent,  //Update an agent in the simulation
+  render  //Render the scene
 };
