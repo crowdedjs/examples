@@ -1,6 +1,7 @@
 import * as viewer from "./viewer.js"
 import simulations from "./simulations.js"
-import ControlCreator from "./ControlCreator.js"
+//import ControlCreator from "http://localhost:5500/controller.js"
+import ControlCreator from "https://cdn.jsdelivr.net/npm/@crowdedjs/controller/controller.js"
 import * as THREE from "./lib/three.module.js"
 
 
