@@ -4,25 +4,22 @@ import ControlCreator from "https://cdn.jsdelivr.net/npm/@crowdedjs/controller/c
 import replacer from "./replacer.js"
 import colorFunction from "./color-function.js"
 
-//let simulations = [];
-let controls;
-
-
 
 class CrowdSetup {
   static allSimulations = []; //Static reference to all the simulations we are running
   static firstTicks = [];     //Static reference that tracks if each simulation is in its first frame
   static three = {}           //Static reference to THREE.js
-
+  
   constructor(floorObj, agentConstants, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, elementParent) {
     let locations = locationValue;  //The named locations in the environment
     this.first = true;              //Is this the first tick?
     let self = this;                //Reference to this for use in lambdas
+    this.controls = {};
 
     //Add the html elements if the user passes in a reference for us to attach to.
     if (elementParent != null) {
       //Create the "control" on top that has the play button, etc.
-      controls = new ControlCreator(secondsOfSimulation, millisecondsBetweenFrames, simulations, elementParent);
+      this.controls = new ControlCreator(secondsOfSimulation, millisecondsBetweenFrames, simulations, elementParent);
       //Create all the THREE.js view
       viewer.boot(CrowdSetup.three, floorObj, locations);
     }
@@ -118,6 +115,7 @@ class CrowdSetup {
     }
 
     function main() {
+      //let self = this;
       //Boot the viewer
       //Adapt the viewer to the window size
       viewer.Resize(window, CrowdSetup.three.renderer, CrowdSetup.three.camera);
@@ -132,11 +130,9 @@ class CrowdSetup {
 
     //Respond to the viewer timer
     async function tick() {
-      controls.update(CrowdSetup.allSimulations, CrowdSetup.firstTicks);  //Update the controls
+      self.controls.update(CrowdSetup.allSimulations, CrowdSetup.firstTicks);  //Update the controls
       draw(); //Draw the view
     }
-
-    
 
     function draw() {
       for (let x = 0; x < CrowdSetup.allSimulations.length; x++) {
@@ -145,7 +141,7 @@ class CrowdSetup {
         if (simulationAgents.length == 0) continue;
 
         //Get the number of the frame we want to see
-        let index = controls.getCurrentTick();
+        let index = self.controls.getCurrentTick();
 
         index = simulationAgents.length -1;
         //TODO: Override and always show the last tick.

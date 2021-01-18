@@ -1,3 +1,5 @@
+import * as THREE from "./lib/three.module.js"
+
 //Color agents based on their description
 function colorFunction(agentDescription) {
   let color = new THREE.Color(200, 0, 200);
