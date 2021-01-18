@@ -1,37 +1,30 @@
 import * as viewer from "./viewer.js"
 import simulations from "./simulations.js"
-//import ControlCreator from "http://localhost:5500/controller.js"
 import ControlCreator from "https://cdn.jsdelivr.net/npm/@crowdedjs/controller/controller.js"
 import * as THREE from "./lib/three.module.js"
-
+import replacer from "./replacer.js"
 
 //let simulations = [];
 let controls;
 
-//Strip behavior definitions out of agentConstants when we serialize them with JSON
-//to prevent circular loops.
-function replacer(key, value) {
-  if (key === 'behavior')
-    return undefined;
-  return value;
-}
+
 
 class CrowdSetup {
   static allSimulations = []; //Static reference to all the simulations we are running
   static firstTicks = [];     //Static reference that tracks if each simulation is in its first frame
   static three = {}           //Static reference to THREE.js
 
-  constructor(objValue, agentConstants, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, elementParent, drawCallback) {
+  constructor(floorObj, agentConstants, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, elementParent) {
     let locations = locationValue; //The named locations in the environment
     this.first = true; //Is this the first tick?
     let self = this;  //Reference to this for use in lambdas
-    
+
     //Add the html elements if the user passes in a reference for us to attach to.
     if (elementParent != null) {
       //Create the "control" on top that has the play button, etc.
       controls = new ControlCreator(secondsOfSimulation, millisecondsBetweenFrames, simulations, elementParent);
       //Create all the THREE.js view
-      viewer.boot(CrowdSetup.three, objValue, locations);
+      viewer.boot(CrowdSetup.three, floorObj, locations);
     }
     else {
       this.first = false;
@@ -85,7 +78,7 @@ class CrowdSetup {
           agent.inSimulation = true;
         }
       }
-     
+
       //Now update any agents that are in the scene
       for(let j = 0; j < agentConstants.length; j++){
         let agent = agentConstants[j]
@@ -97,7 +90,7 @@ class CrowdSetup {
           let oldDestination = agent.destination;
           //Wait for the behavior update callback
           await agent.behavior.update(agentConstants, frameAgentDetails, i * millisecondsBetweenFrames);
-          //If the new destination is not null, send the updated destination to the 
+          //If the new destination is not null, send the updated destination to the
           //path finding engine
           if (agent.destination != null && agent.destination != oldDestination) {
             agent.destX = agent.destination.x;
@@ -105,7 +98,7 @@ class CrowdSetup {
             agent.destZ = agent.destination.z;
             newDestinations.push(agent);
           }
-          //If the agent has left the simulation, 
+          //If the agent has left the simulation,
           //Update the simulation
           else if (agent.inSimulation == false) {
             leavingAgents.push(agent);
@@ -114,7 +107,7 @@ class CrowdSetup {
       }
       //Check to see if we need to end the simulation
       if (i < secondsOfSimulation * 1_000 / millisecondsBetweenFrames) {
-        //If the simulation needs to continue, send on the information 
+        //If the simulation needs to continue, send on the information
         //about new agentConstants, agentConstants with new destinations, and agentConstants that have left the simulation
         nextTick([JSON.stringify(newAgents, replacer), JSON.stringify(newDestinations, replacer), JSON.stringify(leavingAgents, replacer)])
       }
@@ -133,7 +126,7 @@ class CrowdSetup {
 
       //bootWorker needs to be included in the calling html file
       //Start the threaded simulator
-      bootWorker(objValue, secondsOfSimulation, millisecondsBetweenFrames, locationValue, bootCallback, tickCallback, null);
+      bootWorker(floorObj, secondsOfSimulation, millisecondsBetweenFrames, locationValue, bootCallback, tickCallback, null);
     }
 
     //Respond to the viewer timer
@@ -183,7 +176,7 @@ class CrowdSetup {
         //Take this line out to use the controls
         index = Math.min(index, simulationAgents.length - 1);
 
-        
+
         //Get the positional data for that frame
         let frame = simulationAgents[index];
 
