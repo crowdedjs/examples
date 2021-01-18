@@ -4,7 +4,6 @@ import ControlCreator from "https://cdn.jsdelivr.net/npm/@crowdedjs/controller/c
 import replacer from "./replacer.js"
 import colorFunction from "./color-function.js"
 
-
 class CrowdSetup {
   static allSimulations = []; //Static reference to all the simulations we are running
   static firstTicks = [];     //Static reference that tracks if each simulation is in its first frame
@@ -27,19 +26,16 @@ class CrowdSetup {
       this.first = false;
     }
 
-    let agentPositions = [];  //List of agent positions at a given frame. This becomes an array of arrays
+    this.agentPositions = [];  //List of agent positions at a given frame. This becomes an array of arrays
+    let agentPositionsRef = this.agentPositions;
 
-    CrowdSetup.allSimulations.push(agentPositions);       //Initialize the agent position tracking
+    CrowdSetup.allSimulations.push(this.agentPositions);       //Initialize the agent position tracking
     CrowdSetup.firstTicks.push(-1);                       //Set the time this simulation started to -1 (flag meaning no data has been calculated)
     this.myIndex = CrowdSetup.allSimulations.length - 1;  //The index of this simulation (useful when we run multiple simulations)
 
     main(); //Start simulation process
 
     //When we get our first frame, remove the loading div
-    function bootCallback() {
-      document.getElementById("loading").style.visibility = "hidden";   //Hide the loading div
-      document.getElementById("divRange").style.visibility = "visible"; //Show the rest of the simulation
-    }
 
     //What we do every time the thread has more information for us
     async function tickCallback(event, nextTick) {
@@ -54,7 +50,7 @@ class CrowdSetup {
         agentConstants.find(a => a.id == frameAgentDetail.id).idx = frameAgentDetail.idx; //Assign idx numbers to each agent
       });
 
-      agentPositions.push(frameAgentDetails); //Add this list of frameAgentDetails to our array of position information
+      agentPositionsRef.push(frameAgentDetails); //Add this list of frameAgentDetails to our array of position information
 
       let i = event.data.frame;//Track the frame number
 
@@ -73,14 +69,15 @@ class CrowdSetup {
       })
 
       //Now update any agents that are in the scene
-      agentConstants.forEach(async function(agent){
-        if (newAgents.includes(agent)) {} //Ignore new agents
+      for (let j = 0; j < agentConstants.length; j++) {
+        let agent = agentConstants[j]
+        if (newAgents.includes(agent)) { } //Ignore new agents
         else if (agent.hasEntered) {
           let oldDestination = agent.destination; //Get the new destination based on the agent's behavior
-          
+
           //Wait for the behavior update callback
           await agent.behavior.update(agentConstants, frameAgentDetails, i * millisecondsBetweenFrames);
-          
+
           //If the new destination is not null, send the updated destination to the
           //path finding engine
           if (agent.destination != null && agent.destination != oldDestination) {
@@ -93,7 +90,8 @@ class CrowdSetup {
             leavingAgents.push(agent);
           }
         }
-      })
+      }
+
       //Check to see if we need to end the simulation
       if (i < secondsOfSimulation * 1_000 / millisecondsBetweenFrames) {
         //If the simulation needs to continue, send on the information
@@ -105,34 +103,27 @@ class CrowdSetup {
       }
     }
 
+
     function main() {
-      //let self = this;
-      //Boot the viewer
-      //Adapt the viewer to the window size
-      viewer.Resize(window, CrowdSetup.three.renderer, CrowdSetup.three.camera);
-      //Start the viewer clock
-      if (self.first)
+      viewer.Resize(window, CrowdSetup.three.renderer, CrowdSetup.three.camera); //Boot the viewer
+
+      if (self.first) //Start the viewer clock
         setTimeout(tick, 33);
 
-      //bootWorker needs to be included in the calling html file
       //Start the threaded simulator
-      bootWorker(floorObj, secondsOfSimulation, millisecondsBetweenFrames, locationValue, bootCallback, tickCallback, null);
+      bootWorker(floorObj, secondsOfSimulation, millisecondsBetweenFrames, locationValue, self.bootCallback, tickCallback, null);
     }
 
-    //Respond to the viewer timer
     async function tick() {
       self.controls.update(CrowdSetup.allSimulations, CrowdSetup.firstTicks);  //Update the controls
       draw(); //Draw the view
     }
 
     function draw() {
-      for (let x = 0; x < CrowdSetup.allSimulations.length; x++) {
-        let simulationAgents = CrowdSetup.allSimulations[x];
-        //If there is nothing to draw, don't do anything
-        if (simulationAgents.length == 0) continue;
+      CrowdSetup.allSimulations.forEach(simulationAgents => {
+        if (simulationAgents.length == 0) return; //If there is nothing to draw, don't do anything
 
-        //Get the number of the frame we want to see
-        let index = self.controls.getCurrentTick();
+        let index = self.controls.getCurrentTick(); //Get the number of the frame we want to see
 
         index = simulationAgents.length - 1;
         //TODO: Override and always show the last tick.
@@ -140,29 +131,25 @@ class CrowdSetup {
         //Take this line out to use the controls
         index = Math.min(index, simulationAgents.length - 1);
 
+        let frame = simulationAgents[index]; //Get the positional data for that frame
 
-        //Get the positional data for that frame
-        let frame = simulationAgents[index];
-
-        //Add new agentConstants
-        for (let j = 0; j < frame.length; j++) {
-          let agent = frame[j]; //Grab each agent in the list
+        //Add new agents to the viewer
+        frame.forEach(agent => {
           if (!CrowdSetup.three.agentGroup.children.some(c => c._id == agent.id)) {
             let agentDescription = agentConstants.find(a => a.id == agent.id);
             viewer.addAgent(CrowdSetup.three, agent, colorFunction(agentDescription))
           }
-        }
-        //Remove old agentConstants
+        });
+
+        //Remove old agents
         let toRemove = [];
-        for (let j = 0; j < CrowdSetup.three.agentGroup.children.length; j++) {
-          let child = CrowdSetup.three.agentGroup.children[j];
+        CrowdSetup.three.agentGroup.children.forEach(child => {
           if (!frame.some(f => f.id == child._id)) {
             toRemove.push(child);
+            CrowdSetup.three.agentGroup.remove(child);
           }
-        }
-        for (let j = 0; j < toRemove.length; j++) {
-          CrowdSetup.three.agentGroup.remove(toRemove[j]);
-        }
+        });
+
         //Update remaining agentConstants
         for (let j = 0; j < CrowdSetup.three.agentGroup.children.length; j++) {
           let child = CrowdSetup.three.agentGroup.children[j];
@@ -170,15 +157,19 @@ class CrowdSetup {
           child.position.set(agent.x, agent.y, agent.z);
           viewer.updateAgent(CrowdSetup.three, agent)
         }
-      }
-      //Render the current frame
-      viewer.render(CrowdSetup.three);
-      //Reset the timer
-      setTimeout(tick, 33);
+      });
+
+      viewer.render(CrowdSetup.three); //Render the current frame
+
+      setTimeout(tick, 33);//Reset the timer
     }
-    //From https://stackoverflow.com/a/29522050/10047920
     window.addEventListener("resize", () => viewer.Resize(window, CrowdSetup.three.renderer, CrowdSetup.three.camera));
   }
+  bootCallback() {
+    document.getElementById("loading").style.visibility = "hidden";   //Hide the loading div
+    document.getElementById("divRange").style.visibility = "visible"; //Show the rest of the simulation
+  }
+
 }
 
 export default CrowdSetup;
