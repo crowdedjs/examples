@@ -9,7 +9,7 @@ class CrowdSetup {
   static allSimulations = []; //Static reference to all the simulations we are running
   static firstTicks = [];     //Static reference that tracks if each simulation is in its first frame
   static three = {}           //Static reference to THREE.js
-  
+
   constructor(floorObj, agentConstants, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, elementParent) {
     let locations = locationValue;  //The named locations in the environment
     this.first = true;              //Is this the first tick?
@@ -43,57 +43,48 @@ class CrowdSetup {
 
     //What we do every time the thread has more information for us
     async function tickCallback(event, nextTick) {
-      if (CrowdSetup.firstTicks[self.myIndex] == -1) { //If the time for this simulation is invalid (-1), then set the current time.
-        CrowdSetup.firstTicks[self.myIndex] = new Date();
+      if (CrowdSetup.firstTicks[self.myIndex] == -1) {    //If the time for this simulation is invalid (-1), then set the current time.
+        CrowdSetup.firstTicks[self.myIndex] = new Date(); //Set the time to the current Time
       }
 
       //Parse the new frameAgentDetails
       let frameAgentDetails = JSON.parse(event.data.agents);
 
-      //Assign idx numbers to each agent
-      for (let frameAgentDetail of frameAgentDetails) {
-        agentConstants.find(a => a.id == frameAgentDetail.id).idx = frameAgentDetail.idx;
-      }
-      //Add this list of frameAgentDetails to our array of position information
-      agentPositions.push(frameAgentDetails);
+      frameAgentDetails.forEach(frameAgentDetail => {
+        agentConstants.find(a => a.id == frameAgentDetail.id).idx = frameAgentDetail.idx; //Assign idx numbers to each agent
+      });
 
-      //Track the frame number
-      let i = event.data.frame;
+      agentPositions.push(frameAgentDetails); //Add this list of frameAgentDetails to our array of position information
 
-      //Three arrays for data we will send to the next simulation frame
-      let newAgents = [];
-      let newDestinations = [];
-      let leavingAgents = [];
+      let i = event.data.frame;//Track the frame number
+
+      let newAgents = [];       //The list of agents that get added
+      let newDestinations = []; //The list of agents that have updated their destination (the nav mesh should calculate new routes)
+      let leavingAgents = [];   //The list of agent that have left the simulation (RecastDetour should remove them)
 
       //Loop through all the agents and update them
-      for (let j = 0; j < agentConstants.length; j++) {
-        let agent = agentConstants[j]; //Grab each agent in the list
-
+      agentConstants.forEach(agent => {
         //See if we need to add the agent to the simulation
         if (!agent.hasEntered && agent.startMSec <= i * millisecondsBetweenFrames) {
           newAgents.push(agent);
           agent.hasEntered = true;
           agent.inSimulation = true;
         }
-      }
+      })
 
       //Now update any agents that are in the scene
-      for(let j = 0; j < agentConstants.length; j++){
-        let agent = agentConstants[j]
-        if(newAgents.includes(agent)){
-          //Ignore new agents
-        }
+      agentConstants.forEach(async function(agent){
+        if (newAgents.includes(agent)) {} //Ignore new agents
         else if (agent.hasEntered) {
-          //Get the new destination based on the agent's behavior
-          let oldDestination = agent.destination;
+          let oldDestination = agent.destination; //Get the new destination based on the agent's behavior
+          
           //Wait for the behavior update callback
           await agent.behavior.update(agentConstants, frameAgentDetails, i * millisecondsBetweenFrames);
+          
           //If the new destination is not null, send the updated destination to the
           //path finding engine
           if (agent.destination != null && agent.destination != oldDestination) {
-            agent.destX = agent.destination.x;
-            agent.destY = agent.destination.y;
-            agent.destZ = agent.destination.z;
+            [agent.destX, agent.destY, agent.destZ] = [agent.destination.x, agent.destination.y, agent.destination.z];
             newDestinations.push(agent);
           }
           //If the agent has left the simulation,
@@ -102,7 +93,7 @@ class CrowdSetup {
             leavingAgents.push(agent);
           }
         }
-      }
+      })
       //Check to see if we need to end the simulation
       if (i < secondsOfSimulation * 1_000 / millisecondsBetweenFrames) {
         //If the simulation needs to continue, send on the information
@@ -143,7 +134,7 @@ class CrowdSetup {
         //Get the number of the frame we want to see
         let index = self.controls.getCurrentTick();
 
-        index = simulationAgents.length -1;
+        index = simulationAgents.length - 1;
         //TODO: Override and always show the last tick.
         //Force look at the current frame
         //Take this line out to use the controls
