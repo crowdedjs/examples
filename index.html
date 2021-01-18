@@ -48,13 +48,10 @@
         //for (let agent of arrivalValue) {
         arrivalValue.forEach((agent, index) => {
           agentConstants.push(new MedicalAgent(agent, locationValue));
+          agentConstants[agentConstants.length -1].setId(index);
         })
 
-        //Assign a unique id to each agent.
-        for (let id = 0; id < agentConstants.length; id++) {
-          let agentConstant = agentConstants[id];
-          agentConstant.setId(id);
-        }
+        
         //Start the simulation.
         new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, (agentConstant) => {
           //This is no longer being used. Should it be integrated back in or dropped?
