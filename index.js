@@ -1,8 +1,8 @@
 import * as viewer from "./viewer.js"
 import simulations from "./simulations.js"
 import ControlCreator from "https://cdn.jsdelivr.net/npm/@crowdedjs/controller/controller.js"
-import * as THREE from "./lib/three.module.js"
 import replacer from "./replacer.js"
+import colorFunction from "./color-function.js"
 
 //let simulations = [];
 let controls;
@@ -15,9 +15,9 @@ class CrowdSetup {
   static three = {}           //Static reference to THREE.js
 
   constructor(floorObj, agentConstants, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, elementParent) {
-    let locations = locationValue; //The named locations in the environment
-    this.first = true; //Is this the first tick?
-    let self = this;  //Reference to this for use in lambdas
+    let locations = locationValue;  //The named locations in the environment
+    this.first = true;              //Is this the first tick?
+    let self = this;                //Reference to this for use in lambdas
 
     //Add the html elements if the user passes in a reference for us to attach to.
     if (elementParent != null) {
@@ -29,13 +29,14 @@ class CrowdSetup {
     else {
       this.first = false;
     }
-    let agentPositions = [];
 
-    CrowdSetup.allSimulations.push(agentPositions);
-    CrowdSetup.firstTicks.push(-1);
-    this.myIndex = CrowdSetup.allSimulations.length - 1;
+    let agentPositions = [];  //List of agent positions at a given frame. This becomes an array of arrays
 
-    main();
+    CrowdSetup.allSimulations.push(agentPositions);       //Initialize the agent position tracking
+    CrowdSetup.firstTicks.push(-1);                       //Set the time this simulation started to -1 (flag meaning no data has been calculated)
+    this.myIndex = CrowdSetup.allSimulations.length - 1;  //The index of this simulation (useful when we run multiple simulations)
+
+    main(); //Start simulation process
 
     //When we get our first frame, remove the loading div
     function bootCallback() {
@@ -131,35 +132,11 @@ class CrowdSetup {
 
     //Respond to the viewer timer
     async function tick() {
-      //Update the controls
-      controls.update(CrowdSetup.allSimulations, CrowdSetup.firstTicks);
-      //Draw the view
-      draw();
+      controls.update(CrowdSetup.allSimulations, CrowdSetup.firstTicks);  //Update the controls
+      draw(); //Draw the view
     }
 
-    //Color agents based on their description
-    function colorFunction(agentDescription) {
-      let color = new THREE.Color(200, 0, 200);
-      if (agentDescription.name == "patient") {
-        color = new THREE.Color(0, .75, 0);
-      }
-      else if (agentDescription.name == "Nurse") {
-        color = new THREE.Color(.75, .75, .75);
-      }
-      else if (agentDescription.name == "Attending") {
-        color = new THREE.Color(.75, 0, 0);
-      }
-      else if (agentDescription.name == "Resident") {
-        color = new THREE.Color(.75, .75, 0);
-      }
-      else if (agentDescription.name == "Tech") {
-        color = new THREE.Color(0, 0, .75);
-      }
-      else {
-        color = new THREE.Color(0, 0, 0);
-      }
-      return color;
-    }
+    
 
     function draw() {
       for (let x = 0; x < CrowdSetup.allSimulations.length; x++) {
