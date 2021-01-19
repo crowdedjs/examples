@@ -1,5 +1,4 @@
 import Vector3 from "../behavior/Vector3.js";
-import Poses from "../models/Poses.js"
 
 class WaitForever {
     constructor(index) {

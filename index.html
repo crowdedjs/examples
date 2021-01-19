@@ -22,7 +22,8 @@
 
     import MedicalAgent from "./sim/MedicalAgent.js"
     //import CrowdSetup from "./index.js"
-    import CrowdSetup from "http://localhost:5500/index.js"
+    // import CrowdSetup from "http://localhost:5500/index.js"
+    import CrowdSetup from "https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup@0.0.3/index.js"
     import urlParser from "./urlParser.js"
     import colorFunction from "./color-function.js"
     import simulations from "./simulations.js"
@@ -58,7 +59,7 @@
 
         
         //Start the simulation.
-        new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations);
+        new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup");
 
       })
       // This is commented out for debugging purposes. In production, this should be added back in.
