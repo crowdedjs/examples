@@ -1,6 +1,8 @@
 # CrowdedJS Examples
 A threaded, browser-based crowd simulation engine.
 
+## Contents
+
 The repo provides a concrete implementation of the various libraries in the CrowdedJS repo.
 
 The main files in this project are index.html and index.js
@@ -22,4 +24,21 @@ The support files include:
 - urlParser.js, a helper function that lets the user set the simulation parameters in the URL.
 
 - viewer.js, a series of functions that show the current state of the simulation using three.js
+
+## Use
+
+Include the support libraries
+
+```
+<script src="./lib/axios.js"></script>  
+<script src="./lib/bundle.js"></script> 
+<script src="./bundle.js"></script>     
+```
+
+Include the fps counter (optional)
+
+```
+javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
+```
+
 
