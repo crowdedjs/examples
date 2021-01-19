@@ -1,5 +1,4 @@
 import * as viewer from "./viewer.js"
-import simulations from "./simulations.js"
 import ControlCreator from "https://cdn.jsdelivr.net/npm/@crowdedjs/controller/controller.js"
 import replacer from "./replacer.js"
 
@@ -8,7 +7,7 @@ class CrowdSetup {
   static firstTicks = [];     //Static reference that tracks if each simulation is in its first frame
   static three = {}           //Static reference to THREE.js
 
-  constructor(floorObj, agentConstants, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, elementParent, colorFunction) {
+  constructor(floorObj, agentConstants, secondsOfSimulation, millisecondsBetweenFrames, locationValue, window, elementParent, colorFunction, simulations) {
     let locations = locationValue;  //The named locations in the environment
     this.first = true;              //Is this the first tick?
     let self = this;                //Reference to this for use in lambdas
