@@ -23,6 +23,8 @@
     import MedicalAgent from "./sim/MedicalAgent.js"
     import CrowdSetup from "./index.js"
     import urlParser from "./urlParser.js"
+    import colorFunction from "./color-function.js"
+
 
     let params = {};
     //let assetBase = "./";
@@ -53,7 +55,7 @@
 
         
         //Start the simulation.
-        new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body);
+        new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction);
 
       })
       // This is commented out for debugging purposes. In production, this should be added back in.
