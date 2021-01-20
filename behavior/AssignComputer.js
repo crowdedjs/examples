@@ -5,7 +5,8 @@ import Vector3 from "./Vector3.js";
 class AssignComputer {
     
     //constructor(myIndex, start, end) {
-      constructor(myIndex, room) {
+      constructor(myIndex, agentConstants, room) {
+        console.log("Assigning Computer")
         this.index = myIndex;
         this.waypoints = [];
         //this.waypoints.push(start);
@@ -24,7 +25,7 @@ class AssignComputer {
 
               // REPLACE THIS WITH FIND ROOM BY NAME? 
               //agent.setComputer(new Vector3(self.waypoints[0]));
-              agent.Computer = new Vector3(self.waypoints[0])
+              agent.Computer =  Vector3.fromObject(self.waypoints[0])
 
               return fluentBehaviorTree.BehaviorTreeStatus.Success;
           })

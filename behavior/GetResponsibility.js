@@ -1,12 +1,12 @@
 // NEEDS WORK
 
 class GetResponsibility {
-    constructor(agent, myIndex) {
+    constructor(myIndex, agentConstants, locations) {
         this.index = myIndex;
 
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
         let self = this;//Since we need to reference this in anonymous functions, we need a reference
-        let me = agent;
+        let me= ()=>agentConstants.find(a=>a.id == myIndex);;
 
         this.tree = builder
             .sequence("Get Responsibility")

@@ -8,7 +8,7 @@ import WaitForever from "../behavior/WaitForever.js";
 
 class patient {
 
-  constructor(agent, myIndex, start, end) {
+  constructor(myIndex, agentConstants, locations, start, end) {
     this.index = myIndex;
     this.waypoints = [];
     this.waypoints.push(start);
@@ -16,8 +16,8 @@ class patient {
 
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
-    let me = agent;
-    let myGoal = me.locations.find(l => l.name == "Check In");
+    let me= ()=>agentConstants.find(a=>a.id == myIndex);;
+    let myGoal = locations.find(l => l.name == "Check In");
     if (!myGoal) throw new Exception("We couldn't find a location called Check In");
 
     this.goTo = new GoTo(self.index, myGoal.position);

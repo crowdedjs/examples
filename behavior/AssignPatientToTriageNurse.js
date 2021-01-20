@@ -2,13 +2,13 @@ import Vector3 from "./Vector3.js";
 
 class AssignPatientToTriageNurse {
 
-  constructor(myIndex) {
+  constructor(myIndex, agentConstants, locations) {
     this.index = myIndex;
     
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
     let self = this;
-    //let me = agent;
+    let me= ()=>agentConstants.find(a=>a.id == myIndex);;
 
     this.tree = builder
       .sequence("Assign Patient To Triage Nurse")

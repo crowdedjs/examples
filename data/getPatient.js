@@ -3,7 +3,7 @@ import GoTo from "../behavior/GoTo.js";
 
 class getPatient {
 
-    constructor(agent, myIndex, start, end) {
+    constructor(myIndex, agentConstants, locations, start, end) {
       this.index = myIndex;
       this.waypoints = [];
       this.waypoints.push(start);

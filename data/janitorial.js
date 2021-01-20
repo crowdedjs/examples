@@ -4,7 +4,7 @@ import WaitForever from "../behavior/WaitForever.js"
 
 class janitorial {
 
-  constructor(agent, myIndex, start, end) {
+  constructor(myIndex, agentConstants, locations, start, end) {
     this.index = myIndex;
     this.waypoints = [];
     this.waypoints.push(start);
@@ -15,9 +15,9 @@ class janitorial {
 
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
     let goToName = "Fast Track 1";
-    let me = agent;
+    let me= ()=>agentConstants.find(a=>a.id == myIndex);;
 
-    let myGoal = me.locations.find(l => l.name == goToName);
+    let myGoal = locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
 
 

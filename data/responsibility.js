@@ -2,11 +2,13 @@
 import GetComputerResponsibility from "../behavior/GetComputerResponsibility.js";
 import GetResponsibility from "../behavior/GetResponsibility.js";
 import GoTo from "../behavior/GoTo.js";
+import GoToLazy from "../behavior/GoToLazy.js";
 import HandleResponsibility from "../behavior/HandleResponsibility.js";
+import Vector3 from "../behavior/Vector3.js";
 
 class responsibility {
 
-    constructor(agent, myIndex, start, end) {
+    constructor(myIndex, agentConstants, start, end) {
       this.index = myIndex;
       this.waypoints = [];
       this.waypoints.push(start);
@@ -17,7 +19,10 @@ class responsibility {
   
       let self = this;//Since we need to reference this in anonymous functions, we need a reference
   
-      let me = agent;
+    //   let me = agent;
+      //let me = agentConstants.find(a=>a.id==self.index);
+      let me= ()=>agentConstants.find(a=>a.id == myIndex);
+        
       //let myGoal = me.Computer;
       //this.goTo = new GoTo(self.index, myGoal.position);
 
@@ -26,36 +31,38 @@ class responsibility {
         
         // MAKE OWN FILE IF SHOWS UP ANYWHERE ELSE
         .do("getRooms", (t) => {
-            me.addRoom(me.locations.find(l => l.name == "C1"));
+            let agent = t.agentConstants.find(a => a.id == myIndex);
+            agent.addRoom(locations.find(l => l.name == "C1"));
             return fluentBehaviorTree.BehaviorTreeStatus.Success; 
         })
         // MAKE OWN FILE IF SHOWS UP ANYWHERE ELSE
-        .do("getComputer", (t) => {
-            // Not sure if medician subclass is implemented
-            switch(me.getMedicianSubclass()) {
-                case TECH:
-                    me.Computer(me.locations.find(l => l.name == "TechPlace"));
-                    break;
-                case NURSE:
-                    me.Computer(me.locations.find(l => l.name == "NursePlace"));
-                    break;
-                case RESIDENT:
-                    me.Computer(me.locations.find(l => l.name == "ResidentStart"));
-                    break;
-                }
+        // .do("getComputer", (t) => {
+        //     // Not sure if medician subclass is implemented
+        //     switch(me.getMedicianSubclass()) {
+        //         case TECH:
+        //             me.Computer(me.locations.find(l => l.name == "TechPlace"));
+        //             break;
+        //         case NURSE:
+        //             me.Computer(me.locations.find(l => l.name == "NursePlace"));
+        //             break;
+        //         case RESIDENT:
+        //             me.Computer(me.locations.find(l => l.name == "ResidentStart"));
+        //             break;
+        //         }
 
-            return fluentBehaviorTree.BehaviorTreeStatus.Success;
-        })
+        //     return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        // })
 
         // REPEAT
             .sequence("Computer Operations")
-                .splice(new GoTo(self.index, me.Computer)) // GO TO COMPUTER
+                //.splice(new GoToLazy(self.index, me=>me.Computer).tree) // GO TO COMPUTER
+                .splice(new GoToLazy(self.index,()=>me().Computer).tree)// GO TO COMPUTER
             
                 .selector("Emergency")
                     .do("Handle Emergency", (t) => { return fluentBehaviorTree.BehaviorTreeStatus.Failure; }) // PLACEHOLDER
                     //.inverter("")
                     .sequence("Computer Stuff")
-                        .splice(new GoTo(self.index, me.Computer)) // GO TO COMPUTER
+                        .splice(new GoToLazy(self.index, ()=>me().Computer).tree) // GO TO COMPUTER
                         
                         //NOT FINISHED
                         .splice(new GetComputerResponsibility().tree)
@@ -67,19 +74,22 @@ class responsibility {
                     //.end()
                     //.inverter("")
                     .sequence("Handle Responsibility")
-                        .splice(new GoTo(self.index, me.Computer)) // GO TO COMPUTER
+                        .splice(new GoToLazy(self.index, ()=>me().Computer).tree) // GO TO COMPUTER
 
                         //NOT FINISHED
                         .splice(new GetResponsibility().tree)
 
                         .do("Go To Responsibility", (t) => {
                             //WRITE THIS BEHAVIOR
+                            throw new Exception("Not implemented)")
                         })
                         .do("Wait For Responsibility Patient", (t) => {
                             //WRITE THIS BEHAVIOR            
+                            throw new Exception("Not implemented)")
                         })
                         .do("Set Up Transport", (t) => {
-                            //WRITE THIS BEHAVIOR            
+                            //WRITE THIS BEHAVIOR    
+                            throw new Exception("Not implemented)")        
                         })
                         //NOT FINISHED
                         .splice(new HandleResponsibility().tree)
@@ -88,6 +98,7 @@ class responsibility {
                         .sequence("Reassess Responsibility")
                             .do("Reassess", (t) => {
                                 //WRITE THIS BEHAVIOR
+                                throw new Exception("Not implemented)")
                             })
                             //NOT FINISHED
                             .splice(new HandleResponsibility().tree)

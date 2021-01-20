@@ -7,7 +7,7 @@ import responsibility from "./responsibility.js";
 
 class tech {
 
-  constructor(agent, myIndex, start, end) {
+  constructor(myIndex, agentConstants, locations, start, end) {
     this.index = myIndex;
     this.waypoints = [];
     this.waypoints.push(start);
@@ -16,10 +16,12 @@ class tech {
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
     this.toReturn = null;
     let goToName = "TechPlace";
-    let me = agent;
+    let me= ()=>agentConstants.find(a=>a.id == myIndex);;
        
-    let myGoal = me.locations.find(l => l.name == goToName);
+    let myGoal = locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
+    let computer = locations.find(l => l.name == "TechPlace");
+
 
 
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
@@ -30,9 +32,9 @@ class tech {
       .splice(new WaitForever(myIndex).tree)
 
       // original tree sequence below
-      .splice(new AssignBed().tree) // C1
-      .splice(new AssignComputer(myIndex, me.locations.find(l => l.name == "TechPlace")).tree) // TechPlace
-      .splice(new responsibility(me, myIndex, start, end).tree) // lazy: true
+      .splice(new AssignBed(myIndex, agentConstants, locations.find(l => l.name == "C1").position).tree) // C1
+      .splice(new AssignComputer(myIndex, agentConstants, computer.position).tree) // TechPlace
+      .splice(new responsibility(myIndex, agentConstants, start, end).tree) // lazy: true
 
       .end()
       .build();

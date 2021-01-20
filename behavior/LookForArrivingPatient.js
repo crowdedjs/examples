@@ -2,8 +2,9 @@ import Vector3 from "../behavior/Vector3.js";
 import PatientState from "../support/PatientTempState.js";
 
 class LookForArrivingPatient {
-  constructor(agent, myIndex) {
-    this.me = agent;
+  constructor(myIndex, agentConstants, locations) {
+    //this.me = agent;
+    this.me= ()=>agentConstants.find(a=>a.id == myIndex);
     this.index = myIndex;
 
 
@@ -19,7 +20,7 @@ class LookForArrivingPatient {
         let agentConstant = t.agentConstants.find(a => a.id == self.index);
         let myLocation = agentConstant.locations.slice(-1); // last location
 
-        let agentConstantPatients = t.agentConstants.filter(a=>a.name == "patient" && t.frame.some(t=>t.id==a.id));
+        let agentConstantPatients = t.agentConstants.filter(a=>a.name == "patient" && t.crowd.some(t=>t.id==a.id));
         
         
         let closestPatients = agentConstantPatients
@@ -29,8 +30,8 @@ class LookForArrivingPatient {
           return fluentBehaviorTree.BehaviorTreeStatus.Running;
         //We found our patient
         closestPatient.patientTempState = PatientState.WAITING;
-        closestPatient.instructor = self.me;
-        self.me.currentPatient = closestPatient;
+        closestPatient.instructor = self.me();
+        self.me().currentPatient = closestPatient;
         return fluentBehaviorTree.BehaviorTreeStatus.Success
         
 

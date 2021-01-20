@@ -5,7 +5,8 @@ import Vector3 from "./Vector3.js";
 class AssignBed {
     
     //constructor(myIndex, start, end) {
-      constructor(myIndex, bed) {
+      constructor(myIndex, agentConstants, bed) {
+        console.log("Assigning Bed")
         this.index = myIndex;
         this.waypoints = [];
         //this.waypoints.push(start);
@@ -29,7 +30,7 @@ class AssignBed {
               let agent = t.agentConstants.find(a => a.id == myIndex);
               //agent.destination = new Vector3(self.waypoints[1]);
               //agent.addRoom(room);
-              agent.addRoom(new Vector3(self.waypoints[0]));
+              agent.addRoom(Vector3.fromObject(self.waypoints[0]));
 
               return fluentBehaviorTree.BehaviorTreeStatus.Success;
           })

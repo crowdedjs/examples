@@ -3,8 +3,10 @@ import Vector3 from "../behavior/Vector3.js"
 
 class FollowInstructions {
 
-  constructor(agent, myIndex) {
-    this.me = agent;
+  constructor(myIndex, agentConstants, locations) {
+    //this.me = agent;
+    this.me= ()=>agentConstants.find(a=>a.id == myIndex);
+    
     this.index = myIndex;
 
 
@@ -28,9 +30,9 @@ class FollowInstructions {
 
         }
         else if (state == PatientTempState.FOLLOWING) {
-          let instructor = me.getInstructor();
+          let instructor = me().getInstructor();
           let instructorLocation = instructor.getLocation();
-          let myLocation = me.getLocation();
+          let myLocation = me().getLocation();
           if (myLocation.distanceTo(instructorLocation) < 1) // If we're really close, stop
           {
             agent.destination = new Vector3(loc.x, loc.y, loc.z);//Stop

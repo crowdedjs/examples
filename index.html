@@ -11,10 +11,11 @@
 
 <body>
 
-  <script src="./lib/axios.js"></script>  <!-- Promise-based AJAX library-->
+  <script src="./lib/axios.js"></script> <!-- Promise-based AJAX library-->
   <!-- <script src="https://cdn.jsdelivr.net/npm/@ricksteam/fluent-behavior-tree-browser/bundle.js"></script> -->
   <script src="./lib/bundle.js"></script> <!-- Our port of fluent-behvaior-tree-browser-->
-  <script src="./bundle.js"></script>     <!-- Our port of RecastDetour-->
+  <script src="./bundle.js"></script> <!-- Our port of RecastDetour-->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@crowdedjs/computer/EDComputer.js"></script> -->
   <script type="module">
     //Show FPS Counter
     //Comment this line if you don't want to show the FPS counter
@@ -29,6 +30,9 @@
     import urlParser from "./urlParser.js"
     import colorFunction from "./color-function.js"
     import simulations from "./simulations.js"
+    import Hospital from "./support/Hospital.js"
+    //import * as Computer from "http://127.0.0.1:5501/EDComputer.js"
+    import * as Computer from "http://localhost:5501/EDComputer.js"
 
 
 
@@ -52,18 +56,23 @@
         let arrivalValue = results[2].data;   //Grab the value of all the arrivals
 
         let agentConstants = [];  //An array with all the high-level agent information (not the simulation data)
-        
+
         //Add an agent with a behavior and an id
         arrivalValue.forEach((agent, index) => {
           if (agent.name == "patient")
-            agentConstants.push(new PatientAgent(agent, locationValue));
+            agentConstants.push(new PatientAgent(agent, agentConstants, locationValue));
           else
-            agentConstants.push(new MedicalAgent(agent, locationValue));
+            agentConstants.push(new MedicalAgent(agent, agentConstants, locationValue));
           //Is this line necessary?
-          agentConstants[agentConstants.length -1].setId(index);
+          agentConstants[agentConstants.length - 1].setId(index);
         })
 
-        
+        Hospital.agentConstants = agentConstants;
+        Hospital.locations = locationValue;
+        Hospital.computer = new Computer.default.Computer();
+
+
+
         //Start the simulation.
         new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup");
 
