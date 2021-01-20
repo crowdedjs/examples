@@ -1,7 +1,3 @@
-
-//import BackAndForth from "../behavior/BackAndForth.js";
-//import None from "../behavior/None.js"
-
 class Agent {
   startX;
   startY;

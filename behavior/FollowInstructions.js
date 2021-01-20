@@ -60,9 +60,9 @@ class FollowInstructions {
 
 
   async update(agent, agentConstants, frame, msec) {
-    this.toReturn = null;//Set the default return value to null (don't change destination)
+    //this.toReturn = null;//Set the default return value to null (don't change destination)
     await this.tree.tick({ agentConstants, frame, msec }) //Call the behavior tree
-    return this.toReturn; //Return what the behavior tree set the return value to
+    //return this.toReturn; //Return what the behavior tree set the return value to
   }
 
 }

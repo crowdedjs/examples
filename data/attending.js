@@ -1,6 +1,5 @@
-// not fully ported
 import GoTo from "../behavior/GoTo.js"
-import WaitForever from "../tasks/WaitForever.js"
+import WaitForever from "../behavior/WaitForever.js"
 
 
 class attending {
@@ -16,8 +15,8 @@ class attending {
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
 
     let me = agent;
-    let myGoal = me.locations.find(l => l.name == "Tech Start");
-    if (!myGoal) throw new "We couldn't find a location called B_DESK";
+    let myGoal = me.locations.find(l => l.name == "B Desk");
+    if (!myGoal) throw new Exception("We couldn't find a location called B Desk");
 
     this.goTo = new GoTo(self.index, myGoal.position);
 

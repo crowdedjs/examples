@@ -9,7 +9,22 @@ class AMedician extends APerson {
     responsibility; //AResponsibility
     computer; //IRoom -> ARoom
 
-    get Computer() {
+	constructor(location, UUID, medicianType, medicianSubclass, doctorYear, arrivalTick) {
+		super(location, UUID, arrivalTick);
+		this.medicianType = medicianType;
+		this.medicianSubclass = medicianSubclass;
+		if (doctorYear == null)
+		{
+			this.doctorYear = "NONE";
+		}
+		else
+		{
+			this.doctorYear = doctorYear;
+		}
+		this.myRooms = [];
+	}
+
+	get Computer() {
         return this.computer;
     }
 
@@ -57,21 +72,6 @@ class AMedician extends APerson {
 
 	set MedicianSubclass(medicianSubclass) {
 		this.medicianSubclass = medicianSubclass;
-	}
-
-	constructor(location, UUID, medicianType, medicianSubclass, doctorYear, arrivalTick) {
-		super(location, UUID, arrivalTick);
-		this.medicianType = medicianType;
-		this.medicianSubclass = medicianSubclass;
-		if (doctorYear == null)
-		{
-			this.doctorYear = "NONE";
-		}
-		else
-		{
-		this.doctorYear = doctorYear;
-		}
-		this.myRooms = [];
 	}
     
 	get MedicianType() {

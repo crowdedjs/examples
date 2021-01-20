@@ -1,6 +1,5 @@
-// NOT FULLY PORTED
 import GoTo from "../behavior/GoTo.js"
-import WaitForever from "../tasks/WaitForever.js"
+import WaitForever from "../behavior/WaitForever.js"
 
 
 class janitorial {
@@ -23,23 +22,18 @@ class janitorial {
 
 
     this.tree = builder
-      // how to set to repeat?
       .sequence("Janitorial")
       .splice(new GoTo(self.index, myGoal.position).tree)
       .splice(new WaitForever(myIndex).tree)
-      .do("Go to Room", (t) => {
-        // FAST_TRACK type
-      })
-
-      .do("Wait Forever", (t) => new WaitForever(myIndex).execute())
+      
       .end()
       .build();
   }
 
   async update(agentConstants, crowd, msec) {
-    this.toReturn = null;//Set the default return value to null (don't change destination)
+    //this.toReturn = null;//Set the default return value to null (don't change destination)
     await this.tree.tick({ agentConstants, crowd, msec }) //Call the behavior tree
-    return this.toReturn; //Return what the behavior tree set the return value to
+    //return this.toReturn; //Return what the behavior tree set the return value to
   }
 
 }

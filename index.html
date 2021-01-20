@@ -21,6 +21,8 @@
     javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
 
     import MedicalAgent from "./sim/MedicalAgent.js"
+    import PatientAgent from "./sim/PatientAgent.js"
+    //import CrowdSetup from "./index.js"
     //import CrowdSetup from "./index.js"
     // import CrowdSetup from "http://localhost:5500/index.js"
     import CrowdSetup from "https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup@0.0.3/index.js"
@@ -53,7 +55,11 @@
         
         //Add an agent with a behavior and an id
         arrivalValue.forEach((agent, index) => {
-          agentConstants.push(new MedicalAgent(agent, locationValue));
+          if (agent.name == "patient")
+            agentConstants.push(new PatientAgent(agent, locationValue));
+          else
+            agentConstants.push(new MedicalAgent(agent, locationValue));
+          //Is this line necessary?
           agentConstants[agentConstants.length -1].setId(index);
         })
 
