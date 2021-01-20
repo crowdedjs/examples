@@ -11,10 +11,10 @@
 
 <body>
 
-  <script src="./lib/axios.js"></script>
+  <script src="./lib/axios.js"></script>  <!-- Promise-based AJAX library-->
   <!-- <script src="https://cdn.jsdelivr.net/npm/@ricksteam/fluent-behavior-tree-browser/bundle.js"></script> -->
-  <script src="./lib/bundle.js"></script>
-  <script src="./bundle.js"></script>
+  <script src="./lib/bundle.js"></script> <!-- Our port of fluent-behvaior-tree-browser-->
+  <script src="./bundle.js"></script>     <!-- Our port of RecastDetour-->
   <script type="module">
     //Show FPS Counter
     //Comment this line if you don't want to show the FPS counter
@@ -22,8 +22,15 @@
 
     import MedicalAgent from "./sim/MedicalAgent.js"
     import PatientAgent from "./sim/PatientAgent.js"
-    import CrowdSetup from "./index.js"
+    //import CrowdSetup from "./index.js"
+    //import CrowdSetup from "./index.js"
+    // import CrowdSetup from "http://localhost:5500/index.js"
+    import CrowdSetup from "https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup@0.0.3/index.js"
     import urlParser from "./urlParser.js"
+    import colorFunction from "./color-function.js"
+    import simulations from "./simulations.js"
+
+
 
     let params = {};
     //let assetBase = "./";
@@ -40,31 +47,31 @@
     let promises = [axios.get(params.objPath), axios.get(params.locationsPath), axios.get(params.arrivalPath)];
     Promise.all(promises)
       .then(results => {
-        let objValue = results[0].data;
-        let locationValue = results[1].data;
-        let arrivalValue = results[2].data;
+        let objValue = results[0].data;       //Grab the value of the environment 
+        let locationValue = results[1].data;  //Grab the value of all the locations
+        let arrivalValue = results[2].data;   //Grab the value of all the arrivals
 
-        let agentConstants = [];
-        //Add an agent with a behavior
-        //for (let agent of arrivalValue) {
+        let agentConstants = [];  //An array with all the high-level agent information (not the simulation data)
+        
+        //Add an agent with a behavior and an id
         arrivalValue.forEach((agent, index) => {
+<<<<<<< HEAD
           if (agent.name == "patient")
             agentConstants.push(new PatientAgent(agent, locationValue));
           else
             agentConstants.push(new MedicalAgent(agent, locationValue));
+=======
+          agentConstants.push(new MedicalAgent(agent, locationValue));
+          agentConstants[agentConstants.length -1].setId(index);
+>>>>>>> master
         })
 
-        //Assign a unique id to each agent.
-        for (let id = 0; id < agentConstants.length; id++) {
-          let agentConstant = agentConstants[id];
-          agentConstant.setId(id);
-        }
+        
         //Start the simulation.
-        new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, (agentConstant) => {
-          //This is no longer being used. Should it be integrated back in or dropped?
-        });
+        new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup");
 
       })
+      // This is commented out for debugging purposes. In production, this should be added back in.
       // .catch(error => {
       //   console.log("Error in the app " + error)
       // })
