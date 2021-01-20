@@ -55,15 +55,12 @@
         
         //Add an agent with a behavior and an id
         arrivalValue.forEach((agent, index) => {
-<<<<<<< HEAD
           if (agent.name == "patient")
             agentConstants.push(new PatientAgent(agent, locationValue));
           else
             agentConstants.push(new MedicalAgent(agent, locationValue));
-=======
-          agentConstants.push(new MedicalAgent(agent, locationValue));
+          //Is this line necessary?
           agentConstants[agentConstants.length -1].setId(index);
->>>>>>> master
         })
 
         
