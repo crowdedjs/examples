@@ -13,7 +13,7 @@ class AssignPatientToTriageNurse {
     this.tree = builder
       .sequence("Assign Patient To Triage Nurse")
         .do("Assign Patient", (t) => {
-          let agent = t.agents.find(a => a.id == self.index);
+          let agent = t.agentConstants.find(a => a.id == self.index);
           let simulationAgent = t.crowd.find(a => a.id == self.index);
           let myLocation = new Vector3(simulationAgent.x, simulationAgent.y, simulationAgent.z);
           

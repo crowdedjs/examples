@@ -9,7 +9,7 @@ class Stop {
         this.tree = builder
             .sequence("Stop")
                 .do("Stop", (t) => {
-                    let agent = t.agents.find(a => a.id == self.index);
+                    let agent = t.agentConstants.find(a => a.id == self.index);
                     let simulationAgent = t.crowd.find(a => a.id == self.index);
                     let loc = new Vector3(simulationAgent.x, simulationAgent.y, simulationAgent.z);
                     agent.destination = new Vector3(loc.x, loc.y, loc.z);

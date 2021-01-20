@@ -65,16 +65,16 @@ class MedicalAgent extends AMedician {
       this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       
       if (agent.type == "Tech")
-        this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-        //this.behavior = new tech(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new tech(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       else if (agent.type == "CT")
-        this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-        //this.behavior = new ct(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new ct(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       else if (agent.type == "Janitorial")
         this.behavior = new janitorial(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       else if (agent.type == "Radiology")
-        this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-        //this.behavior = new radiology(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new radiology(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       else
         throw new Exception("That tech type does not exist " + agent.type);
     }
@@ -82,14 +82,14 @@ class MedicalAgent extends AMedician {
       this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       
       if (agent.type == "Triage Nurse")
-        this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-        //this.behavior = new triageNurse(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new triageNurse(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       else if (agent.type == "Nurse")
-        this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-        //this.behavior = new nurse(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new nurse(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       else if (agent.type == "Greeter Nurse")
-        this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-        //this.behavior = new greeterNurse(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new greeterNurse(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       else
         throw new Exception("That nurse type does not exist " + agent.type);
     }
@@ -105,8 +105,8 @@ class MedicalAgent extends AMedician {
       this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       
       if (agent.type == "Resident")
-        this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-        //this.behavior = new resident(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new resident(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       else
         throw new Exception("That resident type does not exist " + agent.type);
     }

@@ -30,8 +30,8 @@ class ct {
       .splice(new WaitForever(myIndex).tree)
 
       // original tree is below sequence
-      .splice(new AssignComputer().tree) // name CT 1
-      .splice(new responsibility().tree) // lazy: true
+      .splice(new AssignComputer(myIndex, me.locations.find(l => l.name == "CT 1")).tree) // name CT 1
+      .splice(new responsibility(me, myIndex, start, end).tree) // lazy: true
       
       .end()
       .build();

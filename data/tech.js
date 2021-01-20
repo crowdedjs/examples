@@ -31,8 +31,8 @@ class tech {
 
       // original tree sequence below
       .splice(new AssignBed().tree) // C1
-      .splice(new AssignComputer().tree) // TechPlace
-      .splice(new responsibility().tree) // lazy: true
+      .splice(new AssignComputer(myIndex, me.locations.find(l => l.name == "TechPlace")).tree) // TechPlace
+      .splice(new responsibility(me, myIndex, start, end).tree) // lazy: true
 
       .end()
       .build();

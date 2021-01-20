@@ -51,7 +51,7 @@ class AMedician extends APerson {
     }
 
     addRoom(room) {
-        this.myRooms.add(room);
+        this.myRooms.push(room);
     }
 
 	hasRoom(room) {

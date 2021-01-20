@@ -15,13 +15,13 @@ class nurse {
       this.toReturn = null;
   
       let self = this;//Since we need to reference this in anonymous functions, we need a reference
-  
+      let me = agent;
       this.tree = builder
 
       .sequence("Assign")
-        .splice(new AssignBed().tree) // C1
-        .splice(new AssignComputer().tree) // NURSE PLACE
-        .splice(new responsibility().tree) // LAZY: TRUE
+        .splice(new AssignBed(myIndex, me.locations.find(l => l.name == "Check In")).tree) // C1
+        .splice(new AssignComputer(myIndex, me.locations.find(l => l.name == "NursePlace")).tree) // NURSE PLACE
+        .splice(new responsibility(me, myIndex, start, end).tree) // LAZY: TRUE
       .end()
       .build();
     }

@@ -32,8 +32,8 @@ class resident {
       
       // original tree sequence below
       .splice(new AssignBed().tree) // C1
-      .splice(new AssignComputer().tree) // ResidentStart
-      .splice(new responsibility().tree) // lazy: true
+      .splice(new AssignComputer(myIndex, me.locations.find(l => l.name == "ResidentStart")).tree) // ResidentStart
+      .splice(new responsibility(me, myIndex, start, end).tree) // lazy: true
 
       .end()
       .build();

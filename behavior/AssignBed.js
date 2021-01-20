@@ -26,7 +26,7 @@ class AssignBed {
         
         .sequence("Assign Bed")
             .do("Set Bed Location", (t) => {
-              let agent = t.agents.find(a => a.id == self.index);
+              let agent = t.agentConstants.find(a => a.id == myIndex);
               //agent.destination = new Vector3(self.waypoints[1]);
               //agent.addRoom(room);
               agent.addRoom(new Vector3(self.waypoints[0]));
