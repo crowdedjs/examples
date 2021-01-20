@@ -1,4 +1,3 @@
-import Poses from "../models/Poses.js"
 
 // not fully ported
 class GoToARoom {
