@@ -31,8 +31,8 @@ class MedicalAgent extends AMedician {
   static index = 0;
   idx; //Corresponds to the internal idx number used by recast
 
-  constructor(agent, agentConstants, locations, location, UUID, medicianType, medicianSubclass, doctorYear, arrivalCount) {
-    super(location, UUID, medicianType, medicianSubclass, doctorYear, arrivalCount);
+  constructor(agent, agentConstants, locations) {
+    super(agent.location, agent.id, agent.name, agent.type, agent.doctorYear);
     
     this.name = agent.name;
     this.locations = locations;

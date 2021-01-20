@@ -32,7 +32,8 @@
     import simulations from "./simulations.js"
     import Hospital from "./support/Hospital.js"
     //import * as Computer from "http://127.0.0.1:5501/EDComputer.js"
-    import * as Computer from "http://localhost:5501/EDComputer.js"
+    import Computer from "./support/Computer.js"
+    import Room from "./support/Room.js"
 
 
 
@@ -56,6 +57,7 @@
         let arrivalValue = results[2].data;   //Grab the value of all the arrivals
 
         let agentConstants = [];  //An array with all the high-level agent information (not the simulation data)
+        let locations = [];
 
         //Add an agent with a behavior and an id
         arrivalValue.forEach((agent, index) => {
@@ -67,9 +69,14 @@
           agentConstants[agentConstants.length - 1].setId(index);
         })
 
+        locationValue.forEach(l=>{
+          locations.push(new Room(l.position, l.annotationName.toUpperCase().replace(" ", "_"), l.name))
+        })
+
+
         Hospital.agentConstants = agentConstants;
-        Hospital.locations = locationValue;
-        Hospital.computer = new Computer.default.Computer();
+        Hospital.locations = locations;
+        Hospital.computer = new Computer();
 
 
 

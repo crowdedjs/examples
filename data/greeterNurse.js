@@ -36,17 +36,17 @@ class greeterNurse {
 
             .splice(new TakeTime(30, 90).tree) // seconds: uniform, 30, 90
 
-            .splice(new ComputerEnterPatient().tree)
+            .splice(new ComputerEnterPatient(myIndex, agentConstants, locations).tree)
 
             .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
 
-            .splice(new ComputerScorePatient().tree)
+            .splice(new ComputerScorePatient(myIndex, agentConstants, locations).tree)
 
             .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
 
-            .splice(new ComputerAssignPatientRoom().tree)
+            .splice(new ComputerAssignPatientRoom(myIndex, agentConstants, locations).tree)
             
-            .splice(new AssignPatientToTriageNurse().tree)
+            .splice(new AssignPatientToTriageNurse(myIndex, agentConstants, locations).tree)
 
             .splice(new WaitForever().tree)  
                     

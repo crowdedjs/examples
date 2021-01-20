@@ -1,4 +1,6 @@
 import Hospital from "../support/Hospital.js"
+import LocationStatus from "../support/LocationStatus.js";
+import RoomType from "../support/RoomType.js"
 
 class ComputerAssignPatientRoom {
 
@@ -8,12 +10,12 @@ class ComputerAssignPatientRoom {
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
     let self = this;
-    let me= ()=>agentConstants.find(a=>a.id == myIndex);;
+    let me= ()=>agentConstants.find(a=>a.id == myIndex);
 
     this.tree = builder
       .sequence("Computer Assign Patient Room")
         .do("Assign Room", (t) => {
-            let patient = me.CurrentPatient;
+            let patient = me().CurrentPatient;
             let entry = Hospital.computer.getEntry(patient);
 
             // get rooms C_ROOM
@@ -24,11 +26,14 @@ class ComputerAssignPatientRoom {
             IRoom chosenRoom = cRooms.stream().filter(i->i.getLocationStatus()==LocationStatus.NONE).findFirst().get();
             */
 
-           let rooms = locations.filter(l=>l.annotationName == "CRoom" );
+           let rooms = Hospital.locations.filter(l=>l.roomType == RoomType.C_ROOM && l.locationStatus == LocationStatus.NONE );
+           if(rooms.length == 0)
+            return fluentBehaviorTree.BehaviorTreeStatus.Failed
+
+
            
-           
-            patient.AssignedRoom = chosenRoom;
-            entry.Bed = chosenRoom;
+            patient.AssignedRoom = rooms[0];
+            entry.Bed = rooms[0];
 
             return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })

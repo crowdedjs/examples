@@ -1,6 +1,6 @@
 
 import Hospital from "../support/Hospital.js"
-import * as Computer from "https://cdn.jsdelivr.net/npm/@crowdedjs/computer@0.0.6/EDComputer.js"
+import ComputerEntry from "../support/ComputerEntry.js"
 
 class ComputerEnterPatient {
     constructor(myIndex, agentConstants, locations) {
@@ -13,8 +13,8 @@ class ComputerEnterPatient {
         this.tree = builder
             .sequence("Computer Enter Patient")
                 .do("Enter Patient", (t) => {
-                    let patient = me.CurrentPatient;
-                    let entry = new Computer.default.ComputerEntry(patient, "Unknown")
+                    let patient = me().CurrentPatient;
+                    let entry = new ComputerEntry(patient, "Unknown")
                     
                     // need "this" ?
                     Hospital.computer.add(entry);
