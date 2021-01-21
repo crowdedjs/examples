@@ -32,7 +32,7 @@ class AssignPatientToTriageNurse {
           */
          let closestTriangeNurses = agentConstants.filter(a=>a.medicianType == "NURSE" && a.medicianSubType == "TRIAGE_NURSE" && a.CurrentPatient == null);
          let closetTriageNursesSorted = closestTriangeNurses.sort((a,b)=>a.location.distanceTo(myLocation) - b.location.distanceTo(myLocation));
-         closestTriageNurse = closetTriageNursesSorted[0];
+         let closestTriageNurse = closetTriageNursesSorted[0];
          if(!closestTriageNurse) return fluentBehaviorTree.BehaviorTreeStatus.Running;
 
           myPatient = me().CurrentPatient;
