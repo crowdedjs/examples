@@ -28,7 +28,7 @@ class resident {
     this.tree = builder
       .sequence("Assign")
       .splice(new GoTo(self.index, myGoal.position).tree)
-      .splice(new WaitForever(myIndex).tree)
+      .splice(new WaitForever(myIndex, agentConstants, locations).tree)
       
       // original tree sequence below
       .splice(new AssignBed(myIndex, agentConstants, locations.find(l => l.name == "C1").position).tree) // C1

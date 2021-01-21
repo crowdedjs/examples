@@ -37,7 +37,7 @@ class patient {
       
       .splice(new FollowInstructions().tree)
 
-      .splice(new WaitForever().tree)
+      .splice(new WaitForever(myIndex, agentConstants, locations).tree)
     .end()
     .build();
   }

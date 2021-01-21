@@ -1,16 +1,16 @@
 import Vector3 from "../behavior/Vector3.js";
 
 class WaitForever {
-    constructor(index) {
+    constructor(myIndex, agentConstants, location) {
         //this.agent = agent;
-        this.index = index;
+        this.index = myIndex;
         let self = this;
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
         this.tree = builder
             .sequence("Wait Forever")
             .do("Wait Forever", (t) => {
-                let agent = t.agentConstants.find(a => a.id == self.index);
+                let agent = agentConstants.find(a => a.id == self.index);
                 let simulationAgent = t.crowd.find(a => a.id == self.index);
                 let loc = new Vector3(simulationAgent.x, simulationAgent.y, simulationAgent.z);
                 agent.destination = new Vector3(loc.x, loc.y, loc.z);

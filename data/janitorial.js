@@ -24,7 +24,7 @@ class janitorial {
     this.tree = builder
       .sequence("Janitorial")
       .splice(new GoTo(self.index, myGoal.position).tree)
-      .splice(new WaitForever(myIndex).tree)
+      .splice(new WaitForever(myIndex, agentConstants, locations).tree)
       
       .end()
       .build();

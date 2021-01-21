@@ -27,7 +27,7 @@ class ct {
     this.tree = builder
       .sequence("Tech Tree")
       .splice(new GoTo(self.index, myGoal.position).tree)
-      .splice(new WaitForever(myIndex).tree)
+      .splice(new WaitForever(myIndex, agentConstants, locations).tree)
 
       // original tree is below sequence
       .splice(new AssignComputer(myIndex, locations.find(l => l.name == "CT 1")).tree) // name CT 1

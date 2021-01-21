@@ -24,7 +24,7 @@ class attending {
     this.tree = builder
       .sequence("Attending Tree")
       .splice(this.goTo.tree)
-      .splice(new WaitForever(myIndex).tree)
+      .splice(new WaitForever(myIndex, agentConstants, locations).tree)
             
       .end()
       .build();

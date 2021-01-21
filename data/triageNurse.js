@@ -25,9 +25,10 @@ class triageNurse {
     this.tree = builder
       .sequence("Pick Triage Room")
       .splice(new GoTo(self.index, myGoal.position).tree)
-      .splice(new WaitForever(myIndex).tree)
+      //.splice(new WaitForever(myIndex, agentConstants, locations).tree)
       
       .do("Go to Room By Name", (t) => {
+        throw new Exception("Not Implemented")
 
       })
 

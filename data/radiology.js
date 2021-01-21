@@ -24,7 +24,7 @@ class radiology {
     this.tree = builder
       .sequence("Go and Idle")
       .splice(new GoTo(self.index, myGoal.position).tree)
-      .splice(new WaitForever(myIndex).tree)
+      .splice(new WaitForever(myIndex, agentConstants, locations).tree)
       
       .end()
       .build();

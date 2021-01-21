@@ -48,7 +48,7 @@ class greeterNurse {
             
             .splice(new AssignPatientToTriageNurse(myIndex, agentConstants, locations).tree)
 
-            .splice(new WaitForever().tree)  
+            .splice(new WaitForever(myIndex, agentConstants, locations).tree)  
                     
         .end()
         .build();
