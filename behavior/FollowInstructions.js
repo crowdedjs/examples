@@ -5,7 +5,7 @@ class FollowInstructions {
 
   constructor(myIndex, agentConstants, locations) {
     //this.me = agent;
-    this.me= ()=>agentConstants.find(a=>a.id == myIndex);
+    let me= ()=>agentConstants.find(a=>a.id == myIndex);
     
     this.index = myIndex;
 
@@ -21,18 +21,19 @@ class FollowInstructions {
         let agentConstant = t.agentConstants.find(a => a.id == self.index);
         
         let idx = t.agentConstants[self.index].idx;
-        let simulationAgent = t.frame.find(f=>f.id == idx);
+        let simulationAgent = t.crowd.find(f=>f.id == idx);
         let loc = new Vector3(simulationAgent.x, simulationAgent.y, simulationAgent.z);
-        let state = agentConstant.getPatientTempState();
+        let state = me().PatientTempState;
 
         if (state == PatientTempState.WAITING) {
-          agent.destination = new Vector3(loc.x, loc.y, loc.z);
+          agentConstant.destination = new Vector3(loc.x, loc.y, loc.z);
 
         }
         else if (state == PatientTempState.FOLLOWING) {
-          let instructor = me().getInstructor();
-          let instructorLocation = instructor.getLocation();
-          let myLocation = me().getLocation();
+          let instructor = me().Instructor;
+          let instructorLoc = Vector3.fromObject(t.crowd.find(f=>f.id == instructor.idx));
+          let instructorLocation = instructorLoc;
+          let myLocation = loc;
           if (myLocation.distanceTo(instructorLocation) < 1) // If we're really close, stop
           {
             agent.destination = new Vector3(loc.x, loc.y, loc.z);//Stop
@@ -41,15 +42,15 @@ class FollowInstructions {
             //Head toward the instructor, but don't collide
             let towardMe = Vector3.subtract(instructorLocation, myLocation);
             towardMe.normalize();
-            let destination = Point3.add(instructorLocation, towardMe);
-            agent.setDestination(destination);
+            let destination = Vector3.add(instructorLocation, towardMe);
+            agentConstant.destination = destination;
           }
         }
         else if (state == PatientTempState.GO_INTO_ROOM) {
 
         }
         else {
-          console.log("Invalid patient temp state " + PatientTempState);
+          console.log("Invalid patient temp state " + state);
         }
 
 

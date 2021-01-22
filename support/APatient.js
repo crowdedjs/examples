@@ -1,4 +1,5 @@
 import APerson from "./APerson.js";
+import PatientTempState from "./PatientTempState.js";
 
 class APatient extends APerson {
 
@@ -9,7 +10,7 @@ class APatient extends APerson {
 
     patientPregnancyState = "NOT_EXPECTING";
     
-    patientTempState = "ARRIVED";
+    patientTempState = PatientTempState.WAITING;
     
 	severity; // Severity
 	// SEVERITY LEVELS: ESI1, ESI2, ESI3, ESI4, ESI5

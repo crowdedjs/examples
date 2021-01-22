@@ -1,3 +1,4 @@
+import PatientTempState from "../support/PatientTempState.js";
 import Vector3 from "./Vector3.js";
 
 class AssignPatientToTriageNurse {
@@ -38,7 +39,7 @@ class AssignPatientToTriageNurse {
           let myPatient = me().CurrentPatient;
           closestTriageNurse.CurrentPatient = myPatient;
           myPatient.Instructor = closestTriageNurse;
-          myPatient.PatientTempState = "FOLLOWING";
+          myPatient.PatientTempState = PatientTempState.FOLLOWING;
           me.CurrentPatient = null;
           //hospital.addComment(me, myPatient, "Follow that nurse.");
 

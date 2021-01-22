@@ -46,8 +46,12 @@ class Vector3 {
         return new Vector3(end.x - start.x, end.y - start.y, end.z - start.z);
     }
 
+    static add(end, start){
+        return new Vector3(end.x + start.x, end.y + start.y, end.z + start.z);
+    }
+
     normalize() {
-        let length = length();
+        let length = this.length();
 
         this.x /= length;
         this.y /= length;
