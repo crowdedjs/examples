@@ -1,5 +1,7 @@
 // NOT FULLY PORTED
 import GoTo from "../behavior/GoTo.js"
+import GoToLazy from "../behavior/GoToLazy.js";
+import LeavePatient from "../behavior/LeavePatient.js";
 import WaitForever from "../behavior/WaitForever.js"
 
 
@@ -25,24 +27,17 @@ class triageNurse {
     this.tree = builder
       .sequence("Pick Triage Room")
       .splice(new GoTo(self.index, myGoal.position).tree)
-      //.splice(new WaitForever(myIndex, agentConstants, locations).tree)
       
-      .do("Go to Room By Name", (t) => {
-        throw new Exception("Not Implemented")
-
-      })
 
       .do("Wait For Patient Assignment", (t) => {
+        if(!me().CurrentPatient) return fluentBehaviorTree.BehaviorTreeStatus.Running;
+        return fluentBehaviorTree.BehaviorTreeStatus.Success; 
 
       })
 
-      .do("Take Patient to Room", (t) => {
+      .splice(new GoToLazy(self.index, ()=>me().CurrentPatient.AssignedRoom.location).tree)
 
-      })
-
-      .do("Leave Patient", (t) => {
-
-      })
+      .splice(new LeavePatient(self.index, agentConstants, locations).tree)
       .end()
       .build();
   }

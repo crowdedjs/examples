@@ -18,7 +18,7 @@ class GoToLazy {
       .do("Set destination goal lazy", (t) => {
         let agent = t.agentConstants.find(a=>a.id==self.index);
         let next = self.waypoints[0]();
-        agent.destination = new Vector3(next)
+        agent.destination = Vector3.fromObject(next)
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })
       //Now return null as we head to that destination
@@ -31,7 +31,7 @@ class GoToLazy {
         agent.destination = next;
         let simulationAgent = t.crowd.find(a=>a.id == self.index);
         let loc = new Vector3(simulationAgent.x, simulationAgent.y, simulationAgent.z);
-        let waypoint = Vector3.fromObject(self.waypoints[0]);
+        let waypoint = Vector3.fromObject(self.waypoints[0]());
 
         let difference = Vector3.subtract(loc, waypoint)
         let distanceToWaypoint = difference.length();

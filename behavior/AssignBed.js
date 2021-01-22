@@ -6,7 +6,6 @@ class AssignBed {
     
     //constructor(myIndex, start, end) {
       constructor(myIndex, agentConstants, bed) {
-        console.log("Assigning Bed")
         this.index = myIndex;
         this.waypoints = [];
         //this.waypoints.push(start);

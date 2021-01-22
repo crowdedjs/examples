@@ -6,7 +6,6 @@ class AssignComputer {
     
     //constructor(myIndex, start, end) {
       constructor(myIndex, agentConstants, room) {
-        console.log("Assigning Computer")
         this.index = myIndex;
         this.waypoints = [];
         //this.waypoints.push(start);

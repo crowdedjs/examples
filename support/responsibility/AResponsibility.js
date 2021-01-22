@@ -99,14 +99,12 @@ class AResponsibility {
 	}
 
 	finish() {
-		console.log("Finishing responsibility " + this.name);
 		doFinish();
 	}
 
 	doFinish();
 
 	start() {
-		console.log("Starting responsibility " + this.name);
 		doStart();
 	};
 

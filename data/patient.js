@@ -1,5 +1,6 @@
 import FollowInstructions from "../behavior/FollowInstructions.js";
 import GoTo from "../behavior/GoTo.js";
+import GoToLazy from "../behavior/GoToLazy.js";
 // import LOG 
 import Stop from "../behavior/Stop.js";
 import WaitForever from "../behavior/WaitForever.js";
@@ -8,11 +9,10 @@ import WaitForever from "../behavior/WaitForever.js";
 
 class patient {
 
-  constructor(myIndex, agentConstants, locations, start, end) {
+  constructor(myIndex, agentConstants, locations, startLocation) {
     this.index = myIndex;
     this.waypoints = [];
-    this.waypoints.push(start);
-    this.waypoints.push(end);
+    this.waypoints.push(startLocation);
 
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
@@ -20,22 +20,19 @@ class patient {
     let myGoal = locations.find(l => l.name == "Check In");
     if (!myGoal) throw new Exception("We couldn't find a location called Check In");
 
-    this.goTo = new GoTo(self.index, myGoal.position);
+   // this.goTo = new GoTo(self.index, myGoal.position);
 
     this.tree = builder
 
     .sequence("Patient Actions")         
       .selector("Check In")
-        .splice(this.goTo.tree) // CHECK IN
+        .splice(new GoToLazy(myIndex, ()=>this.waypoints[0].position).tree )// CHECK IN
 
         .splice(new Stop().tree)
      
-      // For testing purposes, relic from java codebase
-      // .do("Log Text", (t) => {
-      //   // "I stopped"
-      // })
+   
       
-      .splice(new FollowInstructions().tree)
+      .splice(new FollowInstructions(myIndex, agentConstants, locations).tree)
 
       .splice(new WaitForever(myIndex, agentConstants, locations).tree)
     .end()

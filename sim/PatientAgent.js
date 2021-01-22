@@ -43,7 +43,7 @@ class PatientAgent extends APatient {
     this.destY = 0;
     this.destZ = 0;
 
-    this.behavior = new patient( agent.id, agentConstants, locations, null, null);
+    this.behavior = new patient( agent.id, agentConstants, locations, locations.find(l => l.name == "Check In"));
     
       
     }

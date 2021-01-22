@@ -30,9 +30,7 @@ class nurse {
   
     async update(agentConstants, crowd, msec) {
       //this.toReturn = null;//Set the default return value to null (don't change destination)
-      console.log("Start nurse");
       await this.tree.tick({ agentConstants, crowd, msec }) //Call the behavior tree
-      console.log("End nurse")
       //return this.toReturn; //Return what the behavior tree set the return value to
     }
   

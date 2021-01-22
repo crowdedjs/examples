@@ -31,9 +31,7 @@ class attending {
   }
 
   async update(agentConstants, crowd, msec) {
-    console.log("Start Attending");
     await this.tree.tick({ agentConstants, crowd, msec }) //Call the behavior tree
-    console.log("End Attending");
   }
 
 }
