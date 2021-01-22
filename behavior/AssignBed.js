@@ -30,6 +30,7 @@ class AssignBed {
               //agent.destination = new Vector3(self.waypoints[1]);
               //agent.addRoom(room);
               agent.addRoom(Vector3.fromObject(self.waypoints[0]));
+              console.log("Assigning bed " + myIndex);
 
               return fluentBehaviorTree.BehaviorTreeStatus.Success;
           })

@@ -31,7 +31,7 @@ class ct {
 
       // original tree is below sequence
       .splice(new AssignComputer(myIndex, locations.find(l => l.name == "CT 1")).tree) // name CT 1
-      .splice(new responsibility(myIndex, agentConstants, start, end).tree) // lazy: true
+      .splice(new responsibility(myIndex, agentConstants, locations, start, end).tree) // lazy: true
       
       .end()
       .build();

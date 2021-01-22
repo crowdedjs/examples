@@ -28,12 +28,12 @@ class resident {
     this.tree = builder
       .sequence("Assign")
       .splice(new GoTo(self.index, myGoal.position).tree)
-      .splice(new WaitForever(myIndex, agentConstants, locations).tree)
+      //.splice(new WaitForever(myIndex, agentConstants, locations).tree)
       
       // original tree sequence below
       .splice(new AssignBed(myIndex, agentConstants, locations.find(l => l.name == "C1").position).tree) // C1
       .splice(new AssignComputer(myIndex, agentConstants, locations.find(l => l.name == "ResidentStart").position).tree) // ResidentStart
-      .splice(new responsibility(myIndex, agentConstants, start, end).tree) // lazy: true
+      .splice(new responsibility(myIndex, agentConstants, locations, start, end).tree) // lazy: true
 
       .end()
       .build();

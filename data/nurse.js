@@ -1,6 +1,6 @@
-import AssignBed from "../behavior/AssignBed.js";
-import AssignComputer from "../behavior/AssignComputer.js";
 import responsibility from "./responsibility.js";
+import GoTo from "../behavior/GoTo.js";
+import AssignComputer from "../behavior/AssignComputer.js"
 
 
 class nurse {
@@ -17,13 +17,16 @@ class nurse {
       let self = this;//Since we need to reference this in anonymous functions, we need a reference
       let me= ()=>agentConstants.find(a=>a.id == myIndex);
       
+      let goToName = "NursePlace";
+      let myGoal = locations.find(l => l.name == goToName);
       let computer =  locations.find(l => l.name == "NursePlace");
       this.tree = builder
 
-      .sequence("Assign")
-        .splice(new AssignBed(myIndex, agentConstants, locations.find(l => l.name == "C1").position).tree) // C1
+      .sequence("Assign Nurse")
+        .splice(new GoTo(self.index, myGoal.position).tree)
+        //.splice(new AssignBed(myIndex, agentConstants, locations.find(l => l.name == "C1").position).tree) // C1
         .splice(new AssignComputer(myIndex, agentConstants, computer.position).tree) // NURSE PLACE
-        .splice(new responsibility(myIndex, agentConstants, start, end).tree) // LAZY: TRUE
+        .splice(new responsibility(myIndex, agentConstants, locations, start, end).tree) // LAZY: TRUE
       .end()
       .build();
     }

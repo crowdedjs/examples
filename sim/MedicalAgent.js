@@ -62,7 +62,7 @@ class MedicalAgent extends AMedician {
     
 
     if (agent.name == "Tech") {
-      this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+      //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       
       if (agent.type == "Tech")
         //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
@@ -79,7 +79,7 @@ class MedicalAgent extends AMedician {
         throw new Exception("That tech type does not exist " + agent.type);
     }
     else if (agent.name == "Nurse") {
-      this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+      //this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       
       if (agent.type == "Triage Nurse")
         //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
@@ -94,7 +94,7 @@ class MedicalAgent extends AMedician {
         throw new Exception("That nurse type does not exist " + agent.type);
     }
     else if (agent.name == "Attending") {
-      this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+      //this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       
       if (agent.type == "Attending")
         this.behavior = new attending(agent.id, agentConstants, locations,  [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
@@ -102,7 +102,7 @@ class MedicalAgent extends AMedician {
         throw new "That attending type does not exist " + agent.type;
     }
     else if (agent.name == "Resident") {
-      this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+      //this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       
       if (agent.type == "Resident")
         //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
