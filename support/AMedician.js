@@ -39,7 +39,7 @@ class AMedician extends APerson {
     set Responsibility(responsibility)
     {
         this.responsibility = responsibility;
-        this.CurrentPatient(this.responsibility.getEntry().Patient());
+        this.CurrentPatient(responsibility.getEntry().Patient;
     }
 
     get MyRooms() {
@@ -55,7 +55,7 @@ class AMedician extends APerson {
     }
 
 	hasRoom(room) {
-		return this.myRooms.contains(room);		
+		return this.MyRooms.some(r=>r.name == room.name)	
 	}
 
 	get CurrentPatient() {

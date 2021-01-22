@@ -1,4 +1,7 @@
- class CTResponsibilities extends AResponsibilityFactory{
+import AResponsibilityFactory from "./AResponsibilityFactory.js"
+
+
+class CTResponsibilities extends AResponsibilityFactory{
 
 get(entry, medician) {
 

@@ -1,4 +1,7 @@
+import ATransportResponsibility from "./ATransportResponsibility.js"
+
 class TechCATPickupResponsibility extends ATransportResponsibility {
+
 
   constructor(entry, medician) {
     super("Tech CAT Pickup Responsibility", entry, medician, entry.getBed());

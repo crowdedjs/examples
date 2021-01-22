@@ -1,3 +1,6 @@
+import AResponsibility from "./AResponsibility.js"
+import ResponsibilitySubject from "./ResponsibilitySubject.js"
+
 class TakeVitalsResponsibility extends AResponsibility {
 
 	constructor(entry, medician) {

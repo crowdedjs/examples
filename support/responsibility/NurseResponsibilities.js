@@ -1,3 +1,5 @@
+import AResponsibilityFactory from "./AResponsibilityFactory.js"
+
  class NurseResponsibilities extends AResponsibilityFactory {
 	
 	get( entry, medician) {

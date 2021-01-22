@@ -1,4 +1,8 @@
- class TechEKGDo extends AResponsibility {
+import ResponsibilitySubject from "./ResponsibilitySubject.js"
+
+import AResponsibility from "./AResponsibility.js"
+
+class TechEKGDo extends AResponsibility {
 
 	constructor(entry, medician) {
 		super("Tech EKG Do", 1 * 60, entry, 4, ResponsibilitySubject.PATIENT, medician);

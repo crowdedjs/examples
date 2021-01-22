@@ -240,7 +240,7 @@ class ComputerEntry {
   }
 
   unacknowledged(string) {
-    return this.unack.contains(string);
+    return this.unack.includes(string);
   }
 
   acknowledge(string) {

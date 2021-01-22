@@ -1,3 +1,5 @@
+import ATransportResponsibility from "./ATransportResponsibility.js"
+
 class TechEKGTakePatientToResponsibility extends ATransportResponsibility {
 
 	constructor(entry, medician, location) {

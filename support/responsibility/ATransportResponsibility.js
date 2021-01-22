@@ -1,3 +1,7 @@
+import AResponsibility from "./AResponsibility.js"
+import ResponsibilitySubject from "./ResponsibilitySubject.js"
+
+
 class ATransportResponsibility extends AResponsibility {
 
   room;

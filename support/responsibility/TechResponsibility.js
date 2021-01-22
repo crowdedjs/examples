@@ -1,4 +1,11 @@
+import AResponsibilityFactory from "./AResponsibilityFactory.js"
+import TakeVitalsResponsibility from "./TakeVitalsResponsibility.js"
+import TechEKGDo from "./TechEKGDo.js";
+import TechEKGTakePatientToResponsibility from "./TechEKGTakePatientResponsibility.js"
+import TechCATPickupResponsibility from "./TechCATPickupResponsibility.js"
+
  class TechResponsibilities extends AResponsibilityFactory {
+
 	
 	 get(entry, medician) {
 		if(entry.getVitals() == null) {

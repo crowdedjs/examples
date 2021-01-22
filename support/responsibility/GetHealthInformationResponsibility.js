@@ -1,4 +1,5 @@
  import AResponsibility from "./AResponsibility.js"
+ import ResponsibilitySubject from "./ResponsibilitySubject.js"
 
  class GetHealthInformationResponsibility extends AResponsibility {
 

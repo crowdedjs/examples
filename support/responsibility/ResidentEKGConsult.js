@@ -1,3 +1,5 @@
+import ResponsibilitySubject from "./ResponsibilitySubject.js"
+
 class ResidentEKGConsult extends AResponsibility {
 	
 	constructor(entry, medician) {

@@ -43,13 +43,13 @@ class responsibility {
                     // Not sure if medician subclass is implemented
                     switch (me().MedicianSubclass) {
                         case "Tech":
-                            me.Computer = locations.find(l => l.name == "TechPlace");
+                            me().Computer = locations.find(l => l.name == "TechPlace");
                             break;
                         case "Nurse":
-                            me.Computer=locations.find(l => l.name == "NursePlace");
+                            me().Computer=locations.find(l => l.name == "NursePlace");
                             break;
                         case "Resident":
-                            me.Computer=locations.find(l => l.name == "ResidentStart");
+                            me().Computer=locations.find(l => l.name == "ResidentStart");
                             break;
                     }
 
@@ -59,7 +59,7 @@ class responsibility {
                 // REPEAT
                 //.sequence("Computer Operations")
                 //.splice(new GoToLazy(self.index, me=>me.Computer).tree) // GO TO COMPUTER
-                .splice(new GoToLazy(self.index, () => me().Computer).tree)// GO TO COMPUTER
+                .splice(new GoToLazy(self.index, () => me().Computer.position).tree)// GO TO COMPUTER
 
                 //.selector("Emergency")
                 //.do("Handle Emergency", (t) => { return fluentBehaviorTree.BehaviorTreeStatus.Failure; }) // PLACEHOLDER
@@ -68,9 +68,9 @@ class responsibility {
                 //.splice(new GoToLazy(self.index, () => me().Computer).tree) // GO TO COMPUTER
 
                 //NOT FINISHED
-                .splice(new GetComputerResponsibility().tree)
+                .splice(new GetComputerResponsibility(myIndex, agentConstants, locations).tree)
                 //NOT FINISHED
-                .splice(new HandleResponsibility().tree)
+                .splice(new HandleResponsibility(myIndex, agentConstants, locations).tree)
 
 
                 //.end()
@@ -80,8 +80,8 @@ class responsibility {
                 .splice(new GoToLazy(self.index, () => me().Computer).tree) // GO TO COMPUTER
 
                 //NOT FINISHED
-                .splice(new GetResponsibility().tree)
-                .splice(new GoToResponsibility().tree)
+                .splice(new GetResponsibility(myIndex, agentConstants, locations).tree)
+                .splice(new GoToResponsibility(myIndex, agentConstants, locations).tree)
 
                 // .do("Go To Responsibility", (t) => {
                 //     //WRITE THIS BEHAVIOR

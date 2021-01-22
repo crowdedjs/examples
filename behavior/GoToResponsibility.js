@@ -1,3 +1,4 @@
+import ResponsibilitySubject from "../support/responsibility/ResponsibilitySubject.js"
 
 class GoToResponsibility {
 
