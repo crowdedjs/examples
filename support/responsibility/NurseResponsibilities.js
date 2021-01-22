@@ -9,3 +9,5 @@
 		return null;
 	}
 }
+
+export default NurseResponsibilities;

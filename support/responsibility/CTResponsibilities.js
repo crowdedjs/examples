@@ -12,4 +12,4 @@ get(entry, medician) {
 
 }
 
-export CTResponsibilities;
+export default CTResponsibilities;

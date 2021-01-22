@@ -4,3 +4,5 @@ class ResponsibilitySubject {
   static ATTENDING = "ATTENDING";
   static TRANSPORT = "TRANSPORT";
 }
+
+export default ResponsibilitySubject;

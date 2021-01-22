@@ -5,6 +5,8 @@ import GoTo from "../behavior/GoTo.js";
 import GoToLazy from "../behavior/GoToLazy.js";
 import HandleResponsibility from "../behavior/HandleResponsibility.js";
 import Vector3 from "../behavior/Vector3.js";
+import GetHealthInformationResponsibility from "../support/responsibility/GetHealthInformationResponsibility.js";
+import GoToResponsibility from "../behavior/GoToResponsibility.js"
 
 class responsibility {
 
@@ -79,11 +81,12 @@ class responsibility {
 
                 //NOT FINISHED
                 .splice(new GetResponsibility().tree)
+                .splice(new GoToResponsibility().tree)
 
-                .do("Go To Responsibility", (t) => {
-                    //WRITE THIS BEHAVIOR
-                    throw new Exception("Not implemented)")
-                })
+                // .do("Go To Responsibility", (t) => {
+                //     //WRITE THIS BEHAVIOR
+                //     throw new Exception("Not implemented)")
+                // })
                 .do("Wait For Responsibility Patient", (t) => {
                     //WRITE THIS BEHAVIOR            
                     throw new Exception("Not implemented)")
@@ -96,7 +99,7 @@ class responsibility {
                 .splice(new HandleResponsibility().tree)
 
                 // UNTIL FAIL?
-                .sequence("Reassess Responsibility")
+                //.sequence("Reassess Responsibility")
                 .do("Reassess", (t) => {
                     //WRITE THIS BEHAVIOR
                     throw new Exception("Not implemented)")

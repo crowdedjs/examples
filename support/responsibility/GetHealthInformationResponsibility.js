@@ -1,3 +1,5 @@
+ import AResponsibility from "./AResponsibility.js"
+
  class GetHealthInformationResponsibility extends AResponsibility {
 
 	constructor(entry, medician) {

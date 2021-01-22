@@ -12,3 +12,5 @@ class CTCATDoScanResponsibility extends AResponsibility  {
 
 	
 }
+
+export default CTCATDoScanResponsibility;

@@ -1,6 +1,6 @@
-import ComputerEntry from "../support/ComputerEntry.js";
+import ComputerEntry from "../ComputerEntry.js";
 //import support.HospitalModel;
-import AMedician from "../support/AMedician.js";
+import AMedician from "../AMedician.js";
 
 class AResponsibility {
 
@@ -11,32 +11,32 @@ class AResponsibility {
 	priority; //float
 	subject; //ResponsibilitySubject
 	medician; //IMedician
-	
-	get Medician() {
+
+	getMedician() {
 		return this.medician;
 	}
 
-    set Medician(medician) {
+	setMedician(medician) {
 		this.medician = medician;
 	}
 
-    isStarted() {
+	isStarted() {
 		return this.calledStarted; //boolean
 	}
-	
-	get Subject() {
+
+	getSubject() {
 		return this.subject;
 	}
 
-    set Subject(subject) {
+	setSubject(subject) {
 		this.subject = subject;
 	}
 
-	get Priority() {
+	getPriority() {
 		return this.priority;
 	}
 
-	set Priority(priority) {
+	setPriority(priority) {
 		this.priority = priority;
 	}
 
@@ -44,7 +44,7 @@ class AResponsibility {
 	calledFinished = false;
 
 	constructor(name, duration, entry, priority, subject, medician) {
-		super();
+		
 		this.name = name;
 		this.duration = duration;
 		this.remaining = duration;
@@ -54,45 +54,45 @@ class AResponsibility {
 		this.medician = medician;
 	}
 
-	get Remaining() {
+	getRemaining() {
 		return this.remaining;
 	}
 
-    set Remaining(remaining) {
+	setRemaining(remaining) {
 		this.remaining = remaining;
 	}
 
-    get Name() {
+	getName() {
 		return this.name;
 	}
 
-    set Name(name) {
+	setName(name) {
 		this.name = name;
 	}
 
-	get Duration() {
+	getDuration() {
 		return this.duration;
 	}
 
-    set Duration(duration) {
+	set Duration(duration) {
 		this.duration = duration;
 	}
 
-	get Entry() {
+	getEntry() {
 		return this.entry;
 	}
 
-	set Entry(entry) {
+	setEntry(entry) {
 		this.entry = entry;
 	}
 
 	doWork(amount) {
-		if(!this.calledStarted) {
+		if (!this.calledStarted) {
 			this.calledStarted = true;
 			start();
 		}
 		this.remaining -= amount;
-		if(this.remaining <= 0 && !this.calledFinished) {
+		if (this.remaining <= 0 && !this.calledFinished) {
 			this.calledFinished = true;
 			finish();
 		}
@@ -102,13 +102,12 @@ class AResponsibility {
 		doFinish();
 	}
 
-	doFinish();
-
+	
 	start() {
 		doStart();
 	};
 
-	doStart() ;
+	
 
 	isDone() {
 		return this.remaining <= 0;

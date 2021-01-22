@@ -10,3 +10,5 @@ class ResidentEKGRead extends AResponsibility {
 
 	}
 }
+
+export default ResidentEKGRead;

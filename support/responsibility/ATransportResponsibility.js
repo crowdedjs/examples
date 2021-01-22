@@ -37,3 +37,5 @@ class ATransportResponsibility extends AResponsibility {
     }
   }
 }
+
+export default ATransportResponsibility;
