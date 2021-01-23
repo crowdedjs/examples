@@ -23,8 +23,8 @@
 
     import MedicalAgent from "./sim/MedicalAgent.js"
     import PatientAgent from "./sim/PatientAgent.js"
-    //import CrowdSetup from "http://localhost:5500/index.js"
-    import CrowdSetup from "https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup@0.0.4/index.js"
+    import CrowdSetup from "http://localhost:5500/index.js"
+    // import CrowdSetup from "https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup@0.0.4/index.js"
     import urlParser from "./urlParser.js"
     import colorFunction from "./color-function.js"
     import simulations from "./simulations.js"
@@ -39,7 +39,8 @@
     //let assetBase = "./";
     let assetBase = "https://cdn.jsdelivr.net/npm/@crowdedjs/assets/";
     params.objPath = assetBase + "objs/hospital.obj";
-    params.arrivalPath = assetBase + "arrivals/arrivalHospital.json";
+    // params.arrivalPath = assetBase + "arrivals/arrivalHospital.json";
+     params.arrivalPath = "./" + "arrivals/arrivalHospital.json";
     params.secondsOfSimulation = 300;
     params.millisecondsBetweenFrames = 40;
     // params.locationsPath = assetBase + "locations/locationsHospital.json";

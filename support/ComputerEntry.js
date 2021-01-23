@@ -236,7 +236,7 @@ class ComputerEntry {
 
   change() {
     this.lastChange = new Date();
-    HospitalModel.get().computer.print(); //TODO: Figure out how to redo this.
+    //HospitalModel.get().computer.print(); //TODO: Figure out how to redo this.
   }
 
   unacknowledged(string) {

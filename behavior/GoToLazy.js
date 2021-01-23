@@ -1,8 +1,10 @@
 import Vector3 from "./Vector3.js";
+import ABehavior from "./ABehavior.js"
 
-class GoToLazy {
+class GoToLazy extends ABehavior {
 
-  constructor(myIndex, f) {
+  constructor(myIndex, f)  {
+    super(myIndex);
     this.index = myIndex;
     this.waypoints = [];
     this.waypoints.push(f);
@@ -48,6 +50,7 @@ class GoToLazy {
   }
 
   async update(agent, agentConstants, positions, msec) {
+    super.update(agent, positions, msec)
     await this.tree.tick({ agent, agentConstants, positions, msec }) //Call the behavior tree
   }
 

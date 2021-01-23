@@ -39,7 +39,7 @@ class AMedician extends APerson {
     set Responsibility(responsibility)
     {
         this.responsibility = responsibility;
-        this.CurrentPatient(responsibility.Entry.patient);
+        this.CurrentPatient = responsibility.entry.patient;
     }
 
     get MyRooms() {

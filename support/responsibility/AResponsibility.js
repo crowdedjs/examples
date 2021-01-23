@@ -44,7 +44,7 @@ class AResponsibility {
 	calledFinished = false;
 
 	constructor(name, duration, entry, priority, subject, medician) {
-		
+
 		this.name = name;
 		this.duration = duration;
 		this.remaining = duration;
@@ -89,25 +89,27 @@ class AResponsibility {
 	doWork(amount) {
 		if (!this.calledStarted) {
 			this.calledStarted = true;
-			start();
+			this.start();
 		}
 		this.remaining -= amount;
 		if (this.remaining <= 0 && !this.calledFinished) {
 			this.calledFinished = true;
-			finish();
+			this.finish();
 		}
 	}
 
 	finish() {
-		doFinish();
+		if (this.doFinish)
+			this.doFinish();
 	}
 
-	
+
 	start() {
-		doStart();
+		if (this.doStart)
+			this.doStart();
 	};
 
-	
+
 
 	isDone() {
 		return this.remaining <= 0;
