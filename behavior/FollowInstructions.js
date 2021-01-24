@@ -3,9 +3,9 @@ import Vector3 from "../behavior/Vector3.js"
 
 class FollowInstructions {
 
-  constructor(myIndex, agentConstants, locations) {
+  constructor(myIndex, locations) {
     //this.me = agent;
-    let me= ()=>agentConstants.find(a=>a.id == myIndex);
+    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
     
     this.index = myIndex;
 
@@ -18,11 +18,11 @@ class FollowInstructions {
     this.tree = builder
       .sequence("Follow Instructions")
       .do("Follow Instructions", t => {
-        let agentConstant = t.agentConstants.find(a => a.id == self.index);
+        let agentConstant = Hospital.agents.find(a => a.id == self.index);
         
-        let idx = t.agentConstants[self.index].idx;
+        let idx = Hospital.agents[self.index].idx;
         let simulationAgent = t.crowd.find(f=>f.id == idx);
-        let loc = new Vector3(simulationAgent.x, simulationAgent.y, simulationAgent.z);
+        let loc = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
         let state = me().PatientTempState;
 
         if (state == PatientTempState.WAITING) {
@@ -31,7 +31,7 @@ class FollowInstructions {
         }
         else if (state == PatientTempState.FOLLOWING) {
           let instructor = me().Instructor;
-          let instructorLoc = Vector3.fromObject(t.crowd.find(f=>f.id == instructor.idx));
+          let instructorLoc = Vector3.fromObject(t.crowd.find(f=>f.id == instructor.idx).location);
           let instructorLocation = instructorLoc;
           let myLocation = loc;
           if (myLocation.distanceTo(instructorLocation) < 1) // If we're really close, stop
@@ -62,9 +62,9 @@ class FollowInstructions {
   }
 
 
-  async update(agent, agentConstants, frame, msec) {
+  async update(agent, frame, msec) {
     //this.toReturn = null;//Set the default return value to null (don't change destination)
-    await this.tree.tick({ agentConstants, frame, msec }) //Call the behavior tree
+    await this.tree.tick({ frame, msec }) //Call the behavior tree
     //return this.toReturn; //Return what the behavior tree set the return value to
   }
 

@@ -3,10 +3,10 @@ import Hospital from "../support/Hospital.js"
 import ComputerEntry from "../support/ComputerEntry.js"
 
 class ComputerEnterPatient {
-    constructor(myIndex, agentConstants, locations) {
+    constructor(myIndex, locations) {
         this.index = myIndex;
         let self = this;
-        let me= ()=>agentConstants.find(a=>a.id == myIndex);;
+        let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
 
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 

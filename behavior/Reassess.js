@@ -28,8 +28,8 @@ class GoTo {
       .build();
   }
 
-  async update(agent, agentConstants, positions, msec) {
-    await this.tree.tick({ agent, agentConstants, positions, msec }) //Call the behavior tree
+  async update(agent, positions, msec) {
+    await this.tree.tick({ agent, positions, msec }) //Call the behavior tree
   }
 
 }

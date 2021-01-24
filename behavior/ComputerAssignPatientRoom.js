@@ -4,13 +4,13 @@ import RoomType from "../support/RoomType.js"
 
 class ComputerAssignPatientRoom {
 
-  constructor(myIndex, agentConstants, locations) {
+  constructor(myIndex, locations) {
     this.index = myIndex;
     
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
     let self = this;
-    let me= ()=>agentConstants.find(a=>a.id == myIndex);
+    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
 
     this.tree = builder
       .sequence("Computer Assign Patient Room")

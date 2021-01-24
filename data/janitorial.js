@@ -4,7 +4,7 @@ import WaitForever from "../behavior/WaitForever.js"
 
 class janitorial {
 
-  constructor(myIndex, agentConstants, locations, start, end) {
+  constructor(myIndex, locations, start, end) {
     this.index = myIndex;
     this.waypoints = [];
     this.waypoints.push(start);
@@ -15,7 +15,7 @@ class janitorial {
 
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
     let goToName = "Fast Track 1";
-    let me= ()=>agentConstants.find(a=>a.id == myIndex);;
+    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
 
     let myGoal = locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
@@ -24,15 +24,15 @@ class janitorial {
     this.tree = builder
       .sequence("Janitorial")
       .splice(new GoTo(self.index, myGoal.position).tree)
-      .splice(new WaitForever(myIndex, agentConstants, locations).tree)
+      .splice(new WaitForever(myIndex, locations).tree)
       
       .end()
       .build();
   }
 
-  async update(agentConstants, crowd, msec) {
+  async update( crowd, msec) {
     //this.toReturn = null;//Set the default return value to null (don't change destination)
-    await this.tree.tick({ agentConstants, crowd, msec }) //Call the behavior tree
+    await this.tree.tick({ crowd, msec }) //Call the behavior tree
     //return this.toReturn; //Return what the behavior tree set the return value to
   }
 

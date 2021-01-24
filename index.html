@@ -28,7 +28,7 @@
     import urlParser from "./urlParser.js"
     import colorFunction from "./color-function.js"
     import simulations from "./simulations.js"
-    import Hospital from "./support/Hospital.js"
+    import HospitalClass from "./support/Hospital.js"
     //import * as Computer from "http://127.0.0.1:5501/EDComputer.js"
     import Computer from "./support/Computer.js"
     import Room from "./support/Room.js"
@@ -40,13 +40,15 @@
     let assetBase = "https://cdn.jsdelivr.net/npm/@crowdedjs/assets/";
     params.objPath = assetBase + "objs/hospital.obj";
     // params.arrivalPath = assetBase + "arrivals/arrivalHospital.json";
-     params.arrivalPath = "./" + "arrivals/arrivalHospital.json";
+    params.arrivalPath = "./" + "arrivals/arrivalHospital.json";
     params.secondsOfSimulation = 300;
     params.millisecondsBetweenFrames = 40;
     // params.locationsPath = assetBase + "locations/locationsHospital.json";
     params.locationsPath = "./" + "locations/locationsHospital.json";
 
     params = urlParser(window, params, assetBase);
+
+    window.Hospital = HospitalClass;
 
     let promises = [axios.get(params.objPath), axios.get(params.locationsPath), axios.get(params.arrivalPath)];
     Promise.all(promises)
@@ -61,19 +63,19 @@
         //Add an agent with a behavior and an id
         arrivalValue.forEach((agent, index) => {
           if (agent.name == "patient")
-            agentConstants.push(new PatientAgent(agent, agentConstants, locationValue));
+            agentConstants.push(new PatientAgent(agent, locationValue));
           else
-            agentConstants.push(new MedicalAgent(agent, agentConstants, locationValue));
+            agentConstants.push(new MedicalAgent(agent, locationValue));
           //Is this line necessary?
           agentConstants[agentConstants.length - 1].setId(index);
         })
 
-        locationValue.forEach(l=>{
+        locationValue.forEach(l => {
           locations.push(new Room(l.position, l.annotationName.toUpperCase().replace(" ", "_"), l.name))
         })
 
 
-        Hospital.agentConstants = agentConstants;
+        Hospital.agents = agentConstants;
         Hospital.locations = locations;
         Hospital.computer = new Computer();
 

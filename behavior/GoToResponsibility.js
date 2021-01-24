@@ -2,7 +2,7 @@ import ResponsibilitySubject from "../support/responsibility/ResponsibilitySubje
 import Vector3 from "./Vector3.js"
 class GoToResponsibility {
 
-  constructor(myIndex, agentConstants, locations) {
+  constructor(myIndex, locations) {
     this.index = myIndex;
     this.waypoints = [];
     //this.waypoints.push(start);
@@ -10,7 +10,7 @@ class GoToResponsibility {
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
-    let me = () => agentConstants.find(a => a.id == myIndex);;
+    let me = () => Hospital.agents.find(a => a.id == myIndex);;
 
     this.tree = builder
       .sequence("Go To Responsibility")
@@ -24,9 +24,9 @@ class GoToResponsibility {
 
         let destination = responsibility.entry.patient.AssignedRoom.location;
 
-        me().Destination = destination;
+        me().Destination = Vector3.fromObject(destination);
 
-        let distance = Vector3.fromObject(me().location.position).distanceTo(destination);
+        let distance = Vector3.fromObject(me().location).distanceTo(destination);
         if (distance < 1) {
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         }

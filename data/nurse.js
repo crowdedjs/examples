@@ -5,7 +5,7 @@ import AssignComputer from "../behavior/AssignComputer.js"
 
 class nurse {
 
-    constructor(myIndex, agentConstants, locations, start, end) {
+    constructor(myIndex, locations, start, end) {
       this.index = myIndex;
       this.waypoints = [];
       this.waypoints.push(start);
@@ -15,7 +15,7 @@ class nurse {
       this.toReturn = null;
   
       let self = this;//Since we need to reference this in anonymous functions, we need a reference
-      let me= ()=>agentConstants.find(a=>a.id == myIndex);
+      let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
       
       let goToName = "NursePlace";
       let myGoal = locations.find(l => l.name == goToName);
@@ -24,16 +24,16 @@ class nurse {
 
       .sequence("Assign Nurse")
         .splice(new GoTo(self.index, myGoal.position).tree)
-        //.splice(new AssignBed(myIndex, agentConstants, locations.find(l => l.name == "C1").position).tree) // C1
-        .splice(new AssignComputer(myIndex, agentConstants, computer.position).tree) // NURSE PLACE
-        .splice(new responsibility(myIndex, agentConstants, locations, start, end).tree) // LAZY: TRUE
+        //.splice(new AssignBed(myIndex, locations.find(l => l.name == "C1").position).tree) // C1
+        .splice(new AssignComputer(myIndex, computer.position).tree) // NURSE PLACE
+        .splice(new responsibility(myIndex, locations, start, end).tree) // LAZY: TRUE
       .end()
       .build();
     }
   
-    async update(agentConstants, crowd, msec) {
+    async update( crowd, msec) {
       //this.toReturn = null;//Set the default return value to null (don't change destination)
-      await this.tree.tick({ agentConstants, crowd, msec }) //Call the behavior tree
+      await this.tree.tick({ crowd, msec }) //Call the behavior tree
       //return this.toReturn; //Return what the behavior tree set the return value to
     }
   

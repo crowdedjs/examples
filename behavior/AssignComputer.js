@@ -5,7 +5,7 @@ import Vector3 from "./Vector3.js";
 class AssignComputer {
     
     //constructor(myIndex, start, end) {
-      constructor(myIndex, agentConstants, room) {
+      constructor(myIndex, room) {
         this.index = myIndex;
         this.waypoints = [];
         //this.waypoints.push(start);
@@ -20,7 +20,7 @@ class AssignComputer {
           //Set the computer. This is a one-shot behavior since we only want to
           //update the return value once
             .do("Set Computer Location", (t) => {
-              let agent = t.agentConstants.find(a => a.id == myIndex);
+              let agent = Hospital.agents.find(a => a.id == myIndex);
 
               // REPLACE THIS WITH FIND ROOM BY NAME? 
               //agent.setComputer(new Vector3(self.waypoints[0]));

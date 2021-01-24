@@ -2,9 +2,9 @@ import Vector3 from "../behavior/Vector3.js";
 import PatientState from "../support/PatientTempState.js";
 
 class LookForArrivingPatient {
-  constructor(myIndex, agentConstants, locations) {
+  constructor(myIndex, locations) {
     //this.me = agent;
-    this.me= ()=>agentConstants.find(a=>a.id == myIndex);
+    this.me= ()=>Hospital.agents.find(a=>a.id == myIndex);
     this.index = myIndex;
 
 
@@ -17,10 +17,10 @@ class LookForArrivingPatient {
       .sequence("Look For Arriving Patient")
       .do("Look For Arriving Patient", t => {
         // let me = t.agentConstantPatients.find(t.)
-        let agentConstant = t.agentConstants.find(a => a.id == self.index);
+        let agentConstant = Hospital.agents.find(a => a.id == self.index);
         let myLocation = agentConstant.locations.slice(-1); // last location
 
-        let agentConstantPatients = t.agentConstants.filter(a=>a.name == "patient" && t.crowd.some(t=>t.id==a.id));
+        let agentConstantPatients = Hospital.agents.filter(a=>a.name == "patient" && t.crowd.some(t=>t.id==a.id));
         
         
         let closestPatients = agentConstantPatients
@@ -41,8 +41,8 @@ class LookForArrivingPatient {
       .end()
       .build()
   }
-  async update(agentConstants, positions, msec) {
-    await this.tree.tick({ agentConstants, positions, msec }) //Call the behavior tree
+  async update( positions, msec) {
+    await this.tree.tick({ positions, msec }) //Call the behavior tree
 }
 
 }

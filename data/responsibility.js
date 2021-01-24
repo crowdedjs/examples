@@ -10,7 +10,7 @@ import GoToResponsibility from "../behavior/GoToResponsibility.js"
 
 class responsibility {
 
-    constructor(myIndex, agentConstants, locations, start, end) {
+    constructor(myIndex, locations, start, end) {
         this.index = myIndex;
         this.waypoints = [];
         this.waypoints.push(start);
@@ -22,12 +22,12 @@ class responsibility {
         let self = this;//Since we need to reference this in anonymous functions, we need a reference
 
         //   let me = agent;
-        //let me = agentConstants.find(a=>a.id==self.index);
-        let me = () => agentConstants.find(a => a.id == myIndex);
+        //let me = Hospital.agents.find(a=>a.id==self.index);
+        let me = () => Hospital.agents.find(a => a.id == myIndex);
 
         let goToComputer = new GoToLazy(self.index, () => me().Computer.position).tree;
-        let getResponsibility = new GetResponsibility(myIndex, agentConstants, locations).tree;
-        let goToResponsibility = new GoToResponsibility(myIndex, agentConstants, locations).tree;
+        let getResponsibility = new GetResponsibility(myIndex, locations).tree;
+        let goToResponsibility = new GoToResponsibility(myIndex, locations).tree;
         //let myGoal = me.Computer;
         //this.goTo = new GoTo(self.index, myGoal.position);
 
@@ -37,7 +37,7 @@ class responsibility {
 
             // MAKE OWN FILE IF SHOWS UP ANYWHERE ELSE
             .do("getRooms", (t) => {
-                let agent = t.agentConstants.find(a => a.id == myIndex);
+                let agent = Hospital.agents.find(a => a.id == myIndex);
                 agent.addRoom(locations.find(l => l.name == "C1"));
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
@@ -63,7 +63,7 @@ class responsibility {
             //.sequence("Computer Operations")
             //.splice(new GoToLazy(self.index, me=>me.Computer).tree) // GO TO COMPUTER
             //.splice(new GoToLazy(self.index, () => me().Computer.position).tree)// GO TO COMPUTER
-            .do("Go to my computer", async function(t){
+            .do("Go to my computer", async function (t) {
                 let result = await goToComputer.tick(t);
                 return result;
             })// GO TO COMPUTER
@@ -75,9 +75,9 @@ class responsibility {
             //.splice(new GoToLazy(self.index, () => me().Computer).tree) // GO TO COMPUTER
 
             //NOT FINISHED
-            //.splice(new GetComputerResponsibility(myIndex, agentConstants, locations).tree)
+            //.splice(new GetComputerResponsibility(myIndex, locations).tree)
             //NOT FINISHED
-            //.splice(new HandleResponsibility(myIndex, agentConstants, locations).tree)
+            //.splice(new HandleResponsibility(myIndex, locations).tree)
 
 
             //.end()
@@ -85,13 +85,13 @@ class responsibility {
             //.inverter("")
             //.sequence("Handle Responsibility")
             //.splice(new GoToLazy(self.index, () => me().Computer).tree) // GO TO COMPUTER
-            
+
             //NOT FINISHED
-            .do("Get Responsibility", async function(t){
-               let result = await getResponsibility.tick(t);
-               return result;
+            .do("Get Responsibility", async function (t) {
+                let result = await getResponsibility.tick(t);
+                return result;
             })
-            .do("Go to Responsibility", async function(t){
+            .do("Go to Responsibility", async function (t) {
                 let result = await goToResponsibility.tick(t)
                 return result;
             })
@@ -101,8 +101,17 @@ class responsibility {
             //     throw new Exception("Not implemented)")
             // })
             .do("Wait For Responsibility Patient", (t) => {
-                //WRITE THIS BEHAVIOR            
-                throw new Exception("Not implemented)")
+                let responsibility = me().Responsibility;
+                let patient = me().CurrentPatient;
+
+                let patientLocation = Vector3.fromObject(patient.Location);
+
+
+                let distance = Vector3.fromObject(me().Location).distanceTo(patientLocation);
+                if (distance < 2) {
+                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                }
+                return fluentBehaviorTree.BehaviorTreeStatus.Running;
             })
             .do("Set Up Transport", (t) => {
                 //WRITE THIS BEHAVIOR    
@@ -133,9 +142,9 @@ class responsibility {
             .build();
     }
 
-    async update(agentConstants, crowd, msec) {
+    async update( crowd, msec) {
         //this.toReturn = null;//Set the default return value to null (don't change destination)
-        await this.tree.tick({ agentConstants, crowd, msec }) //Call the behavior tree
+        await this.tree.tick({ crowd, msec }) //Call the behavior tree
         //return this.toReturn; //Return what the behavior tree set the return value to
     }
 

@@ -17,7 +17,7 @@ class PatientAgent extends APatient {
   static index = 0;
   idx; //Corresponds to the internal idx number used by recast
 
-  constructor(agent, agentConstants, locations, location, UUID, severity, arrivalCount) {
+  constructor(agent, locations, location, UUID, severity, arrivalCount) {
     super(location, UUID, severity, arrivalCount);
 
     this.name = agent.name;
@@ -43,7 +43,7 @@ class PatientAgent extends APatient {
     this.destY = 0;
     this.destZ = 0;
 
-    this.behavior = new patient( agent.id, agentConstants, locations, locations.find(l => l.name == "Check In"));
+    this.behavior = new patient( agent.id, locations, locations.find(l => l.name == "Check In"));
     
       
     }
