@@ -49,10 +49,6 @@ class GoToLazy extends ABehavior {
       .build();
   }
 
-  async update(agent, positions, msec) {
-    super.update(agent, positions, msec)
-    await this.tree.tick({ agent, positions, msec }) //Call the behavior tree
-  }
 
 }
 

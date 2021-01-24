@@ -22,9 +22,6 @@ class WaitForever {
             .end()
             .build();
     }
-    async update(agent, frame, msec) {
-        await this.tree.tick({ frame, msec }) //Call the behavior tree
-    }
 
 }
 

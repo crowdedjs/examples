@@ -41,9 +41,6 @@ class LookForArrivingPatient {
       .end()
       .build()
   }
-  async update( positions, msec) {
-    await this.tree.tick({ positions, msec }) //Call the behavior tree
-}
 
 }
 

@@ -32,9 +32,6 @@ class AssignComputer {
           .build();
         }
 
-        async update(agents, positions, msec) {
-            await this.tree.tick({ agents, positions, msec }) //Call the behavior tree
-        }
 }
 
 export default AssignComputer;
