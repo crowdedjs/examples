@@ -1,6 +1,3 @@
-import ComputerEntry from "../ComputerEntry.js";
-//import support.HospitalModel;
-import AMedician from "../AMedician.js";
 
 class AResponsibility {
 
