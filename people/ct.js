@@ -1,7 +1,7 @@
-import GoTo from "../behavior/GoTo.js"
-import WaitForever from "../behavior/WaitForever.js"
+import GoTo from "../behavior/go-to.js"
+import WaitForever from "../behavior/wait-forever.js"
 
-import AssignComputer from "../behavior/AssignComputer.js";
+import AssignComputer from "../behavior/assign-computer.js";
 import responsibility from "./responsibility.js";
 
 

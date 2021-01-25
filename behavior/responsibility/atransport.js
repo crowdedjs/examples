@@ -1,5 +1,5 @@
-import AResponsibility from "./AResponsibility.js"
-import ResponsibilitySubject from "./ResponsibilitySubject.js"
+import AResponsibility from "./aresponsibility.js"
+import ResponsibilitySubject from "./responsibility-subject.js"
 
 
 class ATransportResponsibility extends AResponsibility {

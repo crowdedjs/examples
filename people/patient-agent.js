@@ -1,6 +1,6 @@
 import Agent from "./Agent.js"
 import patient from "./patient.js"
-import APatient from "../support/APatient.js"
+import APatient from "../support/apatient.js"
 
 class PatientAgent extends APatient {
   startX;

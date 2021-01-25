@@ -1,5 +1,5 @@
 
-import ComputerEntry from "../support/ComputerEntry.js"
+import ComputerEntry from "../support/computer-entry.js"
 
 class ComputerEnterPatient {
     constructor(myIndex, locations) {

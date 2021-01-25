@@ -1,5 +1,5 @@
-import PatientTempState from "../support/PatientTempState.js";
-import RoomType from "../support/RoomType.js"
+import PatientTempState from "../support/patient-temp-state.js";
+import RoomType from "../support/room-type.js"
 
 class LeavePatient {
 

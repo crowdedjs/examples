@@ -1,4 +1,4 @@
-import AResponsibilityFactory from "./AResponsibilityFactory.js"
+import AResponsibilityFactory from "./aresponsibility-factory.js"
  class ResidentResponsibilities extends AResponsibilityFactory {
 	
 	get( entry, medician) {

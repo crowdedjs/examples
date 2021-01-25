@@ -1,4 +1,4 @@
-import ATransportResponsibility from "./ATransportResponsibility.js"
+import ATransportResponsibility from "./atransport.js"
 
 class TechEKGTakePatientToResponsibility extends ATransportResponsibility {
 

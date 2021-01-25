@@ -1,8 +1,8 @@
-import AResponsibilityFactory from "./AResponsibilityFactory.js"
-import TakeVitalsResponsibility from "./TakeVitalsResponsibility.js"
-import TechEKGDo from "./TechEKGDo.js";
-import TechEKGTakePatientToResponsibility from "./TechEKGTakePatientResponsibility.js"
-import TechCATPickupResponsibility from "./TechCATPickupResponsibility.js"
+import AResponsibilityFactory from "./aresponsibility-factory.js"
+import TakeVitalsResponsibility from "./take-vitals.js"
+import TechEKGDo from "./teck-ekg-do.js";
+import TechEKGTakePatientToResponsibility from "./tech-ekg-rpatient.js"
+import TechCATPickupResponsibility from "./tech-cat-pickup.js"
 
  class TechResponsibilities extends AResponsibilityFactory {
 

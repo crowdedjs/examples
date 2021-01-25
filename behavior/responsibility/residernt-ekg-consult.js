@@ -1,4 +1,4 @@
-import ResponsibilitySubject from "./ResponsibilitySubject.js"
+import ResponsibilitySubject from "./responsibility-subject.js"
 
 class ResidentEKGConsult extends AResponsibility {
 	

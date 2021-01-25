@@ -1,4 +1,4 @@
-import AThing from "./AThing.js"
+import AThing from "./athing.js"
 
 class ARoom extends AThing {
     constructor(location, locationType, name) {

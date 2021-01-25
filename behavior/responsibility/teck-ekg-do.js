@@ -1,6 +1,6 @@
-import ResponsibilitySubject from "./ResponsibilitySubject.js"
+import ResponsibilitySubject from "./responsibility-subject.js"
 
-import AResponsibility from "./AResponsibility.js"
+import AResponsibility from "./aresponsibility.js"
 
 class TechEKGDo extends AResponsibility {
 

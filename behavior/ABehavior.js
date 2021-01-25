@@ -6,7 +6,7 @@
  */
 
  //import { NamedModulesPlugin } from "webpack";
-import Vector3 from "../math/Vector3.js"
+import Vector3 from "../math/vector3.js"
 
 class ABehavior {
 

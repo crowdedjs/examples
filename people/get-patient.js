@@ -1,5 +1,5 @@
 // not fully ported
-import GoTo from "../behavior/GoTo.js";
+import GoTo from "../behavior/go-to.js";
 
 class getPatient {
 

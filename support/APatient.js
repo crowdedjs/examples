@@ -1,5 +1,5 @@
-import APerson from "./APerson.js";
-import PatientTempState from "./PatientTempState.js";
+import APerson from "./aperson.js";
+import PatientTempState from "./patient-temp-state.js";
 
 class APatient extends APerson {
 

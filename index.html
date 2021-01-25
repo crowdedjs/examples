@@ -21,18 +21,18 @@
     //Comment this line if you don't want to show the FPS counter
     javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
 
-    import MedicalAgent from "./people/MedicalAgent.js"
-    import PatientAgent from "./people/PatientAgent.js"
+    import MedicalAgent from "./people/medical-agent.js"
+    import PatientAgent from "./people/patient-agent.js"
     //import CrowdSetup from "http://localhost:5500/index.js"
      import CrowdSetup from "https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup@0.0.5/index.js"
     import urlParser from "./urlParser.js"
     import colorFunction from "./color-function.js"
     import simulations from "./simulations.js"
-    import HospitalClass from "./support/Hospital.js"
+    import HospitalClass from "./support/hospital.js"
     //import * as Computer from "http://127.0.0.1:5501/EDComputer.js"
     import Computer from "./support/Computer.js"
-    import Room from "./support/Room.js"
-    import Vector3 from "./math/Vector3.js"
+    import Room from "./support/room.js"
+    import Vector3 from "./math/vector3.js"
 
 
 

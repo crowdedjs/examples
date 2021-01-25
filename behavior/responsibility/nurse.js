@@ -1,5 +1,5 @@
-import AResponsibilityFactory from "./AResponsibilityFactory.js"
-import GetHealthInformationResponsibility from "./GetHealthInformationResponsibility.js"
+import AResponsibilityFactory from "./aresponsibility-factory.js"
+import GetHealthInformationResponsibility from "./get-health-information.js"
  class NurseResponsibilities extends AResponsibilityFactory {
 	
 	get( entry, medician) {

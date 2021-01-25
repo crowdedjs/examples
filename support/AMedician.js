@@ -1,4 +1,4 @@
-import APerson from "./APerson.js"
+import APerson from "./aperson.js"
 
 class AMedician extends APerson {
     medicianType; //MedicianClass -> string

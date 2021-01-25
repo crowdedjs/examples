@@ -1,4 +1,4 @@
-import LocationStatus from "./LocationStatus.js"
+import LocationStatus from "./location-status.js"
 
 class Room {
 

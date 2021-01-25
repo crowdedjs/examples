@@ -1,4 +1,4 @@
-import ComputerEntryStatus from "./ComputerEntryStatus.js";
+import ComputerEntryStatus from "./computer-entry-status.js";
 
 class ComputerEntry {
   es; //int

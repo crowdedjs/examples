@@ -1,4 +1,4 @@
-import ResponsibilitySubject from "../behavior/responsibility/ResponsibilitySubject.js"
+import ResponsibilitySubject from "./responsibility/responsibility-subject.js"
 
 class GoToResponsibility {
 

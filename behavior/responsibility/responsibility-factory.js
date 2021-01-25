@@ -1,7 +1,7 @@
- import TechResponsibilities from "./TechResponsibility.js"
- import NurseResponsibilities from "./NurseResponsibilities.js"
- import ResidentResponsibilities from "./ResidentResponsibilities.js"
- import CTResponsibilities from "./CTResponsibilities.js"
+ import TechResponsibilities from "./tech-responsibilities.js"
+ import NurseResponsibilities from "./nurse.js"
+ import ResidentResponsibilities from "./resident-responsibilities.js"
+ import CTResponsibilities from "./ct-responsibilities.js"
 
  
  class ResponsibilityFactory {

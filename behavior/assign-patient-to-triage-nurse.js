@@ -1,4 +1,4 @@
-import PatientTempState from "../support/PatientTempState.js";
+import PatientTempState from "../support/patient-temp-state.js";
 
 class AssignPatientToTriageNurse {
 

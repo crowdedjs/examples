@@ -1,8 +1,8 @@
-import GoTo from "../behavior/GoTo.js"
-import WaitForever from "../behavior/WaitForever.js"
+import GoTo from "../behavior/go-to.js"
+import WaitForever from "../behavior/wait-forever.js"
 
-import AssignBed from "../behavior/AssignBed.js";
-import AssignComputer from "../behavior/AssignComputer.js";
+import AssignBed from "../behavior/assign-bed.js";
+import AssignComputer from "../behavior/assign-computer.js";
 import responsibility from "./responsibility.js";
 
 class tech {

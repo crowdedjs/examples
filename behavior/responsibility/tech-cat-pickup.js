@@ -1,4 +1,4 @@
-import ATransportResponsibility from "./ATransportResponsibility.js"
+import ATransportResponsibility from "./atransport.js"
 
 class TechCATPickupResponsibility extends ATransportResponsibility {
 

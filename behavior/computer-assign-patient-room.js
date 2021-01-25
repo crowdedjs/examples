@@ -1,5 +1,5 @@
-import LocationStatus from "../support/LocationStatus.js";
-import RoomType from "../support/RoomType.js"
+import LocationStatus from "../support/location-status.js";
+import RoomType from "../support/room-type.js"
 
 class ComputerAssignPatientRoom {
 

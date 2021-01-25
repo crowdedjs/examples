@@ -1,12 +1,12 @@
 // not fully ported
-import AssignPatientToTriageNurse from "../behavior/AssignPatientToTriageNurse.js";
-import ComputerAssignPatientRoom from "../behavior/ComputerAssignPatientRoom.js"
-import ComputerEnterPatient from "../behavior/ComputerEnterPatient.js";
-import ComputerScorePatient from "../behavior/ComputerScorePatient.js";
-import GoTo from "../behavior/GoTo.js"
-import LookForArrivingPatient from "../behavior/LookForArrivingPatient.js";
-import TakeTime from "../behavior/TakeTime.js";
-import WaitForever from "../behavior/WaitForever.js"
+import AssignPatientToTriageNurse from "../behavior/assign-patient-to-triage-nurse.js";
+import ComputerAssignPatientRoom from "../behavior/computer-assign-patient-room.js"
+import ComputerEnterPatient from "../behavior/computer-enter-patient.js";
+import ComputerScorePatient from "../behavior/computer-score-patient.js";
+import GoTo from "../behavior/go-to.js"
+import LookForArrivingPatient from "../behavior/look-for-arriving-patient.js";
+import TakeTime from "../behavior/take-time.js";
+import WaitForever from "../behavior/wait-forever.js"
 
 
 class greeterNurse {

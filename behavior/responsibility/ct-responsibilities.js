@@ -1,4 +1,4 @@
-import AResponsibilityFactory from "./AResponsibilityFactory.js"
+import AResponsibilityFactory from "./aresponsibility-factory.js"
 
 
 class CTResponsibilities extends AResponsibilityFactory{

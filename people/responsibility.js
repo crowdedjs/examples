@@ -1,12 +1,12 @@
 // NOT FULLY PORTED
-import GetComputerResponsibility from "../behavior/GetComputerResponsibility.js";
-import GetResponsibility from "../behavior/GetResponsibility.js";
-import GoTo from "../behavior/GoTo.js";
-import GoToLazy from "../behavior/GoToLazy.js";
-import HandleResponsibility from "../behavior/HandleResponsibility.js";
-import Vector3 from "../math/Vector3.js";
-import GetHealthInformationResponsibility from "../behavior/responsibility/GetHealthInformationResponsibility.js";
-import GoToResponsibility from "../behavior/GoToResponsibility.js"
+import GetComputerResponsibility from "../behavior/get-computer-responsibility.js";
+import GetResponsibility from "../behavior/get-responsibility.js";
+import GoTo from "../behavior/go-to.js";
+import GoToLazy from "../behavior/go-to-lazy.js";
+import HandleResponsibility from "../behavior/handle-responsibility.js";
+import Vector3 from "../math/vector3.js";
+import GetHealthInformationResponsibility from "../behavior/responsibility/get-health-information.js";
+import GoToResponsibility from "../behavior/go-to-responsibility.js"
 
 class responsibility {
 

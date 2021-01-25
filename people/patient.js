@@ -1,9 +1,9 @@
-import FollowInstructions from "../behavior/FollowInstructions.js";
-import GoTo from "../behavior/GoTo.js";
-import GoToLazy from "../behavior/GoToLazy.js";
+import FollowInstructions from "../behavior/follow-instructions.js";
+import GoTo from "../behavior/go-to.js";
+import GoToLazy from "../behavior/go-to-lazy.js";
 // import LOG 
-import Stop from "../behavior/Stop.js";
-import WaitForever from "../behavior/WaitForever.js";
+import Stop from "../behavior/stop.js";
+import WaitForever from "../behavior/wait-forever.js";
 
 
 

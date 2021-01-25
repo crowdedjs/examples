@@ -1,4 +1,4 @@
-import ResponsibilityFactory from "../behavior/responsibility/ResponsibilityFactory.js"
+import ResponsibilityFactory from "./responsibility/responsibility-factory.js"
 
 class GetResponsibility {
     constructor(myIndex, locations) {

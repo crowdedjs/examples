@@ -1,6 +1,6 @@
 import responsibility from "./responsibility.js";
-import GoTo from "../behavior/GoTo.js";
-import AssignComputer from "../behavior/AssignComputer.js"
+import GoTo from "../behavior/go-to.js";
+import AssignComputer from "../behavior/assign-computer.js"
 
 
 class nurse {

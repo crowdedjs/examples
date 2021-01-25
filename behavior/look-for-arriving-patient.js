@@ -1,4 +1,4 @@
-import PatientState from "../support/PatientTempState.js";
+import PatientState from "../support/patient-temp-state.js";
 
 class LookForArrivingPatient {
   constructor(myIndex, locations) {
