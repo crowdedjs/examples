@@ -1,5 +1,3 @@
-import Hospital from "../support/Hospital.js"
-import LocationStatus from "../support/LocationStatus.js";
 import PatientTempState from "../support/PatientTempState.js";
 import RoomType from "../support/RoomType.js"
 

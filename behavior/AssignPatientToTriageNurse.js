@@ -1,5 +1,4 @@
 import PatientTempState from "../support/PatientTempState.js";
-import Vector3 from "./Vector3.js";
 
 class AssignPatientToTriageNurse {
 

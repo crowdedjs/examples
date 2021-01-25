@@ -1,10 +1,6 @@
-import Vector3 from "./Vector3.js";
-import ABehavior from "./ABehavior.js"
-
-class GoToLazy extends ABehavior {
+class GoToLazy{
 
   constructor(myIndex, f)  {
-    super(myIndex);
     this.index = myIndex;
     this.waypoints = [];
     this.waypoints.push(f);

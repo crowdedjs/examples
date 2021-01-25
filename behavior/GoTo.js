@@ -1,5 +1,3 @@
-import Vector3 from "./Vector3.js";
-
 class GoTo {
 
   constructor(myIndex, start) {

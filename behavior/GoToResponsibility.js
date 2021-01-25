@@ -1,5 +1,5 @@
 import ResponsibilitySubject from "../support/responsibility/ResponsibilitySubject.js"
-import Vector3 from "./Vector3.js"
+
 class GoToResponsibility {
 
   constructor(myIndex, locations) {

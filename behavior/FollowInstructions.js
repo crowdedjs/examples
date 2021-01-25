@@ -1,5 +1,4 @@
 import PatientTempState from "../support/PatientTempState.js";
-import Vector3 from "../behavior/Vector3.js"
 
 class FollowInstructions {
 

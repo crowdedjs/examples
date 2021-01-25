@@ -1,5 +1,4 @@
 
-import Hospital from "../support/Hospital.js"
 import ComputerEntry from "../support/ComputerEntry.js"
 
 class ComputerEnterPatient {

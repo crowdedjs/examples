@@ -1,4 +1,3 @@
-import Vector3 from "../behavior/Vector3.js";
 import PatientState from "../support/PatientTempState.js";
 
 class LookForArrivingPatient {

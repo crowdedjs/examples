@@ -1,5 +1,3 @@
-import Hospital from "../support/Hospital.js"
-
 class HandleResponsibility {
     constructor(myIndex, locations) {
         this.index = myIndex;

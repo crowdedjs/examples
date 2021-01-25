@@ -1,5 +1,3 @@
-
-// not fully ported
 class GoToARoom {
     execute() {
         // pasted code from BackAndForth, don't know

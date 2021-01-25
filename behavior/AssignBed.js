@@ -1,7 +1,3 @@
-import AMedician from "../support/AMedician.js"
-import ARoom from "../support/ARoom.js"
-import Vector3 from "./Vector3.js";
-
 class AssignBed {
     
     //constructor(myIndex, start, end) {

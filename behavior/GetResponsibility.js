@@ -1,7 +1,4 @@
-// NEEDS WORK
-import Hospital from "../support/Hospital.js"
 import ResponsibilityFactory from "../support/responsibility/ResponsibilityFactory.js"
-
 
 class GetResponsibility {
     constructor(myIndex, locations) {

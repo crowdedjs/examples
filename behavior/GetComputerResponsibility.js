@@ -1,6 +1,4 @@
-import Hospital from "../support/Hospital.js"
 import ResponsibilityFactory from "../support/responsibility/ResponsibilityFactory.js"
-import ResponsibilitySubject from "../support/responsibility/ResponsibilitySubject.js"
 
 
 class GetComputerResponsibility {

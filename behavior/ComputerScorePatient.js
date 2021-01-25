@@ -1,5 +1,3 @@
-import Hospital from "../support/Hospital.js"
-
 class ComputerScorePatient {
 
   constructor(myIndex, locations) {

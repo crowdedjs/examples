@@ -1,5 +1,3 @@
-import Vector3 from "../behavior/Vector3.js";
-
 class WaitForever {
     constructor(myIndex, location) {
         //this.agent = agent;
