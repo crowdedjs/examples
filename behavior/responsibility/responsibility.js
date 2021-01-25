@@ -60,88 +60,63 @@ class responsibility {
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
+            .sequence("Main Repeat")
+                .do("Go to my computer", async function (t) {
+                    let result = await goToComputer.tick(t);
+                    return result;
+                })// GO TO COMPUTER
+                .sequence("Sub Sequence")
 
-            // REPEAT
-            //.sequence("Computer Operations")
-            //.splice(new GoToLazy(self.index, me=>me.Computer).tree) // GO TO COMPUTER
-            //.splice(new GoToLazy(self.index, () => me().Computer.position).tree)// GO TO COMPUTER
-            .do("Go to my computer", async function (t) {
-                let result = await goToComputer.tick(t);
-                return result;
-            })// GO TO COMPUTER
+                    .do("Get Responsibility", async function (t) {
+                        let result = await getResponsibility.tick(t);
+                        return result;
+                    })
+                    .do("Go to Responsibility", async function (t) {
+                        let result = await goToResponsibility.tick(t)
+                        return result;
+                    })
 
-            //.selector("Emergency")
-            //.do("Handle Emergency", (t) => { return fluentBehaviorTree.BehaviorTreeStatus.Failure; }) // PLACEHOLDER
-            //.inverter("")
-            //.sequence("Computer Stuff")
-            //.splice(new GoToLazy(self.index, () => me().Computer).tree) // GO TO COMPUTER
+                    // .do("Go To Responsibility", (t) => {
+                    //     //WRITE THIS BEHAVIOR
+                    //     throw new Exception("Not implemented)")
+                    // })
+                    .do("Wait For Responsibility Patient", (t) => {
+                        let patient = me().CurrentPatient;
 
-            //NOT FINISHED
-            //.splice(new GetComputerResponsibility(myIndex, locations).tree)
-            //NOT FINISHED
-            //.splice(new HandleResponsibility(myIndex, locations).tree)
-
-
-            //.end()
-            //.end()
-            //.inverter("")
-            //.sequence("Handle Responsibility")
-            //.splice(new GoToLazy(self.index, () => me().Computer).tree) // GO TO COMPUTER
-
-            //NOT FINISHED
-            .do("Get Responsibility", async function (t) {
-                let result = await getResponsibility.tick(t);
-                return result;
-            })
-            .do("Go to Responsibility", async function (t) {
-                let result = await goToResponsibility.tick(t)
-                return result;
-            })
-
-            // .do("Go To Responsibility", (t) => {
-            //     //WRITE THIS BEHAVIOR
-            //     throw new Exception("Not implemented)")
-            // })
-            .do("Wait For Responsibility Patient", (t) => {
-                let patient = me().CurrentPatient;
-
-                let patientLocation = Vector3.fromObject(patient.Location);
+                        let patientLocation = Vector3.fromObject(patient.Location);
 
 
-                let distance = Vector3.fromObject(me().Location).distanceTo(patientLocation);
-                if (distance < 2) {
-                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                }
-                return fluentBehaviorTree.BehaviorTreeStatus.Running;
-            })
-            .do("Set Up Transport", async (t) => {
-                let result = await setupTransport.tick(t);
-                return result;
-            })
-            .do("Handle Responsibility", async (t) => {
-                let result = await handleResponsibility.tick(t);
-                return result;
-            })
-            // UNTIL FAIL?
-            //.sequence("Reassess Responsibility")
-            .do("Reassess", async (t) => {
-                let result = await reassess.tick(t);
-                return result;
-            })
-            //NOT FINISHED
-            .do("Handle Responsibility", async (t) => {
-                let result = await handleResponsibility.tick(t);
-                return result;
-            })
-            //.end()
-            //.end()
-            .do("Do Nothing", (t) => {
-                // return running?
-                // behavior runs once and succeeds, and if called again, returns running
-            })
+                        let distance = Vector3.fromObject(me().Location).distanceTo(patientLocation);
+                        if (distance < 2) {
+                            return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                        }
+                        return fluentBehaviorTree.BehaviorTreeStatus.Running;
+                    })
+                    .do("Set Up Transport", async (t) => {
+                        let result = await setupTransport.tick(t);
+                        return result;
+                    })
+                    .do("Handle Responsibility", async (t) => {
+                        let result = await handleResponsibility.tick(t);
+                        return result;
+                    })
+                    .sequence("Reassess")
+                        // UNTIL FAIL?
+                        //.sequence("Reassess Responsibility")
+                        .do("Reassess", async (t) => {
+                            let result = await reassess.tick(t);
+                            return result;
+                        })
+                        //NOT FINISHED
+                        .do("Handle Responsibility", async (t) => {
+                            let result = await handleResponsibility.tick(t);
+                            return result;
+                        })
+                        .end()
+                    
 
-            //.end()
-            //.end()
+                    .end()
+                .end()
 
             .end()
             .build();

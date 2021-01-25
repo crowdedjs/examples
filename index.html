@@ -23,8 +23,9 @@
 
     import MedicalAgent from "./people/medical-agent.js"
     import PatientAgent from "./people/patient-agent.js"
+    import CrowdSetup from "./crowd-setup/index.js"
     //import CrowdSetup from "http://localhost:5500/index.js"
-     import CrowdSetup from "https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup@0.0.5/index.js"
+    // import CrowdSetup from "https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup@0.0.5/index.js"
     import urlParser from "./urlParser.js"
     import colorFunction from "./color-function.js"
     import simulations from "./simulations.js"
@@ -37,8 +38,8 @@
 
 
     let params = {};
-    //let assetBase = "./";
-    let assetBase = "https://cdn.jsdelivr.net/npm/@crowdedjs/assets/";
+    let assetBase = "./";
+    //let assetBase = "https://cdn.jsdelivr.net/npm/@crowdedjs/assets/";
     params.objPath = assetBase + "objs/hospital.obj";
     // params.arrivalPath = assetBase + "arrivals/arrivalHospital.json";
     params.arrivalPath = "./" + "arrivals/arrivalHospital.json";
@@ -84,7 +85,7 @@
 
 
         //Start the simulation.
-        new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup");
+        new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "./crowd-setup/"/*"https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup"*/);
 
       })
       // This is commented out for debugging purposes. In production, this should be added back in.
