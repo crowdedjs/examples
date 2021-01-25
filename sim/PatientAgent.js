@@ -1,5 +1,5 @@
 import Agent from "./Agent.js"
-import patient from "../data/patient.js"
+import patient from "../people/patient.js"
 import APatient from "../support/APatient.js"
 
 class PatientAgent extends APatient {

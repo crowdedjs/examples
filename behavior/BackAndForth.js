@@ -1,4 +1,4 @@
-import Vector3 from "./Vector3.js";
+import Vector3 from "../math/Vector3.js";
 //import * as fluentBehaviorTree from "../lib/fluent-behavior-tree-browser.js"
 
 class BackAndForth {
