@@ -4,7 +4,7 @@ class HandleResponsibility {
 
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
         let self = this;//Since we need to reference this in anonymous functions, we need a reference
-        let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
+        let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
 
         this.tree = builder
             .sequence("Handle Responsibility")

@@ -1,12 +1,14 @@
 // NOT FULLY PORTED
-import GetComputerResponsibility from "../behavior/get-computer-responsibility.js";
-import GetResponsibility from "../behavior/get-responsibility.js";
-import GoTo from "../behavior/go-to.js";
-import GoToLazy from "../behavior/go-to-lazy.js";
-import HandleResponsibility from "../behavior/handle-responsibility.js";
-import Vector3 from "../math/vector3.js";
-import GetHealthInformationResponsibility from "../behavior/responsibility/get-health-information.js";
-import GoToResponsibility from "../behavior/go-to-responsibility.js"
+import GetComputerResponsibility from "../get-computer-responsibility.js";
+import GetResponsibility from "../get-responsibility.js";
+import GoTo from "../go-to.js";
+import GoToLazy from "../go-to-lazy.js";
+import HandleResponsibility from "../handle-responsibility.js";
+import Vector3 from "../../math/vector3.js";
+import GetHealthInformationResponsibility from "./get-health-information.js";
+import GoToResponsibility from "../go-to-responsibility.js"
+import SetupTransport from "../setup-transport.js";
+import Reassess from "../reassess.js"
 
 class responsibility {
 
@@ -28,20 +30,20 @@ class responsibility {
         let goToComputer = new GoToLazy(self.index, () => me().Computer.position).tree;
         let getResponsibility = new GetResponsibility(myIndex, locations).tree;
         let goToResponsibility = new GoToResponsibility(myIndex, locations).tree;
+        let setupTransport = new SetupTransport(myIndex).tree;
+        let handleResponsibility = new HandleResponsibility(myIndex).tree;
+        let reassess = new Reassess(myIndex).tree;
         //let myGoal = me.Computer;
         //this.goTo = new GoTo(self.index, myGoal.position);
 
         this.tree = builder
             .sequence("Responsibility")
 
-
-            // MAKE OWN FILE IF SHOWS UP ANYWHERE ELSE
             .do("getRooms", (t) => {
                 let agent = Hospital.agents.find(a => a.id == myIndex);
                 agent.addRoom(locations.find(l => l.name == "C1"));
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
-            // MAKE OWN FILE IF SHOWS UP ANYWHERE ELSE
             .do("getComputer", (t) => {
                 // Not sure if medician subclass is implemented
                 switch (me().MedicianSubclass) {
@@ -101,7 +103,6 @@ class responsibility {
             //     throw new Exception("Not implemented)")
             // })
             .do("Wait For Responsibility Patient", (t) => {
-                let responsibility = me().Responsibility;
                 let patient = me().CurrentPatient;
 
                 let patientLocation = Vector3.fromObject(patient.Location);
@@ -113,21 +114,25 @@ class responsibility {
                 }
                 return fluentBehaviorTree.BehaviorTreeStatus.Running;
             })
-            .do("Set Up Transport", (t) => {
-                //WRITE THIS BEHAVIOR    
-                throw new Exception("Not implemented)")
+            .do("Set Up Transport", async (t) => {
+                let result = await setupTransport.tick(t);
+                return result;
             })
-            //NOT FINISHED
-            .splice(new HandleResponsibility().tree)
-
+            .do("Handle Responsibility", async (t) => {
+                let result = await handleResponsibility.tick(t);
+                return result;
+            })
             // UNTIL FAIL?
             //.sequence("Reassess Responsibility")
-            .do("Reassess", (t) => {
-                //WRITE THIS BEHAVIOR
-                throw new Exception("Not implemented)")
+            .do("Reassess", async (t) => {
+                let result = await reassess.tick(t);
+                return result;
             })
             //NOT FINISHED
-            .splice(new HandleResponsibility().tree)
+            .do("Handle Responsibility", async (t) => {
+                let result = await handleResponsibility.tick(t);
+                return result;
+            })
             //.end()
             //.end()
             .do("Do Nothing", (t) => {

@@ -1,33 +1,38 @@
+import ResponsibilityFactory from "./responsibility/responsibility-factory.js";
 
-class GoTo {
+class Reassess {
+	constructor(myIndex) {
+		this.index = myIndex;
+		let self = this;
+		let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
 
-  constructor(myIndex, start) {
-    this.index = myIndex;
-    this.waypoints = [];
-    this.waypoints.push(start);
-    
-    const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
+		const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
-    let self = this;//Since we need to reference this in anonymous functions, we need a reference
+		this.tree = builder
+			.sequence("Reasses")
+			.do("Reassess", (t) => {
+				let patient = me().CurrentPatient;
 
-    this.tree = builder
-      .sequence("Reassess")
-      //Set the destination. This is a one-shot behavior since we only want to
-      //update the return value once
-      .do("Reassess", t=>{
-        let computer  = me().Computer;
-        let patient = me().CurrentPatient;
-        let entry = computer.getEntry(patient);
-        let responsibility = null;
-        if(entry != null)
-          responsibility = ResponsibilityFactory.get(me().MedicianSubclass()).get(entry, me())
-      })
-     
-      .end()
-      .build();
-  }
+        let entry = Hospital.computer.getEntry(patient);
+        let responsibility;
+        if(entry != null){
+          let factory = ResponsibilityFactory.get(me().MedicianSubclass)
+          responsibility = factory.get(entry, me())
+        }
+        if(entry == null || responsibility == null){
+          me().CurrentPatient = null;
+          return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+        }
+        //Implied else
+        me().CurrentPatient = patient;
+        me().Responsbility = responsibility;
 
+				return fluentBehaviorTree.BehaviorTreeStatus.Success;
+			})
+			.end()
+			.build();
+	}
 
 }
 
-export default GoTo;
+export default Reassess;

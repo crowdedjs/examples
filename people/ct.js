@@ -2,7 +2,7 @@ import GoTo from "../behavior/go-to.js"
 import WaitForever from "../behavior/wait-forever.js"
 
 import AssignComputer from "../behavior/assign-computer.js";
-import responsibility from "./responsibility.js";
+import responsibility from "../behavior/responsibility/responsibility.js";
 
 
 class ct {

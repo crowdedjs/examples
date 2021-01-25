@@ -1,4 +1,4 @@
-import AThing from "./athing.js";
+import AThing from "../support/athing.js";
 
 class APerson extends AThing {
 	

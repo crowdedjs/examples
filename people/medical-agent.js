@@ -2,7 +2,7 @@
 import BackAndForth from "../behavior/BackAndForth.js";
 import None from "../behavior/None.js"
 import Agent from "./Agent.js"
-import AMedician from "../support/amedician.js";
+import AMedician from "./amedician.js";
 
 import attending from "./attending.js"
 import ct from "./ct.js"
