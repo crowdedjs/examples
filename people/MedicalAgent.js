@@ -1,19 +1,19 @@
 
-import BackAndForth from "./../behavior/BackAndForth.js";
-import None from "./../behavior/None.js"
+import BackAndForth from "../behavior/BackAndForth.js";
+import None from "../behavior/None.js"
 import Agent from "./Agent.js"
 import AMedician from "../support/AMedician.js";
 
-import attending from "../people/attending.js"
-import ct from "../people/ct.js"
-import greeterNurse from "../people/greeterNurse.js"
-import janitorial from "../people/janitorial.js"
-import nurse from "../people/nurse.js"
-import patient from "../people/patient.js"
-import radiology from "../people/radiology.js"
-import resident from "../people/resident.js"
-import tech from "../people/tech.js"
-import triageNurse from "../people/triageNurse.js" 
+import attending from "./attending.js"
+import ct from "./ct.js"
+import greeterNurse from "./greeterNurse.js"
+import janitorial from "./janitorial.js"
+import nurse from "./nurse.js"
+import patient from "./patient.js"
+import radiology from "./radiology.js"
+import resident from "./resident.js"
+import tech from "./tech.js"
+import triageNurse from "./triageNurse.js" 
 
 
 class MedicalAgent extends AMedician {

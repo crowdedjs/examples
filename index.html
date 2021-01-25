@@ -21,8 +21,8 @@
     //Comment this line if you don't want to show the FPS counter
     javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
 
-    import MedicalAgent from "./sim/MedicalAgent.js"
-    import PatientAgent from "./sim/PatientAgent.js"
+    import MedicalAgent from "./people/MedicalAgent.js"
+    import PatientAgent from "./people/PatientAgent.js"
     //import CrowdSetup from "http://localhost:5500/index.js"
      import CrowdSetup from "https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup@0.0.5/index.js"
     import urlParser from "./urlParser.js"
