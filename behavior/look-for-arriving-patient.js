@@ -19,11 +19,11 @@ class LookForArrivingPatient {
         let agentConstant = Hospital.agents.find(a => a.id == self.index);
         let myLocation = agentConstant.locations.slice(-1); // last location
 
-        let agentConstantPatients = Hospital.agents.filter(a=>a.name == "patient" && t.crowd.some(t=>t.id==a.id));
+        let agentConstantPatients = Hospital.agents.filter(a=>a.name == "patient" && t.crowd.some(t=>t.id==a.id) && a.location);
         
         
         let closestPatients = agentConstantPatients
-          .sort((a, b) => a.locations.slice(-1).distanceTo(myLocation) - b.locations.slice(-1).distanceTo(myLocation))
+          .sort((a, b) => a.location.distanceTo(myLocation) - b.location.distanceTo(myLocation))
         let closestPatient = closestPatients[0] || null;
         if (closestPatient == null || Vector3.fromObject(closestPatient.locations.slice(-1)).distanceTo(myLocation) > 3)
           return fluentBehaviorTree.BehaviorTreeStatus.Running;

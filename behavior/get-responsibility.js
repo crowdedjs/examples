@@ -17,7 +17,7 @@ class GetResponsibility {
                         this.getResponsibilityFactory(me().MedicianSubclass).get(i, me()) != null
                 )
                     .map(i => this.getResponsibilityFactory(me().MedicianSubclass).get(i, me()))
-                    .reduce((a, b) => a == null ? null : b == null ? a : a.getPriority() < b.getPriority() ? a : b)
+                    .reduce((a, b) => a == null ? null : b == null ? a : a.getPriority() < b.getPriority() ? a : b, null)
 
 
 

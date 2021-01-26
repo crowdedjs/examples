@@ -1,4 +1,6 @@
 import AResponsibilityFactory from "./aresponsibility-factory.js"
+import ACK from "./ack.js"
+
  class ResidentResponsibilities extends AResponsibilityFactory {
 	
 	get( entry, medician) {
