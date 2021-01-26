@@ -33,16 +33,16 @@ class tech {
       //.splice(new WaitForever(myIndex, locations).tree)
 
       // original tree sequence below
-      .do("Assing Bed", async t=>{
-        let result = await assignBed.tick();
+      .do("Assiging Bed", async t=>{
+        let result = await assignBed.tick(t);
         return result;
       }) // C1
       .do("Assign Computer", async t=>{
-        let result = await assignComputer.tick();
+        let result = await assignComputer.tick(t);
         return result;
       }) // TechPlace
       .do("Assign Responsibility", async t=>{
-        let result = await assignResponsibility.tick();
+        let result = await assignResponsibility.tick(t);
         return result;
       }) // lazy: true
 
