@@ -39,85 +39,89 @@ class responsibility {
         this.tree = builder
             .sequence("Responsibility")
 
-            .do("getRooms", (t) => {
-                let agent = Hospital.agents.find(a => a.id == myIndex);
-                agent.addRoom(locations.find(l => l.name == "C1"));
-                return fluentBehaviorTree.BehaviorTreeStatus.Success;
-            })
-            .do("getComputer", (t) => {
-                // Not sure if medician subclass is implemented
-                switch (me().MedicianSubclass) {
-                    case "Tech":
-                        me().Computer = locations.find(l => l.name == "TechPlace");
-                        break;
-                    case "Nurse":
-                        me().Computer = locations.find(l => l.name == "NursePlace");
-                        break;
-                    case "Resident":
-                        me().Computer = locations.find(l => l.name == "ResidentStart");
-                        break;
-                }
+                .do("getRooms", (t) => {
+                    let agent = Hospital.agents.find(a => a.id == myIndex);
+                    agent.addRoom(locations.find(l => l.name == "C1"));
+                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                })
+                .do("getComputer", (t) => {
+                    // Not sure if medician subclass is implemented
+                    switch (me().MedicianSubclass) {
+                        case "Tech":
+                            me().Computer = locations.find(l => l.name == "TechPlace");
+                            break;
+                        case "Nurse":
+                            me().Computer = locations.find(l => l.name == "NursePlace");
+                            break;
+                        case "Resident":
+                            me().Computer = locations.find(l => l.name == "ResidentStart");
+                            break;
+                    }
 
-                return fluentBehaviorTree.BehaviorTreeStatus.Success;
-            })
-            .sequence("Main Repeat")
-                .do("Go to my computer", async function (t) {
-                    let result = await goToComputer.tick(t);
-                    return result;
-                })// GO TO COMPUTER
-                .sequence("Sub Sequence")
-
-                    .do("Get Responsibility", async function (t) {
-                        let result = await getResponsibility.tick(t);
-                        return result;
-                    })
-                    .do("Go to Responsibility", async function (t) {
-                        let result = await goToResponsibility.tick(t)
-                        return result;
-                    })
-
-                    // .do("Go To Responsibility", (t) => {
-                    //     //WRITE THIS BEHAVIOR
-                    //     throw new Exception("Not implemented)")
-                    // })
-                    .do("Wait For Responsibility Patient", (t) => {
-                        let patient = me().CurrentPatient;
-
-                        let patientLocation = Vector3.fromObject(patient.Location);
-
-
-                        let distance = Vector3.fromObject(me().Location).distanceTo(patientLocation);
-                        if (distance < 2) {
-                            return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                        }
-                        return fluentBehaviorTree.BehaviorTreeStatus.Running;
-                    })
-                    .do("Set Up Transport", async (t) => {
-                        let result = await setupTransport.tick(t);
-                        return result;
-                    })
-                    .do("Handle Responsibility", async (t) => {
-                        let result = await handleResponsibility.tick(t);
-                        return result;
-                    })
-                    .sequence("Reassess")
-                        // UNTIL FAIL?
-                        //.sequence("Reassess Responsibility")
-                        .do("Reassess", async (t) => {
-                            let result = await reassess.tick(t);
+                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                })
+                .inverter("Inverter")
+                    .sequence("Main Repeat")
+                        .do("Go to my computer", async function (t) {
+                            let result = await goToComputer.tick(t);
                             return result;
-                        })
-                        //NOT FINISHED
-                        .do("Handle Responsibility", async (t) => {
-                            let result = await handleResponsibility.tick(t);
-                            return result;
-                        })
+                        })// GO TO COMPUTER
+                        .inverter("Until Fail")
+                        .sequence("Sub Sequence")
+
+                            .do("Get Responsibility", async function (t) {
+                                let result = await getResponsibility.tick(t);
+                                return result;
+                            })
+                            .do("Go to Responsibility", async function (t) {
+                                let result = await goToResponsibility.tick(t)
+                                return result;
+                            })
+
+                            // .do("Go To Responsibility", (t) => {
+                            //     //WRITE THIS BEHAVIOR
+                            //     throw new Exception("Not implemented)")
+                            // })
+                            .do("Wait For Responsibility Patient", (t) => {
+                                let patient = me().CurrentPatient;
+
+                                let patientLocation = Vector3.fromObject(patient.Location);
+
+
+                                let distance = Vector3.fromObject(me().Location).distanceTo(patientLocation);
+                                if (distance < 2) {
+                                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                                }
+                                return fluentBehaviorTree.BehaviorTreeStatus.Running;
+                            })
+                            .do("Set Up Transport", async (t) => {
+                                let result = await setupTransport.tick(t);
+                                return result;
+                            })
+                            .do("Handle Responsibility", async (t) => {
+                                let result = await handleResponsibility.tick(t);
+                                return result;
+                            })
+                            .sequence("Reassess")
+                                // UNTIL FAIL?
+                                //.sequence("Reassess Responsibility")
+                                .do("Reassess", async (t) => {
+                                    let result = await reassess.tick(t);
+                                    return result;
+                                })
+                                //NOT FINISHED
+                                .do("Handle Responsibility", async (t) => {
+                                    let result = await handleResponsibility.tick(t);
+                                    return result;
+                                })
+                                .end()
+                            
+
+                            .end()
                         .end()
-                    
 
                     .end()
                 .end()
-
             .end()
             .build();
     }
