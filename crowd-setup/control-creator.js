@@ -185,7 +185,7 @@ class ControlCreator {
     if (newIndex < 0) {
       newIndex = 0;
     }
-    if (newIndex >= Math.max(...allSimulations.map(i=>i.length)))
+    //if (newIndex >= Math.max(...allSimulations.map(i=>i.length)))
       newIndex = Math.max(...allSimulations.map(i=>i.length)) - 1;
     this.setTick(newIndex);
     //let elpasedTime = new Date() - this.start;

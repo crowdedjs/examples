@@ -2,6 +2,10 @@ import * as viewer from "./viewer.js"
 // import ControlCreator from "https://cdn.jsdelivr.net/npm/@crowdedjs/controller/controller.js"
 import ControlCreator from "./control-creator.js"
 import replacer from "./replacer.js"
+function VectorEquals(one, two) {
+  if (!one || !two) return false;
+  return one.x == two.x && one.y == two.y && one.z == two.z;
+}
 
 class CrowdSetup {
   static allSimulations = []; //Static reference to all the simulations we are running
@@ -19,7 +23,7 @@ class CrowdSetup {
       //Create the "control" on top that has the play button, etc.
       this.controls = new ControlCreator(secondsOfSimulation, millisecondsBetweenFrames, simulations, elementParent);
       //Create all the THREE.js view
-      
+
       viewer.boot(CrowdSetup.three, floorObj, locations, assetURL);
     }
     else {
@@ -62,9 +66,11 @@ class CrowdSetup {
       agentConstants.forEach(agent => {
         //See if we need to add the agent to the simulation
         if (!agent.hasEntered && agent.startMSec <= i * millisecondsBetweenFrames) {
-          newAgents.push(agent);
-          agent.hasEntered = true;
-          agent.inSimulation = true;
+          //if (agent.id < 8) {
+            newAgents.push(agent);
+            agent.hasEntered = true;
+            agent.inSimulation = true;
+          //}
         }
       })
 
@@ -77,8 +83,8 @@ class CrowdSetup {
 
           //Wait for the behavior update callback
           let instance = undefined;
-          for(let i = 0; i < frameAgentDetails.length; i++){
-            if(frameAgentDetails[i].idx == agent.idx)
+          for (let i = 0; i < frameAgentDetails.length; i++) {
+            if (frameAgentDetails[i].idx == agent.idx)
               instance = frameAgentDetails[i];
           }
           //let ins = frameAgentDetails.filter(q=>q.idx == agent.idx)
@@ -88,7 +94,7 @@ class CrowdSetup {
 
           //If the new destination is not null, send the updated destination to the
           //path finding engine
-          if (agent.destination != null && agent.destination != oldDestination) {
+          if (agent.destination != null && !VectorEquals(agent.destination, oldDestination)) {
             [agent.destX, agent.destY, agent.destZ] = [agent.destination.x, agent.destination.y, agent.destination.z];
             newDestinations.push(agent);
           }
@@ -130,7 +136,7 @@ class CrowdSetup {
     function draw() {
       CrowdSetup.allSimulations.forEach(simulationAgents => {
         if (simulationAgents.length == 0) return; //If there is nothing to draw, don't do anything
-        if(!viewer.hasBooted()) return;
+        if (!viewer.hasBooted()) return;
 
         let index = self.controls.getCurrentTick(); //Get the number of the frame we want to see
 

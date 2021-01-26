@@ -12,12 +12,15 @@ class GetResponsibility {
             .sequence("Get Responsibility")
             .do("Check Responsibilities", (t) => {
 
-                let responsibility = Hospital.computer.entries.filter(
+                let responsibilities = Hospital.computer.entries.filter(
                     i => me().hasRoom(i.Bed) &&
                         this.getResponsibilityFactory(me().MedicianSubclass).get(i, me()) != null
-                )
+                );
+                if (!responsibilities || responsibilities.length == 0)
+                    return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                let responsibility = responsibilities
                     .map(i => this.getResponsibilityFactory(me().MedicianSubclass).get(i, me()))
-                    .reduce((a, b) => a == null ? null : b == null ? a : a.getPriority() < b.getPriority() ? a : b, null)
+                    .reduce((a, b) => a == null ? null : b == null ? a : a.getPriority() < b.getPriority() ? a : b)
 
 
 
