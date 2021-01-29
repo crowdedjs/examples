@@ -13,7 +13,7 @@ class AssignPatientToCTQueue {
       .sequence("Assign Patient To CT Queue")
       .do("Assign Patient", (t) => {
         
-        let myPatient = me().CurrentPatient();
+        let myPatient = me().getCurrentPatient();
         Hospital.getCTQueue().add(myPatient);
         
         return fluentBehaviorTree.BehaviorTreeStatus.Success;

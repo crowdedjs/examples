@@ -131,7 +131,7 @@ class ComputerEntry {
   }
 
   setVitals(vitals) {
-    this.vitals = this.vitals;
+    this.vitals = vitals;
     this.change();
   }
 
@@ -244,12 +244,12 @@ class ComputerEntry {
   }
 
   acknowledge(string) {
-    this.unack.remove(string);
+    _.pull(this.unack, string);
 
   }
 
   addUnacknowledged(string) {
-    this.unack.add(string);
+    this.unack.push(string);
 
   }
 

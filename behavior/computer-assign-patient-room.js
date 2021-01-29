@@ -14,7 +14,7 @@ class ComputerAssignPatientRoom {
     this.tree = builder
       .sequence("Computer Assign Patient Room")
         .do("Assign Room", (t) => {
-            let patient = me().CurrentPatient;
+            let patient = me().getCurrentPatient();
             let entry = Hospital.computer.getEntry(patient);
 
             // get rooms C_ROOM
@@ -31,8 +31,8 @@ class ComputerAssignPatientRoom {
 
 
            
-            patient.AssignedRoom = rooms[0];
-            entry.Bed = rooms[0];
+            patient.setAssignedRoom(rooms[0]);
+            entry.setBed(rooms[0]);
 
             return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })

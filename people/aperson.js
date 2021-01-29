@@ -45,11 +45,11 @@ class APerson extends AThing {
 		this.removeFromSimulationFlage = removeFromSimulationFlage;
 	}
 
-	get Destination() {
+	getDestination() {
 		return this.destination;
 	}
 
-	set Destination(destination) {
+	setDestination(destination) {
 		this.destination = destination;
 	}
 
@@ -82,11 +82,11 @@ class APerson extends AThing {
 		
 	}
 	
-	get AssignedRoom() {
+	getAssignedRoom() {
 		return this.assignedRoom;
 	}
 
-	set AssignedRoom(assignedRoom) {
+	setAssignedRoom(assignedRoom) {
 		this.assignedRoom = assignedRoom;
 	}
 	

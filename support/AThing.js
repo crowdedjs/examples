@@ -5,11 +5,11 @@ class AThing {
         this.location = location;
     }
 
-    get Location() {
+    getLocation() {
         return this.location;
     }
 
-    set Location(location) {
+    setLocation(location) {
         this.location = location;
     }
 

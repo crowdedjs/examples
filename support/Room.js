@@ -9,6 +9,36 @@ class Room {
         this.locationStatus = LocationStatus.NONE;
         this.locationStatusOwner = null;
     }
+    getName(){
+        return this.name;
+    }
+    setName(name){
+        this.name = name;
+    }
+    getLocation(){
+        return this.location;
+    }
+    setLocation(location){
+        this.location = location;
+    }
+    getRoomType(){
+        return this.roomType;
+    }
+    setRoomType(type){
+        this.roomType = type;
+    }
+    getLocationStatus(){
+        return this.locationStatus;
+    }
+    setLocationStatus(status){
+        this.locationStatus = status;
+    }
+    getLocationStatusOwner(){
+        return this.locationStatusOwner;
+    }
+    setLocationStatusOwner(owner){
+        this.locationStatusOwner = owner
+    }
 
 
 

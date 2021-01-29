@@ -9,6 +9,7 @@ import GetHealthInformationResponsibility from "./get-health-information.js";
 import GoToResponsibility from "../go-to-responsibility.js"
 import SetupTransport from "../setup-transport.js";
 import Reassess from "../reassess.js"
+import ResponsibilitySubject from "./responsibility-subject.js";
 
 class responsibility {
 
@@ -28,6 +29,7 @@ class responsibility {
         let me = () => Hospital.agents.find(a => a.id == myIndex);
 
         let goToComputer = new GoToLazy(self.index, () => me().Computer.position).tree;
+        let getComputerResponsibility = new GetComputerResponsibility(myIndex, locations).tree;
         let getResponsibility = new GetResponsibility(myIndex, locations).tree;
         let goToResponsibility = new GoToResponsibility(myIndex, locations).tree;
         let setupTransport = new SetupTransport(myIndex).tree;
@@ -38,7 +40,7 @@ class responsibility {
 
         this.tree = builder
             .sequence("Responsibility")
-
+            
                 .do("getRooms", (t) => {
                     let agent = Hospital.agents.find(a => a.id == myIndex);
                     agent.addRoom(locations.find(l => l.name == "C1"));
@@ -56,19 +58,38 @@ class responsibility {
                         case "Resident":
                             me().Computer = locations.find(l => l.name == "ResidentStart");
                             break;
+                        case "CT":
+                            me().Computer = locations.find(l => l.name == "CT 1");
+                            break;
+                        default:
+                            console.error("Bad Subclass Name")
                     }
 
                     return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 })
-                .inverter("Inverter")
-                    .sequence("Main Repeat")
-                        .do("Go to my computer", async function (t) {
-                            let result = await goToComputer.tick(t);
-                            return result;
-                        })// GO TO COMPUTER
-                        .inverter("Until Fail")
-                        .sequence("Sub Sequence")
-
+                .repeat("Main Repeat")
+                    .inverter()
+                        .untilFail("Computer Loop")
+                            .do("Go to my computer", async function (t) {
+                                let result = await goToComputer.tick(t);
+                                return result;
+                            })// GO TO COMPUTER
+                            .do("Get Computer Responsibility", async function (t) {
+                                let result = await getComputerResponsibility.tick(t);
+                                return result;
+                            })
+                            .do("Handle Responsibility", async (t) => {
+                                let result = await handleResponsibility.tick(t);
+                                return result;
+                            })
+                        .end()
+                    .end()
+                    .inverter()
+                        .untilFail()
+                            .do("Go to my computer", async function (t) {
+                                let result = await goToComputer.tick(t);
+                                return result;
+                            })// GO TO COMPUTER
                             .do("Get Responsibility", async function (t) {
                                 let result = await getResponsibility.tick(t);
                                 return result;
@@ -77,18 +98,16 @@ class responsibility {
                                 let result = await goToResponsibility.tick(t)
                                 return result;
                             })
-
-                            // .do("Go To Responsibility", (t) => {
-                            //     //WRITE THIS BEHAVIOR
-                            //     throw new Exception("Not implemented)")
-                            // })
                             .do("Wait For Responsibility Patient", (t) => {
-                                let patient = me().CurrentPatient;
+                                let patient = me().getCurrentPatient();
 
-                                let patientLocation = Vector3.fromObject(patient.Location);
+                                let patientLocation = Vector3.fromObject(patient.getLocation());
 
+                                if(me().Responsibility.getSubject() == ResponsibilitySubject.COMPUTER){
+                                    return fluentBehaviorTree.BehaviorTreeStatus.Success; 
+                                }
 
-                                let distance = Vector3.fromObject(me().Location).distanceTo(patientLocation);
+                                let distance = Vector3.fromObject(me().getLocation()).distanceTo(patientLocation);
                                 if (distance < 2) {
                                     return fluentBehaviorTree.BehaviorTreeStatus.Success;
                                 }
@@ -102,28 +121,33 @@ class responsibility {
                                 let result = await handleResponsibility.tick(t);
                                 return result;
                             })
-                            .sequence("Reassess")
-                                // UNTIL FAIL?
-                                //.sequence("Reassess Responsibility")
-                                .do("Reassess", async (t) => {
-                                    let result = await reassess.tick(t);
-                                    return result;
-                                })
-                                //NOT FINISHED
-                                .do("Handle Responsibility", async (t) => {
-                                    let result = await handleResponsibility.tick(t);
-                                    return result;
-                                })
+                            .inverter()
+                                .untilFail("Reassess")
+                                    // UNTIL FAIL?
+                                    //.sequence("Reassess Responsibility")
+                                    .do("Reassess", async (t) => {
+                                        let result = await reassess.tick(t);
+                                        return result;
+                                    })
+                                    //NOT FINISHED
+                                    .do("Handle Responsibility", async (t) => {
+                                        let result = await handleResponsibility.tick(t);
+                                        return result;
+                                    })
                                 .end()
-                            
-
                             .end()
                         .end()
-
                     .end()
+                    
+
+                    
+                    
+
                 .end()
             .end()
-            .build();
+        
+        
+        .build();
     }
 
     async update( crowd, msec) {

@@ -1,4 +1,5 @@
 import ResponsibilityFactory from "./responsibility/responsibility-factory.js"
+import ResponsibilitySubject from "./responsibility/responsibility-subject.js";
 
 
 class GetComputerResponsibility {
@@ -17,11 +18,15 @@ class GetComputerResponsibility {
 
                 //go through computer entries and find highest priority task
                 // requires looking thru responsibilities to get priority?
-                let responsibility = Hospital.computer.entries.filter(
-                    i => me().hasRoom(i.Bed) &&
-                        this.getResponsibilityFactory(me().MedicianSubclass).get(i,  me()) != null
+                let responsibilities = Hospital.computer.entries.filter(
+                    i => me().hasRoom(i.getBed()) &&
+                        this.getResponsibilityFactory(me().MedicianSubclass).get(i,  me()) != null 
                 )
-                    .map(i => this.getResponsibilityFactory(me().MedicianSubclass).get(i,  me()))
+                .filter(i=>self.getResponsibilityFactory(me().MedicianSubclass).get(i, me()).ResponsibilitySubject == ResponsibilitySubject.COMPUTER)
+                    .map(i => this.getResponsibilityFactory(me().MedicianSubclass).get(i,  me()));
+                if(!responsibilities || responsibilities.length == 0)
+                    return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                let responsibility = responsibilities
                     .reduce((a, b) => a == null ? null : b == null ? a : a.getPriority() < b.getPriority() ? a : b)
                     
 

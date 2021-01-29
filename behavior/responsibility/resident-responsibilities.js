@@ -1,5 +1,8 @@
 import AResponsibilityFactory from "./aresponsibility-factory.js"
 import ACK from "./ack.js"
+import ResidentEKGRead from "./resident-ekg-read.js"
+import ResidentEKGConsult from "./resident-ekg-consult.js"
+import ResidentEKGOrderCAT from "./resident-ekg-order-cat.js"
 
  class ResidentResponsibilities extends AResponsibilityFactory {
 	

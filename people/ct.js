@@ -27,10 +27,10 @@ class ct {
     this.tree = builder
       .sequence("Tech Tree")
       .splice(new GoTo(self.index, myGoal.position).tree)
-      .splice(new WaitForever(myIndex, locations).tree)
+      //.splice(new WaitForever(myIndex, locations).tree)
 
       // original tree is below sequence
-      .splice(new AssignComputer(myIndex, locations.find(l => l.name == "CT 1")).tree) // name CT 1
+      .splice(new AssignComputer(myIndex, locations.find(l => l.name == "CT 1").position).tree) // name CT 1
       .splice(new responsibility(myIndex, locations, start, end).tree) // lazy: true
       
       .end()

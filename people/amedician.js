@@ -39,7 +39,7 @@ class AMedician extends APerson {
     set Responsibility(responsibility)
     {
         this.responsibility = responsibility;
-        this.CurrentPatient = responsibility.entry.patient;
+        this.setCurrentPatient(responsibility.entry.patient);
     }
 
     get MyRooms() {
@@ -58,11 +58,11 @@ class AMedician extends APerson {
 		return this.MyRooms.some(r=>r.name == room.name)	
 	}
 
-	get CurrentPatient() {
+	getCurrentPatient() {
 		return this.currentPatient;
 	}
 
-	set CurrentPatient(currentPatient) {
+	setCurrentPatient(currentPatient) {
 		this.currentPatient = currentPatient;
 	}
 

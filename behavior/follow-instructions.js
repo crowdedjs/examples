@@ -29,13 +29,13 @@ class FollowInstructions {
 
         }
         else if (state == PatientTempState.FOLLOWING) {
-          let instructor = me().Instructor;
+          let instructor = me().getInstructor();
           let instructorLoc = Vector3.fromObject(t.crowd.find(f=>f.id == instructor.idx).location);
           let instructorLocation = instructorLoc;
           let myLocation = loc;
           if (myLocation.distanceTo(instructorLocation) < 1) // If we're really close, stop
           {
-            agent.destination = new Vector3(loc.x, loc.y, loc.z);//Stop
+            agentConstant.destination = new Vector3(loc.x, loc.y, loc.z);//Stop
           }
           else {
             //Head toward the instructor, but don't collide
@@ -46,7 +46,13 @@ class FollowInstructions {
           }
         }
         else if (state == PatientTempState.GO_INTO_ROOM) {
-
+          let destination = me().getAssignedRoom().getLocation();
+          if(Vector3.fromObject(destination).distanceTo(me().getLocation()) < .5){
+            me().setPatientTempState(PatientTempState.WAITING)
+          }
+          else{
+            me().setDestination(destination);
+          }
         }
         else {
           console.log("Invalid patient temp state " + state);

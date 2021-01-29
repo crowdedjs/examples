@@ -17,35 +17,35 @@ class APatient extends APerson {
 	
 	instructor; // AMedician
 
-	get Instructor() {
+	getInstructor() {
 		return this.instructor;
 	}
 
-	set Instructor(instructor) {
+	setInstructor(instructor) {
 		this.instructor = instructor;
 	}
 
-	get Severity() {
+	getSeverity() {
 		return this.severity;
 	}
 
-	set Severity(severity) {
+	setSeverity(severity) {
 		this.severity = severity;
 	}
 
-	get PatientTempState() {
+	getPatientTempState() {
 		return this.patientTempState;
 	}
 
-	set PatientTempState(patientTempState) {
+	setPatientTempState(patientTempState) {
 		this.patientTempState = patientTempState;
 	}
 
-	get PatientPregnancyState() {
+	getPatientPregnancyState() {
 		return this.patientPregnancyState;
 	}
 
-	set PatientPregnancyState(patientPregnancyState) {
+	setPatientPregnancyState(patientPregnancyState) {
 		this.patientPregnancyState = patientPregnancyState;
 	}
 }

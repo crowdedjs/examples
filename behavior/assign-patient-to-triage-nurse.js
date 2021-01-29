@@ -30,16 +30,16 @@ class AssignPatientToTriageNurse {
           if(closestTriageNurse == null || closestTriageNurse.getLocation().distanceTo(myLocation) > 3)
             return Status.RUNNING; //No triage nurse is available or close enough
           */
-         let closestTriangeNurses = Hospital.agents.filter(a=>a.medicianType == "Nurse" && a.medicianSubclass == "Triage Nurse" && a.CurrentPatient == null);
+         let closestTriangeNurses = Hospital.agents.filter(a=>a.medicianType == "Nurse" && a.medicianSubclass == "Triage Nurse" && a.getCurrentPatient() == null);
          let closetTriageNursesSorted = closestTriangeNurses.sort((a,b)=>a.location.distanceTo(myLocation) - b.location.distanceTo(myLocation));
          let closestTriageNurse = closetTriageNursesSorted[0];
          if(!closestTriageNurse) return fluentBehaviorTree.BehaviorTreeStatus.Running;
 
-          let myPatient = me().CurrentPatient;
-          closestTriageNurse.CurrentPatient = myPatient;
-          myPatient.Instructor = closestTriageNurse;
+          let myPatient = me().getCurrentPatient();
+          closestTriageNurse.setCurrentPatient(myPatient);
+          myPatient.setInstructor(closestTriageNurse);
           myPatient.PatientTempState = PatientTempState.FOLLOWING;
-          me.CurrentPatient = null;
+          me().setCurrentPatient(null);
           //hospital.addComment(me, myPatient, "Follow that nurse.");
 
           return fluentBehaviorTree.BehaviorTreeStatus.Success;

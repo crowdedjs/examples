@@ -11,7 +11,7 @@ class ComputerScorePatient {
     this.tree = builder
       .sequence("Computer Score Patient")
         .do("Score Patient", (t) => {
-            let patient = me().CurrentPatient;
+            let patient = me().getCurrentPatient();
             let entry = Hospital.computer.getEntry(patient);
 
             // get rooms C_ROOM

@@ -12,7 +12,7 @@ class ComputerEnterPatient {
         this.tree = builder
             .sequence("Computer Enter Patient")
                 .do("Enter Patient", (t) => {
-                    let patient = me().CurrentPatient;
+                    let patient = me().getCurrentPatient();
                     let entry = new ComputerEntry(patient, "Unknown")
                     
                     // need "this" ?

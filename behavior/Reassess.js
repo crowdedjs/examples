@@ -11,7 +11,7 @@ class Reassess {
 		this.tree = builder
 			.sequence("Reasses")
 			.do("Reassess", (t) => {
-				let patient = me().CurrentPatient;
+				let patient = me().getCurrentPatient();
 
         let entry = Hospital.computer.getEntry(patient);
         let responsibility;
@@ -20,12 +20,12 @@ class Reassess {
           responsibility = factory.get(entry, me())
         }
         if(entry == null || responsibility == null){
-          me().CurrentPatient = null;
+          me().setCurrentPatient(null);
           return fluentBehaviorTree.BehaviorTreeStatus.Failure;
         }
         //Implied else
-        me().CurrentPatient = patient;
-        me().Responsbility = responsibility;
+        me().setCurrentPatient(patient);
+        me().Responsibility = responsibility;
 
 				return fluentBehaviorTree.BehaviorTreeStatus.Success;
 			})

@@ -10,6 +10,7 @@ class Computer {
     }
   
     getEntry(patient) {
+      if(!patient) return null;
       return this.entries.find(c=>c.patient.id == patient.id)
       
     }

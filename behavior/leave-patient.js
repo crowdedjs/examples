@@ -14,10 +14,10 @@ class LeavePatient {
     this.tree = builder
       .sequence("Leave Patient")
         .do("Assign Room", (t) => {
-            let patient = me().CurrentPatient;
-            me().CurrentPatient = null;
+            let patient = me().getCurrentPatient();
+            me().setCurrentPatient(null);
             patient.PatientTempState = PatientTempState.GO_INTO_ROOM;
-            patient.AssignedRoom = Hospital.computer.getEntry(patient).Bed;
+            patient.setAssignedRoom(Hospital.computer.getEntry(patient).getBed());
             
 
             return fluentBehaviorTree.BehaviorTreeStatus.Success;

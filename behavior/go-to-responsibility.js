@@ -22,9 +22,9 @@ class GoToResponsibility {
         if (me().Responsibility.getSubject() == ResponsibilitySubject.COMPUTER)
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
 
-        let destination = responsibility.entry.patient.AssignedRoom.location;
+        let destination = responsibility.entry.patient.getAssignedRoom().location;
 
-        me().Destination = Vector3.fromObject(destination);
+        me().setDestination(Vector3.fromObject(destination));
 
         let distance = Vector3.fromObject(me().location).distanceTo(destination);
         if (distance < 1) {

@@ -20,9 +20,9 @@ class getPatient {
 
             // MAKE INTO OWN BEHAVIOR
             .do("Go To My Patient", (t) => {
-              patient = me.CurrentPatient;
-              me.AssignedRoom(patient.AssignedRoom);
-              myRoom = me.AssignedRoom;
+              patient = me.getCurrentPatient();
+              me.setAssignedRoom(patient.getAssignedRoom());
+              myRoom = me.getAssignedRoom();
               // set destination and go to room
 
               return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -40,9 +40,9 @@ class getPatient {
             // MAKE INTO OWN BEHAVIOR
             .do("Wait For Patient", (t) => {
               // UPDATE THIS LINE
-              patientLocation = me.CurrentPatient.Location;
+              patientLocation = me.getCurrentPatient().getLocation();
               // UPDATE THIS LINE
-              if(patientLocation.distanceTo(me.Location < 1))
+              if(patientLocation.distanceTo(me.getLocation() < 1))
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
               return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })

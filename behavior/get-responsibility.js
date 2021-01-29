@@ -13,7 +13,7 @@ class GetResponsibility {
             .do("Check Responsibilities", (t) => {
 
                 let responsibilities = Hospital.computer.entries.filter(
-                    i => me().hasRoom(i.Bed) &&
+                    i => me().hasRoom(i.getBed()) &&
                         this.getResponsibilityFactory(me().MedicianSubclass).get(i, me()) != null
                 );
                 if (!responsibilities || responsibilities.length == 0)

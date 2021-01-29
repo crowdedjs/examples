@@ -1,4 +1,5 @@
 import ATransportResponsibility from "./atransport.js"
+import ACK from "./ACK.js"
 
 class TechCATPickupResponsibility extends ATransportResponsibility {
 
@@ -8,7 +9,7 @@ class TechCATPickupResponsibility extends ATransportResponsibility {
   }
 
   doFinish() {
-    entry.acknowledge(ACK.CT_PICKUP);
+    this.entry.acknowledge(ACK.CT_PICKUP);
   }
 }
 

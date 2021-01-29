@@ -1,4 +1,5 @@
 import ATransportResponsibility from "./responsibility/atransport.js"
+import PatientTempState from "../support/patient-temp-state.js"
 
 class SetupTransport {
 	constructor(myIndex) {
@@ -11,15 +12,15 @@ class SetupTransport {
 		this.tree = builder
 			.sequence("Setup Transport")
 			.do("Setup Transport", (t) => {
-				let patient = me().CurrentPatient;
+				let patient = me().getCurrentPatient();
 
 				let responsibility = me().Responsibility;
 				if (!(responsibility instanceof ATransportResponsibility))
 					return fluentBehaviorTree.BehaviorTreeStatus.Success;
 				let transportResponsibility = responsibility;
 				// Hospital.addComment(me, patient, "Follow me");
-				me().Destination = transportResponsibility.Room.Location;
-				patient.Instructor = me;
+				me().setDestination(transportResponsibility.getRoom().getLocation());
+				patient.setInstructor(me());
 				patient.PatientTempState = PatientTempState.FOLLOWING;
 
 				return fluentBehaviorTree.BehaviorTreeStatus.Success;

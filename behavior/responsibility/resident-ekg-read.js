@@ -1,10 +1,12 @@
 import ResponsibilitySubject from "./responsibility-subject.js"
+import AResponsibility from "./AResponsibility.js"
+import ACK from "./ACK.js"
 
 
 class ResidentEKGRead extends AResponsibility {
 	
 	constructor(entry, medician) {
-		super("Resident EKG Read", 1 * 60, entry, 4, ResponsibilitySubject.COMPUTER, medician);
+		super("Resident EKG Read", 1 * 1, entry, 4, ResponsibilitySubject.COMPUTER, medician);
 	}
 
 	doFinish() {
