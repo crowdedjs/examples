@@ -1,3 +1,5 @@
+//Different requests that need to be ACKnowledged
+
 class ACK {
   static RESIDENT_EKG_READ = "ResidentEKGRead";
   static RESIDENT_EKG_CONSULT = "ResidentEKGConsult";

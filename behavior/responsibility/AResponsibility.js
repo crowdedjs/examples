@@ -1,4 +1,4 @@
-
+//An "abstract" class for Medical Staff responsibilities
 class AResponsibility {
 
 	name; //String
@@ -8,6 +8,20 @@ class AResponsibility {
 	priority; //float
 	subject; //ResponsibilitySubject
 	medician; //IMedician
+
+	calledStarted = false; //Has this responsibility been started?
+	calledFinished = false;	//Has this responsibility been finished?
+
+	constructor(name, duration, entry, priority, subject, medician) {
+
+		this.name = name;
+		this.duration = duration;
+		this.remaining = duration;
+		this.entry = entry;
+		this.priority = priority;
+		this.subject = subject;
+		this.medician = medician;
+	}
 
 	getMedician() {
 		return this.medician;
@@ -37,19 +51,7 @@ class AResponsibility {
 		this.priority = priority;
 	}
 
-	calledStarted = false;
-	calledFinished = false;
-
-	constructor(name, duration, entry, priority, subject, medician) {
-
-		this.name = name;
-		this.duration = duration;
-		this.remaining = duration;
-		this.entry = entry;
-		this.priority = priority;
-		this.subject = subject;
-		this.medician = medician;
-	}
+	
 
 	getRemaining() {
 		return this.remaining;
