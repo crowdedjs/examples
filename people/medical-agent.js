@@ -2,7 +2,7 @@
 import BackAndForth from "../behavior/BackAndForth.js";
 import None from "../behavior/None.js"
 import Agent from "./Agent.js"
-import AMedician from "./amedician.js";
+import AMedicalStaff from "./amedical-staff.js";
 
 import attending from "./attending.js"
 import ct from "./ct.js"
@@ -16,7 +16,7 @@ import tech from "./tech.js"
 import triageNurse from "./triage-nurse.js" 
 
 
-class MedicalAgent extends AMedician {
+class MedicalAgent extends AMedicalStaff {
   startX;
   startY;
   startZ;

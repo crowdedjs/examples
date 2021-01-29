@@ -15,7 +15,7 @@ class APatient extends APerson {
 	severity; // Severity
 	// SEVERITY LEVELS: ESI1, ESI2, ESI3, ESI4, ESI5
 	
-	instructor; // AMedician
+	instructor; // AMedicalStaff
 
 	getInstructor() {
 		return this.instructor;

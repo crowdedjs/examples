@@ -14,12 +14,12 @@ class GetResponsibility {
 
                 let responsibilities = Hospital.computer.entries.filter(
                     i => me().hasRoom(i.getBed()) &&
-                        this.getResponsibilityFactory(me().MedicianSubclass).get(i, me()) != null
+                        this.getResponsibilityFactory(me().MedicalStaffSubclass).get(i, me()) != null
                 );
                 if (!responsibilities || responsibilities.length == 0)
                     return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                 let responsibility = responsibilities
-                    .map(i => this.getResponsibilityFactory(me().MedicianSubclass).get(i, me()))
+                    .map(i => this.getResponsibilityFactory(me().MedicalStaffSubclass).get(i, me()))
                     .reduce((a, b) => a == null ? null : b == null ? a : a.getPriority() < b.getPriority() ? a : b)
 
 
@@ -38,8 +38,8 @@ class GetResponsibility {
             .build();
     }
 
-    getResponsibilityFactory(medicianSubclass) {
-        return ResponsibilityFactory.get(medicianSubclass);
+    getResponsibilityFactory(medicalStaffSubclass) {
+        return ResponsibilityFactory.get(medicalStaffSubclass);
     }
 }
 

@@ -2,10 +2,10 @@ import AResponsibilityFactory from "./aresponsibility-factory.js"
 import GetHealthInformationResponsibility from "./get-health-information.js"
  class NurseResponsibilities extends AResponsibilityFactory {
 	
-	get( entry, medician) {
+	get( entry, medicalStaff) {
 		
 		if(!entry.isAnsweredQuestions()) {
-			return new GetHealthInformationResponsibility( entry, medician);
+			return new GetHealthInformationResponsibility( entry, medicalStaff);
 		}
 		
 		return null;

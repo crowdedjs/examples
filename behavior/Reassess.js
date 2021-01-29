@@ -16,7 +16,7 @@ class Reassess {
         let entry = Hospital.computer.getEntry(patient);
         let responsibility;
         if(entry != null){
-          let factory = ResponsibilityFactory.get(me().MedicianSubclass)
+          let factory = ResponsibilityFactory.get(me().MedicalStaffSubclass)
           responsibility = factory.get(entry, me())
         }
         if(entry == null || responsibility == null){

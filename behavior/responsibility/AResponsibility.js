@@ -7,12 +7,12 @@ class AResponsibility {
 	entry; //ComputerEntry
 	priority; //float
 	subject; //ResponsibilitySubject
-	medician; //IMedician
+	medicalStaff; //IMedicalStaff
 
 	calledStarted = false; //Has this responsibility been started?
 	calledFinished = false;	//Has this responsibility been finished?
 
-	constructor(name, duration, entry, priority, subject, medician) {
+	constructor(name, duration, entry, priority, subject, medicalStaff) {
 
 		this.name = name;
 		this.duration = duration;
@@ -20,15 +20,15 @@ class AResponsibility {
 		this.entry = entry;
 		this.priority = priority;
 		this.subject = subject;
-		this.medician = medician;
+		this.medicalStaff = medicalStaff;
 	}
 
-	getMedician() {
-		return this.medician;
+	getMedicalStaff() {
+		return this.medicalStaff;
 	}
 
-	setMedician(medician) {
-		this.medician = medician;
+	setMedicalStaff(medicalStaff) {
+		this.medicalStaff = medicalStaff;
 	}
 
 	isStarted() {

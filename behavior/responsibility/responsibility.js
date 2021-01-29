@@ -47,8 +47,8 @@ class responsibility {
                     return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 })
                 .do("getComputer", (t) => {
-                    // Not sure if medician subclass is implemented
-                    switch (me().MedicianSubclass) {
+                    // Not sure if medicalStaff subclass is implemented
+                    switch (me().MedicalStaffSubclass) {
                         case "Tech":
                             me().Computer = locations.find(l => l.name == "TechPlace");
                             break;

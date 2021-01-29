@@ -3,8 +3,8 @@
 
  class GetHealthInformationResponsibility extends AResponsibility {
 
-	constructor(entry, medician) {
-		super("Get Health Information", 1 * 1, entry, 4, ResponsibilitySubject.PATIENT, medician);
+	constructor(entry, medicalStaff) {
+		super("Get Health Information", 1 * 1, entry, 4, ResponsibilitySubject.PATIENT, medicalStaff);
 	}
 
 	doFinish() {

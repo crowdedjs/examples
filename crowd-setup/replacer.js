@@ -2,7 +2,7 @@
 //to prevent circular loops.
 
 function replacer(key, value) {
-  // if (key === 'behavior' || key === 'instructor' || key==='currentPatient' || key==="medician")
+  // if (key === 'behavior' || key === 'instructor' || key==='currentPatient' || key==="medicalStaff")
   //   return undefined;
   // return value;
   let validKeys = ["", "idx", "id", "destX", "destY", "destZ", "startX", "startY", "startZ"]

@@ -3,8 +3,8 @@ import ResponsibilitySubject from "./responsibility-subject.js"
 
 class TakeVitalsResponsibility extends AResponsibility {
 
-	constructor(entry, medician) {
-		super("Take Vitals", 1 /* seconds */, entry, 5, ResponsibilitySubject.PATIENT, medician);
+	constructor(entry, medicalStaff) {
+		super("Take Vitals", 1 /* seconds */, entry, 5, ResponsibilitySubject.PATIENT, medicalStaff);
 		// TODO Auto-generated constructor stub
 	}
 

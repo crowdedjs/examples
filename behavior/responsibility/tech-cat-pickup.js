@@ -4,8 +4,8 @@ import ACK from "./ACK.js"
 class TechCATPickupResponsibility extends ATransportResponsibility {
 
 
-  constructor(entry, medician) {
-    super("Tech CAT Pickup Responsibility", entry, medician, entry.getBed());
+  constructor(entry, medicalStaff) {
+    super("Tech CAT Pickup Responsibility", entry, medicalStaff, entry.getBed());
   }
 
   doFinish() {

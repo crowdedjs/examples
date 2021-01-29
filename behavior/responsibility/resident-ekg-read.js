@@ -5,8 +5,8 @@ import ACK from "./ACK.js"
 
 class ResidentEKGRead extends AResponsibility {
 	
-	constructor(entry, medician) {
-		super("Resident EKG Read", 1 * 1, entry, 4, ResponsibilitySubject.COMPUTER, medician);
+	constructor(entry, medicalStaff) {
+		super("Resident EKG Read", 1 * 1, entry, 4, ResponsibilitySubject.COMPUTER, medicalStaff);
 	}
 
 	doFinish() {

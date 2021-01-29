@@ -1,13 +1,13 @@
-// public class GetComputer extends LeafTask<IMedician> {
+// public class GetComputer extends LeafTask<IMedicalStaff> {
 	
 
 	
 // 	@Override
 // 	public Status execute() {
-// 		IMedician me = getObject();
+// 		IMedicalStaff me = getObject();
 // 		HospitalModel hospital = HospitalModel.get();
 		
-// 		switch(me.getMedicianSubclass()) {
+// 		switch(me.getMedicalStaffSubclass()) {
 // 		case TECH:
 // 			me.setComputer(hospital.getLocationByName("TechPlace"));
 // 			break;

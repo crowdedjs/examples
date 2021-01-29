@@ -17,8 +17,8 @@ class ATransportResponsibility extends AResponsibility {
   }
 
 
-  constructor(name, entry, medician, location) {
-    super(name, 1, entry, 4, ResponsibilitySubject.PATIENT, medician);
+  constructor(name, entry, medicalStaff, location) {
+    super(name, 1, entry, 4, ResponsibilitySubject.PATIENT, medicalStaff);
     this.room = location;
   }
 
@@ -33,7 +33,7 @@ class ATransportResponsibility extends AResponsibility {
 
     if (distance < 1 && !this.calledFinished) {
       this.calledFinished = true;
-      this.getMedician().setCurrentPatient(null);
+      this.getMedicalStaff().setCurrentPatient(null);
       this.entry.getPatient().setPatientTempState(PatientTempState.GO_INTO_ROOM);
       this.entry.getPatient().setAssignedRoom(this.room);
       this.finish();

@@ -8,16 +8,16 @@ import ACK from "./ACK.js"
  class TechResponsibilities extends AResponsibilityFactory {
 
 	
-	 get(entry, medician) {
+	 get(entry, medicalStaff) {
 		if(entry.getVitals() == null) {
-			return new TakeVitalsResponsibility( entry, medician);
+			return new TakeVitalsResponsibility( entry, medicalStaff);
 		}
 		else if(entry.getEkg() == null){
-			return new TechEKGDo(entry, medician);
+			return new TechEKGDo(entry, medicalStaff);
 		}else if(Hospital.getCTQueue().length > 0 && !Hospital.isCTOccupied() && entry.getPatient() == Hospital.getCTQueue()[0]) {
-			return new TechEKGTakePatientToResponsibility(entry, medician, Hospital.getLocationByName("CT 1"));
+			return new TechEKGTakePatientToResponsibility(entry, medicalStaff, Hospital.getLocationByName("CT 1"));
 		}else if(entry.unacknowledged(ACK.CT_PICKUP)) {
-			return new TechCATPickupResponsibility(entry, medician);
+			return new TechCATPickupResponsibility(entry, medicalStaff);
 		}
 		
 		

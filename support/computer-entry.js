@@ -10,9 +10,9 @@ class ComputerEntry {
   arr = new Date(); //Date
   vitals; //String
   comments; //String
-  rn; //IMedician
-  res; //IMedician
-  md; //IMedician
+  rn; //IMedicalStaff
+  res; //IMedicalStaff
+  md; //IMedicalStaff
   unack = []; //Array of strings
   imageStat; //String
   bed2; //String

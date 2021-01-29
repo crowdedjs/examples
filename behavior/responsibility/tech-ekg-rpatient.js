@@ -3,8 +3,8 @@ import ACK from "./ACK.js"
 
 class TechEKGTakePatientToResponsibility extends ATransportResponsibility {
 
-	constructor(entry, medician, location) {
-		super("Tech EKG Take Patient To", entry, medician, location);
+	constructor(entry, medicalStaff, location) {
+		super("Tech EKG Take Patient To", entry, medicalStaff, location);
 
 	}
 

@@ -1,18 +1,18 @@
 import APerson from "./aperson.js"
 
-class AMedician extends APerson {
-    medicianType; //MedicianClass -> string
-    medicianSubclass; //MedicianSublcass -> string
+class AMedicalStaff extends APerson {
+    medicalStaffType; //MedicalStaffClass -> string
+    medicalStaffSubclass; //MedicalStaffSublcass -> string
     doctorYear; //DoctorYear -> string
     currentPatient; //IPatient -> APatient
     myRooms; //List<IRooms> -> []
     responsibility; //AResponsibility
     computer; //IRoom -> ARoom
 
-	constructor(location, UUID, medicianType, medicianSubclass, doctorYear, arrivalTick) {
+	constructor(location, UUID, medicalStaffType, medicalStaffSubclass, doctorYear, arrivalTick) {
 		super(location, UUID, arrivalTick);
-		this.medicianType = medicianType;
-		this.medicianSubclass = medicianSubclass;
+		this.medicalStaffType = medicalStaffType;
+		this.medicalStaffSubclass = medicalStaffSubclass;
 		if (doctorYear == null)
 		{
 			this.doctorYear = "NONE";
@@ -66,28 +66,28 @@ class AMedician extends APerson {
 		this.currentPatient = currentPatient;
 	}
 
-	get MedicianSubclass() {
-		return this.medicianSubclass;
+	get MedicalStaffSubclass() {
+		return this.medicalStaffSubclass;
 	}
 
-	set MedicianSubclass(medicianSubclass) {
-		this.medicianSubclass = medicianSubclass;
+	set MedicalStaffSubclass(medicalStaffSubclass) {
+		this.medicalStaffSubclass = medicalStaffSubclass;
 	}
     
-	get MedicianType() {
-		return this.medicianType;
+	get MedicalStaffType() {
+		return this.medicalStaffType;
 	}
     
-	set MedicianType(medicianType) {
-		this.medicianType = medicianType;
+	set MedicalStaffType(medicalStaffType) {
+		this.medicalStaffType = medicalStaffType;
 	}
     
 	get DoctorType() {
-		return this.medicianSubclass;
+		return this.medicalStaffSubclass;
 	}
     
 	set DoctorType(doctorType) {
-		this.medicianSubclass = doctorType;
+		this.medicalStaffSubclass = doctorType;
 	}
     
 	get DoctorYear() {
@@ -105,4 +105,4 @@ class AMedician extends APerson {
 
 }
 
-export default AMedician;
+export default AMedicalStaff;

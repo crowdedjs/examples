@@ -20,10 +20,10 @@ class GetComputerResponsibility {
                 // requires looking thru responsibilities to get priority?
                 let responsibilities = Hospital.computer.entries.filter(
                     i => me().hasRoom(i.getBed()) &&
-                        this.getResponsibilityFactory(me().MedicianSubclass).get(i,  me()) != null 
+                        this.getResponsibilityFactory(me().MedicalStaffSubclass).get(i,  me()) != null 
                 )
-                .filter(i=>self.getResponsibilityFactory(me().MedicianSubclass).get(i, me()).ResponsibilitySubject == ResponsibilitySubject.COMPUTER)
-                    .map(i => this.getResponsibilityFactory(me().MedicianSubclass).get(i,  me()));
+                .filter(i=>self.getResponsibilityFactory(me().MedicalStaffSubclass).get(i, me()).ResponsibilitySubject == ResponsibilitySubject.COMPUTER)
+                    .map(i => this.getResponsibilityFactory(me().MedicalStaffSubclass).get(i,  me()));
                 if(!responsibilities || responsibilities.length == 0)
                     return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                 let responsibility = responsibilities
@@ -43,8 +43,8 @@ class GetComputerResponsibility {
             .build();
     }
 
-    getResponsibilityFactory(medicianSubclass) {
-        return ResponsibilityFactory.get(medicianSubclass);
+    getResponsibilityFactory(medicalStaffSubclass) {
+        return ResponsibilityFactory.get(medicalStaffSubclass);
     }
 
 }

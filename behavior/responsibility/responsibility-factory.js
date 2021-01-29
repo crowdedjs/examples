@@ -6,8 +6,8 @@
  
  class ResponsibilityFactory {
 	
-	 static get( medicianSubclass) {
-		switch(medicianSubclass) {
+	 static get( medicalStaffSubclass) {
+		switch(medicalStaffSubclass) {
 		case "Tech":
 			return new TechResponsibilities();
 		case "Nurse":

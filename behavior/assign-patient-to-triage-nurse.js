@@ -19,18 +19,18 @@ class AssignPatientToTriageNurse {
           
           /*
           List<IPerson> people = hospital.activePeople;
-          IMedician closestTriageNurse = (IMedician) people.stream()
-              .filter(i->i instanceof IMedician 
-                  && ((IMedician)i).getMedicianType() == MedicianClass.NURSE 
-                  && ((IMedician)i).getDoctorType() == MedicianSubclass.TRIAGE_NURSE 
-                  &&((IMedician)i).getCurrentPatient() == null)
+          IMedicalStaff closestTriageNurse = (IMedicalStaff) people.stream()
+              .filter(i->i instanceof IMedicalStaff 
+                  && ((IMedicalStaff)i).getMedicalStaffType() == MedicalStaffClass.NURSE 
+                  && ((IMedicalStaff)i).getDoctorType() == MedicalStaffSubclass.TRIAGE_NURSE 
+                  &&((IMedicalStaff)i).getCurrentPatient() == null)
               .sorted((a,b)->(int)(a.getLocation().distanceTo(myLocation) - b.getLocation().distanceTo(myLocation)))
               .findFirst()
               .orElse(null);
           if(closestTriageNurse == null || closestTriageNurse.getLocation().distanceTo(myLocation) > 3)
             return Status.RUNNING; //No triage nurse is available or close enough
           */
-         let closestTriangeNurses = Hospital.agents.filter(a=>a.medicianType == "Nurse" && a.medicianSubclass == "Triage Nurse" && a.getCurrentPatient() == null);
+         let closestTriangeNurses = Hospital.agents.filter(a=>a.medicalStaffType == "Nurse" && a.medicalStaffSubclass == "Triage Nurse" && a.getCurrentPatient() == null);
          let closetTriageNursesSorted = closestTriangeNurses.sort((a,b)=>a.location.distanceTo(myLocation) - b.location.distanceTo(myLocation));
          let closestTriageNurse = closetTriageNursesSorted[0];
          if(!closestTriageNurse) return fluentBehaviorTree.BehaviorTreeStatus.Running;
