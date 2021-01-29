@@ -4,7 +4,7 @@ import GetResponsibility from "../get-responsibility.js";
 import GoTo from "../go-to.js";
 import GoToLazy from "../go-to-lazy.js";
 import HandleResponsibility from "../handle-responsibility.js";
-import Vector3 from "../../math/vector3.js";
+import Vector3 from "../../math/vector-3.js";
 import GetHealthInformationResponsibility from "./get-health-information.js";
 import GoToResponsibility from "../go-to-responsibility.js"
 import SetupTransport from "../setup-transport.js";

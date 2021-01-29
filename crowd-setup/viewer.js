@@ -6,9 +6,9 @@ import { FBXLoader } from './lib/FBXLoader.js';
 import { SkeletonUtils } from './lib/SkeletonUtils.js';
 
 import { WhiteMaterial, BlackMaterial, RedMaterial, GreenMaterial, BlueMaterial } from "./view/Materials.js"
-import MakeLabelCanvas from "./view/MakeLabelCanvas.js"
-import Resize from "./view/Resize.js"
-import AddAxes from "./view/AddAxes.js"
+import MakeLabelCanvas from "./view/make-label-canvas.js"
+import Resize from "./view/resize.js"
+import AddAxes from "./view/add-axes.js"
 import Poses from './models/Poses.js';
 
 //Setup repeated geometry for locations, etc.

@@ -1,6 +1,6 @@
 import ResponsibilitySubject from "./responsibility-subject.js"
-import AResponsibility from "./AResponsibility.js"
-import ACK from "./ACK.js"
+import AResponsibility from "./aresponsibility.js"
+import ACK from "./ack.js"
 
 class CTCATDoScanResponsibility extends AResponsibility  {
 	

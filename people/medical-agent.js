@@ -1,7 +1,7 @@
 
-import BackAndForth from "../behavior/BackAndForth.js";
+import BackAndForth from "../behavior/back-and-forth.js";
 import None from "../behavior/None.js"
-import Agent from "./Agent.js"
+import Agent from "./agent.js"
 import AMedicalStaff from "./amedical-staff.js";
 
 import attending from "./attending.js"

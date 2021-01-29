@@ -1,5 +1,5 @@
 import * as THREE from '../lib/three.module.js';
-import {WhiteMaterial, BlackMaterial, RedMaterial, GreenMaterial, BlueMaterial}  from "./Materials.js"
+import {WhiteMaterial, BlackMaterial, RedMaterial, GreenMaterial, BlueMaterial}  from "./materials.js"
 
 
 function AddAxes(scene, geometry){
