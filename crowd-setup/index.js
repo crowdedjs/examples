@@ -140,10 +140,12 @@ class CrowdSetup {
 
         let index = self.controls.getCurrentTick(); //Get the number of the frame we want to see
 
-        index = simulationAgents.length - 1;
         //TODO: Override and always show the last tick.
         //Force look at the current frame
-        //Take this line out to use the controls
+        //Use this line to use the controls
+        //index = simulationAgents.length - 1;
+
+        //Use this line to respond to the actual controls
         index = Math.min(index, simulationAgents.length - 1);
 
         let frame = simulationAgents[index]; //Get the positional data for that frame
@@ -169,6 +171,7 @@ class CrowdSetup {
         for (let j = 0; j < CrowdSetup.three.agentGroup.children.length; j++) {
           let child = CrowdSetup.three.agentGroup.children[j];
           let agent = frame.find(f => f.id == child._id);
+          if(!agent) continue;
           child.position.set(agent.x, agent.y, agent.z);
           viewer.updateAgent(CrowdSetup.three, agent)
         }

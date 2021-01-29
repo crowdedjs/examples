@@ -42,49 +42,56 @@ class ControlCreator {
     divTop.appendChild(inputRange);
 
     let buttonElementName = "button"
-    
 
-    let buttonRev =  document.createElement(buttonElementName);
+
+    let buttonRev = document.createElement(buttonElementName);
     buttonRev.innerText = "◄"
-    if(buttonClass)
+    if (buttonClass)
       buttonRev.classList.add(buttonClass)
     buttonRev.addEventListener('click', () => self.clickPlayButton(self.PLAY_STATE_PLAY_BACKWARD))
     divBottom.appendChild(buttonRev);
 
     let buttonStop = document.createElement(buttonElementName);
-    if(buttonClass)
+    if (buttonClass)
       buttonStop.classList.add(buttonClass)
     buttonStop.innerText = "█"
     buttonStop.addEventListener('click', () => self.clickPlayButton(self.PLAY_STATE_STOP))
     divBottom.appendChild(buttonStop);
 
     let buttonPlay = document.createElement(buttonElementName);
-    if(buttonClass)
+    if (buttonClass)
       buttonPlay.classList.add(buttonClass)
     buttonPlay.innerText = "►"
     buttonPlay.addEventListener('click', () => self.clickPlayButton(self.PLAY_STATE_PLAY_FORWARD))
     divBottom.appendChild(buttonPlay);
 
     let x1Speed = document.createElement(buttonElementName);
-    if(buttonClass)
+    if (buttonClass)
       x1Speed.classList.add(buttonClass)
     x1Speed.innerText = "x1"
     x1Speed.addEventListener('click', () => self.clickPlaySpeed(1))
     divBottom.appendChild(x1Speed);
 
     let x5Speed = document.createElement(buttonElementName);
-    if(buttonClass)
+    if (buttonClass)
       x5Speed.classList.add(buttonClass)
     x5Speed.innerText = "x5"
     x5Speed.addEventListener('click', () => self.clickPlaySpeed(5))
     divBottom.appendChild(x5Speed);
 
     let x10Speed = document.createElement(buttonElementName);
-    if(buttonClass)
+    if (buttonClass)
       x10Speed.classList.add(buttonClass)
     x10Speed.innerText = "x10"
     x10Speed.addEventListener('click', () => self.clickPlaySpeed(10))
     divBottom.appendChild(x10Speed);
+
+    let x100Speed = document.createElement(buttonElementName);
+    if (buttonClass)
+      x100Speed.classList.add(buttonClass)
+    x100Speed.innerText = "x100"
+    x100Speed.addEventListener('click', () => self.clickPlaySpeed(100))
+    divBottom.appendChild(x100Speed);
 
     document.body.appendChild(divRange);
 
@@ -170,13 +177,13 @@ class ControlCreator {
     else
       div.style.visibility = "hidden";
   }
-  getPlayState(){
+  getPlayState() {
     return this.playState;
   }
-  getPlaySpeed(){
+  getPlaySpeed() {
     return this.playSpeed;
   }
-  update(allSimulations, firstTicks){
+  update(allSimulations, firstTicks) {
     let state = this.getPlayState();
     let speed = this.getPlaySpeed();
     let advance = state * speed;
@@ -185,29 +192,29 @@ class ControlCreator {
     if (newIndex < 0) {
       newIndex = 0;
     }
-    //if (newIndex >= Math.max(...allSimulations.map(i=>i.length)))
-      newIndex = Math.max(...allSimulations.map(i=>i.length)) - 1;
+    if (newIndex >= Math.max(...allSimulations.map(i => i.length)))
+      newIndex = Math.max(...allSimulations.map(i => i.length)) - 1;
     this.setTick(newIndex);
     //let elpasedTime = new Date() - this.start;
     //let vel = Math.max(...allSimulations.map(i=>i.length) )/(elpasedTime/1000);
     let vels = [];
-    for(let i = 0; i < allSimulations.length; i++){
-      vels.push(allSimulations[i].length / ((new Date() - firstTicks[i])/1000));
+    for (let i = 0; i < allSimulations.length; i++) {
+      vels.push(allSimulations[i].length / ((new Date() - firstTicks[i]) / 1000));
     }
-    let value = "" + this.asTime(document.getElementById("myRange").value) 
-    + "<br>" + allSimulations.map(i=>"" + this.asTime(i.length) + " seconds calculated").join(",") 
-    + "<br>" + allSimulations.map(i=>"" + i.length + " frames calculated").join(",") 
-    + "<br>" + vels.map(i=>i.toFixed(2) + " fps").join(",")
-    + "<br>" + vels.map(i=>(this.asTime(i.length) / this.secondsOfSimulation)  + " fps").join(",")
-    + "<br>" + this.asTime(this.secondsOfSimulation * 1_000 / this.millisecondsPerFrame);
+    let value = "" + this.asTime(document.getElementById("myRange").value)
+      + "<br>" + allSimulations.map(i => "" + this.asTime(i.length) + " seconds calculated").join(",")
+      + "<br>" + allSimulations.map(i => "" + i.length + " frames calculated").join(",")
+      + "<br>" + vels.map(i => i.toFixed(2) + " fps").join(",")
+      + "<br>" + vels.map(i => (this.asTime(i.length) / this.secondsOfSimulation) + " fps").join(",")
+      + "<br>" + this.asTime(this.secondsOfSimulation * 1_000 / this.millisecondsPerFrame);
 
     document.getElementById("counter").innerHTML = value;
   }
-  getCurrentTick(){
+  getCurrentTick() {
     let rangeElement = document.getElementById("myRange");
     return +rangeElement.value
   }
-  setTick(tick){
+  setTick(tick) {
     let rangeElement = document.getElementById("myRange");
     rangeElement.value = tick;
   }
