@@ -11,48 +11,69 @@
 
 <body>
 
-  <script src="./lib/axios.js"></script>  <!-- Promise-based AJAX library-->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/@ricksteam/fluent-behavior-tree-browser/bundle.js"></script> -->
-  <script src="./lib/bundle.js"></script> <!-- Our port of fluent-behvaior-tree-browser-->
-  <script src="./bundle.js"></script>     <!-- Our port of RecastDetour-->
+  <script src="./lib/axios.js"></script> <!-- Promise-based AJAX library-->
+  <script src="./lib/lodash.js"></script> <!-- Standard JS Utility Library-->
+
+  <script src="https://cdn.jsdelivr.net/npm/@ricksteam/fluent-behavior-tree-browser@0.2.0/bundle.js"></script>
+
+  <script src="./worker.js"></script> <!-- Our port of RecastDetour-->
+  
   <script type="module">
     //Show FPS Counter
     //Comment this line if you don't want to show the FPS counter
     javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
 
-    import MedicalAgent from "./sim/MedicalAgent.js"
-    import PatientAgent from "./sim/PatientAgent.js"
-    //import CrowdSetup from "./index.js"
-    //import CrowdSetup from "./index.js"
-    // import CrowdSetup from "http://localhost:5500/index.js"
-    import CrowdSetup from "https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup@0.0.3/index.js"
-    import urlParser from "./urlParser.js"
+    import MedicalAgent from "./people/medical-agent.js"
+    import PatientAgent from "./people/patient-agent.js"
+    import CrowdSetup from "./crowd-setup/index.js"
+    import urlParser from "./url-parser.js"
     import colorFunction from "./color-function.js"
     import simulations from "./simulations.js"
+    import HospitalClass from "./support/hospital.js"
+    import Computer from "./support/Computer.js"
+    import Room from "./support/room.js"
+    import Vector3 from "./math/vector-3.js"
 
 
 
     let params = {};
-    //let assetBase = "./";
-    let assetBase = "https://cdn.jsdelivr.net/npm/@crowdedjs/assets/";
-    params.objPath = assetBase + "objs/hospital.obj";
+
+    //Change to the cdn in production
+    let assetBase = "./";
+    //let assetBase = "https://cdn.jsdelivr.net/npm/@crowdedjs/assets/";
+
+    //Flat hospital removes the walls to speed up debugging
+    //params.objPath = assetBase + "objs/hospital-flat.obj";
+     params.objPath = assetBase + "objs/hospital.obj";
+
+    //
     params.arrivalPath = assetBase + "arrivals/arrivalHospital.json";
+    //params.arrivalPath = "./" + "arrivals/arrivalHospital.json";
+
+    params.locationsPath = "./" + "locations/locationsHospital.json";
+
+    //This does not represent seconds any more
     params.secondsOfSimulation = 300;
     params.millisecondsBetweenFrames = 40;
-    // params.locationsPath = assetBase + "locations/locationsHospital.json";
-    params.locationsPath = "./" + "locations/locationsHospital.json";
+    
 
     params = urlParser(window, params, assetBase);
 
+    //Set these up as global variables
+    window.Hospital = HospitalClass;
+    window.Vector3 = Vector3;
+
+    //Grab the information about our simulaiton
     let promises = [axios.get(params.objPath), axios.get(params.locationsPath), axios.get(params.arrivalPath)];
     Promise.all(promises)
       .then(results => {
         let objValue = results[0].data;       //Grab the value of the environment 
-        let locationValue = results[1].data;  //Grab the value of all the locations
-        let arrivalValue = results[2].data;   //Grab the value of all the arrivals
+        let locationValue = JSON.parse(results[1].data);  //Grab the value of all the locations
+        let arrivalValue = JSON.parse(results[2].data);   //Grab the value of all the arrivals
 
         let agentConstants = [];  //An array with all the high-level agent information (not the simulation data)
-        
+        let locations = [];
+
         //Add an agent with a behavior and an id
         arrivalValue.forEach((agent, index) => {
           if (agent.name == "patient")
@@ -60,18 +81,27 @@
           else
             agentConstants.push(new MedicalAgent(agent, locationValue));
           //Is this line necessary?
-          agentConstants[agentConstants.length -1].setId(index);
+          agentConstants[agentConstants.length - 1].setId(index);
         })
 
-        
+        //Remove spaces in annotation names
+        locationValue.forEach(l => {
+          locations.push(new Room(l.position, l.annotationName.toUpperCase().replace(" ", "_"), l.name))
+        })
+
+        //Assign the data to the global hospital object
+        Hospital.agents = agentConstants;
+        Hospital.locations = locations;
+        Hospital.computer = new Computer();
+
         //Start the simulation.
-        new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "https://cdn.jsdelivr.net/npm/@crowdedjs/crowd-setup");
+        new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "./crowd-setup/");
 
       })
-      // This is commented out for debugging purposes. In production, this should be added back in.
-      // .catch(error => {
-      //   console.log("Error in the app " + error)
-      // })
+      //This can be commented out for debugging purposes. In production, this should not be commented.
+      .catch(error => {
+        console.log("Error in the app " + error)
+      })
 
 
   </script>

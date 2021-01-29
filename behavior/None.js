@@ -1,4 +1,4 @@
-import ABehavior from "./ABehavior.js"
+import ABehavior from "./abehavior.js"
 
 
 /**

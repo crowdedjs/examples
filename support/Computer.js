@@ -1,30 +1,19 @@
 class Computer {
-    entries = [];
-
+  entries =  [];//List<ComputerEntry>
+    
     add(entry) {
-        this.entries.push(entry);
+      this.entries.push(entry);
     }
-
+    
     print() {
-        this.entries.forEach(c=>console.log(c));
+      this.entries.forEach(c=>console.log(c));
     }
-
+  
     getEntry(patient) {
-        //JAVA VERSION: return entries.stream().filter(c->c.patient == patient).findAny().orElse(null);
-        
-        //JAVASCRIPT (DOESN'T WORK): return this.entries.chain().filter(c=>c.patient == patient).some() || null;
-        
-        for(let i = 0; i < this.entries.length; i++)
-        {
-            if (this.entries[i].Patient == patient)
-            {
-                return this.entries[i];
-            }
-        }
-
-        return "That patient is not in the system.";
+      if(!patient) return null;
+      return this.entries.find(c=>c.patient.id == patient.id)
+      
     }
-
-    }
-
-export default Computer;
+  
+  }
+  export default Computer;

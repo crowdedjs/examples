@@ -1,6 +1,6 @@
 import chai from "chai"
 //import mocha from "mocha"
-import greeterNurse from "../data/greeterNurse.js"
+import greeterNurse from "../people/greeterNurse.js"
 import APatient from "../support/APatient.js"
 import Computer from "../support/Computer.js"
 import ComputerEntry from "../support/ComputerEntry.js"
