@@ -22,7 +22,7 @@ class FollowInstructions {
         let idx = Hospital.agents[self.index].idx;
         let simulationAgent = t.crowd.find(f=>f.id == idx);
         let loc = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
-        let state = me().PatientTempState;
+        let state = me().getPatientTempState();
 
         if (state == PatientTempState.WAITING) {
           agentConstant.destination = new Vector3(loc.x, loc.y, loc.z);

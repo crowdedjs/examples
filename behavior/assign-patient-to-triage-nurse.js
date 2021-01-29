@@ -38,7 +38,7 @@ class AssignPatientToTriageNurse {
           let myPatient = me().getCurrentPatient();
           closestTriageNurse.setCurrentPatient(myPatient);
           myPatient.setInstructor(closestTriageNurse);
-          myPatient.PatientTempState = PatientTempState.FOLLOWING;
+          myPatient.setPatientTempState(PatientTempState.FOLLOWING);
           me().setCurrentPatient(null);
           //hospital.addComment(me, myPatient, "Follow that nurse.");
 

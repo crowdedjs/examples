@@ -32,7 +32,7 @@ class getPatient {
             // MAKE INTO OWN BEHAVIOR
             .do("Call Patient", (t) => {
               patient.Instructor(me);
-              patient.PatientTempState("FOLLOWING_INSTRUCTIONS");
+              patient.setPatientTempState("FOLLOWING_INSTRUCTIONS");
 
               return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })

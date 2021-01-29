@@ -21,7 +21,7 @@ class SetupTransport {
 				// Hospital.addComment(me, patient, "Follow me");
 				me().setDestination(transportResponsibility.getRoom().getLocation());
 				patient.setInstructor(me());
-				patient.PatientTempState = PatientTempState.FOLLOWING;
+				patient.setPatientTempState( PatientTempState.FOLLOWING);
 
 				return fluentBehaviorTree.BehaviorTreeStatus.Success;
 			})

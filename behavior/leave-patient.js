@@ -16,7 +16,7 @@ class LeavePatient {
         .do("Assign Room", (t) => {
             let patient = me().getCurrentPatient();
             me().setCurrentPatient(null);
-            patient.PatientTempState = PatientTempState.GO_INTO_ROOM;
+            patient.setPatientTempState(PatientTempState.GO_INTO_ROOM);
             patient.setAssignedRoom(Hospital.computer.getEntry(patient).getBed());
             
 
