@@ -6,9 +6,9 @@ import { FBXLoader } from './lib/FBXLoader.js';
 import { SkeletonUtils } from './lib/SkeletonUtils.js';
 
 import { WhiteMaterial, BlackMaterial, RedMaterial, GreenMaterial, BlueMaterial } from "./view/Materials.js"
-import MakeLabelCanvas from "./view/make-label-canvas.js"
-import Resize from "./view/resize.js"
-import AddAxes from "./view/add-axes.js"
+import MakeLabelCanvas from "./view/MakeLabelCanvas.js"
+import Resize from "./view/Resize.js"
+import AddAxes from "./view/AddAxes.js"
 import Poses from './models/Poses.js';
 
 //Setup repeated geometry for locations, etc.
@@ -17,9 +17,6 @@ const CylinderGeometryThin = function () { return new THREE.CylinderGeometry(.1,
 
 //Get the internal clock from THREE.js
 const clock = new THREE.Clock();
-
-let useAnimatedCharacters = true;//It takes a little longer to render and compute. Set to false when debugging
-
 
 
 const mixers = [];  //Each agent needs a mixer to keep track of their animation state
@@ -75,7 +72,7 @@ function boot(three, environment, locations, assetURL) {
   three.mouse = new THREE.Vector2();
   three.camera = new THREE.PerspectiveCamera(45, 1, 1, 1000);
   three.camera.position.set(75, 10, 10);
-
+  
   three.scene.background = new THREE.Color(0x007fff);
   three.scene.add(three.camera);
 
@@ -119,56 +116,51 @@ function boot(three, environment, locations, assetURL) {
 
   three.scene.add(three.agentGroup);
 
-
+  
 
   //Go through and load all the poses
   let allPromises = [];
+  // Poses.poseList.forEach((pose, index)=>{
+  //   let url = `${assetURL}/models/${pose.file}.fbx`;
+  //   console.log(url);
+  //    allPromises.push(loadPromise(url));
+  // });
 
-  if (useAnimatedCharacters) {
-    Poses.poseList.forEach((pose, index) => {
-      let url = `${assetURL}/models/${pose.file}.fbx`;
-      console.log(url);
-      allPromises.push(loadPromise(url));
-    });
+  //Wait for all the poses to be done.
+  // Promise.all(allPromises)
+  //   .then(results => {
+  //     results.forEach((result, index)=>{
+  //       let animation = result.animations[0];
+  //       //Add a key so we track the animation later on
+  //       animation._key = Poses.poseList[index].key
+  //       allAnimations.push(animation);
+  //     });
+  //     //Load the model
+  //     return loadPromise(`${assetURL}/models/ybot.fbx`);
+  //   })
+  //   .then(first => {
+  //     base = first;
 
-    //Wait for all the poses to be done.
-    Promise.all(allPromises)
-      .then(results => {
-        results.forEach((result, index) => {
-          let animation = result.animations[0];
-          //Add a key so we track the animation later on
-          animation._key = Poses.poseList[index].key
-          allAnimations.push(animation);
-        });
-        //Load the model
-        return loadPromise(`${assetURL}/models/ybot.fbx`);
-      })
-      .then(first => {
-        base = first;
+  //     //Make sure that we cast shadows appropriately
+  //     first.traverse(function (child) {
+  //       if (child.isMesh) {
+  //         child.castShadow = true;
+  //         child.receiveShadow = true;
+  //       }
+  //     });
 
-        //Make sure that we cast shadows appropriately
-        first.traverse(function (child) {
-          if (child.isMesh) {
-            child.castShadow = true;
-            child.receiveShadow = true;
-          }
-        });
-
-        //Since we will only clone this object, we make it invisible.
-        first.visible = false
-        first.name = "first"
-        three.scene.add(first);
-        first.position.set(0, 0, 0);
-        first.scale.set(.01, .01, .01);
-
-      })
-      .catch(err => {
-        console.error("There was an error in the load promise " + err);
-      })
-  }
-  else {
-    base = 1;
-  }
+  //     //Since we will only clone this object, we make it invisible.
+  //     first.visible = false
+  //     first.name = "first"
+  //     three.scene.add(first);
+  //     first.position.set(0, 0, 0);
+  //     first.scale.set(.01, .01, .01);
+      
+  //   })
+  //   .catch(err => {
+  //     console.error("There was an error in the load promise " + err);
+  //   })
+  base = 1;
 }
 
 function loadOBJ(three, path) {
@@ -216,42 +208,37 @@ function addLocations(three, locations) {
 }
 
 function addAgent(three, agent, color) {
+  var object = new THREE.Mesh( new THREE.CylinderGeometry(.2, .2, 1, 8), new THREE.MeshStandardMaterial({
+    roughness: 0,
+    metalness: 0,
+    color:color,
+  }))
+ 
+  //let object = SkeletonUtils.clone(base); //Required to properly clone the skeleton
+  //let mixer = new THREE.AnimationMixer(object);
+  //mixers.push(mixer);
 
-  let object;
-  if (useAnimatedCharacters) {
-    object = SkeletonUtils.clone(base); //Required to properly clone the skeleton
-    let mixer = new THREE.AnimationMixer(object);
-    mixers.push(mixer);
+  // object.traverse(child => {
+  //   if (child.material) {
+  //     //Each material needs to be cloned, otherwise they wil all be the same color
+  //     child.material = child.material.clone();
+  //   }
+  // })
 
-    object.traverse(child => {
-      if (child.material) {
-        //Each material needs to be cloned, otherwise they wil all be the same color
-        child.material = child.material.clone();
-      }
-    })
+  // object.actions = []
 
-    object.actions = []
+  // for (let a = 0; a < allAnimations.length; a++) {
+  //   let animation = allAnimations[a].clone(); //Grab the animation
+  //   object.animations.push(animation)         //...and add it to this object
+  //   const action = mixer.clipAction(animation); //Create an action from this animation
+  //   action._key = allAnimations[a]._key;        //Keep track of which key was used
+  //   action.play();   //Run the animation
+  //   object.actions.push(action) //Add to my list of actions
+  // }
 
-    for (let a = 0; a < allAnimations.length; a++) {
-      let animation = allAnimations[a].clone(); //Grab the animation
-      object.animations.push(animation)         //...and add it to this object
-      const action = mixer.clipAction(animation); //Create an action from this animation
-      action._key = allAnimations[a]._key;        //Keep track of which key was used
-      action.play();   //Run the animation
-      object.actions.push(action) //Add to my list of actions
-    }
+  //Recolor
 
-    // Recolor
-
-    object.children[1].material.color = color;
-  }
-  else {
-    object = new THREE.Mesh(new THREE.CylinderGeometry(.2, .2, 1, 8), new THREE.MeshStandardMaterial({
-      roughness: 0,
-      metalness: 0,
-      color: color,
-    }))
-  }
+  //object.children[1].material.color = color;
 
   let toPushPosition = [new THREE.Vector3(agent.x, agent.y, agent.z), 0.0];
   three.agentGroup.positions.push(toPushPosition);
@@ -261,12 +248,7 @@ function addAgent(three, agent, color) {
   object.name = "object"
   three.agentGroup.add(object);
   object.position.set(agent.x, agent.y, agent.z);
-  if (useAnimatedCharacters) {
-    object.scale.set(.01, .01, .01);
-  }
-  else {
-    object.scale.set(1, 1, 1);
-  }
+  object.scale.set(1, 1, 1);
 }
 
 function updateAgent(three, agent) {
@@ -276,33 +258,29 @@ function updateAgent(three, agent) {
   // Calculate and apply a rotation for the agent based on the direction it is moving in
   let nextPosition = new THREE.Vector3(agent.x, agent.y, agent.z);
   let previousPosition = three.agentGroup.positions[index][0];
-  if (useAnimatedCharacters) {
-    let positionChange = new THREE.Vector3(nextPosition.x - previousPosition.x, nextPosition.y - previousPosition.y, nextPosition.z - previousPosition.z);
-    let nextAngle = (Math.atan2(positionChange.z, positionChange.x));
-    three.agentGroup.children[index].rotation.y = Math.PI / 2 - nextAngle;
-  }
+  //let positionChange = new THREE.Vector3(nextPosition.x - previousPosition.x, nextPosition.y - previousPosition.y, nextPosition.z - previousPosition.z);
+  //let nextAngle = (Math.atan2(positionChange.z, positionChange.x));
+  //three.agentGroup.children[index].rotation.y = Math.PI / 2 - nextAngle;
   three.agentGroup.positions[index] = [nextPosition, null];
-  if (useAnimatedCharacters) {
 
-    let child = three.agentGroup.children[index];
-    for (let j = 0; j < child.actions.length; j++) {
-      let action = child.actions[j];
-      action.setEffectiveWeight(0);
-      if (!agent.pose && action._key == "Walking") {
-        action.setEffectiveWeight(1);
-      }
-      else if (agent.pose == action._key) {
-        action.setEffectiveWeight(1);
-      }
-    }
-  }
+    // let child = three.agentGroup.children[index];
+    // for (let j = 0; j < child.actions.length; j++) {
+    //   let action = child.actions[j];
+    //   action.setEffectiveWeight(0);
+    //   if(!agent.pose && action._key == "Walking" ){
+    //     action.setEffectiveWeight(1);
+    //   }
+    //   else if(agent.pose == action._key){
+    //     action.setEffectiveWeight(1);
+    //   }
+    // }
 }
 
 function animate() {
   const delta = clock.getDelta();
 
   //Update each animation mixer with the time delta
-  mixers.forEach(mixer => {
+  mixers.forEach(mixer=>{
     mixer.update(delta);
   })
 }
@@ -313,8 +291,8 @@ function render(three) {
   animate()
 }
 
-function hasBooted() {
-  return base != null;
+function hasBooted(){
+  return base!=null;
 }
 
 export {
@@ -326,6 +304,6 @@ export {
   addLocations,
   addAgent, //Add an agent to the simulation
   updateAgent,  //Update an agent in the simulation
-  render, //Render the scene
+  render , //Render the scene
   hasBooted
 };
