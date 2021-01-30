@@ -24,8 +24,7 @@ class responsibility {
 
         let self = this;//Since we need to reference this in anonymous functions, we need a reference
 
-        //   let me = agent;
-        //let me = Hospital.agents.find(a=>a.id==self.index);
+        let debug = "Resident"
         let me = () => Hospital.agents.find(a => a.id == myIndex);
 
         let goToComputer = new GoToLazy(self.index, () => me().Computer.position).tree;
@@ -37,6 +36,9 @@ class responsibility {
         let reassess = new Reassess(myIndex).tree;
         //let myGoal = me.Computer;
         //this.goTo = new GoTo(self.index, myGoal.position);
+        let stopper = ()=>{
+            console.log("Stopper")
+        }
 
         this.tree = builder
             .sequence("Responsibility")
@@ -44,6 +46,9 @@ class responsibility {
                 .do("getRooms", (t) => {
                     let agent = Hospital.agents.find(a => a.id == myIndex);
                     agent.addRoom(locations.find(l => l.name == "C1"));
+                    if(me().name == debug) 
+                        console.log("getRooms")
+                        
                     return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 })
                 .do("getComputer", (t) => {
@@ -74,14 +79,20 @@ class responsibility {
                     .inverter()
                         .untilFail("Computer Loop")
                             .do("Go to my computer", async function (t) {
+                                if(me().name == debug) 
+                                    console.log("Go to my computer");
                                 let result = await goToComputer.tick(t);
                                 return result;
                             })// GO TO COMPUTER
                             .do("Get Computer Responsibility", async function (t) {
+                                if(me().name == debug) 
+                                    console.log("Get computer responsibility")
                                 let result = await getComputerResponsibility.tick(t);
                                 return result;
                             })
                             .do("Handle Responsibility", async (t) => {
+                                if(me().name == debug) 
+                                    console.log("Handle Responsibility (a)")
                                 let result = await handleResponsibility.tick(t);
                                 return result;
                             })
@@ -90,18 +101,26 @@ class responsibility {
                     .inverter()
                         .untilFail()
                             .do("Go to my computer", async function (t) {
+                                if(me().name == debug) 
+                                    console.log("Go to my computer")
                                 let result = await goToComputer.tick(t);
                                 return result;
                             })// GO TO COMPUTER
                             .do("Get Responsibility", async function (t) {
+                                if(me().name == debug) 
+                                    console.log("Get Responsibility")
                                 let result = await getResponsibility.tick(t);
                                 return result;
                             })
                             .do("Go to Responsibility", async function (t) {
+                                if(me().name == debug) 
+                                    console.log("Go to Responsibility")
                                 let result = await goToResponsibility.tick(t)
                                 return result;
                             })
                             .do("Wait For Responsibility Patient", (t) => {
+                                if(me().name == debug) 
+                                    console.log("Wait for Responsibility Patient")
                                 let patient = me().getCurrentPatient();
 
                                 let patientLocation = Vector3.fromObject(patient.getLocation());
@@ -117,10 +136,14 @@ class responsibility {
                                 return fluentBehaviorTree.BehaviorTreeStatus.Running;
                             })
                             .do("Set Up Transport", async (t) => {
+                                if(me().name == debug) 
+                                    console.log("Set up Transport")
                                 let result = await setupTransport.tick(t);
                                 return result;
                             })
                             .do("Handle Responsibility", async (t) => {
+                                if(me().name == debug) 
+                                    console.log("Handle Responsibility")
                                 let result = await handleResponsibility.tick(t);
                                 return result;
                             })
@@ -129,11 +152,15 @@ class responsibility {
                                     // UNTIL FAIL?
                                     //.sequence("Reassess Responsibility")
                                     .do("Reassess", async (t) => {
+                                        if(me().name == debug) 
+                                        console.log("Reassess");
                                         let result = await reassess.tick(t);
                                         return result;
                                     })
                                     //NOT FINISHED
                                     .do("Handle Responsibility", async (t) => {
+                                        if(me().name == debug) 
+                                            console.log("HandleResponsibility")
                                         let result = await handleResponsibility.tick(t);
                                         return result;
                                     })

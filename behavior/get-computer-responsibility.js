@@ -8,19 +8,20 @@ class GetComputerResponsibility {
 
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
         let self = this;//Since we need to reference this in anonymous functions, we need a reference
-        let me = () => Hospital.agents.find(a => a.id == myIndex);;
-
+        let me = () => Hospital.agents.find(a => a.id == myIndex);
+        
         this.tree = builder
-            .sequence("Get Computer Responsibility")
-            .do("Check Responsibilities", (t) => {
-                //Computer computer = HospitalModel.get().computer;
-                //get computer
+        .sequence("Get Computer Responsibility")
+        .do("Check Responsibilities", (t) => {
+            //Computer computer = HospitalModel.get().computer;
+            //get computer
+            let classedResponsibility = this.getResponsibilityFactory(me().MedicalStaffSubclass)
 
                 //go through computer entries and find highest priority task
                 // requires looking thru responsibilities to get priority?
                 let responsibilities = Hospital.computer.entries.filter(
                     i => me().hasRoom(i.getBed()) &&
-                        this.getResponsibilityFactory(me().MedicalStaffSubclass).get(i,  me()) != null 
+                        classedResponsibility.get(i,  me()) != null 
                 )
                 .filter(i=>self.getResponsibilityFactory(me().MedicalStaffSubclass).get(i, me()).ResponsibilitySubject == ResponsibilitySubject.COMPUTER)
                     .map(i => this.getResponsibilityFactory(me().MedicalStaffSubclass).get(i,  me()));
