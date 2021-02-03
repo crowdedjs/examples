@@ -21,9 +21,9 @@
   <script src="//mrdoob.github.io/stats.js/build/stats.min.js"></script>
 
   <script type="module">
+    
     //Show FPS Counter
     //Comment this line if you don't want to show the FPS counter
-    
     // SCORING FUNCTION GRAPH
     //javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
     
@@ -37,8 +37,9 @@
     document.body.appendChild( stats.dom );
 
     function animate() {
-
+      //xPanel.update(agentPositionsRef[agentPositionsRef.length].length);
       xPanel.update(1);
+      stats.update();
 
       requestAnimationFrame( animate );
 
@@ -58,7 +59,7 @@
     import Room from "./support/room.js"
     import Vector3 from "./math/vector-3.js"
 
-
+    import index from "./crowd-setup/index.js"
 
     let params = {};
 
