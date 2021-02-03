@@ -122,21 +122,41 @@ class CrowdSetup {
 
     // SCORING FUNCTION
     function scoring() {
-      console.log(agentPositionsRef);
+      //console.log(agentPositionsRef);
 
       // MAX AGENTS IN EACH FRAME
-      // SHOULD PROBABLY MAKE AN ARRAY SO IT PRINTS TO CONSOLE BETTER
       let averageOccupancy = 0;
+      let maximumOccupancy = 0;
+      let maxAgents = [];
+      console.log("MAX AGENTS IN FRAME: ")
       for (let i = 0; i < agentPositionsRef.length; i++)
       {
-        console.log("MAX AGENTS IN FRAME " + (i + 1) + ": " + agentPositionsRef[i].length)
+        //console.log("MAX AGENTS IN FRAME " + (i + 1) + ": " + agentPositionsRef[i].length)
+        maxAgents.push(agentPositionsRef[i].length);
         averageOccupancy += agentPositionsRef[i].length;
+        
+        let agentsInSim = 0;
+        for (let j = 0; j < agentPositionsRef[i].length; j++)
+        {
+          if (agentPositionsRef[i][j].inSimulation)
+          {
+            agentsInSim++;
+          }
+        }
+        if (agentsInSim > maximumOccupancy)
+        {
+          maximumOccupancy = agentsInSim;
+        }
       }
+      console.log(maxAgents);
+
 
       // AVERAGE OCCUPANCY
       averageOccupancy = averageOccupancy / agentPositionsRef.length;
       console.log("AVERAGE OCCUPANCY: " + averageOccupancy);
 
+      // MAXIMUM OCCUPANCY ACROSS ALL FRAMES
+      console.log("MAXIMUM OCCUPANCY: " + maximumOccupancy);
 
       // CHECK ID OF EACH AGENT, FIND FIRST AND LAST FRAME, THEN AVERAGE ALL OF THE TIME IN THE SIMULATION
       // COULD ABSOLUTELY SIMPLIFY THIS
@@ -166,7 +186,7 @@ class CrowdSetup {
         averageTime += (agentArray[i][2] - agentArray[i][1])
       }
       averageTime = averageTime / agentArray.length;
-      console.log("AVERAGE TIME IN SIMULATION: " + averageTime);  
+      console.log("AVERAGE FRAMES IN SIMULATION: " + averageTime);  
       
 
       // WHAT ELSE SHOULD WE PRINT??
