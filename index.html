@@ -18,11 +18,35 @@
 
   <script src="./worker.js"></script> <!-- Our port of RecastDetour-->
   
+  <script src="//mrdoob.github.io/stats.js/build/stats.min.js"></script>
+
   <script type="module">
     //Show FPS Counter
     //Comment this line if you don't want to show the FPS counter
-    javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
+    
+    // SCORING FUNCTION GRAPH
+    //javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
+    
+    var stats = new Stats();
+    //AGENTS IN SIMULATION PER FRAME
+    var xPanel = stats.addPanel( new Stats.Panel( 'AGENTS', '#ff8', '#221' ) );
+    //var yPanel = stats.addPanel( new Stats.Panel( 'y', '#f8f', '#212' ) );
+    stats.showPanel(2);
+    stats.dom.style.position = 'fixed';
+    stats.dom.style.float = 'left';
+    document.body.appendChild( stats.dom );
 
+    function animate() {
+
+      xPanel.update(1);
+
+      requestAnimationFrame( animate );
+
+    }
+
+    animate();
+
+    
     import MedicalAgent from "./people/medical-agent.js"
     import PatientAgent from "./people/patient-agent.js"
     import CrowdSetup from "./crowd-setup/index.js"
@@ -105,6 +129,7 @@
 
 
   </script>
+
 </body>
 
 </html>

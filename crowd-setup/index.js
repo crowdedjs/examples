@@ -120,6 +120,7 @@ class CrowdSetup {
       }
     }
 
+
     // SCORING FUNCTION
     function scoring() {
       //console.log(agentPositionsRef);
