@@ -22,32 +22,6 @@
 
   <script type="module">
     
-    //Show FPS Counter
-    //Comment this line if you don't want to show the FPS counter
-    // SCORING FUNCTION GRAPH
-    //javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
-    
-    var stats = new Stats();
-    //AGENTS IN SIMULATION PER FRAME
-    var xPanel = stats.addPanel( new Stats.Panel( 'AGENTS', '#ff8', '#221' ) );
-    //var yPanel = stats.addPanel( new Stats.Panel( 'y', '#f8f', '#212' ) );
-    stats.showPanel(2);
-    stats.dom.style.position = 'fixed';
-    stats.dom.style.float = 'left';
-    document.body.appendChild( stats.dom );
-
-    function animate() {
-      //xPanel.update(agentPositionsRef[agentPositionsRef.length].length);
-      xPanel.update(1);
-      stats.update();
-
-      requestAnimationFrame( animate );
-
-    }
-
-    animate();
-
-    
     import MedicalAgent from "./people/medical-agent.js"
     import PatientAgent from "./people/patient-agent.js"
     import CrowdSetup from "./crowd-setup/index.js"
@@ -120,7 +94,46 @@
         Hospital.computer = new Computer();
 
         //Start the simulation.
-        new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "./crowd-setup/");
+        let crowdSetup = new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "./crowd-setup/");
+        //setInterval(()=>{console.log(crowdSetup.agentPositions)}, 1000)
+
+
+        //Show FPS Counter
+        //Comment this line if you don't want to show the FPS counter
+        // SCORING FUNCTION GRAPH
+        //javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
+        var stats = new Stats();
+        //AGENTS IN SIMULATION PER FRAME
+        var xPanel = stats.addPanel( new Stats.Panel( 'AGENTS', '#ff8', '#221' ) );
+        //var yPanel = stats.addPanel( new Stats.Panel( 'y', '#f8f', '#212' ) );
+        stats.showPanel(2);
+        stats.dom.style.position = 'fixed';
+        stats.dom.style.float = 'left';
+        document.body.appendChild( stats.dom );
+        let i = 0;
+
+        function animate() {
+          // gives permanent undefined, but if I tab away
+          // and come back to the simulation while it is running it works!
+          if (typeof crowdSetup.agentPositions[i] === 'undefined')
+          {
+            console.log("undefined! :)");
+          }
+          else
+          {
+            //console.log(crowdSetup.agentPositions[0].length);
+            xPanel.update(crowdSetup.agentPositions[i].length);
+
+          }
+          i++;
+
+          stats.update();
+
+          requestAnimationFrame( animate );
+
+        }
+
+        animate();
 
       })
       //This can be commented out for debugging purposes. In production, this should not be commented.
