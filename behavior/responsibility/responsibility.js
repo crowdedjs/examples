@@ -34,6 +34,7 @@ class responsibility {
         let setupTransport = new SetupTransport(myIndex).tree;
         let handleResponsibility = new HandleResponsibility(myIndex).tree;
         let reassess = new Reassess(myIndex).tree;
+        let counter = 0;
         //let myGoal = me.Computer;
         //this.goTo = new GoTo(self.index, myGoal.position);
         let stopper = ()=>{
@@ -76,7 +77,7 @@ class responsibility {
                     return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 })
                 .repeat("Main Repeat")
-                    .inverter()
+                    .inverter("Main Repeat Inverter")
                         .untilFail("Computer Loop")
                             .do("Go to my computer", async function (t) {
                                 if(me().name == debug) 
@@ -98,8 +99,8 @@ class responsibility {
                             })
                         .end()
                     .end()
-                    .inverter()
-                        .untilFail()
+                    .inverter("After Computer Inverter")
+                        .untilFail("After Computer Until Fail")
                             .do("Go to my computer", async function (t) {
                                 if(me().name == debug) 
                                     console.log("Go to my computer")
@@ -107,6 +108,7 @@ class responsibility {
                                 return result;
                             })// GO TO COMPUTER
                             .do("Get Responsibility", async function (t) {
+                                counter++;
                                 if(me().name == debug) 
                                     console.log("Get Responsibility")
                                 let result = await getResponsibility.tick(t);

@@ -19,17 +19,24 @@ class GetComputerResponsibility {
 
                 //go through computer entries and find highest priority task
                 // requires looking thru responsibilities to get priority?
+                
+                // if (responsibility == null) {
+                //     return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                // }
+
                 let responsibilities = Hospital.computer.entries.filter(
                     i => me().hasRoom(i.getBed()) &&
-                        classedResponsibility.get(i,  me()) != null 
-                )
-                .filter(i=>self.getResponsibilityFactory(me().MedicalStaffSubclass).get(i, me()).ResponsibilitySubject == ResponsibilitySubject.COMPUTER)
-                    .map(i => this.getResponsibilityFactory(me().MedicalStaffSubclass).get(i,  me()));
+                        classedResponsibility.get(i, me()) != null
+                );
+                if (!responsibilities || responsibilities.length == 0)
+                    return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                responsibilities = responsibilities.filter(i=>classedResponsibility.get(i, me()).getSubject() == ResponsibilitySubject.COMPUTER)
                 if(!responsibilities || responsibilities.length == 0)
                     return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                 let responsibility = responsibilities
+                    .map(i => classedResponsibility.get(i, me()))
                     .reduce((a, b) => a == null ? null : b == null ? a : a.getPriority() < b.getPriority() ? a : b)
-                    
+
 
 
                 if (responsibility == null) {

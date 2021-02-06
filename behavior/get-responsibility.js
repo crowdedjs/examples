@@ -1,4 +1,5 @@
 import ResponsibilityFactory from "./responsibility/responsibility-factory.js"
+import ResponsibilitySubject from "./responsibility/responsibility-subject.js"
 
 class GetResponsibility {
     constructor(myIndex, locations) {
@@ -25,7 +26,7 @@ class GetResponsibility {
                 );
                 if (!responsibilities || responsibilities.length == 0)
                     return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-                responsibilities = responsibilities.filter(i=>classedResponsibility.get(i, me()).ResponsibilitySubject != ResponsibilitySubject.COMPUTER)
+                responsibilities = responsibilities.filter(i=>classedResponsibility.get(i, me()).getSubject != ResponsibilitySubject.COMPUTER)
                 if(!responsibilities || responsibilities.length == 0)
                     return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                 let responsibility = responsibilities
