@@ -14,6 +14,7 @@ class ACK {
   static RADIOLOGY_REVIEW_SCAN = "RadiologyReviewScan"
 
   static NURSE_DISCHARGE_PATIENT = "NurseDischargePatient"
+  static NURSE_ESCORT_PATIENT_TO_EXIT = "NurseEscortPatientToExit"
 
 }
 

@@ -11,7 +11,7 @@ class ResidentAttendingConsult extends AResponsibility {
 
 	doFinish() {
 		this.entry.acknowledge(ACK.RESIDENT_ATTENDING_CONSULT);
-		this.entry.addUnacknowledged(ACK.RESIDENT_CONSULT_PATIENT);
+		this.entry.addUnacknowledged(ACK.RESIDENT_PATIENT_CONSULT);
 
 	}
 }

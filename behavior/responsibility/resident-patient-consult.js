@@ -1,5 +1,6 @@
 import AResponsibility from "./aresponsibility.js"
 import ResponsibilitySubject from "./responsibility-subject.js"
+import ACK from "./ACK.js"
 
 class ResidentPatientConsult extends AResponsibility {
 
@@ -8,7 +9,8 @@ class ResidentPatientConsult extends AResponsibility {
 	}
 
 	doFinish() {
-		
+		this.entry.acknowledge(ACK.RESIDENT_PATIENT_CONSULT);
+		this.entry.addUnacknowledged(ACK.NURSE_DISCHARGE_PATIENT);
 
 	}
 }
