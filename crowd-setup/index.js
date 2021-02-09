@@ -17,6 +17,8 @@ class CrowdSetup {
     this.first = true;              //Is this the first tick?
     let self = this;                //Reference to this for use in lambdas
     this.controls = {};
+    let done = false;
+    let sentinelAgent;
 
     //Add the html elements if the user passes in a reference for us to attach to.
     if (elementParent != null) {
@@ -90,7 +92,11 @@ class CrowdSetup {
           //let ins = frameAgentDetails.filter(q=>q.idx == agent.idx)
           agent.location = {};
           [agent.location.x, agent.location.y, agent.location.z] = [instance.x, instance.y, instance.z];
-          await agent.behavior.update(agentConstants, frameAgentDetails, i * millisecondsBetweenFrames);
+          
+          if (self.sentinelAgent === undefined && agent.medicalStaffSubclass == "Nurse") {
+            self.sentinelAgent = agent;
+          }
+          await agent.behavior.update(agentConstants, frameAgentDetails, i * millisecondsBetweenFrames); //HERE
 
           //If the new destination is not null, send the updated destination to the
           //path finding engine
@@ -106,14 +112,18 @@ class CrowdSetup {
         }
       }
 
+      if (self.sentinelAgent !== undefined && self.sentinelAgent.behavior.checkEndOfSimulation()) {
+        done = true;
+      }
+
       //Check to see if we need to end the simulation
-      if (i < secondsOfSimulation * 1_000 / millisecondsBetweenFrames) {
+      if (done && !self.sentinelAgent.behavior.checkEndOfSimulation()) {
+        console.log("Done with tick callback.")
+      }
+      else {
         //If the simulation needs to continue, send on the information
         //about new agentConstants, agentConstants with new destinations, and agentConstants that have left the simulation
         nextTick([JSON.stringify(newAgents, replacer), JSON.stringify(newDestinations, replacer), JSON.stringify(leavingAgents, replacer)])
-      }
-      else {
-        console.log("Done with tick callback.")
       }
     }
 
