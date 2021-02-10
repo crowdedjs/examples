@@ -21,13 +21,13 @@ class greeterNurse {
       let myGoal = Hospital.locations.find(l => l.name == "Check In");
       if (!myGoal) throw new Exception("We couldn't find a location called Check In");
   
-      //this.goTo = new GoTo(self.index, myGoal.position);
+      //this.goTo = new GoTo(self.index, myGoal.location);
   
   
   
       this.tree = builder
         .sequence("Greeter Nurse Behaviors")
-            .splice(new GoTo(self.index, myGoal.position).tree)
+            .splice(new GoTo(self.index, myGoal.location).tree)
                         
             .splice(new LookForArrivingPatient(myIndex).tree)
 

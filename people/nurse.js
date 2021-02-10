@@ -20,8 +20,8 @@ class nurse {
       this.tree = builder
 
       .sequence("Assign Nurse")
-        .splice(new GoTo(self.index, myGoal.position).tree)
-        .splice(new AssignComputer(myIndex, computer.position).tree) // NURSE PLACE
+        .splice(new GoTo(self.index, myGoal.location).tree)
+        .splice(new AssignComputer(myIndex, computer.location).tree) // NURSE PLACE
         .splice(new responsibility(myIndex).tree) // LAZY: TRUE
       .end()
       .build();

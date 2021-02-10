@@ -19,7 +19,7 @@ class GoToResponsibility {
 
         let destination;
         if (me().Responsibility.getSubject() == ResponsibilitySubject.COMPUTER) {
-          let a = me().computer.position;
+          let a = me().computer.location;
           destination = a;
         }
         else if (me().Responsibility.getSubject() == ResponsibilitySubject.ATTENDING) {

@@ -24,9 +24,9 @@ class resident {
 
     this.tree = builder
       .sequence("Assign")
-      .splice(new GoTo(self.index, myGoal.position).tree)
-      .splice(new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").position).tree) // C1
-      .splice(new AssignComputer(myIndex, Hospital.locations.find(l => l.name == "ResidentStart").position).tree) // ResidentStart
+      .splice(new GoTo(self.index, myGoal.location).tree)
+      .splice(new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").location).tree) // C1
+      .splice(new AssignComputer(myIndex, Hospital.locations.find(l => l.name == "ResidentStart").location).tree) // ResidentStart
       .splice(new responsibility(myIndex).tree) // lazy: true
 
       .end()

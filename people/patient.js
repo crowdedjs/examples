@@ -9,23 +9,23 @@ import WaitForever from "../behavior/wait-forever.js";
 
 class patient {
 
-  constructor(myIndex, locations, startLocation) {
+  constructor(myIndex, startLocation) {
     this.index = myIndex;
     this.startLocation = startLocation;
 
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
     let me = () => Hospital.agents.find(a => a.id == myIndex);;
-    let myGoal = locations.find(l => l.name == "Check In");
+    let myGoal = Hospital.locations.find(l => l.name == "Check In");
     if (!myGoal) throw new Exception("We couldn't find a location called Check In");
 
-    // this.goTo = new GoTo(self.index, myGoal.position);
+    // this.goTo = new GoTo(self.index, myGoal.location);
 
     this.tree = builder
 
       .sequence("Patient Actions")
       //.selector("Check In")
-      .splice(new GoToLazy(myIndex, () => this.startLocation.position).tree)// CHECK IN
+      .splice(new GoToLazy(myIndex, () => this.startLocation.location).tree)// CHECK IN
 
       .splice(new Stop(myIndex).tree)
 

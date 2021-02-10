@@ -15,7 +15,7 @@ class attending {
     let myGoal = Hospital.locations.find(l => l.name == "B Desk");
     if (!myGoal) throw new Exception("We couldn't find a location called B Desk");
 
-    this.goTo = new GoTo(self.index, myGoal.position);
+    this.goTo = new GoTo(self.index, myGoal.location);
 
 
     this.tree = builder

@@ -16,7 +16,7 @@ class ControlCreator {
     elementParent.appendChild(canvas);
 
     let divRange = document.createElement("div");
-    divRange.style.position = "fixed"
+    divRange.style.location = "fixed"
     divRange.style.top = "20px";
     divRange.style.left = "50%";
     divRange.id = "divRange";

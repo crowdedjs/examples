@@ -24,7 +24,7 @@ class responsibility {
         let debug = null;
         let me = () => Hospital.agents.find(a => a.id == myIndex);
 
-        let goToComputer = new GoToLazy(self.index, () => me().Computer.position).tree;
+        let goToComputer = new GoToLazy(self.index, () => me().Computer.location).tree;
         let getComputerResponsibility = new GetComputerResponsibility(myIndex).tree;
         let getResponsibility = new GetResponsibility(myIndex).tree;
         let goToResponsibility = new GoToResponsibility(myIndex).tree;
@@ -32,8 +32,7 @@ class responsibility {
         let handleResponsibility = new HandleResponsibility(myIndex).tree;
         let reassess = new Reassess(myIndex).tree;
         let counter = 0;
-        //let myGoal = me.Computer;
-        //this.goTo = new GoTo(self.index, myGoal.position);
+        
         let stopper = () => {
             console.log("Stopper")
         }
@@ -43,7 +42,7 @@ class responsibility {
 
             .do("getRooms", (t) => {
                 let agent = Hospital.agents.find(a => a.id == myIndex);
-                agent.addRoom(locations.find(l => l.name == "C1"));
+                agent.addRoom(Hospital.locations.find(l => l.name == "C1"));
                 if (me().name == debug)
                     console.log("getRooms")
 

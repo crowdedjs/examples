@@ -3,7 +3,7 @@ import PatientState from "../support/patient-temp-state.js";
 class LookForArrivingPatient {
   constructor(myIndex) {
     //this.me = agent;
-    this.me= ()=>Hospital.agents.find(a=>a.id == myIndex);
+    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
     this.index = myIndex;
 
 
@@ -17,20 +17,20 @@ class LookForArrivingPatient {
       .do("Look For Arriving Patient", t => {
         // let me = t.agentConstantPatients.find(t.)
         let agentConstant = Hospital.agents.find(a => a.id == self.index);
-        let myLocation = agentConstant.locations.slice(-1); // last location
+        let myLocation = me().location; // last location
 
         let agentConstantPatients = Hospital.agents.filter(a=>a.name == "patient" && t.crowd.some(t=>t.id==a.id) && a.location);
         
         
         let closestPatients = agentConstantPatients
-          .sort((a, b) => a.location.distanceTo(myLocation) - b.location.distanceTo(myLocation))
+          .sort((a, b) => Vector3.fromObject(a.location).distanceTo(myLocation) - Vector3.fromObject(b.location).distanceTo(myLocation))
         let closestPatient = closestPatients[0] || null;
-        if (closestPatient == null || Vector3.fromObject(closestPatient.locations.slice(-1)).distanceTo(myLocation) > 3)
+        if (closestPatient == null || Vector3.fromObject(closestPatient.location).distanceTo(myLocation) > 3)
           return fluentBehaviorTree.BehaviorTreeStatus.Running;
         //We found our patient
         closestPatient.patientTempState = PatientState.WAITING;
-        closestPatient.instructor = self.me();
-        self.me().currentPatient = closestPatient;
+        closestPatient.instructor = me();
+        me().currentPatient = closestPatient;
         return fluentBehaviorTree.BehaviorTreeStatus.Success
         
 
