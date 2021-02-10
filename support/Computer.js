@@ -3,6 +3,7 @@ class Computer {
     
     add(entry) {
       this.entries.push(entry);
+      //console.log("new entry");
     }
     
     print() {

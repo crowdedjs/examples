@@ -95,8 +95,6 @@
 
         //Start the simulation.
         let crowdSetup = new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "./crowd-setup/");
-        //setInterval(()=>{console.log(crowdSetup.agentPositions)}, 1000)
-
 
         //Show FPS Counter
         //Comment this line if you don't want to show the FPS counter
@@ -113,16 +111,23 @@
         let i = 0;
 
         function animate() {
-          // gives permanent undefined, but if I tab away
-          // and come back to the simulation while it is running it works!
+          // animates a graph that displays the agents in the simulation each frame
           if (typeof crowdSetup.agentPositions[i] === 'undefined')
           {
-            console.log("undefined! :)");
+            //console.log("undefined");
           }
           else
           {
-            //console.log(crowdSetup.agentPositions[0].length);
-            xPanel.update(crowdSetup.agentPositions[i].length);
+            let agentsIn = 0;
+            for (let j = 0; j < crowdSetup.agentPositions[i].length; j++)
+            {
+              if (crowdSetup.agentPositions[i][j].inSimulation)
+              {
+                agentsIn++;
+              }
+            }
+            //xPanel.update(crowdSetup.agentPositions[i].length);
+            xPanel.update(agentsIn);
             i++;
           }
     
