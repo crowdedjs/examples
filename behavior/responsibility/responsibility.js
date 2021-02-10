@@ -24,7 +24,7 @@ class responsibility {
 
         let self = this;//Since we need to reference this in anonymous functions, we need a reference
 
-        let debug = "Resident"
+        let debug = "Nurse"
         let me = () => Hospital.agents.find(a => a.id == myIndex);
 
         let goToComputer = new GoToLazy(self.index, () => me().Computer.position).tree;
@@ -164,6 +164,19 @@ class responsibility {
                 if (me().name == debug)
                     console.log("Reassess");
                 let result = await reassess.tick(t);
+                return result;
+            })
+            
+            .do("Go to Responsibility", async function (t) {
+                if (me().name == debug)
+                    console.log("Go to Responsibility")
+                let result = await goToResponsibility.tick(t)
+                return result;
+            })
+            .do("Set Up Transport", async (t) => {
+                if (me().name == debug)
+                    console.log("Set up Transport")
+                let result = await setupTransport.tick(t);
                 return result;
             })
             //NOT FINISHED
