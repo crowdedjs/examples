@@ -77,6 +77,7 @@ class CrowdSetup {
       //Now update any agents that are in the scene
       for (let j = 0; j < agentConstants.length; j++) {
         let agent = agentConstants[j]
+        if(!agent.inSimulation) continue;
         if (newAgents.includes(agent)) { } //Ignore new agents
         else if (agent.hasEntered) {
           let oldDestination = agent.destination; //Get the new destination based on the agent's behavior
