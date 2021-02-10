@@ -2,10 +2,8 @@ import ResponsibilitySubject from "./responsibility/responsibility-subject.js"
 
 class GoToResponsibility {
 
-  constructor(myIndex, locations) {
+  constructor(myIndex) {
     this.index = myIndex;
-    this.waypoints = [];
-    //this.waypoints.push(start);
 
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
@@ -21,7 +19,7 @@ class GoToResponsibility {
 
         let destination;
         if (me().Responsibility.getSubject() == ResponsibilitySubject.COMPUTER) {
-          let a = me().computer.position;
+          let a = me().computer.location;
           destination = a;
         }
         else if (me().Responsibility.getSubject() == ResponsibilitySubject.ATTENDING) {

@@ -2,7 +2,7 @@ import PatientTempState from "../support/patient-temp-state.js";
 
 class FollowInstructions {
 
-  constructor(myIndex, locations) {
+  constructor(myIndex) {
     //this.me = agent;
     let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
     

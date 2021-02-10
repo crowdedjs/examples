@@ -2,7 +2,7 @@ import ResponsibilityFactory from "./responsibility/responsibility-factory.js"
 import ResponsibilitySubject from "./responsibility/responsibility-subject.js"
 
 class GetResponsibility {
-    constructor(myIndex, locations) {
+    constructor(myIndex) {
         this.index = myIndex;
 
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();

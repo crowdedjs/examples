@@ -75,16 +75,6 @@
         let agentConstants = [];  //An array with all the high-level agent information (not the simulation data)
         let locations = [];
 
-        //Add an agent with a behavior and an id
-        arrivalValue.forEach((agent, index) => {
-          if (agent.name == "patient")
-            agentConstants.push(new PatientAgent(agent, locationValue));
-          else
-            agentConstants.push(new MedicalAgent(agent, locationValue));
-          //Is this line necessary?
-          agentConstants[agentConstants.length - 1].setId(index);
-        })
-
         //Remove spaces in annotation names
         locationValue.forEach(l => {
           locations.push(new Room(l.position, l.annotationName.toUpperCase().replace(" ", "_"), l.name))
@@ -95,14 +85,26 @@
         Hospital.locations = locations;
         Hospital.computer = new Computer();
 
+        //Add an agent with a behavior and an id
+        arrivalValue.forEach((agent, index) => {
+          if (agent.name == "patient")
+            agentConstants.push(new PatientAgent(agent, locationValue));
+          else
+            agentConstants.push(new MedicalAgent(agent, locationValue));
+          //Is this line necessary?
+          agentConstants[agentConstants.length - 1].setId(index);
+        })
+
+        
+
         //Start the simulation.
         new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "./crowd-setup/");
 
       })
       //This can be commented out for debugging purposes. In production, this should not be commented.
-      .catch(error => {
-        console.log("Error in the app " + error)
-      })
+      // .catch(error => {
+      //   console.log("Error in the app " + error)
+      // })
 
 
   </script>

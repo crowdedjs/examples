@@ -106,7 +106,7 @@ function boot(three, environment, locations, assetURL) {
   three.controls.update();
 
   loadOBJ(three, environment);
-  addLocations(three, locations);
+  addLocations(three);
 
   //Store the state of each person, including animation state
   three.agentGroup.mixers = [];

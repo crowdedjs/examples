@@ -3,11 +3,8 @@ import GoTo from "../behavior/go-to.js";
 
 class getPatient {
 
-    constructor(myIndex, locations, start, end) {
+    constructor(myIndex) {
       this.index = myIndex;
-      this.waypoints = [];
-      this.waypoints.push(start);
-      this.waypoints.push(end);
   
       const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
       this.toReturn = null;

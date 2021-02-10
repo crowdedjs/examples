@@ -1,5 +1,5 @@
 class HandleResponsibility {
-    constructor(myIndex, locations) {
+    constructor(myIndex) {
         this.index = myIndex;
 
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();

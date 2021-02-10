@@ -3,7 +3,7 @@ import ResponsibilitySubject from "./responsibility/responsibility-subject.js";
 
 
 class GetComputerResponsibility {
-    constructor(myIndex, locations) {
+    constructor(myIndex) {
         this.index = myIndex;
 
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();

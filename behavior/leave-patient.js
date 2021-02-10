@@ -3,7 +3,7 @@ import RoomType from "../support/room-type.js"
 
 class LeavePatient {
 
-  constructor(myIndex, locations) {
+  constructor(myIndex) {
     this.index = myIndex;
     
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
