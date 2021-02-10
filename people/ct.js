@@ -7,7 +7,7 @@ import responsibility from "../behavior/responsibility/responsibility.js";
 
 class ct {
 
-  constructor(myIndex, locations, start, end) {
+  constructor(myIndex) {
     this.index = myIndex;
 
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
@@ -17,18 +17,18 @@ class ct {
     let goToName = "CT 1";
     let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
 
-    let myGoal = locations.find(l => l.name == goToName);
+    let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
 
 
     this.tree = builder
       .sequence("Tech Tree")
       .splice(new GoTo(self.index, myGoal.position).tree)
-      //.splice(new WaitForever(myIndex, locations).tree)
+      //.splice(new WaitForever(myIndex).tree)
 
       // original tree is below sequence
-      .splice(new AssignComputer(myIndex, locations.find(l => l.name == "CT 1").position).tree) // name CT 1
-      .splice(new responsibility(myIndex, locations, start, end).tree) // lazy: true
+      .splice(new AssignComputer(myIndex, Hospital.locations.find(l => l.name == "CT 1").position).tree) // name CT 1
+      .splice(new responsibility(myIndex).tree) // lazy: true
       
       .end()
       .build();

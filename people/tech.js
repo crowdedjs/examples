@@ -7,7 +7,7 @@ import responsibility from "../behavior/responsibility/responsibility.js";
 
 class tech {
 
-  constructor(myIndex, locations) {
+  constructor(myIndex) {
     this.index = myIndex;
 
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
@@ -15,19 +15,19 @@ class tech {
     let goToName = "TechPlace";
     let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
        
-    let myGoal = locations.find(l => l.name == goToName);
+    let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
-    let computer = locations.find(l => l.name == "TechPlace");
-    let assignBed = new AssignBed(myIndex, locations.find(l => l.name == "C1").position).tree
+    let computer = Hospital.locations.find(l => l.name == "TechPlace");
+    let assignBed = new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").position).tree
     let assignComputer = new AssignComputer(myIndex, computer.position).tree; 
-    let assignResponsibility = new responsibility(myIndex, locations).tree;
+    let assignResponsibility = new responsibility(myIndex).tree;
 
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
 
     this.tree = builder
       .sequence("Assign")
       .splice(new GoTo(self.index, myGoal.position).tree)
-      //.splice(new WaitForever(myIndex, locations).tree)
+      //.splice(new WaitForever(myIndex).tree)
 
       // original tree sequence below
       .do("Assiging Bed", async t=>{

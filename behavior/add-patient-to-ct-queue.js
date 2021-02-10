@@ -1,6 +1,4 @@
 class AssignPatientToCTQueue {
-
-  //constructor(myIndex, start, end) {
   constructor(myIndex, bed) {
     this.index = myIndex;
 

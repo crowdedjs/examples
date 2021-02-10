@@ -75,6 +75,16 @@
         let agentConstants = [];  //An array with all the high-level agent information (not the simulation data)
         let locations = [];
 
+        //Remove spaces in annotation names
+        locationValue.forEach(l => {
+          locations.push(new Room(l.position, l.annotationName.toUpperCase().replace(" ", "_"), l.name))
+        })
+
+        //Assign the data to the global hospital object
+        Hospital.agents = agentConstants;
+        Hospital.locations = locations;
+        Hospital.computer = new Computer();
+
         //Add an agent with a behavior and an id
         arrivalValue.forEach((agent, index) => {
           if (agent.name == "patient")
@@ -85,15 +95,7 @@
           agentConstants[agentConstants.length - 1].setId(index);
         })
 
-        //Remove spaces in annotation names
-        locationValue.forEach(l => {
-          locations.push(new Room(l.position, l.annotationName.toUpperCase().replace(" ", "_"), l.name))
-        })
-
-        //Assign the data to the global hospital object
-        Hospital.agents = agentConstants;
-        Hospital.locations = locations;
-        Hospital.computer = new Computer();
+        
 
         //Start the simulation.
         new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "./crowd-setup/");

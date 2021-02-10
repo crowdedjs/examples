@@ -2,7 +2,7 @@ import PatientTempState from "../support/patient-temp-state.js";
 
 class AssignPatientToTriageNurse {
 
-  constructor(myIndex, locations) {
+  constructor(myIndex) {
     this.index = myIndex;
     
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();

@@ -7,7 +7,7 @@ import WaitForever from "../behavior/wait-forever.js"
 
 class triageNurse {
 
-  constructor(myIndex, locations, start, end) {
+  constructor(myIndex) {
     this.index = myIndex;
 
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
@@ -17,15 +17,15 @@ class triageNurse {
     let goToName = "TriageNursePlace";
     let me = () => Hospital.agents.find(a => a.id == myIndex);;
 
-    let myGoal = locations.find(l => l.name == goToName);
+    let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
 
-    let leavePatient = new LeavePatient(self.index, locations).tree;
+    let leavePatient = new LeavePatient(self.index).tree;
 
 
     this.tree = builder
       .sequence("Pick Triage Room")
-      .splice(new GoTo(self.index, myGoal.position).tree)
+      .splice(new GoTo(self.index, myGoal.location).tree)
 
 
       .do("Wait For Patient Assignment", (t) => {

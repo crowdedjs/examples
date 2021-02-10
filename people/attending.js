@@ -4,7 +4,7 @@ import WaitForever from "../behavior/wait-forever.js"
 
 class attending {
 
-  constructor(myIndex, locations, start, end) {
+  constructor(myIndex) {
     this.index = myIndex;
 
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
@@ -12,7 +12,7 @@ class attending {
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
 
     let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
-    let myGoal = locations.find(l => l.name == "B Desk");
+    let myGoal = Hospital.locations.find(l => l.name == "B Desk");
     if (!myGoal) throw new Exception("We couldn't find a location called B Desk");
 
     this.goTo = new GoTo(self.index, myGoal.position);
@@ -21,7 +21,7 @@ class attending {
     this.tree = builder
       .sequence("Attending Tree")
       .splice(this.goTo.tree)
-      .splice(new WaitForever(myIndex, locations).tree)
+      .splice(new WaitForever(myIndex).tree)
             
       .end()
       .build();

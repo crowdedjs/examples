@@ -1,7 +1,7 @@
 import PatientState from "../support/patient-temp-state.js";
 
 class LookForArrivingPatient {
-  constructor(myIndex, locations) {
+  constructor(myIndex) {
     //this.me = agent;
     this.me= ()=>Hospital.agents.find(a=>a.id == myIndex);
     this.index = myIndex;

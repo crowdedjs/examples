@@ -13,7 +13,7 @@ import ResponsibilitySubject from "./responsibility-subject.js";
 
 class responsibility {
 
-    constructor(myIndex, locations) {
+    constructor(myIndex) {
         this.index = myIndex;
 
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
@@ -25,9 +25,9 @@ class responsibility {
         let me = () => Hospital.agents.find(a => a.id == myIndex);
 
         let goToComputer = new GoToLazy(self.index, () => me().Computer.position).tree;
-        let getComputerResponsibility = new GetComputerResponsibility(myIndex, locations).tree;
-        let getResponsibility = new GetResponsibility(myIndex, locations).tree;
-        let goToResponsibility = new GoToResponsibility(myIndex, locations).tree;
+        let getComputerResponsibility = new GetComputerResponsibility(myIndex).tree;
+        let getResponsibility = new GetResponsibility(myIndex).tree;
+        let goToResponsibility = new GoToResponsibility(myIndex).tree;
         let setupTransport = new SetupTransport(myIndex).tree;
         let handleResponsibility = new HandleResponsibility(myIndex).tree;
         let reassess = new Reassess(myIndex).tree;
@@ -53,19 +53,19 @@ class responsibility {
                 // Not sure if medicalStaff subclass is implemented
                 switch (me().MedicalStaffSubclass) {
                     case "Tech":
-                        me().Computer = locations.find(l => l.name == "TechPlace");
+                        me().Computer = Hospital.locations.find(l => l.name == "TechPlace");
                         break;
                     case "Nurse":
-                        me().Computer = locations.find(l => l.name == "NursePlace");
+                        me().Computer = Hospital.locations.find(l => l.name == "NursePlace");
                         break;
                     case "Resident":
-                        me().Computer = locations.find(l => l.name == "ResidentStart");
+                        me().Computer = Hospital.locations.find(l => l.name == "ResidentStart");
                         break;
                     case "CT":
-                        me().Computer = locations.find(l => l.name == "CT 1");
+                        me().Computer = Hospital.locations.find(l => l.name == "CT 1");
                         break;
                     case "Radiology":
-                        me().Computer = locations.find(l => l.name == "CT 2");
+                        me().Computer = Hospital.locations.find(l => l.name == "CT 2");
                         break;
                     default:
                         console.error("Bad Subclass Name")

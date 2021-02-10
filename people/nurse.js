@@ -5,7 +5,7 @@ import AssignComputer from "../behavior/assign-computer.js"
 
 class nurse {
 
-    constructor(myIndex, locations, start, end) {
+    constructor(myIndex) {
       this.index = myIndex;
   
       const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
@@ -15,15 +15,14 @@ class nurse {
       let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
       
       let goToName = "NursePlace";
-      let myGoal = locations.find(l => l.name == goToName);
-      let computer =  locations.find(l => l.name == "NursePlace");
+      let myGoal = Hospital.locations.find(l => l.name == goToName);
+      let computer =  Hospital.locations.find(l => l.name == "NursePlace");
       this.tree = builder
 
       .sequence("Assign Nurse")
         .splice(new GoTo(self.index, myGoal.position).tree)
-        //.splice(new AssignBed(myIndex, locations.find(l => l.name == "C1").position).tree) // C1
         .splice(new AssignComputer(myIndex, computer.position).tree) // NURSE PLACE
-        .splice(new responsibility(myIndex, locations, start, end).tree) // LAZY: TRUE
+        .splice(new responsibility(myIndex).tree) // LAZY: TRUE
       .end()
       .build();
     }

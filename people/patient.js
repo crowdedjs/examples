@@ -31,13 +31,13 @@ class patient {
 
 
 
-      .splice(new FollowInstructions(myIndex, locations).tree)
+      .splice(new FollowInstructions(myIndex).tree)
       .do("Done following instructions", async function (t) {
         console.log("Done following instructions")
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })
 
-      //.splice(new WaitForever(myIndex, locations).tree)
+      //.splice(new WaitForever(myIndex).tree)
       .end()
       .build();
   }

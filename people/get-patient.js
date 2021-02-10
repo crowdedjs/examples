@@ -3,7 +3,7 @@ import GoTo from "../behavior/go-to.js";
 
 class getPatient {
 
-    constructor(myIndex, locations, start, end) {
+    constructor(myIndex) {
       this.index = myIndex;
   
       const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
