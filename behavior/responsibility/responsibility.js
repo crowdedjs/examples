@@ -1,6 +1,5 @@
 import GetComputerResponsibility from "../get-computer-responsibility.js";
 import GetResponsibility from "../get-responsibility.js";
-import GoTo from "../go-to.js";
 import GoToLazy from "../go-to-lazy.js";
 import HandleResponsibility from "../handle-responsibility.js";
 import Vector3 from "../../math/vector-3.js";
@@ -8,6 +7,7 @@ import GoToResponsibility from "../go-to-responsibility.js"
 import SetupTransport from "../setup-transport.js";
 import Reassess from "../reassess.js"
 import ResponsibilitySubject from "./responsibility-subject.js";
+import SubResponsibility from "./sub-responsibility.js"
 
 class responsibility {
 
@@ -29,11 +29,8 @@ class responsibility {
         let setupTransport = new SetupTransport(myIndex).tree;
         let handleResponsibility = new HandleResponsibility(myIndex).tree;
         let reassess = new Reassess(myIndex).tree;
-        let counter = 0;
+        let subResponsibility = new SubResponsibility(myIndex).tree;
         
-        // let stopper = () => {
-        //     console.log("Stopper")
-        // }
 
         this.tree = builder
             .sequence("Responsibility")
@@ -69,8 +66,12 @@ class responsibility {
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
-            .repeat("Main Repeat")
-            .inverter("Main Repeat Inverter")
+            .do("Sub Responsibility", async function(t){
+                let result = await subResponsibility.tick(t);
+                return result;
+            })
+
+            /*.inverter("Main Repeat Inverter")
             .untilFail("Computer Loop")
             .do("Go to my computer", async function (t) {
                 if (debug && me().name == debug) console.log("Go to my computer");
@@ -164,7 +165,7 @@ class responsibility {
             .end()
             .end()
             .end()
-            .end()
+            .end()*/
             .end()
             .build();
     }
