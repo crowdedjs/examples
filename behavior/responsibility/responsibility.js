@@ -1,11 +1,9 @@
-// NOT FULLY PORTED
 import GetComputerResponsibility from "../get-computer-responsibility.js";
 import GetResponsibility from "../get-responsibility.js";
 import GoTo from "../go-to.js";
 import GoToLazy from "../go-to-lazy.js";
 import HandleResponsibility from "../handle-responsibility.js";
 import Vector3 from "../../math/vector-3.js";
-import GetHealthInformationResponsibility from "./get-health-information.js";
 import GoToResponsibility from "../go-to-responsibility.js"
 import SetupTransport from "../setup-transport.js";
 import Reassess from "../reassess.js"
@@ -33,9 +31,9 @@ class responsibility {
         let reassess = new Reassess(myIndex).tree;
         let counter = 0;
         
-        let stopper = () => {
-            console.log("Stopper")
-        }
+        // let stopper = () => {
+        //     console.log("Stopper")
+        // }
 
         this.tree = builder
             .sequence("Responsibility")
@@ -49,7 +47,6 @@ class responsibility {
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
             .do("getComputer", (t) => {
-                // Not sure if medicalStaff subclass is implemented
                 switch (me().MedicalStaffSubclass) {
                     case "Tech":
                         me().Computer = Hospital.locations.find(l => l.name == "TechPlace");
@@ -122,9 +119,7 @@ class responsibility {
                 }
                 else {
                     let patient = me().getCurrentPatient();
-
                     location = Vector3.fromObject(patient.getLocation());
-
                 }
 
                 let distance = Vector3.fromObject(me().getLocation()).distanceTo(location);
@@ -145,14 +140,11 @@ class responsibility {
             })
             .inverter()
             .untilFail("Reassess")
-            // UNTIL FAIL?
-            //.sequence("Reassess Responsibility")
             .do("Reassess", async (t) => {
                 if (debug && me().name == debug) console.log("Reassess");
                 let result = await reassess.tick(t);
                 return result;
             })
-
             .do("Go to Responsibility", async function (t) {
                 if (debug && me().name == debug) console.log("Go to Responsibility")
                 let result = await goToResponsibility.tick(t)
@@ -163,7 +155,6 @@ class responsibility {
                 let result = await setupTransport.tick(t);
                 return result;
             })
-            //NOT FINISHED
             .do("Handle Responsibility", async (t) => {
                 if (debug && me().name == debug) console.log("HandleResponsibility")
                 let result = await handleResponsibility.tick(t);
@@ -173,24 +164,14 @@ class responsibility {
             .end()
             .end()
             .end()
-
-
-
-
-
             .end()
             .end()
-
-
             .build();
     }
 
     async update(crowd, msec) {
-        //this.toReturn = null;//Set the default return value to null (don't change destination)
         await this.tree.tick({ crowd, msec }) //Call the behavior tree
-        //return this.toReturn; //Return what the behavior tree set the return value to
     }
-
 }
 
 export default responsibility;
