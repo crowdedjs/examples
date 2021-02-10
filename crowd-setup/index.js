@@ -18,6 +18,7 @@ class CrowdSetup {
     let self = this;                //Reference to this for use in lambdas
     this.controls = {};
     let done = false;
+    let nurseSim = false;
     let sentinelAgent;
 
     //Add the html elements if the user passes in a reference for us to attach to.
@@ -117,10 +118,11 @@ class CrowdSetup {
       }
 
       //Check to see if we need to end the simulation
-      if (done && !self.sentinelAgent.behavior.checkEndOfSimulation()) {
+      if (nurseSim && done && !self.sentinelAgent.behavior.checkEndOfSimulation()) {
         console.log("Done with tick callback.")
-      }
-      else {
+      } else if (!nurseSim && i > secondsOfSimulation * 1_000 / millisecondsBetweenFrames) { 
+        console.log("Done with tick callback.")
+      } else {
         //If the simulation needs to continue, send on the information
         //about new agentConstants, agentConstants with new destinations, and agentConstants that have left the simulation
         nextTick([JSON.stringify(newAgents, replacer), JSON.stringify(newDestinations, replacer), JSON.stringify(leavingAgents, replacer)])
