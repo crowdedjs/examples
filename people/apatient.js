@@ -17,6 +17,21 @@ class APatient extends APerson {
 	
 	instructor; // AMedicalStaff
 
+	/**
+	 * The room that the patient's bed is in.
+	 * Having an assigned room and a permament room 
+	 * allows the patient to move throughout the ER,
+	 * but still remember the "home base"
+	 */
+	permanentRoom;
+
+	setPermanentRoom(permanentRoom){
+		this.permanentRoom = permanentRoom
+	}
+	getPermanentRoom(){
+		return this.permanentRoom;
+	}
+
 	getInstructor() {
 		return this.instructor;
 	}

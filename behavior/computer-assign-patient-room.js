@@ -32,6 +32,7 @@ class ComputerAssignPatientRoom {
 
            
             patient.setAssignedRoom(rooms[0]);
+            patient.setPermanentRoom(rooms[0]);
             entry.setBed(rooms[0]);
 
             return fluentBehaviorTree.BehaviorTreeStatus.Success;

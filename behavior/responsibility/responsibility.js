@@ -24,7 +24,7 @@ class responsibility {
 
         let self = this;//Since we need to reference this in anonymous functions, we need a reference
 
-        let debug = "Nurse"
+        let debug = "Resident"
         let me = () => Hospital.agents.find(a => a.id == myIndex);
 
         let goToComputer = new GoToLazy(self.index, () => me().Computer.position).tree;

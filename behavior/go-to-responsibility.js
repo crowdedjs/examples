@@ -18,18 +18,20 @@ class GoToResponsibility {
       //update the return value once
       .do("Go to responsibility", (t) => {
         let responsibility = me().Responsibility;
-        
+
         let destination;
-        if (me().Responsibility.getSubject() == ResponsibilitySubject.COMPUTER)
-        {
+        if (me().Responsibility.getSubject() == ResponsibilitySubject.COMPUTER) {
           let a = me().computer.position;
-            destination = a;
+          destination = a;
         }
-        else if (me().Responsibility.getSubject() == ResponsibilitySubject.ATTENDING){
-          destination = Hospital.agents.find(a=>a.name == "Attending").location;
+        else if (me().Responsibility.getSubject() == ResponsibilitySubject.ATTENDING) {
+          destination = Hospital.agents.find(a => a.name == "Attending").location;
         }
         else {
-          destination = responsibility.entry.patient.getAssignedRoom().location;
+          if (me().name == "Tech")
+            destination = responsibility.entry.patient.getAssignedRoom().location;
+          else
+            destination = responsibility.entry.patient.getPermanentRoom().location;
         }
 
         me().setDestination(Vector3.fromObject(destination));
