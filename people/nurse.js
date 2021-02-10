@@ -32,6 +32,13 @@ class nurse {
       await this.tree.tick({ crowd, msec }) //Call the behavior tree
       //return this.toReturn; //Return what the behavior tree set the return value to
     }
+
+    checkEndOfSimulation() {
+      if (self.Hospital.computer.entries.length > 0) {
+        return self.Hospital.computer.entries[0].unacknowledged("NurseEscortPatientToExit");
+      }
+      return false;
+    }
   
   }
 
