@@ -2,8 +2,7 @@ class GoTo {
 
   constructor(myIndex, start) {
     this.index = myIndex;
-    this.waypoints = [];
-    this.waypoints.push(start);
+    this.start = start;
     
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
@@ -15,7 +14,7 @@ class GoTo {
       //update the return value once
       .do("Set destination goal", (t) => {
         let agent = Hospital.agents.find(a=>a.id==self.index);
-        agent.destination = new Vector3(self.waypoints[0].x,self.waypoints[0].y,self.waypoints[0].z)
+        agent.destination = new Vector3(self.start.x,self.start.y,self.start.z)
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })
       //Now return null as we head to that destination
@@ -23,10 +22,10 @@ class GoTo {
       .do("Traveling to goal", (t) => {
         let agent = Hospital.agents.find(a=>a.id==self.index);
         let frameAgentDetail = t.crowd.find(a=>a.id == self.index);
-        agent.destination = new Vector3(self.waypoints[0].x,self.waypoints[0].y,self.waypoints[0].z);
+        agent.destination = new Vector3(self.start.x,self.start.y,self.start.z);
         let simulationAgent = t.crowd.find(a=>a.id == self.index);
         let loc = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
-        let waypoint = Vector3.fromObject(self.waypoints[0]);
+        let waypoint = Vector3.fromObject(self.start);
 
         let difference = Vector3.subtract(loc, waypoint)
         let distanceToWaypoint = difference.length();

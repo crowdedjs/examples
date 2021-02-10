@@ -7,11 +7,8 @@ import responsibility from "../behavior/responsibility/responsibility.js";
 
 class tech {
 
-  constructor(myIndex, locations, start, end) {
+  constructor(myIndex, locations) {
     this.index = myIndex;
-    this.waypoints = [];
-    this.waypoints.push(start);
-    this.waypoints.push(end);
 
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
     this.toReturn = null;
@@ -23,7 +20,7 @@ class tech {
     let computer = locations.find(l => l.name == "TechPlace");
     let assignBed = new AssignBed(myIndex, locations.find(l => l.name == "C1").position).tree
     let assignComputer = new AssignComputer(myIndex, computer.position).tree; 
-    let assignResponsibility = new responsibility(myIndex, locations, start, end).tree;
+    let assignResponsibility = new responsibility(myIndex, locations).tree;
 
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
 

@@ -13,9 +13,6 @@ class greeterNurse {
 
     constructor(myIndex, locations, start, end) {
       this.index = myIndex;
-      this.waypoints = [];
-      this.waypoints.push(start);
-      this.waypoints.push(end);
   
       const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 

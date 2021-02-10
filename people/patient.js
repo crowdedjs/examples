@@ -11,8 +11,7 @@ class patient {
 
   constructor(myIndex, locations, startLocation) {
     this.index = myIndex;
-    this.waypoints = [];
-    this.waypoints.push(startLocation);
+    this.startLocation = startLocation;
 
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
@@ -26,7 +25,7 @@ class patient {
 
       .sequence("Patient Actions")
       //.selector("Check In")
-      .splice(new GoToLazy(myIndex, () => this.waypoints[0].position).tree)// CHECK IN
+      .splice(new GoToLazy(myIndex, () => this.startLocation.position).tree)// CHECK IN
 
       .splice(new Stop(myIndex).tree)
 

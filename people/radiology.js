@@ -6,7 +6,6 @@ class radiology {
 
   constructor(myIndex, locations) {
     this.index = myIndex;
-    this.waypoints = [];
    
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
     this.toReturn = null;

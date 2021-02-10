@@ -2,10 +2,8 @@ import ResponsibilitySubject from "./responsibility/responsibility-subject.js"
 
 class GoToResponsibility {
 
-  constructor(myIndex, locations) {
+  constructor(myIndex) {
     this.index = myIndex;
-    this.waypoints = [];
-    //this.waypoints.push(start);
 
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
