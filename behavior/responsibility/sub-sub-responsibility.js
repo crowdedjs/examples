@@ -7,7 +7,6 @@ import GoToResponsibility from "../go-to-responsibility.js"
 import SetupTransport from "../setup-transport.js";
 import Reassess from "../reassess.js"
 import ResponsibilitySubject from "./responsibility-subject.js";
-import SubSubResponsibility from "./sub-sub-responsibility.js"
 
 class SubResponsibilty {
 
@@ -30,7 +29,6 @@ class SubResponsibilty {
     let setupTransport = new SetupTransport(myIndex).tree;
     let handleResponsibility = new HandleResponsibility(myIndex).tree;
     let reassess = new Reassess(myIndex).tree;
-    let subSubResponsibility = new SubSubResponsibility(myIndex).tree;
     let counter = 0;
 
     // let stopper = () => {
@@ -38,42 +36,49 @@ class SubResponsibilty {
     // }
 
     this.tree = builder
-      .repeat("Main Repeat")
-      .inverter("After Computer Inverter")
-      .untilFail("After Computer Until Fail")
-      .do("Go to my computer", async function (t) {
-        if (debug && me().name == debug) console.log("Go to my computer")
-        let result = await goToComputer.tick(t);
-        return result;
-      })// GO TO COMPUTER
-
-
-      .do("Get Responsibility", async function (t) {
-        counter++;
-        if (debug && me().name == debug) console.log("Get Responsibility")
-        let result = await getResponsibility.tick(t);
+    .inverter()
+      .untilFail()
+      .do("Go to Responsibility", async function (t) {
+        if (debug && me().name == debug) console.log("Go to Responsibility")
+        let result = await goToResponsibility.tick(t)
         return result;
       })
-      .do("First Sub Sub", async function (t) {
-        if (debug && me().name == debug) console.log("First Sub Sub")
-        let result = await subSubResponsibility.tick(t);
-        return result;
-      })// GO TO COMPUTER
+      .do("Wait For Responsibility Person", (t) => {
+        if (debug && me().name == debug) console.log("Wait for Responsibility Person")
 
-      .inverter()
-      .untilFail("Reassess")
-      .do("Reassess", async (t) => {
-        if (debug && me().name == debug) console.log("Reassess");
-        let result = await reassess.tick(t);
+        let location;
+        if (me().Responsibility.getSubject() == ResponsibilitySubject.COMPUTER) {
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        }
+        else if (me().Responsibility.getSubject() == ResponsibilitySubject.ATTENDING) {
+          location = Hospital.agents.find(a => a.name == "Attending").location;
+        }
+        else {
+          let patient = me().getCurrentPatient();
+          location = Vector3.fromObject(patient.getLocation());
+        }
+
+        let distance = Vector3.fromObject(me().getLocation()).distanceTo(location);
+        if (distance < 2) {
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        }
+        return fluentBehaviorTree.BehaviorTreeStatus.Running;
+      })
+      .do("Set Up Transport", async (t) => {
+        if (debug && me().name == debug) console.log("Set up Transport")
+        let result = await setupTransport.tick(t);
         return result;
       })
-      .do("First Sub Sub", async function (t) {
-        if (debug && me().name == debug) console.log("First Sub Sub")
-        let result = await subSubResponsibility.tick(t);
+      .do("Handle Responsibility", async (t) => {
+        if (debug && me().name == debug) console.log("Handle Responsibility")
+        let result = await handleResponsibility.tick(t);
         return result;
-      })// GO TO COMPUTER
+      })
+      .do("Force Fail", async(t)=>{
+        return fluentBehaviorTree.BehaviorTreeStatus.Failure; 
+      })
       
-      .end()
+   
       .end()
       .end()
       // .end()
