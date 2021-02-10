@@ -4,7 +4,7 @@ class ControlCreator {
   PLAY_STATE_PLAY_BACKWARD = -1;
 
   playState = this.PLAY_STATE_PLAY_FORWARD;
-  playSpeed = 1;
+  playSpeed = 100;
 
   constructor(secondsOfSimulation, millisecondsPerFrame, simulations, elementParent, buttonClass = "") {
     let self = this;

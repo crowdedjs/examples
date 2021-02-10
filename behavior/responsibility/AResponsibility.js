@@ -73,7 +73,7 @@ class AResponsibility {
 		return this.duration;
 	}
 
-	set Duration(duration) {
+	setDuration(duration) {
 		this.duration = duration;
 	}
 

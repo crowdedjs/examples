@@ -19,15 +19,25 @@ class GoToResponsibility {
       .do("Go to responsibility", (t) => {
         let responsibility = me().Responsibility;
 
-        if (me().Responsibility.getSubject() == ResponsibilitySubject.COMPUTER)
-          return fluentBehaviorTree.BehaviorTreeStatus.Success;
-
-        let destination = responsibility.entry.patient.getAssignedRoom().location;
+        let destination;
+        if (me().Responsibility.getSubject() == ResponsibilitySubject.COMPUTER) {
+          let a = me().computer.position;
+          destination = a;
+        }
+        else if (me().Responsibility.getSubject() == ResponsibilitySubject.ATTENDING) {
+          destination = Hospital.agents.find(a => a.name == "Attending").location;
+        }
+        else {
+          if (me().name == "Tech")
+            destination = responsibility.entry.patient.getAssignedRoom().location;
+          else
+            destination = responsibility.entry.patient.getPermanentRoom().location;
+        }
 
         me().setDestination(Vector3.fromObject(destination));
 
         let distance = Vector3.fromObject(me().location).distanceTo(destination);
-        if (distance < 1) {
+        if (distance < 2) {
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         }
         return fluentBehaviorTree.BehaviorTreeStatus.Running;

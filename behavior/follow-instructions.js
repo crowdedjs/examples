@@ -54,6 +54,10 @@ class FollowInstructions {
             me().setDestination(destination);
           }
         }
+        else if(state == PatientTempState.DONE){
+          console.log("Done")
+          me().inSimulation = false;
+        }
         else {
           console.log("Invalid patient temp state " + state);
         }
