@@ -24,7 +24,7 @@ class responsibility {
 
         let self = this;//Since we need to reference this in anonymous functions, we need a reference
 
-        let debug = "Resident"
+        let debug = null;
         let me = () => Hospital.agents.find(a => a.id == myIndex);
 
         let goToComputer = new GoToLazy(self.index, () => me().Computer.position).tree;
@@ -80,20 +80,17 @@ class responsibility {
             .inverter("Main Repeat Inverter")
             .untilFail("Computer Loop")
             .do("Go to my computer", async function (t) {
-                if (me().name == debug)
-                    console.log("Go to my computer");
+                if (debug && me().name == debug) console.log("Go to my computer");
                 let result = await goToComputer.tick(t);
                 return result;
             })// GO TO COMPUTER
             .do("Get Computer Responsibility", async function (t) {
-                if (me().name == debug)
-                    console.log("Get computer responsibility")
+                if (debug && me().name == debug) console.log("Get computer responsibility")
                 let result = await getComputerResponsibility.tick(t);
                 return result;
             })
             .do("Handle Responsibility", async (t) => {
-                if (me().name == debug)
-                    console.log("Handle Responsibility (a)")
+                if (debug && me().name == debug) console.log("Handle Responsibility (a)")
                 let result = await handleResponsibility.tick(t);
                 return result;
             })
@@ -102,34 +99,30 @@ class responsibility {
             .inverter("After Computer Inverter")
             .untilFail("After Computer Until Fail")
             .do("Go to my computer", async function (t) {
-                if (me().name == debug)
-                    console.log("Go to my computer")
+                if (debug && me().name == debug) console.log("Go to my computer")
                 let result = await goToComputer.tick(t);
                 return result;
             })// GO TO COMPUTER
             .do("Get Responsibility", async function (t) {
                 counter++;
-                if (me().name == debug)
-                    console.log("Get Responsibility")
+                if (debug && me().name == debug) console.log("Get Responsibility")
                 let result = await getResponsibility.tick(t);
                 return result;
             })
             .do("Go to Responsibility", async function (t) {
-                if (me().name == debug)
-                    console.log("Go to Responsibility")
+                if (debug && me().name == debug) console.log("Go to Responsibility")
                 let result = await goToResponsibility.tick(t)
                 return result;
             })
             .do("Wait For Responsibility Person", (t) => {
-                if (me().name == debug)
-                    console.log("Wait for Responsibility Person")
+                if (debug && me().name == debug) console.log("Wait for Responsibility Person")
 
                 let location;
                 if (me().Responsibility.getSubject() == ResponsibilitySubject.COMPUTER) {
                     return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 }
                 else if (me().Responsibility.getSubject() == ResponsibilitySubject.ATTENDING) {
-                    location = Hospital.agents.find(a=>a.name == "Attending").location;
+                    location = Hospital.agents.find(a => a.name == "Attending").location;
                 }
                 else {
                     let patient = me().getCurrentPatient();
@@ -145,14 +138,12 @@ class responsibility {
                 return fluentBehaviorTree.BehaviorTreeStatus.Running;
             })
             .do("Set Up Transport", async (t) => {
-                if (me().name == debug)
-                    console.log("Set up Transport")
+                if (debug && me().name == debug) console.log("Set up Transport")
                 let result = await setupTransport.tick(t);
                 return result;
             })
             .do("Handle Responsibility", async (t) => {
-                if (me().name == debug)
-                    console.log("Handle Responsibility")
+                if (debug && me().name == debug) console.log("Handle Responsibility")
                 let result = await handleResponsibility.tick(t);
                 return result;
             })
@@ -161,28 +152,24 @@ class responsibility {
             // UNTIL FAIL?
             //.sequence("Reassess Responsibility")
             .do("Reassess", async (t) => {
-                if (me().name == debug)
-                    console.log("Reassess");
+                if (debug && me().name == debug) console.log("Reassess");
                 let result = await reassess.tick(t);
                 return result;
             })
-            
+
             .do("Go to Responsibility", async function (t) {
-                if (me().name == debug)
-                    console.log("Go to Responsibility")
+                if (debug && me().name == debug) console.log("Go to Responsibility")
                 let result = await goToResponsibility.tick(t)
                 return result;
             })
             .do("Set Up Transport", async (t) => {
-                if (me().name == debug)
-                    console.log("Set up Transport")
+                if (debug && me().name == debug) console.log("Set up Transport")
                 let result = await setupTransport.tick(t);
                 return result;
             })
             //NOT FINISHED
             .do("Handle Responsibility", async (t) => {
-                if (me().name == debug)
-                    console.log("HandleResponsibility")
+                if (debug && me().name == debug) console.log("HandleResponsibility")
                 let result = await handleResponsibility.tick(t);
                 return result;
             })
