@@ -13,11 +13,8 @@ import ResponsibilitySubject from "./responsibility-subject.js";
 
 class responsibility {
 
-    constructor(myIndex, locations, start, end) {
+    constructor(myIndex, locations) {
         this.index = myIndex;
-        this.waypoints = [];
-        this.waypoints.push(start);
-        this.waypoints.push(end);
 
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
         this.toReturn = null;

@@ -3,10 +3,7 @@ class AssignBed {
     //constructor(myIndex, start, end) {
       constructor(myIndex, bed) {
         this.index = myIndex;
-        this.waypoints = [];
-        //this.waypoints.push(start);
-        //this.waypoints.push(end);
-        this.waypoints.push(bed);
+        this.bed = bed;
     
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
         let self = this;//Since we need to reference this in anonymous functions, we need a reference
@@ -23,9 +20,7 @@ class AssignBed {
         .sequence("Assign Bed")
             .do("Set Bed Location", (t) => {
               let agent = Hospital.agents.find(a => a.id == myIndex);
-              //agent.destination = new Vector3(self.waypoints[1]);
-              //agent.addRoom(room);
-              agent.addRoom(Vector3.fromObject(self.waypoints[0]));
+              agent.addRoom(Vector3.fromObject(this.bed));
               console.log("Assigning bed " + myIndex);
 
               return fluentBehaviorTree.BehaviorTreeStatus.Success;

@@ -1,12 +1,8 @@
 class AssignComputer {
     
-    //constructor(myIndex, start, end) {
       constructor(myIndex, room) {
         this.index = myIndex;
-        this.waypoints = [];
-        //this.waypoints.push(start);
-        //this.waypoints.push(end);
-        this.waypoints.push(room);
+        this.room = room;
     
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
         let self = this;//Since we need to reference this in anonymous functions, we need a reference
@@ -18,9 +14,7 @@ class AssignComputer {
             .do("Set Computer Location", (t) => {
               let agent = Hospital.agents.find(a => a.id == myIndex);
 
-              // REPLACE THIS WITH FIND ROOM BY NAME? 
-              //agent.setComputer(new Vector3(self.waypoints[0]));
-              agent.Computer =  Vector3.fromObject(self.waypoints[0])
+              agent.Computer =  Vector3.fromObject(this.room)
 
               return fluentBehaviorTree.BehaviorTreeStatus.Success;
           })
