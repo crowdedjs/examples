@@ -1,5 +1,6 @@
 import ATransportResponsibility from "./atransport.js"
 import ACK from "./ack.js"
+import PatientTempState from "../../support/patient-temp-state.js";
 
 class NurseEscortPatientToExit extends ATransportResponsibility {
 
@@ -10,6 +11,7 @@ class NurseEscortPatientToExit extends ATransportResponsibility {
 
   doFinish() {
     this.entry.acknowledge(ACK.NURSE_ESCORT_PATIENT_TO_EXIT);
+    this.entry.getPatient().setPatientTempState(PatientTempState.DONE);
   }
 }
 

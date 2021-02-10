@@ -33,13 +33,17 @@ class patient {
 
 
       .splice(new FollowInstructions(myIndex, locations).tree)
+      .do("Done following instructions", async function (t) {
+        console.log("Done following instructions")
+        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+      })
 
-      .splice(new WaitForever(myIndex, locations).tree)
+      //.splice(new WaitForever(myIndex, locations).tree)
       .end()
       .build();
   }
 
-  async update( crowd, msec) {
+  async update(crowd, msec) {
     //this.toReturn = null;//Set the default return value to null (don't change destination)
     await this.tree.tick({ crowd, msec }) //Call the behavior tree
     //return this.toReturn; //Return what the behavior tree set the return value to
