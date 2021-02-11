@@ -161,21 +161,6 @@
 
         fillComputerTable();
 
-        var button = document.createElement("BUTTON");
-        button.innerHTML = "Hide/View Entries";
-        document.body.appendChild(button);
-        button.addEventListener("click", myFunction());
-
-        function myFunction() {
-          var x = document.getElementById("ComputerEntryTable");
-          if (x.style.display === "none") {
-            x.style.display = "block";
-          } else {
-            x.style.display = "none";
-          }
-        }
-
-
         //Show FPS Counter
         //Comment this line if you don't want to show the FPS counter
         // SCORING FUNCTION GRAPH
@@ -260,6 +245,35 @@
 
     <table id = "ComputerEntryTable"></table> 
      
+    <button id="btn" type="button" onclick="hideTable()">Hide/View Table</button>
+    <style>
+      button#btn {
+        position: absolute;
+        bottom: 25%;
+        left: 1%;
+        background-color: Gray;
+        border: none;
+        color: black;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        z-index: 99;
+        display: inline-block;
+        font-size: 16px;
+      }
+    </style> 
+
+    <script>
+        function hideTable() {
+          var x = document.getElementById("ComputerEntryTable");
+          if (x.style.display === "none") {
+            x.style.display = "block";
+          } else {
+            x.style.display = "none";
+          }
+        }
+    </script>
+
   </div>
 
 </body>
