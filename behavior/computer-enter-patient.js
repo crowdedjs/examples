@@ -15,9 +15,8 @@ class ComputerEnterPatient {
                     let patient = me().getCurrentPatient();
                     let entry = new ComputerEntry(patient, "Unknown")
                     
-                    // need "this" ?
                     Hospital.computer.add(entry);
-                    Hospital.computer.print();
+                    //Hospital.computer.print();
 
                     return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })

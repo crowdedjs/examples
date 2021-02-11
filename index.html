@@ -96,6 +96,86 @@
         //Start the simulation.
         let crowdSetup = new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "./crowd-setup/");
 
+        
+        // display a table of computer entries
+        var table = document.getElementById("ComputerEntryTable");
+        // title row
+        var titleRow = table.insertRow(0);
+        var titleCell = titleRow.insertCell(0);
+        var chiefComplaintCell = titleRow.insertCell(1);
+        var takenVitalsCell = titleRow.insertCell(2); 
+        titleCell.innerHTML = "Computer Entry";
+        chiefComplaintCell.innerHTML = "Chief Complaint";
+        takenVitalsCell.innerHTML = "Vitals Taken";
+        
+        let computerEntries = 0;
+        
+        function fillComputerTable() {
+          for(let i = 0; i < Hospital.computer.entries.length; i++)
+          {
+            // add missing entries to table
+            if (Hospital.computer.entries.length > computerEntries)
+            {
+              var tempRow = table.insertRow(computerEntries + 1)
+              var cell1 = tempRow.insertCell(0);
+              var cell2 = tempRow.insertCell(1);
+              var cell3 = tempRow.insertCell(2);
+              cell1.innerHTML = computerEntries + 1;
+              cell2.innerHTML = Hospital.computer.entries[computerEntries].getChiefComplaint();
+              cell3.innerHTML = Hospital.computer.entries[computerEntries].getVitals();
+
+              computerEntries++;
+
+              // var tempRow1 = table.insertRow(2)
+              // var cell1 = tempRow1.insertCell(0);
+              // var cell2 = tempRow1.insertCell(1);
+              // var cell3 = tempRow1.insertCell(2);
+              // cell1.innerHTML = "temp";
+              // cell2.innerHTML = "sample text";
+              // cell3.innerHTML = "more sample text";
+              
+
+              // var tempRow2 = table.insertRow(3)
+              // var cell1 = tempRow2.insertCell(0);
+              // var cell2 = tempRow2.insertCell(1);
+              // var cell3 = tempRow2.insertCell(2);
+              // cell1.innerHTML = "temp";
+              // cell2.innerHTML = "sample text";
+              // cell3.innerHTML = "more sample text";
+
+              // var tempRow3 = table.insertRow(4)
+              // var cell1 = tempRow3.insertCell(0);
+              // var cell2 = tempRow3.insertCell(1);
+              // var cell3 = tempRow3.insertCell(2);
+              // cell1.innerHTML = "temp";
+              // cell2.innerHTML = "sample text";
+              // cell3.innerHTML = "more sample text";
+            }
+
+            //update existing entries in table
+            document.getElementById("ComputerEntryTable").rows[i + 1].cells[1].innerHTML = Hospital.computer.entries[i].getChiefComplaint();
+            document.getElementById("ComputerEntryTable").rows[i + 1].cells[2].innerHTML = Hospital.computer.entries[i].getVitals();
+          }
+          requestAnimationFrame( fillComputerTable );
+        }
+
+        fillComputerTable();
+
+        var button = document.createElement("BUTTON");
+        button.innerHTML = "Hide/View Entries";
+        document.body.appendChild(button);
+        button.addEventListener("click", myFunction());
+
+        function myFunction() {
+          var x = document.getElementById("ComputerEntryTable");
+          if (x.style.display === "none") {
+            x.style.display = "block";
+          } else {
+            x.style.display = "none";
+          }
+        }
+
+
         //Show FPS Counter
         //Comment this line if you don't want to show the FPS counter
         // SCORING FUNCTION GRAPH
@@ -110,8 +190,8 @@
         document.body.appendChild( stats.dom );
         let i = 0;
 
+        // animates a graph that displays the agents in the simulation each frame
         function animate() {
-          // animates a graph that displays the agents in the simulation each frame
           if (typeof crowdSetup.agentPositions[i] === 'undefined')
           {
             //console.log("undefined");
@@ -147,6 +227,40 @@
 
 
   </script>
+
+  <div class="ComputerEntries">
+    <style>
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        position: absolute;
+        bottom: 1%;
+        left: 1%;
+        height: 200px;
+        width: 250px;
+        z-index: 99;
+        display: block;
+        table-layout:fixed;
+        overflow:auto;
+      }
+      
+      td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+      
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+      tr:nth-child(odd) {
+        background-color: #738276;
+      }
+    </style>
+
+    <table id = "ComputerEntryTable"></table> 
+     
+  </div>
 
 </body>
 

@@ -193,6 +193,7 @@ class CrowdSetup {
       // COMPUTER ENTRIES
       console.log("COMPUTER ENTRIES: ");
       console.log(window.Hospital.computer.print());
+      
       // WHAT ELSE SHOULD WE PRINT??
 
     }
