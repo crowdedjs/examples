@@ -2,6 +2,7 @@ import * as viewer from "./viewer.js"
 // import ControlCreator from "https://cdn.jsdelivr.net/npm/@crowdedjs/controller/controller.js"
 import ControlCreator from "./control-creator.js"
 import replacer from "./replacer.js"
+import HospitalClass from "../support/hospital.js"
 function VectorEquals(one, two) {
   if (!one || !two) return false;
   return one.x == two.x && one.y == two.y && one.z == two.z;
@@ -128,8 +129,92 @@ class CrowdSetup {
         //about new agentConstants, agentConstants with new destinations, and agentConstants that have left the simulation
         nextTick([JSON.stringify(newAgents, replacer), JSON.stringify(newDestinations, replacer), JSON.stringify(leavingAgents, replacer)])
       }
+
+      else {
+        console.log("Done with tick callback.")
+        
+        // ADD SCORING FUNCTION CALL HERE
+        scoring();
+      }
+
     }
 
+
+    // SCORING FUNCTION
+    function scoring() {
+      //console.log(agentPositionsRef);
+
+      // MAX AGENTS IN EACH FRAME
+      let averageOccupancy = 0;
+      let maximumOccupancy = 0;
+      let maxAgents = [];
+      console.log("MAX AGENTS IN FRAME: ")
+      for (let i = 0; i < agentPositionsRef.length; i++)
+      {
+        //console.log("MAX AGENTS IN FRAME " + (i + 1) + ": " + agentPositionsRef[i].length)
+        maxAgents.push(agentPositionsRef[i].length);
+        averageOccupancy += agentPositionsRef[i].length;
+        
+        let agentsInSim = 0;
+        for (let j = 0; j < agentPositionsRef[i].length; j++)
+        {
+          if (agentPositionsRef[i][j].inSimulation)
+          {
+            agentsInSim++;
+          }
+        }
+        if (agentsInSim > maximumOccupancy)
+        {
+          maximumOccupancy = agentsInSim;
+        }
+      }
+      console.log(maxAgents);
+
+
+      // AVERAGE OCCUPANCY
+      averageOccupancy = averageOccupancy / agentPositionsRef.length;
+      console.log("AVERAGE OCCUPANCY: " + averageOccupancy);
+
+      // MAXIMUM OCCUPANCY ACROSS ALL FRAMES
+      console.log("MAXIMUM OCCUPANCY: " + maximumOccupancy);
+
+      // CHECK ID OF EACH AGENT, FIND FIRST AND LAST FRAME, THEN AVERAGE ALL OF THE TIME IN THE SIMULATION
+      // COULD ABSOLUTELY SIMPLIFY THIS
+      let agentArray = [];
+      for (let i = 0; i < agentPositionsRef.length; i++)
+      {
+        if(agentArray.length < agentPositionsRef[i].length)
+        {
+          for(let j = agentArray.length; j < agentPositionsRef[i].length; j++)
+          {
+            agentArray[j] = new Array(agentPositionsRef[j].id, i + 1, 7501);
+          }
+        }
+
+        for (let j = 0; j < agentPositionsRef[i].length; j++)
+        {
+          if (!agentPositionsRef[i][j].inSimulation)
+          {
+            agentArray[j] = i;
+          }
+        }
+      }
+
+      let averageTime = 0;
+      for (let i = 0; i < agentArray.length; i++)
+      {
+        averageTime += (agentArray[i][2] - agentArray[i][1])
+      }
+      averageTime = averageTime / agentArray.length;
+      console.log("AVERAGE FRAMES IN SIMULATION: " + averageTime);  
+      
+      // COMPUTER ENTRIES
+      console.log("COMPUTER ENTRIES: ");
+      console.log(window.Hospital.computer.print());
+      
+      // WHAT ELSE SHOULD WE PRINT??
+
+    }
 
     function main() {
       viewer.Resize(window, CrowdSetup.three.renderer, CrowdSetup.three.camera); //Boot the viewer
