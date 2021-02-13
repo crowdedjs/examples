@@ -11,6 +11,7 @@ class CTCATDoScanResponsibility extends AResponsibility  {
 	doFinish() {
 		this.entry.acknowledge(ACK.CT_CAT_DO_SCAN);
 		this.entry.addUnacknowledged(ACK.CT_PICKUP);
+		this.entry.addUnacknowledged(ACK.RADIOLOGY_REVIEW_SCAN)
 		
 	}
 

@@ -3,7 +3,7 @@ import RoomType from "../support/room-type.js"
 
 class ComputerAssignPatientRoom {
 
-  constructor(myIndex, locations) {
+  constructor(myIndex) {
     this.index = myIndex;
     
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
@@ -32,6 +32,7 @@ class ComputerAssignPatientRoom {
 
            
             patient.setAssignedRoom(rooms[0]);
+            patient.setPermanentRoom(rooms[0]);
             entry.setBed(rooms[0]);
 
             return fluentBehaviorTree.BehaviorTreeStatus.Success;

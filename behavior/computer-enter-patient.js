@@ -2,7 +2,7 @@
 import ComputerEntry from "../support/computer-entry.js"
 
 class ComputerEnterPatient {
-    constructor(myIndex, locations) {
+    constructor(myIndex) {
         this.index = myIndex;
         let self = this;
         let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;

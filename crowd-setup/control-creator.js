@@ -4,7 +4,7 @@ class ControlCreator {
   PLAY_STATE_PLAY_BACKWARD = -1;
 
   playState = this.PLAY_STATE_PLAY_FORWARD;
-  playSpeed = 1;
+  playSpeed = 100;
 
   constructor(secondsOfSimulation, millisecondsPerFrame, simulations, elementParent, buttonClass = "") {
     let self = this;
@@ -16,7 +16,7 @@ class ControlCreator {
     elementParent.appendChild(canvas);
 
     let divRange = document.createElement("div");
-    divRange.style.position = "fixed"
+    divRange.style.location = "fixed"
     divRange.style.top = "20px";
     divRange.style.left = "50%";
     divRange.id = "divRange";

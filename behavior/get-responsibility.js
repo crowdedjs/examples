@@ -1,7 +1,8 @@
 import ResponsibilityFactory from "./responsibility/responsibility-factory.js"
+import ResponsibilitySubject from "./responsibility/responsibility-subject.js"
 
 class GetResponsibility {
-    constructor(myIndex, locations) {
+    constructor(myIndex) {
         this.index = myIndex;
 
         const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
@@ -11,15 +12,25 @@ class GetResponsibility {
         this.tree = builder
             .sequence("Get Responsibility")
             .do("Check Responsibilities", (t) => {
+                let classedResponsibility = this.getResponsibilityFactory(me().MedicalStaffSubclass)
+
+                let I= me();
+
+                let superResponsibilities = Hospital.computer.entries
+                    .map(i=>{return {entry: i, responsibility:classedResponsibility.get(i, I)}})
+                    .filter(i=>i.responsibility!=null && I.hasRoom(i.entry.getBed()));
 
                 let responsibilities = Hospital.computer.entries.filter(
                     i => me().hasRoom(i.getBed()) &&
-                        this.getResponsibilityFactory(me().MedicalStaffSubclass).get(i, me()) != null
+                        classedResponsibility.get(i, me()) != null
                 );
                 if (!responsibilities || responsibilities.length == 0)
                     return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                responsibilities = responsibilities.filter(i=>classedResponsibility.get(i, me()).getSubject != ResponsibilitySubject.COMPUTER)
+                if(!responsibilities || responsibilities.length == 0)
+                    return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                 let responsibility = responsibilities
-                    .map(i => this.getResponsibilityFactory(me().MedicalStaffSubclass).get(i, me()))
+                    .map(i => classedResponsibility.get(i, me()))
                     .reduce((a, b) => a == null ? null : b == null ? a : a.getPriority() < b.getPriority() ? a : b)
 
 

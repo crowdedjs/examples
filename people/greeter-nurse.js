@@ -11,44 +11,41 @@ import WaitForever from "../behavior/wait-forever.js"
 
 class greeterNurse {
 
-    constructor(myIndex, locations, start, end) {
+    constructor(myIndex) {
       this.index = myIndex;
-      this.waypoints = [];
-      this.waypoints.push(start);
-      this.waypoints.push(end);
   
       const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
       let self = this;//Since we need to reference this in anonymous functions, we need a reference
       let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
-      let myGoal = locations.find(l => l.name == "Check In");
+      let myGoal = Hospital.locations.find(l => l.name == "Check In");
       if (!myGoal) throw new Exception("We couldn't find a location called Check In");
   
-      //this.goTo = new GoTo(self.index, myGoal.position);
+      //this.goTo = new GoTo(self.index, myGoal.location);
   
   
   
       this.tree = builder
         .sequence("Greeter Nurse Behaviors")
-            .splice(new GoTo(self.index, myGoal.position).tree)
+            .splice(new GoTo(self.index, myGoal.location).tree)
                         
-            .splice(new LookForArrivingPatient(myIndex, locations).tree)
+            .splice(new LookForArrivingPatient(myIndex).tree)
 
             .splice(new TakeTime(30, 90).tree) // seconds: uniform, 30, 90
 
-            .splice(new ComputerEnterPatient(myIndex, locations).tree)
+            .splice(new ComputerEnterPatient(myIndex).tree)
 
             .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
 
-            .splice(new ComputerScorePatient(myIndex, locations).tree)
+            .splice(new ComputerScorePatient(myIndex).tree)
 
             .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
 
-            .splice(new ComputerAssignPatientRoom(myIndex, locations).tree)
+            .splice(new ComputerAssignPatientRoom(myIndex).tree)
             
-            .splice(new AssignPatientToTriageNurse(myIndex, locations).tree)
+            .splice(new AssignPatientToTriageNurse(myIndex).tree)
 
-            .splice(new WaitForever(myIndex, locations).tree)  
+            .splice(new WaitForever(myIndex).tree)  
                     
         .end()
         .build();

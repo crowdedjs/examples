@@ -4,11 +4,8 @@ import WaitForever from "../behavior/wait-forever.js"
 
 class janitorial {
 
-  constructor(myIndex, locations, start, end) {
+  constructor(myIndex) {
     this.index = myIndex;
-    this.waypoints = [];
-    this.waypoints.push(start);
-    this.waypoints.push(end);
 
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
     this.toReturn = null;
@@ -17,14 +14,14 @@ class janitorial {
     let goToName = "Fast Track 1";
     let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
 
-    let myGoal = locations.find(l => l.name == goToName);
+    let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
 
 
     this.tree = builder
       .sequence("Janitorial")
-      .splice(new GoTo(self.index, myGoal.position).tree)
-      .splice(new WaitForever(myIndex, locations).tree)
+      .splice(new GoTo(self.index, myGoal.location).tree)
+      .splice(new WaitForever(myIndex).tree)
       
       .end()
       .build();

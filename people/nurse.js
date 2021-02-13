@@ -5,11 +5,8 @@ import AssignComputer from "../behavior/assign-computer.js"
 
 class nurse {
 
-    constructor(myIndex, locations, start, end) {
+    constructor(myIndex) {
       this.index = myIndex;
-      this.waypoints = [];
-      this.waypoints.push(start);
-      this.waypoints.push(end);
   
       const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
       this.toReturn = null;
@@ -18,15 +15,14 @@ class nurse {
       let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
       
       let goToName = "NursePlace";
-      let myGoal = locations.find(l => l.name == goToName);
-      let computer =  locations.find(l => l.name == "NursePlace");
+      let myGoal = Hospital.locations.find(l => l.name == goToName);
+      let computer =  Hospital.locations.find(l => l.name == "NursePlace");
       this.tree = builder
 
       .sequence("Assign Nurse")
-        .splice(new GoTo(self.index, myGoal.position).tree)
-        //.splice(new AssignBed(myIndex, locations.find(l => l.name == "C1").position).tree) // C1
-        .splice(new AssignComputer(myIndex, computer.position).tree) // NURSE PLACE
-        .splice(new responsibility(myIndex, locations, start, end).tree) // LAZY: TRUE
+        .splice(new GoTo(self.index, myGoal.location).tree)
+        .splice(new AssignComputer(myIndex, computer.location).tree) // NURSE PLACE
+        .splice(new responsibility(myIndex).tree) // LAZY: TRUE
       .end()
       .build();
     }
@@ -35,6 +31,13 @@ class nurse {
       //this.toReturn = null;//Set the default return value to null (don't change destination)
       await this.tree.tick({ crowd, msec }) //Call the behavior tree
       //return this.toReturn; //Return what the behavior tree set the return value to
+    }
+
+    checkEndOfSimulation() {
+      if (self.Hospital.computer.entries.length > 0) {
+        return self.Hospital.computer.entries[0].unacknowledged("NurseEscortPatientToExit");
+      }
+      return false;
     }
   
   }

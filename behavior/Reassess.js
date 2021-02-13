@@ -12,6 +12,14 @@ class Reassess {
 			.sequence("Reasses")
 			.do("Reassess", (t) => {
 				let patient = me().getCurrentPatient();
+				if(!patient)
+					return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+				
+				//We can't reassess someone we're not next to.
+				let distance = Vector3.fromObject(patient.location).distanceTo(me().location);
+				if(distance > 2){
+					return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+				}
 
         let entry = Hospital.computer.getEntry(patient);
         let responsibility;

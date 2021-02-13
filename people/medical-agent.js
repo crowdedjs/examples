@@ -31,12 +31,10 @@ class MedicalAgent extends AMedicalStaff {
   static index = 0;
   idx; //Corresponds to the internal idx number used by recast
 
-  constructor(agent, locations) {
+  constructor(agent) {
     super(agent.location, agent.id, agent.name, agent.type, agent.doctorYear);
     
     this.name = agent.name;
-    this.locations = locations;
-    agent.locations = locations;
     this.startMSec = agent.arrivalTick * 25; // We simulate 25 fps
     this.arrivalLocation = agent.arrivalLocation;
     this.age = agent.age;
@@ -46,13 +44,13 @@ class MedicalAgent extends AMedicalStaff {
     this.id = agent.id;
     this.patientTempState = undefined;
 
-    let startLocation = locations.find(i => i.name == agent.arrivalLocation);
+    let startLocation = Hospital.locations.find(i => i.name == agent.arrivalLocation);
     if (!startLocation) console.error("Bad starting location " + agent.arrivalLocation);
 
 
-    this.startX = startLocation.position.x
-    this.startY = startLocation.position.y;
-    this.startZ = startLocation.position.z;
+    this.startX = startLocation.location.x
+    this.startY = startLocation.location.y;
+    this.startZ = startLocation.location.z;
 
     this.destX = 0;
     this.destY = 0;
@@ -62,51 +60,37 @@ class MedicalAgent extends AMedicalStaff {
     
 
     if (agent.name == "Tech") {
-      //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-      
       if (agent.type == "Tech")
-        //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-        this.behavior = new tech(agent.id, locations, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new tech(agent.id)
       else if (agent.type == "CT")
-        //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-        this.behavior = new ct(agent.id, locations,  [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new ct(agent.id)
       else if (agent.type == "Janitorial")
-        this.behavior = new janitorial(agent.id, locations,  [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new janitorial(agent.id)
       else if (agent.type == "Radiology")
-        //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-        this.behavior = new radiology(agent.id, locations,  [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new radiology(agent.id)
       else
         throw new Exception("That tech type does not exist " + agent.type);
     }
     else if (agent.name == "Nurse") {
-      //this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
       
       if (agent.type == "Triage Nurse")
-        //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-        this.behavior = new triageNurse(agent.id, locations,  [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new triageNurse(agent.id)
       else if (agent.type == "Nurse")
-        //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-        this.behavior = new nurse(agent.id, locations, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new nurse(agent.id)
       else if (agent.type == "Greeter Nurse")
-        //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-        this.behavior = new greeterNurse(agent.id, locations,  [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new greeterNurse(agent.id)
       else
         throw new Exception("That nurse type does not exist " + agent.type);
     }
     else if (agent.name == "Attending") {
-      //this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-      
       if (agent.type == "Attending")
-        this.behavior = new attending(agent.id, locations,  [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new attending(agent.id)
       else
         throw new "That attending type does not exist " + agent.type;
     }
     else if (agent.name == "Resident") {
-      //this.behavior = new BackAndForth(agent, agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-      
       if (agent.type == "Resident")
-        //this.behavior = new BackAndForth(agent.id, [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
-        this.behavior = new resident(agent.id, locations,  [this.startX, this.startY, this.startZ], [this.destX, this.destY, this.destZ])
+        this.behavior = new resident(agent.id)
       else
         throw new Exception("That resident type does not exist " + agent.type);
     }

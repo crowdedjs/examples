@@ -2,6 +2,7 @@
  import NurseResponsibilities from "./nurse.js"
  import ResidentResponsibilities from "./resident-responsibilities.js"
  import CTResponsibilities from "./ct-responsibilities.js"
+ import RadiologyResponsibilities from "./radiology-responsibilities.js"
 
  
  class ResponsibilityFactory {
@@ -16,6 +17,8 @@
 			return new ResidentResponsibilities();
 		case "CT":
 			return new CTResponsibilities();
+		case "Radiology":
+			return new RadiologyResponsibilities();
 		default:
 			return null;
 		

@@ -14,7 +14,8 @@
   <script src="./lib/axios.js"></script> <!-- Promise-based AJAX library-->
   <script src="./lib/lodash.js"></script> <!-- Standard JS Utility Library-->
 
-  <script src="https://cdn.jsdelivr.net/npm/@ricksteam/fluent-behavior-tree-browser@0.2.0/bundle.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@ricksteam/fluent-behavior-tree-browser@0.2.0/bundle.js"></script> -->
+  <script src="./crowd-setup/bundle.js"></script>
 
   <script src="./worker.js"></script> <!-- Our port of RecastDetour-->
   
@@ -73,6 +74,16 @@
         let agentConstants = [];  //An array with all the high-level agent information (not the simulation data)
         let locations = [];
 
+        //Remove spaces in annotation names
+        locationValue.forEach(l => {
+          locations.push(new Room(l.position, l.annotationName.toUpperCase().replace(" ", "_"), l.name))
+        })
+
+        //Assign the data to the global hospital object
+        Hospital.agents = agentConstants;
+        Hospital.locations = locations;
+        Hospital.computer = new Computer();
+
         //Add an agent with a behavior and an id
         arrivalValue.forEach((agent, index) => {
           if (agent.name == "patient")
@@ -83,15 +94,7 @@
           agentConstants[agentConstants.length - 1].setId(index);
         })
 
-        //Remove spaces in annotation names
-        locationValue.forEach(l => {
-          locations.push(new Room(l.position, l.annotationName.toUpperCase().replace(" ", "_"), l.name))
-        })
-
-        //Assign the data to the global hospital object
-        Hospital.agents = agentConstants;
-        Hospital.locations = locations;
-        Hospital.computer = new Computer();
+        
 
         //Start the simulation.
         let crowdSetup = new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "./crowd-setup/");
@@ -206,9 +209,9 @@
 
       })
       //This can be commented out for debugging purposes. In production, this should not be commented.
-      .catch(error => {
-        console.log("Error in the app " + error)
-      })
+      // .catch(error => {
+      //   console.log("Error in the app " + error)
+      // })
 
 
   </script>

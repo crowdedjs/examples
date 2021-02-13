@@ -2,7 +2,7 @@ import PatientTempState from "../support/patient-temp-state.js";
 
 class FollowInstructions {
 
-  constructor(myIndex, locations) {
+  constructor(myIndex) {
     //this.me = agent;
     let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
     
@@ -53,6 +53,10 @@ class FollowInstructions {
           else{
             me().setDestination(destination);
           }
+        }
+        else if(state == PatientTempState.DONE){
+          console.log("Done")
+          me().inSimulation = false;
         }
         else {
           console.log("Invalid patient temp state " + state);

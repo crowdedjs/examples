@@ -2,8 +2,7 @@ class GoToLazy{
 
   constructor(myIndex, f)  {
     this.index = myIndex;
-    this.waypoints = [];
-    this.waypoints.push(f);
+    this.locationFunction = f;
     
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
@@ -15,7 +14,7 @@ class GoToLazy{
       //update the return value once
       .do("Set destination goal lazy", (t) => {
         let agent = Hospital.agents.find(a=>a.id==self.index);
-        let next = self.waypoints[0]();
+        let next = self.locationFunction();
         agent.destination = Vector3.fromObject(next)
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })
@@ -24,12 +23,12 @@ class GoToLazy{
       .do("Traveling to goal lazy", (t) => {
         let agent = Hospital.agents.find(a=>a.id==self.index);
         let frameAgentDetail = t.crowd.find(a=>a.id == self.index);
-        let next = self.waypoints[0]();
+        let next = self.locationFunction();
         
         agent.destination = next;
         let simulationAgent = t.crowd.find(a=>a.id == self.index);
         let loc = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
-        let waypoint = Vector3.fromObject(self.waypoints[0]());
+        let waypoint = Vector3.fromObject(self.locationFunction());
 
         let difference = Vector3.subtract(loc, waypoint)
         let distanceToWaypoint = difference.length();
