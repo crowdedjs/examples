@@ -128,15 +128,10 @@ class CrowdSetup {
         //If the simulation needs to continue, send on the information
         //about new agentConstants, agentConstants with new destinations, and agentConstants that have left the simulation
         nextTick([JSON.stringify(newAgents, replacer), JSON.stringify(newDestinations, replacer), JSON.stringify(leavingAgents, replacer)])
-      }
 
-      else {
-        console.log("Done with tick callback.")
-        
-        // ADD SCORING FUNCTION CALL HERE
+        // SCORING FUNCTION CALL
         scoring();
       }
-
     }
 
 
