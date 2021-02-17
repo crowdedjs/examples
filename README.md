@@ -41,4 +41,11 @@ Include the fps counter (optional)
 javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
 ```
 
+## Run a development server
+
+This project uses snowpack as its bundler. To run the dev server, use the start command, ```npm start```. 
+
+## Linking Peer Dependencies
+There will be times when you want to edit multiple repos simultanesouly. To do this, clone all the required repos. Then use ```npm link``` to create the desired links. With links, any changes you make to the link repo locally will be reflected in your app.
+
 
