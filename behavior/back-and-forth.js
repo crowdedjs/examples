@@ -1,4 +1,4 @@
-import Vector3 from "../math/vector-3.js";
+import Vector3 from "@crowdedjs/math";
 //import * as fluentBehaviorTree from "../lib/fluent-behavior-tree-browser.js"
 
 class BackAndForth {

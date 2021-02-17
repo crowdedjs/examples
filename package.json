@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/crowdedjs/examples#readme",
   "dependencies": {
+    "@crowdedjs/math": "0.0.2",
     "@crowdedjs/objs": "^0.1.0",
     "@crowdedjs/recast-detour": "^0.1.1",
     "@crowdedjs/worker": "^0.1.0",
@@ -24,7 +25,8 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^8.2.1"
+    "mocha": "^8.2.1",
+    "snowpack": "^3.0.11"
   },
   "type": "module",
   "directories": {

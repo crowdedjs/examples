@@ -13,7 +13,7 @@ import Poses from './models/Poses.js';
 
 //Setup repeated geometry for locations, etc.
 const CylinderGeometry = function () { return new THREE.CylinderGeometry(.2, .2, 1, 8) };
-const CylinderGeometryThin = function () { return new THREE.CylinderGeometry(.1, .1, .5, 8) };
+const CylinderGeometryThin = function () { return new THREE.CylinderGeometry(.1, .1, .5, 8) }; 
 
 //Get the internal clock from THREE.js
 const clock = new THREE.Clock();
@@ -126,7 +126,7 @@ function boot(three, environment, locations, assetURL) {
 
   if (useAnimatedCharacters) {
     Poses.poseList.forEach((pose, index) => {
-      let url = `${assetURL}/models/${pose.file}.fbx`;
+      let url = `${assetURL}models/${pose.file}.fbx`;
       console.log(url);
       allPromises.push(loadPromise(url));
     });
@@ -141,8 +141,8 @@ function boot(three, environment, locations, assetURL) {
           allAnimations.push(animation);
         });
         //Load the model
-        return loadPromise(`${assetURL}/models/ybot.fbx`);
-      })
+        return loadPromise(`${assetURL}models/ybot.fbx`);
+      }) 
       .then(first => {
         base = first;
 

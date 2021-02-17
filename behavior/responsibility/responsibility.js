@@ -2,7 +2,7 @@ import GetComputerResponsibility from "../get-computer-responsibility.js";
 import GetResponsibility from "../get-responsibility.js";
 import GoToLazy from "../go-to-lazy.js";
 import HandleResponsibility from "../handle-responsibility.js";
-import Vector3 from "../../math/vector-3.js";
+import Vector3 from "@crowdedjs/math";
 import GoToResponsibility from "../go-to-responsibility.js"
 import SetupTransport from "../setup-transport.js";
 import Reassess from "../reassess.js"

@@ -6,7 +6,7 @@
  */
 
  //import { NamedModulesPlugin } from "webpack";
-import Vector3 from "../math/vector-3.js"
+import Vector3 from "@crowdedjs/math"
 
 class ABehavior {
 
