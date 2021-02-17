@@ -15,17 +15,17 @@
   <script src="./lib/lodash.js"></script> <!-- Standard JS Utility Library-->
 
   <!-- <script src="https://cdn.jsdelivr.net/npm/@ricksteam/fluent-behavior-tree-browser@0.2.0/bundle.js"></script> -->
-  <script src="./crowd-setup/bundle.js"></script>
+  <!-- <script src="./crowd-setup/bundle.js"></script> -->
 
   <script src="./worker.js"></script> <!-- Our port of RecastDetour-->
   
   <script src="//mrdoob.github.io/stats.js/build/stats.min.js"></script>
 
   <script type="module">
-    
+    import CrowdSetup from "@crowdedjs/crowd-setup"
     import MedicalAgent from "./people/medical-agent.js"
     import PatientAgent from "./people/patient-agent.js"
-    import CrowdSetup from "./crowd-setup/index.js"
+    //import CrowdSetup from "./crowd-setup/index.js"
     import urlParser from "./url-parser.js"
     import colorFunction from "./color-function.js"
     import simulations from "./simulations.js"
@@ -34,7 +34,7 @@
     import Room from "./support/room.js"
     import Vector3 from "@crowdedjs/math"
 
-    import index from "./crowd-setup/index.js"
+    //import index from "./crowd-setup/index.js"
 
     let params = {};
 
