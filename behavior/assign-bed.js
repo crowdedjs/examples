@@ -19,7 +19,7 @@ class AssignBed {
       .do("Set Bed Location", (t) => {
         let agent = Hospital.agents.find(a => a.id == myIndex);
         agent.addRoom(Vector3.fromObject(this.bed));
-        console.log("Assigning bed " + myIndex);
+        //console.log("Assigning bed " + myIndex);
 
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })
