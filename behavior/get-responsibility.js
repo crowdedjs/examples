@@ -1,5 +1,7 @@
 import ResponsibilityFactory from "./responsibility/responsibility-factory.js"
 import ResponsibilitySubject from "./responsibility/responsibility-subject.js"
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
+
 
 class GetResponsibility {
     constructor(myIndex) {

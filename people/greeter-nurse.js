@@ -7,6 +7,8 @@ import GoTo from "../behavior/go-to.js"
 import LookForArrivingPatient from "../behavior/look-for-arriving-patient.js";
 import TakeTime from "../behavior/take-time.js";
 import WaitForever from "../behavior/wait-forever.js"
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
+
 
 
 class greeterNurse {

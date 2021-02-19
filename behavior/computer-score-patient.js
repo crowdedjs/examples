@@ -1,3 +1,5 @@
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
+
 class ComputerScorePatient {
 
   constructor(myIndex) {

@@ -1,3 +1,5 @@
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
+
 class TakeTime {
     constructor(minTime, maxTime) {
 

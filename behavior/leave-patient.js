@@ -1,5 +1,7 @@
 import PatientTempState from "../support/patient-temp-state.js";
 import RoomType from "../support/room-type.js"
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
+
 
 class LeavePatient {
 

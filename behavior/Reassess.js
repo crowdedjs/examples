@@ -1,4 +1,5 @@
 import ResponsibilityFactory from "./responsibility/responsibility-factory.js";
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
 class Reassess {
 	constructor(myIndex) {

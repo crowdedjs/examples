@@ -1,3 +1,4 @@
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 class AssignBed {
   constructor(myIndex, bed) {
     this.index = myIndex;

@@ -1,5 +1,6 @@
 import LocationStatus from "../support/location-status.js";
 import RoomType from "../support/room-type.js"
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
 class ComputerAssignPatientRoom {
 

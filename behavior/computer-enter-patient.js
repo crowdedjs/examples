@@ -1,5 +1,7 @@
 
 import ComputerEntry from "../support/computer-entry.js"
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
+
 
 class ComputerEnterPatient {
     constructor(myIndex) {

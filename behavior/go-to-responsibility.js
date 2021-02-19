@@ -1,4 +1,5 @@
 import ResponsibilitySubject from "./responsibility/responsibility-subject.js"
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
 class GoToResponsibility {
 

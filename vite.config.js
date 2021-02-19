@@ -1,5 +1,9 @@
-export default{
-  alias:{
-    "@crowdedjs/crowd-setup":"../crowd-setup/"
+export default {
+  resolve: {
+    alias: {
+      "@crowdedjs/crowd-setup": "../crowd-setup/",
+      "@crowdedjs/worker":"../worker/",
+      //"@crowdedjs/fluent-behavior-tree":"../fluent-behavior-tree/"
+    }
   }
 }

@@ -1,6 +1,8 @@
 import GoTo from "../behavior/go-to.js"
 import WaitForever from "../behavior/wait-forever.js"
 import responsibility from "../behavior/responsibility/responsibility.js"
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
+
 
 class radiology {
 

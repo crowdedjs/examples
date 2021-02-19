@@ -1,0 +1,42 @@
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  position: absolute;
+  bottom: 1%;
+  left: 1%;
+  height: 200px;
+  width: 250px;
+  z-index: 99;
+  display: block;
+  table-layout: fixed;
+  overflow: auto;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+tr:nth-child(odd) {
+  background-color: #738276;
+}
+
+button#btn {
+  position: absolute;
+  bottom: 25%;
+  left: 1%;
+  background-color: Gray;
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  z-index: 99;
+  display: inline-block;
+  font-size: 16px;
+}

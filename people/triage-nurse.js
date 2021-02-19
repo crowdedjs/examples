@@ -3,6 +3,8 @@ import GoTo from "../behavior/go-to.js"
 import GoToLazy from "../behavior/go-to-lazy.js";
 import LeavePatient from "../behavior/leave-patient.js";
 import WaitForever from "../behavior/wait-forever.js"
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
+
 
 
 class triageNurse {

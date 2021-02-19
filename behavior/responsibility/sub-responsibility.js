@@ -8,6 +8,8 @@ import SetupTransport from "../setup-transport.js";
 import Reassess from "../reassess.js"
 import ResponsibilitySubject from "./responsibility-subject.js";
 import SubSubResponsibility from "./sub-sub-responsibility.js"
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
+
 
 class SubResponsibilty {
 
