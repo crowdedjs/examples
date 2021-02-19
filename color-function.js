@@ -1,4 +1,4 @@
-import * as THREE from "./lib/three.module.js"
+import * as THREE from "three"
 
 //Color agents based on their description
 function colorFunction(agentDescription) {
