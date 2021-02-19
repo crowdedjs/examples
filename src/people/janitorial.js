@@ -1,13 +1,10 @@
-import GoTo from "../behavior/go-to.js"
-import WaitForever from "../behavior/wait-forever.js"
-
-import AssignComputer from "../behavior/assign-computer.js";
-import responsibility from "../behavior/responsibility/responsibility.js";
+import GoTo from "../../behavior/go-to.js"
+import WaitForever from "../../behavior/wait-forever.js"
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
 
 
-class ct {
+class janitorial {
 
   constructor(myIndex) {
     this.index = myIndex;
@@ -16,7 +13,7 @@ class ct {
     this.toReturn = null;
 
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
-    let goToName = "CT 1";
+    let goToName = "Fast Track 1";
     let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
 
     let myGoal = Hospital.locations.find(l => l.name == goToName);
@@ -24,13 +21,9 @@ class ct {
 
 
     this.tree = builder
-      .sequence("Tech Tree")
+      .sequence("Janitorial")
       .splice(new GoTo(self.index, myGoal.location).tree)
-      //.splice(new WaitForever(myIndex).tree)
-
-      // original tree is below sequence
-      .splice(new AssignComputer(myIndex, Hospital.locations.find(l => l.name == "CT 1").location).tree) // name CT 1
-      .splice(new responsibility(myIndex).tree) // lazy: true
+      .splice(new WaitForever(myIndex).tree)
       
       .end()
       .build();
@@ -44,4 +37,4 @@ class ct {
 
 }
 
-export default ct;
+export default janitorial;

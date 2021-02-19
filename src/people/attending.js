@@ -1,5 +1,5 @@
-import GoTo from "../behavior/go-to.js"
-import WaitForever from "../behavior/wait-forever.js"
+import GoTo from "../../behavior/go-to.js"
+import WaitForever from "../../behavior/wait-forever.js"
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
 

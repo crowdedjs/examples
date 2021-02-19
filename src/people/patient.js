@@ -1,9 +1,7 @@
 import FollowInstructions from "../behavior/follow-instructions.js";
-import GoTo from "../behavior/go-to.js";
 import GoToLazy from "../behavior/go-to-lazy.js";
 // import LOG 
 import Stop from "../behavior/stop.js";
-import WaitForever from "../behavior/wait-forever.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
 
