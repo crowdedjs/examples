@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npx mocha",
-    "start": "npx snowpack dev --reload"
+    "start": "npx vite"
   },
   "repository": {
     "type": "git",
