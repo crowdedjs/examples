@@ -25,14 +25,13 @@
     "@crowdedjs/recast-detour": "^0.1.1",
     "@crowdedjs/worker": "^0.2.2",
     "axios": "^0.21.1",
-    "snowpack": "^2.14.0",
-    "three": "^0.124.0",
-    "vite": "^2.0.1"
+    "three": "^0.124.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^8.2.1",
-    "parcel": "^2.0.0-beta.1"
+    "parcel": "^2.0.0-beta.1",
+    "vite": "^2.0.1"
   },
   "type": "module",
   "directories": {
