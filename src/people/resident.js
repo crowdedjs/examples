@@ -1,9 +1,9 @@
-import GoTo from "../../behavior/go-to.js"
-import WaitForever from "../../behavior/wait-forever.js"
+import GoTo from "../behavior/go-to.js"
+import WaitForever from "../behavior/wait-forever.js"
 
-import AssignBed from "../../behavior/assign-bed.js";
-import AssignComputer from "../../behavior/assign-computer.js";
-import responsibility from "../../behavior/responsibility/responsibility.js";
+import AssignBed from "../behavior/assign-bed.js";
+import AssignComputer from "../behavior/assign-computer.js";
+import responsibility from "../behavior/responsibility/responsibility.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
 
