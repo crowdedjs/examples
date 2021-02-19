@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/crowdedjs/examples#readme",
   "dependencies": {
-    "@crowdedjs/crowd-setup": "0.0.8",
+    "@crowdedjs/crowd-setup": "^0.1.0",
     "@crowdedjs/fluent-behavior-tree": "0.0.1",
     "@crowdedjs/math": "0.0.2",
     "@crowdedjs/objs": "^0.1.0",
