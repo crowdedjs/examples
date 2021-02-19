@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "npx mocha",
-    "start": "npx vite"
+    "test": "node ./test/client/selenium.js",
+    "start": "npx vite",
+    "ci": "start-server-and-test start-server http://localhost:8080 test"
   },
   "repository": {
     "type": "git",
@@ -29,8 +30,13 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "express": "^4.17.1",
     "mocha": "^8.2.1",
     "parcel": "^2.0.0-beta.1",
+    "request": "^2.88.2",
+    "selenium-webdriver": "^4.0.0-beta.1",
+    "start-server-and-test": "^1.12.0",
+    "supertest": "^6.1.3",
     "vite": "^2.0.1"
   },
   "type": "module",
