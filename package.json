@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test/client/selenium.js",
-    "start": "npx vite",
+    "test": "npx mocha",
+    "start": "npx vite --config ./config/vite.config.js",
     "ci": "start-server-and-test start-server http://localhost:8080 test"
   },
   "repository": {

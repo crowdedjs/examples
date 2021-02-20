@@ -43,9 +43,12 @@ javascript: (function () { var script = document.createElement('script'); script
 
 ## Run a development server
 
-This project uses snowpack as its bundler. To run the dev server, use the start command, ```npm start```. 
+This project uses vite as its bundler. To run the dev server, use the start command, ```npm start```. 
 
 ## Linking Peer Dependencies
 There will be times when you want to edit multiple repos simultanesouly. To do this, clone all the required repos. Then use ```npm link``` to create the desired links. With links, any changes you make to the link repo locally will be reflected in your app.
+
+## Selinium Debugger
+To run the selenium test, you need download the appropriate driver for your OS. You can find the Chrome driver here: https://sites.google.com/a/chromium.org/chromedriver/
 
 
