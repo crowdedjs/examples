@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test/client/selenium.js",
+    "test": "npx mocha",
     "start": "npx vite",
     "ci": "start-server-and-test start-server http://localhost:8080 test"
   },
