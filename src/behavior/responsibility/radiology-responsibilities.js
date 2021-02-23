@@ -1,6 +1,6 @@
 import AResponsibilityFactory from "./aresponsibility-factory.js"
 import RadiologyReviewScanResponsibilities from "./radiology-review-scan-responsibility.js"
-import ACK from "./ACK.js"
+import ACK from "./ack.js"
 
 
 class RadiologyResponsibilities extends AResponsibilityFactory{

@@ -1,6 +1,6 @@
 import AResponsibilityFactory from "./aresponsibility-factory.js"
 import CTCATDoScanResponsibility from "./ct-cat-do.js"
-import ACK from "./ACK.js"
+import ACK from "./ack.js"
 
 
 class CTResponsibilities extends AResponsibilityFactory{

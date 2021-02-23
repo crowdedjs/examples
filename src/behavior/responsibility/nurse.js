@@ -1,7 +1,7 @@
 import AResponsibilityFactory from "./aresponsibility-factory.js"
 import GetHealthInformationResponsibility from "./get-health-information.js"
 import NurseDischargePatient from "./nurse-discharge-patient.js"
-import ACK from "./ACK.js"
+import ACK from "./ack.js"
 import NurseEscortPatientToExit from "./nurse-escort-patient-to-exit.js"
  class NurseResponsibilities extends AResponsibilityFactory {
 	
