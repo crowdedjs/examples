@@ -5,6 +5,7 @@
   "scripts": {
     "test": "npx mocha",
     "start": "npx vite --config ./config/vite.config.js",
+    "build" : "npm vite build",
     "ci": "start-server-and-test start-server http://localhost:8080 test"
   },
   "repository": {
