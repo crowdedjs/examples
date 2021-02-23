@@ -1,6 +1,6 @@
 
 import BackAndForth from "../behavior/back-and-forth.js";
-import None from "../behavior/None.js"
+import None from "../behavior/none.js"
 import Agent from "./agent.js"
 import AMedicalStaff from "./amedical-staff.js";
 
