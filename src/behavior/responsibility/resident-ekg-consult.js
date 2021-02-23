@@ -1,5 +1,5 @@
 import ResponsibilitySubject from "./responsibility-subject.js"
-import AResponsibility from "./apesponsibility.js"
+import AResponsibility from "./aresponsibility.js"
 import ACK from "./ack.js"
 
 class ResidentEKGConsult extends AResponsibility {
