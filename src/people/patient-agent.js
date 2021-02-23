@@ -1,4 +1,4 @@
-import Agent from "./Agent.js"
+import Agent from "./agent.js"
 import patient from "./patient.js"
 import APatient from "./apatient.js"
 
