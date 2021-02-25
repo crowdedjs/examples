@@ -34,7 +34,7 @@ function boot() {
   params.millisecondsBetweenFrames = 40;
 
 
-  params = urlParser(window, params, assetBase);
+  //params = urlParser(window, params, assetBase);
 
   //Set these up as global variables
   window.Hospital = HospitalClass;
