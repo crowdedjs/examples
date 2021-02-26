@@ -5,7 +5,7 @@
   "scripts": {
     "test": "npx mocha",
     "start": "npx vite --config ./config/vite.config.js",
-    "build" : "npx vite build",
+    "build": "npx vite build",
     "ci": "start-server-and-test start-server http://localhost:8080 test"
   },
   "repository": {
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/crowdedjs/examples#readme",
   "dependencies": {
+    "@crowdedjs/assets": "^0.1.5",
     "@crowdedjs/crowd-setup": "^0.1.3",
     "@crowdedjs/fluent-behavior-tree": "0.0.1",
     "@crowdedjs/math": "0.0.2",

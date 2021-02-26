@@ -17,7 +17,9 @@ function boot() {
   params.secondsOfSimulation = 86400;
   params.millisecondsBetweenFrames = 1000;
 
+
   //Add static references
+
   window.Hospital = HospitalClass;
   window.Vector3 = Vector3;
 
