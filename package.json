@@ -27,6 +27,7 @@
     "@crowdedjs/objs": "^0.1.0",
     "@crowdedjs/recast-detour": "^0.1.1",
     "@crowdedjs/worker": "^0.2.2",
+    "@crowdedjs/assets" : "^0.1.5",
     "axios": "^0.21.1",
     "three": "^0.124.0"
   },

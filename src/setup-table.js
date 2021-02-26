@@ -1,4 +1,4 @@
-export default function setupTable() {
+export default function setupTable(crowdSetup) {
 
   // display a table of computer entries
   var table = document.getElementById("ComputerEntryTable");
