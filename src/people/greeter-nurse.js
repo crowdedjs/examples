@@ -1,4 +1,3 @@
-// not fully ported
 import AssignPatientToTriageNurse from "../behavior/assign-patient-to-triage-nurse.js";
 import ComputerAssignPatientRoom from "../behavior/computer-assign-patient-room.js"
 import ComputerEnterPatient from "../behavior/computer-enter-patient.js";
@@ -30,11 +29,13 @@ class greeterNurse {
       this.tree = builder
         .sequence("Greeter Nurse Behaviors")
             .splice(new GoTo(self.index, myGoal.location).tree)
-                        
+            
+            // distance here doesn't work. Finds and enters patients before their model is even in the simulation.
             .splice(new LookForArrivingPatient(myIndex).tree)
 
             .splice(new TakeTime(30, 90).tree) // seconds: uniform, 30, 90
 
+            // enters patient before they're in simulation physically, which could likely be fixed by fixing the arriving patient behavior
             .splice(new ComputerEnterPatient(myIndex).tree)
 
             .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
@@ -45,9 +46,14 @@ class greeterNurse {
 
             .splice(new ComputerAssignPatientRoom(myIndex).tree)
             
-            .splice(new AssignPatientToTriageNurse(myIndex).tree)
+            // pretty sure the greeter nurse is overwriting the patients assigned, causing the first patient to not go with the triage nurse
+            .untilFail("Assign Patient to Triage Nurse successfully")
+              .inverter("invert result")            
+                .splice(new AssignPatientToTriageNurse(myIndex).tree)
+              .end()
+            .end()
 
-            .splice(new WaitForever(myIndex).tree)  
+            //.splice(new WaitForever(myIndex).tree)
                     
         .end()
         .build();

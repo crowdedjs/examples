@@ -8,6 +8,7 @@ class AMedicalStaff extends APerson {
     myRooms; //List<IRooms> -> []
     responsibility; //AResponsibility
     computer; //IRoom -> ARoom
+	busy = false; //boolean (if the nurse needs to finish their behavior before getting another patient)
 
 	constructor(location, UUID, medicalStaffType, medicalStaffSubclass, doctorYear, arrivalTick) {
 		super(location, UUID, arrivalTick);
@@ -22,6 +23,16 @@ class AMedicalStaff extends APerson {
 			this.doctorYear = doctorYear;
 		}
 		this.myRooms = [];
+
+
+	}
+
+	getBusy() {
+		return this.busy;
+	}
+
+	setBusy(busy) {
+		this.busy = busy;
 	}
 
 	get Computer() {

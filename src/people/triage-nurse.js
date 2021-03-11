@@ -1,4 +1,3 @@
-// NOT FULLY PORTED
 import GoTo from "../behavior/go-to.js"
 import GoToLazy from "../behavior/go-to-lazy.js";
 import LeavePatient from "../behavior/leave-patient.js";
@@ -32,6 +31,8 @@ class triageNurse {
 
       .do("Wait For Patient Assignment", (t) => {
         if (!me().getCurrentPatient()) return fluentBehaviorTree.BehaviorTreeStatus.Running;
+        me().setBusy(true);
+        console.log("I'm Busy!");
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
 
       })
@@ -40,6 +41,8 @@ class triageNurse {
 
       .do("Leave Patient", (t) => {
         let result = leavePatient.tick(t)
+        me.busy(false);
+        console.log("I'm free!");
         return result;
       })
       .end()
