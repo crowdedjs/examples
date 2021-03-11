@@ -5,6 +5,9 @@ phases:
     commands:
       - npm install
       - npx vite build
+  pre_build:
+    commands:
+      - aws s3 cp s3://vueproject-simulation/dist/
   build:
     commands:
       - echo Build started on `date`       
