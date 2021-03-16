@@ -3,7 +3,7 @@ import TakeVitalsResponsibility from "./take-vitals.js"
 import TechEKGDo from "./teck-ekg-do.js";
 import TechEKGTakePatientToResponsibility from "./tech-ekg-rpatient.js"
 import TechCATPickupResponsibility from "./tech-cat-pickup.js"
-import ACK from "./ACK.js"
+import ACK from "./ack.js"
 
  class TechResponsibilities extends AResponsibilityFactory {
 

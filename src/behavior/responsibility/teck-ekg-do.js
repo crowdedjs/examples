@@ -1,7 +1,7 @@
 import ResponsibilitySubject from "./responsibility-subject.js"
 
 import AResponsibility from "./aresponsibility.js"
-import ACK from "./ACK.js"
+import ACK from "./ack.js"
 
 class TechEKGDo extends AResponsibility {
 

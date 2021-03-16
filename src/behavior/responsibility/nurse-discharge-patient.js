@@ -1,6 +1,6 @@
 import AResponsibility from "./aresponsibility.js"
 import ResponsibilitySubject from "./responsibility-subject.js"
-import ACK from "./ACK.js"
+import ACK from "./ack.js"
 
 class NurseDischargePatient extends AResponsibility {
 

@@ -1,11 +1,12 @@
 
 import BackAndForth from "../behavior/back-and-forth.js";
-import None from "../behavior/None.js"
+import None from "../behavior/none.js"
 import Agent from "./agent.js"
 import AMedicalStaff from "./amedical-staff.js";
 
 import attending from "./attending.js"
 import ct from "./ct.js"
+import EscapePerson from "./escape-person.js";
 import greeterNurse from "./greeter-nurse.js"
 import janitorial from "./janitorial.js"
 import nurse from "./nurse.js"
@@ -93,6 +94,9 @@ class MedicalAgent extends AMedicalStaff {
         this.behavior = new resident(agent.id)
       else
         throw new Exception("That resident type does not exist " + agent.type);
+    }
+    else if (agent.name == "EscapePerson") {
+      this.behavior = new EscapePerson(agent.id)
     }
     else {
       throw new Exception("The agent name of " + agent.name + " is not a valid agent name.");

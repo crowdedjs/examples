@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npx mocha",
-    "start": "npx vite --config ./config/vite.config.js",
+    "start": "npx vite --force --config ./config/vite.config.js",
+    "build": "npx vite build",
     "ci": "start-server-and-test start-server http://localhost:8080 test"
   },
   "repository": {
@@ -19,13 +20,15 @@
   },
   "homepage": "https://github.com/crowdedjs/examples#readme",
   "dependencies": {
-    "@crowdedjs/crowd-setup": "^0.1.0",
-    "@crowdedjs/fluent-behavior-tree": "0.0.1",
-    "@crowdedjs/math": "0.0.2",
-    "@crowdedjs/objs": "^0.1.0",
-    "@crowdedjs/recast-detour": "^0.1.1",
-    "@crowdedjs/worker": "^0.2.2",
+    "@crowdedjs/assets": "latest",
+    "@crowdedjs/crowd-setup": "latest",
+    "@crowdedjs/fluent-behavior-tree": "latest",
+    "@crowdedjs/math": "latest",
+    "@crowdedjs/objs": "latest",
+    "@crowdedjs/recast-detour": "latest",
+    "@crowdedjs/worker": "latest",
     "axios": "^0.21.1",
+    "npm-list-linked": "^0.1.0",
     "three": "^0.124.0"
   },
   "devDependencies": {
