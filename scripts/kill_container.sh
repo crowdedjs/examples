@@ -7,3 +7,6 @@ elif [ $COUNT -ne 0 ]; then
     docker rm -f crowd-simulation &>/dev/null && echo 'Removed old container'
     sleep 30
 fi
+
+
+
