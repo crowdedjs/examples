@@ -5,13 +5,13 @@ phases:
     commands:
       - npm install
       - npx vite build
+      
   pre_build:
     commands:
       - aws s3 sync s3://vueproject-simulation/dist/ /home/ec2-user
   build:
     commands:
       - echo Build started on `date`       
-
 
   post_build:
     commands:
