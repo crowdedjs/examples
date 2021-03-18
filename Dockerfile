@@ -18,4 +18,6 @@ COPY /home/ec2-user/dist ./dist
 COPY /home/ec2-user/index.js ./
 RUN npm install
 
+
+
 ENTRYPOINT [ "node", "index.js"]
