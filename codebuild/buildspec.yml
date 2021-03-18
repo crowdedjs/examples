@@ -10,8 +10,14 @@ phases:
       - aws s3 sync s3://vueproject-simulation/dist/ /home/ec2-user
   build:
     commands:
-      - echo Build started on `date`       
+      - echo Build started on `date`      
+      - echo Logging in to Docker Hub...
+      - docker login --username $username --password $password 
+      - docker build -t crowd-simulation:v0.0.1 . --no-cache
+      - docker tag crowd-simulation:v0.0.1 sarathkshatri/crowd-simulation:v0.0.1 
 
   post_build:
     commands:
-      - echo Build completed on `date`
+       - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push sarathkshatri/crowd-simulation:v0.0.1
