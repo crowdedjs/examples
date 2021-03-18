@@ -7,6 +7,8 @@ WORKDIR /app
 # COPY ./index.js .
 # COPY ./dist .
 RUN mkdir other
+RUN mkdir /code
+RUN aws s3 sync s3://vueproject-simulation/dist/ /code/
 # COPY ./other/dist ./other 
 
 COPY package*.json ./
@@ -17,7 +19,6 @@ COPY dist ./other/dist
 COPY /code/dist ./dist
 COPY /code/index.js ./
 RUN npm install
-
 
 
 ENTRYPOINT [ "node", "index.js"]
