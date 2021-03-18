@@ -9,9 +9,6 @@ phases:
 
   build:
     commands:
-      - mkdir /code
-      - pwd
-      - aws s3 sync s3://vueproject-simulation/dist/ /code/
       - npm install
       - npx vite build 
       - echo Build started on `date`      
