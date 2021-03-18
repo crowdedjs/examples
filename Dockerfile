@@ -8,6 +8,18 @@ WORKDIR /app
 # COPY ./dist .
 RUN mkdir other
 RUN mkdir /code
+RUN apt-get update && \
+    apt-get install -y \
+        python3 \
+        python3-pip \
+        python3-setuptools \
+        groff \
+        less \
+    && pip3 install --upgrade pip \
+    && apt-get clean
+
+RUN pip3 --no-cache-dir install --upgrade awscli
+
 RUN aws s3 sync s3://vueproject-simulation/dist/ /code/
 # COPY ./other/dist ./other 
 
