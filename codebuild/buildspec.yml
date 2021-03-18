@@ -1,16 +1,18 @@
 version: 0.2
 
 phases:
-  install:
-    commands:
-      - npm install
-      - npx vite build  
-  pre_build:
+  # install:
+  #   commands:
+ 
+  # pre_build:
+  #   commands:
+
+  build:
     commands:
       - mkdir /code
       - aws s3 sync s3://vueproject-simulation/dist/ /code/
-  build:
-    commands:
+      - npm install
+      - npx vite build 
       - echo Build started on `date`      
       - echo Logging in to Docker Hub...
       - docker login --username $username --password $password 
