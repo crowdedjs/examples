@@ -20,6 +20,10 @@ RUN apt-get update && \
 
 RUN pip3 --no-cache-dir install --upgrade awscli
 
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+ARG AWS_DEFAULT_REGION
+
 RUN aws s3 sync s3://vueproject-simulation/dist/ /code/
 # COPY ./other/dist ./other 
 
