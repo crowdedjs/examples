@@ -18,6 +18,6 @@ phases:
 
   post_build:
     commands:
-       - echo Build completed on `date`
+      - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push sarathkshatri/crowd-simulation:v0.0.1
