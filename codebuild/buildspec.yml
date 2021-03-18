@@ -14,8 +14,7 @@ phases:
       - echo Build started on `date`      
       - echo Logging in to Docker Hub...
       - docker login --username $username --password $password 
-      - docker build -t crowd-simulation:v0.0.1 . --no-cache --build-arg AWS_ACCESS_KEY_ID = AKIAUPWAA73INWUPGLUQ \
-        --build-arg AWS_SECRET_ACCESS_KEY= 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 \
+      - docker build -t crowd-simulation:v0.0.1 . --no-cache
         --build-arg AWS_REGION = us-east-1
       - docker tag crowd-simulation:v0.0.1 sarathkshatri/crowd-simulation:v0.0.1 
 
