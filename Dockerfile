@@ -38,11 +38,11 @@ COPY package*.json ./
 
 # If you are building your code for production
 # RUN npm ci --only=production
-COPY dist ./other/dist
-RUN pwd
-COPY /code/dist ./dist
-COPY /code/index.js ./
-RUN npm install
+# COPY dist ./other/dist
+# RUN pwd
+# COPY /code/dist ./dist
+# COPY /code/index.js ./
+# RUN npm install
 
-
+COPY .. ./
 ENTRYPOINT [ "node", "index.js"]
