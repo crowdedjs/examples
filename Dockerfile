@@ -38,6 +38,7 @@ COPY package*.json ./
 # If you are building your code for production
 # RUN npm ci --only=production
 COPY dist ./other/dist
+RUN cwd
 COPY /code/dist ./dist
 COPY /code/index.js ./
 RUN npm install
