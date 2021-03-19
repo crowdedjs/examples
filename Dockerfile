@@ -8,6 +8,7 @@ WORKDIR /app
 # COPY ./dist .
 RUN mkdir other
 RUN mkdir /code
+RUN mkdir dist
 RUN apt-get update && \
     apt-get install -y \
         python3 \
