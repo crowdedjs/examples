@@ -40,9 +40,9 @@ COPY package*.json ./
 # RUN npm ci --only=production
 COPY dist ./other/dist
 RUN pwd
-# COPY /code/dist ./dist
-# COPY /code/index.js ./
-# RUN npm install
+COPY /code/dist ./dist
+COPY /code/index.js ./
+RUN npm install
 
 
 ENTRYPOINT [ "node", "index.js"]
