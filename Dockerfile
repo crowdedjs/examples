@@ -32,7 +32,8 @@ ENV AWS_DEFAULT_REGION $AWS_DEFAULT_REGION
 
 RUN aws s3 sync s3://vueproject-simulation/dist/ /code/
 # COPY ./other/dist ./other 
-RUN ls
+RUN cd /code/
+RUN pwd
 COPY package*.json ./
 
 # If you are building your code for production
