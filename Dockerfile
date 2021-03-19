@@ -1,5 +1,4 @@
 FROM node:12.8.1
-RUN mkdir /app
 WORKDIR /app
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -33,16 +32,14 @@ ENV AWS_DEFAULT_REGION $AWS_DEFAULT_REGION
 
 RUN aws s3 sync s3://vueproject-simulation/dist/ /code/
 # COPY ./other/dist ./other 
-
+RUN pwd
 COPY package*.json ./
 
 # If you are building your code for production
 # RUN npm ci --only=production
-# COPY dist ./other/dist
-# RUN pwd
-# COPY /code/dist ./dist
-# COPY /code/index.js ./
-# RUN npm install
+COPY dist ./other/dist
+COPY /code/dist ./dist
+COPY /code/index.js ./
+RUN npm install
 
-COPY .. ./
 ENTRYPOINT [ "node", "index.js"]
