@@ -7,7 +7,7 @@ WORKDIR /app
 # COPY ./index.js .
 # COPY ./dist .
 RUN mkdir other
-RUN mkdir /code
+RUN mkdir code
 RUN mkdir dist
 RUN apt-get update && \
     apt-get install -y \
@@ -30,10 +30,8 @@ ENV AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
 ENV AWS_DEFAULT_REGION $AWS_DEFAULT_REGION
 
 
-RUN aws s3 sync s3://vueproject-simulation/dist/ /code/
+RUN aws s3 sync s3://vueproject-simulation/dist/ code/
 # COPY ./other/dist ./other 
-RUN cd /code/
-RUN pwd
 COPY package*.json ./
 
 # If you are building your code for production
