@@ -37,8 +37,8 @@ COPY package*.json ./
 # If you are building your code for production
 # RUN npm ci --only=production
 COPY ./dist /app/other/dist
-COPY ../code/dist /app/dist
-COPY ../code/index.js /app/
+RUN cp /code/dist /app/dist
+RUN cp /code/index.js /app/
 RUN npm install
 
 ENTRYPOINT [ "node", "index.js"]
