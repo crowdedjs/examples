@@ -29,13 +29,12 @@ class greeterNurse {
       this.tree = builder
         .sequence("Greeter Nurse Behaviors")
             .splice(new GoTo(self.index, myGoal.location).tree)
-            
-            // distance here doesn't work. Finds and enters patients before their model is even in the simulation.
+
+            // now waits for patient to be nearby, and be in ARRIVED state
             .splice(new LookForArrivingPatient(myIndex).tree)
 
             .splice(new TakeTime(30, 90).tree) // seconds: uniform, 30, 90
 
-            // enters patient before they're in simulation physically, which could likely be fixed by fixing the arriving patient behavior
             .splice(new ComputerEnterPatient(myIndex).tree)
 
             .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
@@ -45,8 +44,12 @@ class greeterNurse {
             .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
 
             .splice(new ComputerAssignPatientRoom(myIndex).tree)
-            
-            // pretty sure the greeter nurse is overwriting the patients assigned, causing the first patient to not go with the triage nurse
+
+            // .do("Testing", (t) => {
+            //   console.log("Got here!");
+            //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            // })
+
             .untilFail("Assign Patient to Triage Nurse successfully")
               .inverter("invert result")            
                 .splice(new AssignPatientToTriageNurse(myIndex).tree)

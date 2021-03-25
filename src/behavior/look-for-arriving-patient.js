@@ -27,7 +27,7 @@ class LookForArrivingPatient {
         let closestPatients = agentConstantPatients
           .sort((a, b) => Vector3.fromObject(a.location).distanceTo(myLocation) - Vector3.fromObject(b.location).distanceTo(myLocation))
         let closestPatient = closestPatients[0] || null;
-        if (closestPatient == null || Vector3.fromObject(closestPatient.location).distanceTo(myLocation) > 3)
+        if (closestPatient == null || Vector3.fromObject(closestPatient.location).distanceTo(myLocation) > 3 || closestPatient.patientTempState != PatientState.ARRIVED)
           return fluentBehaviorTree.BehaviorTreeStatus.Running;
         //We found our patient
         closestPatient.patientTempState = PatientState.WAITING;

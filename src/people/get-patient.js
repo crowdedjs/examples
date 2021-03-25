@@ -1,4 +1,3 @@
-// not fully ported
 import GoTo from "../behavior/go-to.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 

@@ -39,7 +39,7 @@ class AssignPatientToTriageNurse {
 
           let myPatient = me().getCurrentPatient();
           
-          // temporary band-aid fix
+          // temporary fix if there is a single greeter nurse
           if (closestTriageNurse.getBusy())
           {
             return fluentBehaviorTree.BehaviorTreeStatus.Failure;

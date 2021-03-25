@@ -7,9 +7,11 @@ export default function setupTable(crowdSetup) {
   var titleCell = titleRow.insertCell(0);
   var chiefComplaintCell = titleRow.insertCell(1);
   var takenVitalsCell = titleRow.insertCell(2);
+  //var bedCell = titleRow.insertCell(3);
   titleCell.innerHTML = "Computer Entry";
   chiefComplaintCell.innerHTML = "Chief Complaint";
   takenVitalsCell.innerHTML = "Vitals Taken";
+  //bedCell.innerHTML = "Assigned Bed";
 
   let computerEntries = 0;
 
@@ -21,9 +23,11 @@ export default function setupTable(crowdSetup) {
         var cell1 = tempRow.insertCell(0);
         var cell2 = tempRow.insertCell(1);
         var cell3 = tempRow.insertCell(2);
+        //var cell4 = tempRow.insertCell(3);
         cell1.innerHTML = computerEntries + 1;
         cell2.innerHTML = Hospital.computer.entries[computerEntries].getChiefComplaint();
         cell3.innerHTML = Hospital.computer.entries[computerEntries].getVitals();
+        //cell4.innerHTML = Hospital.computer.entries[computerEntries].getBed().Name;
 
         computerEntries++;
 
@@ -56,6 +60,7 @@ export default function setupTable(crowdSetup) {
       //update existing entries in table
       document.getElementById("ComputerEntryTable").rows[i + 1].cells[1].innerHTML = Hospital.computer.entries[i].getChiefComplaint();
       document.getElementById("ComputerEntryTable").rows[i + 1].cells[2].innerHTML = Hospital.computer.entries[i].getVitals();
+      //document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = Hospital.computer.entries[i].getBed().Name;
     }
     requestAnimationFrame(fillComputerTable);
   }

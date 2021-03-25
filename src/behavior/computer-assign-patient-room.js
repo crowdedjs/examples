@@ -30,8 +30,9 @@ class ComputerAssignPatientRoom {
            if(rooms.length == 0)
             return fluentBehaviorTree.BehaviorTreeStatus.Failed
 
+            // need to set room as claimed
+            rooms[0].setLocationStatus(LocationStatus.CLAIMED);
 
-           
             patient.setAssignedRoom(rooms[0]);
             patient.setPermanentRoom(rooms[0]);
             entry.setBed(rooms[0]);

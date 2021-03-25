@@ -32,17 +32,22 @@ class triageNurse {
       .do("Wait For Patient Assignment", (t) => {
         if (!me().getCurrentPatient()) return fluentBehaviorTree.BehaviorTreeStatus.Running;
         me().setBusy(true);
-        console.log("I'm Busy!");
+        //console.log("I'm Busy!");
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
 
       })
 
       .splice(new GoToLazy(self.index, () => me().getCurrentPatient().getAssignedRoom().location).tree)
+      
+      // .do("Testing", (t) => {
+      //   console.log("Got here!");
+      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
+      // })
 
       .do("Leave Patient", (t) => {
         let result = leavePatient.tick(t)
-        me.busy(false);
-        console.log("I'm free!");
+        me().setBusy(false);
+        //console.log("I'm free!");
         return result;
       })
       .end()

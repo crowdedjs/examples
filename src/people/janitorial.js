@@ -23,6 +23,13 @@ class janitorial {
     this.tree = builder
       .sequence("Janitorial")
       .splice(new GoTo(self.index, myGoal.location).tree)
+      
+      // after patient leaves a room, go to that room
+
+      // .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
+
+      // set that room's status as NONE
+      
       .splice(new WaitForever(myIndex).tree)
       
       .end()

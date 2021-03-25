@@ -25,9 +25,8 @@ class FollowInstructions {
         let loc = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
         let state = me().getPatientTempState();
 
-        if (state == PatientTempState.WAITING) {
+        if (state == PatientTempState.WAITING) {         
           agentConstant.destination = new Vector3(loc.x, loc.y, loc.z);
-
         }
         else if (state == PatientTempState.FOLLOWING) {
           let instructor = me().getInstructor();
@@ -37,6 +36,10 @@ class FollowInstructions {
           if (myLocation.distanceTo(instructorLocation) < 1) // If we're really close, stop
           {
             agentConstant.destination = new Vector3(loc.x, loc.y, loc.z);//Stop
+          }
+          // the patient needs to hold their horses. Wait for their instructor to come to them, then follow.
+          else if (myLocation.distanceTo(instructorLocation) > 10) {
+            //console.log("Waiting for my instructor!");
           }
           else {
             //Head toward the instructor, but don't collide
@@ -58,6 +61,9 @@ class FollowInstructions {
         else if(state == PatientTempState.DONE){
           console.log("Done")
           me().inSimulation = false;
+        }
+        else if(state == PatientTempState.ARRIVED) {
+          // do nothing?
         }
         else {
           console.log("Invalid patient temp state " + state);
