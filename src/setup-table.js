@@ -59,7 +59,12 @@ export default function setupTable(crowdSetup) {
 
       //update existing entries in table
       document.getElementById("ComputerEntryTable").rows[i + 1].cells[1].innerHTML = Hospital.computer.entries[i].getChiefComplaint();
-      document.getElementById("ComputerEntryTable").rows[i + 1].cells[2].innerHTML = Hospital.computer.entries[i].getVitals();
+      if (typeof Hospital.computer.entries[i].getVitals() === 'undefined') {
+        document.getElementById("ComputerEntryTable").rows[i + 1].cells[2].innerHTML = "Not Taken";
+      }
+      else {
+        document.getElementById("ComputerEntryTable").rows[i + 1].cells[2].innerHTML = Hospital.computer.entries[i].getVitals();
+      }
       //document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = Hospital.computer.entries[i].getBed().Name;
     }
     requestAnimationFrame(fillComputerTable);

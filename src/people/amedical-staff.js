@@ -66,6 +66,7 @@ class AMedicalStaff extends APerson {
     }
 
 	hasRoom(room) {
+		console.log(room.name);
 		return this.MyRooms.some(r=>r.name == room.name)	
 	}
 

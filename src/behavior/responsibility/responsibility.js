@@ -32,17 +32,29 @@ class responsibility {
         let handleResponsibility = new HandleResponsibility(myIndex).tree;
         let reassess = new Reassess(myIndex).tree;
         let subResponsibility = new SubResponsibility(myIndex).tree;
+        let i = 0;
         
 
         this.tree = builder
             .sequence("Responsibility")
 
             .do("getRooms", (t) => {
-                let agent = Hospital.agents.find(a => a.id == myIndex);
-                agent.addRoom(Hospital.locations.find(l => l.name == "C1"));
+                if (i == 0) {
+                    let agent = Hospital.agents.find(a => a.id == myIndex);
+                    let roomName = "C1";
+
+                    for (i = 1; i < 22; i++) {
+                        agent.addRoom(Hospital.locations.find(l => l.name == roomName));
+                        roomName = "C" + i;
+                    }
+                }
+                
+                //let agent = Hospital.agents.find(a => a.id == myIndex);
+                //agent.addRoom(Hospital.locations.find(l => l.name == "C1"));
+
+
                 if (me().name == debug)
                     console.log("getRooms")
-
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
             .do("getComputer", (t) => {

@@ -46,6 +46,7 @@ class SubResponsibilty {
       .do("Go to my computer", async function (t) {
         if (debug && me().name == debug) console.log("Go to my computer")
         let result = await goToComputer.tick(t);
+        //console.log("First Node: " + result);
         return result;
       })// GO TO COMPUTER
 
@@ -54,11 +55,13 @@ class SubResponsibilty {
         counter++;
         if (debug && me().name == debug) console.log("Get Responsibility")
         let result = await getResponsibility.tick(t);
+        //console.log("Second Node: " + result);
         return result;
       })
       .do("First Sub Sub", async function (t) {
         if (debug && me().name == debug) console.log("First Sub Sub")
         let result = await subSubResponsibility.tick(t);
+        //console.log("Third Node: " + result);
         return result;
       })// GO TO COMPUTER
 
@@ -67,14 +70,18 @@ class SubResponsibilty {
       .do("Reassess", async (t) => {
         if (debug && me().name == debug) console.log("Reassess");
         let result = await reassess.tick(t);
+        //console.log("Fourth Node: " + result);
         return result;
       })
       .do("First Sub Sub", async function (t) {
         if (debug && me().name == debug) console.log("First Sub Sub")
         let result = await subSubResponsibility.tick(t);
+
+        //console.log("End of SubResponsibility Check: " + result);
+
         return result;
       })// GO TO COMPUTER
-      
+
       .end()
       .end()
       .end()

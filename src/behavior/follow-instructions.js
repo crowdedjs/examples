@@ -59,7 +59,7 @@ class FollowInstructions {
           }
         }
         else if(state == PatientTempState.DONE){
-          console.log("Done")
+          //console.log("Done")
           me().inSimulation = false;
         }
         else if(state == PatientTempState.ARRIVED) {
