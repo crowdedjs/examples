@@ -41,11 +41,11 @@ class responsibility {
             .do("getRooms", (t) => {
                 if (i == 0) {
                     let agent = Hospital.agents.find(a => a.id == myIndex);
-                    let roomName = "C1";
+                    let roomName = "C 1";
 
-                    for (i = 1; i < 22; i++) {
+                    for (i = 2; i <= 21; i++) {
+                        roomName = "C " + i;
                         agent.addRoom(Hospital.locations.find(l => l.name == roomName));
-                        roomName = "C" + i;
                     }
                 }
                 
