@@ -25,7 +25,8 @@ function boot() {
 
   let objValue = assets.objs.hospital;       //Grab the value of the environment 
   let locationValue = assets.locations.locationsHospital;  //Grab the value of all the locations
-  let arrivalValue = assets.arrivals.arrivalHospital;   //Grab the value of all the arrivals
+  //let arrivalValue = assets.arrivals.arrivalHospital;   //Grab the value of all the arrivals
+  let arrivalValue = assets.arrivals.secondPatient;
 
   let agentConstants = [];  //An array with all the high-level agent information (not the simulation data)
   let locations = []; //A list of all the adjusted locations

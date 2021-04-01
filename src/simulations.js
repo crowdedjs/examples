@@ -2,7 +2,8 @@ export default [
   {
     "title":"Hospital Test",
     "objPath" : "hospital.obj",
-    "arrivalPath" : "arrivalHospital.json",
+    //"arrivalPath" : "arrivalHospital.json",
+    "arrivalPath" : "secondPatient.json",
     "secondsOfSimulation" : 4500,
     "locationsPath" : "locationsHospital.json"
   },
