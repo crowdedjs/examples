@@ -20,9 +20,9 @@
   },
   "homepage": "https://github.com/crowdedjs/examples#readme",
   "dependencies": {
-    "@crowdedjs/assets": "latest",
+    "@crowdedjs/assets": "^0.1.8",
     "@crowdedjs/crowd-setup": "latest",
-    "@crowdedjs/fluent-behavior-tree": "latest",
+    "@crowdedjs/fluent-behavior-tree": "0.0.1",
     "@crowdedjs/math": "latest",
     "@crowdedjs/objs": "latest",
     "@crowdedjs/recast-detour": "latest",
