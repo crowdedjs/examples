@@ -32,24 +32,30 @@ class responsibility {
         let handleResponsibility = new HandleResponsibility(myIndex).tree;
         let reassess = new Reassess(myIndex).tree;
         let subResponsibility = new SubResponsibility(myIndex).tree;
-        let i = 0;
+        let i = 1;
         
 
         this.tree = builder
             .sequence("Responsibility")
 
-            .do("getRooms", (t) => {
-                if (i == 0) {
-                    let agent = Hospital.agents.find(a => a.id == myIndex);
-                    let roomName = "C1";
-                    agent.addRoom(Hospital.locations.find(l => l.name == roomName));
+            .do("getRooms", (t) => {               
+                // ADD A ROOM EACH LOOP WITHOUT DELETING, EVERYONE LOOPS, AND LOOPS IN ORDER,
+                // BUT THE TECH NEVER TRANSPORTS MORE THAN ONE PATIENT FOR XRAYS LIKE ABOVE
+                let agent = Hospital.agents.find(a => a.id == myIndex);
+                let roomName = "C1";
 
-                    for (i = 2; i <= 21; i++) {
-                        roomName = "C " + i;
-                        agent.addRoom(Hospital.locations.find(l => l.name == roomName));
-                    }
+                if (i == 1) {
+                    agent.addRoom(Hospital.locations.find(l => l.name == roomName));
+                    i++;
+                }
+                else if (i <= 21) {
+                    roomName = "C " + i;
+                    agent.addRoom(Hospital.locations.find(l => l.name == roomName));
+                    i++;
                 }
                 
+
+                // ORIGINAL METHOD: ONLY WORKS FOR ONE PATIENT, DOESN'T LOOP ANYONE
                 //let agent = Hospital.agents.find(a => a.id == myIndex);
                 //agent.addRoom(Hospital.locations.find(l => l.name == "C1"));
 

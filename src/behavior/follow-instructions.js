@@ -61,6 +61,8 @@ class FollowInstructions {
         else if(state == PatientTempState.DONE){
           //console.log("Done")
           me().inSimulation = false;
+          Hospital.CTQueue.shift();
+          Hospital.setCTOccupied(false);
         }
         else if(state == PatientTempState.ARRIVED) {
           // do nothing?

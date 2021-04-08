@@ -22,22 +22,22 @@ class Reassess {
 					return fluentBehaviorTree.BehaviorTreeStatus.Failure;
 				}
 
-        let entry = Hospital.computer.getEntry(patient);
-        let responsibility;
-        if(entry != null){
-          let factory = ResponsibilityFactory.get(me().MedicalStaffSubclass)
-          responsibility = factory.get(entry, me())
-        }
-        if(entry == null || responsibility == null){
-          me().setCurrentPatient(null);
-          return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-        }
-        //Implied else
-        me().setCurrentPatient(patient);
-        me().Responsibility = responsibility;
+				let entry = Hospital.computer.getEntry(patient);
+				let responsibility;
+				if(entry != null){
+				let factory = ResponsibilityFactory.get(me().MedicalStaffSubclass)
+				responsibility = factory.get(entry, me())
+				}
+				if(entry == null || responsibility == null){
+				me().setCurrentPatient(null);
+				return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+				}
+				//Implied else
+				me().setCurrentPatient(patient);
+				me().Responsibility = responsibility;
 
-				return fluentBehaviorTree.BehaviorTreeStatus.Success;
-			})
+						return fluentBehaviorTree.BehaviorTreeStatus.Success;
+					})
 			.end()
 			.build();
 	}

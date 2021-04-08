@@ -61,6 +61,10 @@ class AMedicalStaff extends APerson {
         this.myRooms = myRooms;
     }
 
+	// removeRoom() {
+	// 	this.myRooms.pop();
+	// }
+
     addRoom(room) {
         this.myRooms.push(room);
     }

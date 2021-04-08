@@ -32,7 +32,7 @@ class tech {
       //.splice(new WaitForever(myIndex).tree)
 
       // original tree sequence below
-      .do("Assiging Bed", async t=>{
+      .do("Assigning Bed", async t=>{
         let result = await assignBed.tick(t);
         return result;
       }) // C1
