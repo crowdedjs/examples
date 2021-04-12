@@ -13,7 +13,7 @@ class ResidentEKGOrderCAT extends AResponsibility{
 		this.entry.acknowledge(ACK.RESIDENT_EKG_ORDER_CAT);
 		let myPatient = this.entry.getPatient();
 		Hospital.CTQueue.push(myPatient);
-		console.log(Hospital.getCTQueue());
+		//console.log(Hospital.getCTQueue());
 
 	}
 }

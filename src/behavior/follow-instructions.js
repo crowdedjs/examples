@@ -1,5 +1,6 @@
 import PatientTempState from "../support/patient-temp-state.js";
-import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree";
+import LocationStatus from "../support/location-status.js";
 
 class FollowInstructions {
 
@@ -61,8 +62,11 @@ class FollowInstructions {
         else if(state == PatientTempState.DONE){
           //console.log("Done")
           me().inSimulation = false;
+          // ADJUST CTQUEUE SO TECH TAKES NEXT PATIENT TO CT ROOM
           Hospital.CTQueue.shift();
           Hospital.setCTOccupied(false);
+          // SET ROOM AS READY TO CLEAN
+          me().getPermanentRoom().setLocationStatus(LocationStatus.SANITIZE);
         }
         else if(state == PatientTempState.ARRIVED) {
           // do nothing?
