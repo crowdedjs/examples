@@ -40,5 +40,6 @@ COPY ./dist /app/other/dist
 RUN cp -r /code/dist /app/dist
 RUN cp /code/index.js /app/
 RUN npm install
+RUN npm i cognito-express
 
 ENTRYPOINT [ "node", "index.js"]
