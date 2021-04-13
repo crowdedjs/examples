@@ -39,7 +39,7 @@ class AssignPatientToTriageNurse {
 
           let myPatient = me().getCurrentPatient();
           
-          // temporary fix if there is a single greeter nurse
+          // This should work for multiple triage nurses as long as inactive triage nurses wait at TriageNursePlace
           if (closestTriageNurse.getBusy())
           {
             return fluentBehaviorTree.BehaviorTreeStatus.Failure;
