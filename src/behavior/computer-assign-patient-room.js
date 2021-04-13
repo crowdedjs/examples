@@ -28,7 +28,7 @@ class ComputerAssignPatientRoom {
 
            let rooms = Hospital.locations.filter(l=>l.roomType == RoomType.C_ROOM && l.locationStatus == LocationStatus.NONE );
            if(rooms.length == 0)
-            return fluentBehaviorTree.BehaviorTreeStatus.Failed
+            return fluentBehaviorTree.BehaviorTreeStatus.Failure;
 
             // need to set room as claimed
             rooms[0].setLocationStatus(LocationStatus.CLAIMED);
