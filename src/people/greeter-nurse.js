@@ -18,7 +18,7 @@ class greeterNurse {
       const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
 
       let self = this;//Since we need to reference this in anonymous functions, we need a reference
-      let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
+      let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
       let myGoal = Hospital.locations.find(l => l.name == "Check In");
       if (!myGoal) throw new Exception("We couldn't find a location called Check In");
   
@@ -30,7 +30,7 @@ class greeterNurse {
         .sequence("Greeter Nurse Behaviors")
             .splice(new GoTo(self.index, myGoal.location).tree)
 
-            // now waits for patient to be nearby, and be in ARRIVED state
+            // waits for patient to be nearby, and be in ARRIVED state
             .splice(new LookForArrivingPatient(myIndex).tree)
 
             .splice(new TakeTime(30, 90).tree) // seconds: uniform, 30, 90
@@ -44,11 +44,6 @@ class greeterNurse {
             .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
 
             .splice(new ComputerAssignPatientRoom(myIndex).tree)
-
-            // .do("Testing", (t) => {
-            //   console.log("Got here!");
-            //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-            // })
 
             .untilFail("Assign Patient to Triage Nurse successfully")
               .inverter("invert result")            
