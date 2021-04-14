@@ -28,6 +28,7 @@
     "@crowdedjs/recast-detour": "latest",
     "@crowdedjs/worker": "latest",
     "axios": "^0.21.1",
+    "cognito-express": "^2.0.18",
     "npm-list-linked": "^0.1.0",
     "three": "^0.124.0"
   },
