@@ -9,7 +9,8 @@ import Computer from "./support/computer.js"
 import Room from "./support/room.js"
 import Vector3 from "@crowdedjs/math"
 import setupTable from "./setup-table.js"
-import assets from "@crowdedjs/assets"
+//import assets from "@crowdedjs/assets"
+import assets from "./assets/index.js"
 
 function boot() {
   //Setup simulation parameters
@@ -25,8 +26,8 @@ function boot() {
 
   let objValue = assets.objs.hospital;       //Grab the value of the environment 
   let locationValue = assets.locations.locationsHospital;  //Grab the value of all the locations
-  //let arrivalValue = assets.arrivals.arrivalHospital;   //Grab the value of all the arrivals
-  let arrivalValue = assets.arrivals.arrivalHospitalFew;
+  let arrivalValue = assets.arrivals.arrivalHospitalTesting;   //Grab the value of all the arrivals
+  //let arrivalValue = assets.arrivals.arrivalHospital;
 
   let agentConstants = [];  //An array with all the high-level agent information (not the simulation data)
   let locations = []; //A list of all the adjusted locations

@@ -33,9 +33,13 @@ class AssignPatientToTriageNurse {
             return Status.RUNNING; //No triage nurse is available or close enough
           */
          let closestTriageNurses = Hospital.agents.filter(a=>a.medicalStaffType == "Nurse" && a.medicalStaffSubclass == "Triage Nurse" && a.getCurrentPatient() == null);
-         let closestTriageNursesSorted = closestTriageNurses.sort((a,b)=>a.location.distanceTo(myLocation) - b.location.distanceTo(myLocation));
-         let closestTriageNurse = closestTriageNursesSorted[0];
-         if(!closestTriageNurse) return fluentBehaviorTree.BehaviorTreeStatus.Running;
+         
+         
+          // DISTANCETO NOT WORKING NOW FOR SOME REASON???
+          let closestTriageNursesSorted = closestTriageNurses.sort((a,b)=>Vector3.subtract(a.location, myLocation).length() - Vector3.subtract(b.location, myLocation).length());
+          //let closestTriageNursesSorted = closestTriageNurses.sort((a,b)=>a.location.distanceTo(myLocation) - b.location.distanceTo(myLocation));
+          let closestTriageNurse = closestTriageNursesSorted[0];
+          if(!closestTriageNurse) return fluentBehaviorTree.BehaviorTreeStatus.Running;
 
           let myPatient = me().getCurrentPatient();
           

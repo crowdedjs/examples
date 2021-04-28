@@ -23,6 +23,7 @@ class FollowInstructions {
         
         let idx = Hospital.agents[self.index].idx;
         let simulationAgent = t.crowd.find(f=>f.id == idx);
+        //console.log(simulationAgent.location);
         let loc = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
         let state = me().getPatientTempState();
 
@@ -39,8 +40,9 @@ class FollowInstructions {
             agentConstant.destination = new Vector3(loc.x, loc.y, loc.z);//Stop
           }
           // the patient needs to hold their horses. Wait for their instructor to come to them, then follow.
-          else if (myLocation.distanceTo(instructorLocation) > 10) {
-            //console.log("Waiting for my instructor!");
+          // THE DISTANCE THEY FOLLOW GIVES WEIRD OUTCOMES
+          else if (myLocation.distanceTo(instructorLocation) > 8) {
+            console.log("Waiting for my instructor!");
           }
           else {
             //Head toward the instructor, but don't collide
