@@ -22,6 +22,7 @@ class GetResponsibility {
                     .map(i=>{return {entry: i, responsibility:classedResponsibility.get(i, I)}})
                     .filter(i=>i.responsibility!=null && I.hasRoom(i.entry.getBed()));
 
+                //console.log(me().medicalStaffSubclass);    
                 let responsibilities = Hospital.computer.entries.filter(
                     i => me().hasRoom(i.getBed()) &&
                         classedResponsibility.get(i, me()) != null

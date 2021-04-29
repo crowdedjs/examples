@@ -70,7 +70,14 @@ export default function setupTable(crowdSetup) {
       else {
         document.getElementById("ComputerEntryTable").rows[i + 1].cells[2].innerHTML = Hospital.computer.entries[i].getVitals();
       }
-      document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = Hospital.computer.entries[i].getBed().getName();
+      
+      if (typeof Hospital.computer.entries[i].getBed() === 'undefined') {
+        document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = "Not Assigned";
+      }
+      else {
+        document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = Hospital.computer.entries[i].getBed().getName();
+      }
+      
       document.getElementById("ComputerEntryTable").rows[i + 1].cells[4].innerHTML = Hospital.computer.entries[i].getPatient().inSimulation;
     }
     requestAnimationFrame(fillComputerTable);
