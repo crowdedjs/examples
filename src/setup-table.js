@@ -7,11 +7,14 @@ export default function setupTable(crowdSetup) {
   var titleCell = titleRow.insertCell(0);
   var chiefComplaintCell = titleRow.insertCell(1);
   var takenVitalsCell = titleRow.insertCell(2);
-  //var bedCell = titleRow.insertCell(3);
+  var bedCell = titleRow.insertCell(3);
+  var inSimulation = titleRow.insertCell(4);
+  
   titleCell.innerHTML = "Computer Entry";
   chiefComplaintCell.innerHTML = "Chief Complaint";
   takenVitalsCell.innerHTML = "Vitals Taken";
-  //bedCell.innerHTML = "Assigned Bed";
+  bedCell.innerHTML = "Assigned Bed";
+  inSimulation.innerHTML = "In Hospital";
 
   let computerEntries = 0;
 
@@ -23,11 +26,13 @@ export default function setupTable(crowdSetup) {
         var cell1 = tempRow.insertCell(0);
         var cell2 = tempRow.insertCell(1);
         var cell3 = tempRow.insertCell(2);
-        //var cell4 = tempRow.insertCell(3);
+        var cell4 = tempRow.insertCell(3);
+        var cell5 = tempRow.insertCell(4);
         cell1.innerHTML = computerEntries + 1;
         cell2.innerHTML = Hospital.computer.entries[computerEntries].getChiefComplaint();
         cell3.innerHTML = Hospital.computer.entries[computerEntries].getVitals();
-        //cell4.innerHTML = Hospital.computer.entries[computerEntries].getBed().Name;
+        cell4.innerHTML = Hospital.computer.entries[computerEntries].getBed().getName();
+        cell5.innerHTML = Hospital.computer.entries[computerEntries].getPatient().inSimulation;
 
         computerEntries++;
 
@@ -65,7 +70,8 @@ export default function setupTable(crowdSetup) {
       else {
         document.getElementById("ComputerEntryTable").rows[i + 1].cells[2].innerHTML = Hospital.computer.entries[i].getVitals();
       }
-      //document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = Hospital.computer.entries[i].getBed().Name;
+      document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = Hospital.computer.entries[i].getBed().getName();
+      document.getElementById("ComputerEntryTable").rows[i + 1].cells[4].innerHTML = Hospital.computer.entries[i].getPatient().inSimulation;
     }
     requestAnimationFrame(fillComputerTable);
   }

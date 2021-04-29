@@ -42,7 +42,7 @@ class FollowInstructions {
           // the patient needs to hold their horses. Wait for their instructor to come to them, then follow.
           // THE DISTANCE THEY FOLLOW GIVES WEIRD OUTCOMES
           else if (myLocation.distanceTo(instructorLocation) > 8) {
-            console.log("Waiting for my instructor!");
+            //console.log("Waiting for my instructor!");
           }
           else {
             //Head toward the instructor, but don't collide
