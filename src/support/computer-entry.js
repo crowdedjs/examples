@@ -38,6 +38,13 @@ class ComputerEntry {
     this.chiefComplaint = complaint;
   }
 
+  // constructor(patient, complaint, taken, theBed) {
+  //   this.patient = patient;
+  //   this.chiefComplaint = complaint;
+  //   this.vitals = taken;
+  //   this.bed = theBed;
+  // }
+
   toString() {
     let toReturn = "";
     toReturn += es + ",";

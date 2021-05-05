@@ -31,7 +31,11 @@ export default function setupTable(crowdSetup) {
         cell1.innerHTML = computerEntries + 1;
         cell2.innerHTML = Hospital.computer.entries[computerEntries].getChiefComplaint();
         cell3.innerHTML = Hospital.computer.entries[computerEntries].getVitals();
-        cell4.innerHTML = Hospital.computer.entries[computerEntries].getBed().getName();
+        if (typeof Hospital.computer.entries[computerEntries].getBed() === 'undefined') {
+          cell4.innerHTML = "Not Assigned";
+        }
+        else
+          cell4.innerHTML = Hospital.computer.entries[computerEntries].getBed().getName();
         cell5.innerHTML = Hospital.computer.entries[computerEntries].getPatient().inSimulation;
 
         computerEntries++;

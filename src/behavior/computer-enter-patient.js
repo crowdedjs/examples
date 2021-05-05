@@ -15,8 +15,9 @@ class ComputerEnterPatient {
             .sequence("Computer Enter Patient")
                 .do("Enter Patient", (t) => {
                     let patient = me().getCurrentPatient();
-                    let entry = new ComputerEntry(patient, "Unknown")
-                    
+                    // let entry = new ComputerEntry(patient, "Unknown", "Not Taken", "Waiting");
+                    let entry = new ComputerEntry(patient, "Unknown");
+
                     Hospital.computer.add(entry);
                     //Hospital.computer.print();
 
