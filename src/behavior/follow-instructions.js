@@ -19,18 +19,36 @@ class FollowInstructions {
     this.tree = builder
       .sequence("Follow Instructions")
       .do("Follow Instructions", t => {
+        
         let agentConstant = Hospital.agents.find(a => a.id == self.index);
         
         let idx = Hospital.agents[self.index].idx;
         let simulationAgent = t.crowd.find(f=>f.id == idx);
-        //console.log(simulationAgent.location);
         let loc = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
         let state = me().getPatientTempState();
+        let myGoal = Hospital.locations.find(l => l.name == "Check In");
+
+        // if (myIndex > 25) {
+        //   console.log("My ID: " + myIndex);
+        //   console.log(loc);
+        //   console.log(state);
+        // }
 
         if (state == PatientTempState.WAITING) {         
-          agentConstant.destination = new Vector3(loc.x, loc.y, loc.z);
+          //agentConstant.destination = new Vector3(loc.x, loc.y, loc.z);
+          //agentConstant.destination = Vector3.fromObject(t.crowd.find(f=>f.id == me().idx).location);
+          agentConstant.destination = new Vector3(agentConstant.location.x, agentConstant.location.y, agentConstant.location.z);
+          // if (myIndex > 25) {
+          //   console.log(myIndex + " is waiting.");
+          // }
         }
         else if (state == PatientTempState.FOLLOWING) {
+          // if (myIndex > 25) {
+          //   console.log(myIndex + " is following.");
+          //   let instructor = me().getInstructor();
+          //   console.log(instructor);
+          // }
+          
           let instructor = me().getInstructor();
           let instructorLoc = Vector3.fromObject(t.crowd.find(f=>f.id == instructor.idx).location);
           let instructorLocation = instructorLoc;
@@ -68,10 +86,10 @@ class FollowInstructions {
           Hospital.CTQueue.shift();
           Hospital.setCTOccupied(false);
           // SET ROOM AS READY TO CLEAN
-          me().getPermanentRoom().setLocationStatus(LocationStatus.SANITIZE);
+          //me().getPermanentRoom().setLocationStatus(LocationStatus.SANITIZE);
         }
         else if(state == PatientTempState.ARRIVED) {
-          // do nothing?
+          agentConstant.destination = myGoal.location;
         }
         else {
           console.log("Invalid patient temp state " + state);

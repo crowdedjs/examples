@@ -15,8 +15,8 @@ class triageNurse {
     this.toReturn = null;
 
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
-    //let goToName = "TriageNursePlace";
-    let goToName = "Check In"
+    let goToName = "TriageNursePlace";
+    //let goToName = "Check In"
     let me = () => Hospital.agents.find(a => a.id == myIndex);;
 
     let myGoal = Hospital.locations.find(l => l.name == goToName);
@@ -37,6 +37,11 @@ class triageNurse {
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
 
       })
+      
+      // .do("Test", (t) => {
+      //   console.log(me().getCurrentPatient().getAssignedRoom());
+      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
+      // })
 
       .splice(new GoToLazy(self.index, () => me().getCurrentPatient().getAssignedRoom().location).tree)
       

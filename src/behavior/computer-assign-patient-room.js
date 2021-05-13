@@ -27,7 +27,7 @@ class ComputerAssignPatientRoom {
             */
 
            let rooms = Hospital.locations.filter(l=>l.roomType == RoomType.C_ROOM && l.locationStatus == LocationStatus.NONE );
-           console.log(rooms);
+           //console.log(rooms);
            if(rooms.length == 0)
             return fluentBehaviorTree.BehaviorTreeStatus.Running;
             //return fluentBehaviorTree.BehaviorTreeStatus.Failure;

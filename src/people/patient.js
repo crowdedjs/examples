@@ -24,11 +24,21 @@ class patient {
 
       .sequence("Patient Actions")
       //.selector("Check In")
+
+      // .do("Stop", async function (t) {
+      //   if (myIndex > 25) {
+      //     console.log("My ID: " + myIndex);
+      //     console.log(startLocation);
+      //     let state = me().getPatientTempState();
+      //     console.log(state);
+      //   }
+      // 
+      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
+      // })
+
       .splice(new GoToLazy(myIndex, () => this.startLocation.location).tree)// CHECK IN
 
       .splice(new Stop(myIndex).tree)
-
-
 
       .splice(new FollowInstructions(myIndex).tree)
       .do("Done following instructions", async function (t) {

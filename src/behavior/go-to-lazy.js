@@ -29,10 +29,7 @@ class GoToLazy{
           let patientLocation = Vector3.fromObject(t.crowd.find(f=>f.id == myPatient.idx).location);
 
           if (myLocation.distanceTo(patientLocation) > 8) {
-            //console.log("patientLocation: " + patientLocation);
-            //console.log("destination before: " + me().destination);
             me().destination = Vector3.fromObject(patientLocation);
-            //console.log("destination after: " + me().destination);
           }
         }
 
@@ -50,14 +47,33 @@ class GoToLazy{
         let loc = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
         let waypoint = Vector3.fromObject(self.locationFunction());
 
-        let difference = Vector3.subtract(loc, waypoint)
+        let difference = Vector3.subtract(loc, waypoint);
         let distanceToWaypoint = difference.length();
-        
-        if (distanceToWaypoint < 2)
-        {
+
+        if (me().MedicalStaffSubclass == "Triage Nurse") {
+          let myPatient = me().getCurrentPatient();
+          let patientLocation = Vector3.fromObject(t.crowd.find(f=>f.id == myPatient.idx).location);
+
+          let differencePatient = Vector3.subtract(loc, patientLocation);
+          let distanceToPatient = differencePatient.length();
+
+          if (distanceToWaypoint < 2 && distanceToPatient < 2) {
+            frameAgentDetail.pose = "Idle";
+            return fluentBehaviorTree.BehaviorTreeStatus.Success;
+          }
+          else if (distanceToPatient < 5) {
+            agent.destination = next;
+          }
+          else {
+            agent.destination = patientLocation;
+          }
+          
+        }
+        else if (distanceToWaypoint < 2) {
           frameAgentDetail.pose = "Idle";
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         }
+
         return fluentBehaviorTree.BehaviorTreeStatus.Running;
       })
       .end()
