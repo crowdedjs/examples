@@ -27,10 +27,12 @@ class triageNurse {
 
     this.tree = builder
       .sequence("Pick Triage Room")
-      .splice(new GoTo(self.index, myGoal.location).tree)
-
+      //.splice(new GoTo(self.index, myGoal.location).tree)
+      .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "TriageNursePlace").location).tree)
 
       .do("Wait For Patient Assignment", (t) => {
+        //console.log("I'm " + myIndex + " and this is my patient: ");
+        //console.log(me().getCurrentPatient());
         if (!me().getCurrentPatient()) return fluentBehaviorTree.BehaviorTreeStatus.Running;
         me().setBusy(true);
         //console.log("I'm Busy!");
@@ -39,16 +41,20 @@ class triageNurse {
       })
       
       // .do("Test", (t) => {
-      //   console.log(me().getCurrentPatient().getAssignedRoom());
+      //   if (me().getCurrentPatient().idx > 0) {
+      //     console.log(me().getCurrentPatient().getAssignedRoom());
+      //   }
       //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
       // })
 
       .splice(new GoToLazy(self.index, () => me().getCurrentPatient().getAssignedRoom().location).tree)
       
-      // .do("Testing", (t) => {
-      //   console.log("Got here!");
-      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      // })
+      .do("Testing", (t) => {
+        if (me().getCurrentPatient().idx > 0) {
+          console.log(myIndex + " Got here!");
+        }
+        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+      })
 
       .do("Leave Patient", (t) => {
         let result = leavePatient.tick(t)

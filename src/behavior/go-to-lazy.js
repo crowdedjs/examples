@@ -42,6 +42,10 @@ class GoToLazy{
         let frameAgentDetail = t.crowd.find(a=>a.id == self.index);
         let next = self.locationFunction();
         
+        // if (me().MedicalStaffSubclass == "Triage Nurse") {
+        //   console.log(Vector3.fromObject(next));
+        // }
+        
         agent.destination = next;
         let simulationAgent = t.crowd.find(a=>a.id == self.index);
         let loc = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
@@ -53,6 +57,12 @@ class GoToLazy{
         if (me().MedicalStaffSubclass == "Triage Nurse") {
           let myPatient = me().getCurrentPatient();
           let patientLocation = Vector3.fromObject(t.crowd.find(f=>f.id == myPatient.idx).location);
+          
+          //if (myPatient.idx > 24) {
+            //console.log("My Location: " + loc);
+            //console.log("Location of patient number " + myPatient.idx + ": " + patientLocation);
+            //console.log("My destination: " + Vector3.fromObject(next));
+          //}
 
           let differencePatient = Vector3.subtract(loc, patientLocation);
           let distanceToPatient = differencePatient.length();

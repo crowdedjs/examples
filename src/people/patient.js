@@ -36,6 +36,13 @@ class patient {
       //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
       // })
 
+      .do("Wait For Patient Assignment", (t) => {
+        console.log(me());
+       
+        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+
+      })
+
       .splice(new GoToLazy(myIndex, () => this.startLocation.location).tree)// CHECK IN
 
       .splice(new Stop(myIndex).tree)

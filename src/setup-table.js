@@ -32,7 +32,7 @@ export default function setupTable(crowdSetup) {
         cell2.innerHTML = Hospital.computer.entries[computerEntries].getChiefComplaint();
         cell3.innerHTML = Hospital.computer.entries[computerEntries].getVitals();
         if (typeof Hospital.computer.entries[computerEntries].getBed() === 'undefined') {
-          cell4.innerHTML = "Not Assigned";
+          cell4.innerHTML = "Waiting Room";
         }
         else
           cell4.innerHTML = Hospital.computer.entries[computerEntries].getBed().getName();
@@ -76,13 +76,18 @@ export default function setupTable(crowdSetup) {
       }
       
       if (typeof Hospital.computer.entries[i].getBed() === 'undefined') {
-        document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = "Not Assigned";
+        document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = "Waiting Room";
       }
       else {
         document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = Hospital.computer.entries[i].getBed().getName();
       }
       
       document.getElementById("ComputerEntryTable").rows[i + 1].cells[4].innerHTML = Hospital.computer.entries[i].getPatient().inSimulation;
+
+      // DELETE ROW WHEN THEY LEAVE
+      //if (!Hospital.computer.entries[i].getPatient().inSimulation) {
+        //document.getElementById("ComputerEntryTable").deleteRow(i + 1);
+      //}
     }
     requestAnimationFrame(fillComputerTable);
   }
