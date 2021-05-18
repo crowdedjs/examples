@@ -27,12 +27,12 @@ class ComputerAssignPatientRoom {
             */
 
            let rooms = Hospital.locations.filter(l=>l.roomType == RoomType.C_ROOM && l.locationStatus == LocationStatus.NONE );
-          let waitingRoom = Hospital.locations.filter(l=>l.name == "Waiting Room");
+          //let waitingRoom = Hospital.locations.filter(l=>l.name == "Waiting Room");
 
            if(rooms.length == 0) {
-            patient.setAssignedRoom(waitingRoom);
-            patient.setPermanentRoom(waitingRoom);
-            entry.setBed(waitingRoom);
+            // patient.setAssignedRoom(waitingRoom);
+            // patient.setPermanentRoom(waitingRoom);
+            // entry.setBed(waitingRoom);
             return fluentBehaviorTree.BehaviorTreeStatus.Running;
            }
 
