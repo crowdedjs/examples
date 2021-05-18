@@ -1,4 +1,7 @@
 export default {
+  build: {
+    minify : false
+  },
   resolve: {
     alias: {
       //"@crowdedjs/crowd-setup/": "/../crowd-setup/",

@@ -81,7 +81,7 @@ class FollowInstructions {
         }
         else if(state == PatientTempState.DONE){
           //console.log("Done")
-          //me().inSimulation = false;
+          me().inSimulation = false;
           // ADJUST CTQUEUE SO TECH TAKES NEXT PATIENT TO CT ROOM
           Hospital.CTQueue.shift();
           Hospital.setCTOccupied(false);

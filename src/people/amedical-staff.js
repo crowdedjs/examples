@@ -70,7 +70,10 @@ class AMedicalStaff extends APerson {
     }
 
 	hasRoom(room) {
-		return this.MyRooms.some(r=>r.name == room.name)	
+		if (!room || !room.name) {
+			return false;
+		}
+		return this.MyRooms.some(r=>r && r.name == room.name)	
 	}
 
 	getCurrentPatient() {
