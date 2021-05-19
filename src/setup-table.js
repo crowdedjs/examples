@@ -67,28 +67,39 @@ export default function setupTable(crowdSetup) {
       }
 
       //update existing entries in table
-      document.getElementById("ComputerEntryTable").rows[i + 1].cells[1].innerHTML = Hospital.computer.entries[i].getChiefComplaint();
-      if (typeof Hospital.computer.entries[i].getVitals() === 'undefined') {
-        document.getElementById("ComputerEntryTable").rows[i + 1].cells[2].innerHTML = "Not Taken";
+      if (typeof document.getElementById("ComputerEntryTable").rows[i + 1] === 'undefined') {
+        break;
       }
       else {
-        document.getElementById("ComputerEntryTable").rows[i + 1].cells[2].innerHTML = Hospital.computer.entries[i].getVitals();
-      }
-      
-      if (typeof Hospital.computer.entries[i].getBed() === 'undefined') {
-        document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = "Waiting Room";
-      }
-      else {
-        document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = Hospital.computer.entries[i].getBed().getName();
-      }
-      
-      document.getElementById("ComputerEntryTable").rows[i + 1].cells[4].innerHTML = Hospital.computer.entries[i].getPatient().inSimulation;
+        document.getElementById("ComputerEntryTable").rows[i + 1].cells[0].innerHTML = i + 1;
 
-      // DELETE ROW WHEN THEY LEAVE
-      //if (!Hospital.computer.entries[i].getPatient().inSimulation) {
-        //document.getElementById("ComputerEntryTable").deleteRow(i + 1);
-      //}
+        document.getElementById("ComputerEntryTable").rows[i + 1].cells[1].innerHTML = Hospital.computer.entries[i].getChiefComplaint();
+        if (typeof Hospital.computer.entries[i].getVitals() === 'undefined') {
+          document.getElementById("ComputerEntryTable").rows[i + 1].cells[2].innerHTML = "Not Taken";
+        }
+        else {
+          document.getElementById("ComputerEntryTable").rows[i + 1].cells[2].innerHTML = Hospital.computer.entries[i].getVitals();
+        }
+        
+        if (typeof Hospital.computer.entries[i].getBed() === 'undefined') {
+          document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = "Waiting Room";
+        }
+        else {
+          document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = Hospital.computer.entries[i].getBed().getName();
+        }
+        
+        document.getElementById("ComputerEntryTable").rows[i + 1].cells[4].innerHTML = Hospital.computer.entries[i].getPatient().inSimulation;
+
+      }
+
+      if (!Hospital.computer.entries[i].getPatient().inSimulation) {
+        document.getElementById("ComputerEntryTable").deleteRow(i + 1);
+        Hospital.computer.entries.splice(i, 1);
+        computerEntries--;
+        break;
+      }
     }
+
     requestAnimationFrame(fillComputerTable);
   }
 

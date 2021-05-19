@@ -49,12 +49,12 @@ class triageNurse {
 
       .splice(new GoToLazy(self.index, () => me().getCurrentPatient().getAssignedRoom().location).tree)
       
-      .do("Testing", (t) => {
-        if (me().getCurrentPatient().idx > 0) {
-          console.log(myIndex + " Got here!");
-        }
-        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      })
+      // .do("Testing", (t) => {
+      //   if (me().getCurrentPatient().idx > 0) {
+      //     console.log(myIndex + " Got here!");
+      //   }
+      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
+      // })
 
       .do("Leave Patient", (t) => {
         let result = leavePatient.tick(t)

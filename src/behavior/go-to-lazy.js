@@ -26,7 +26,7 @@ class GoToLazy{
           let loc = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
           let myLocation = loc;
           let myPatient = me().getCurrentPatient();
-          let patientLocation = Vector3.fromObject(t.crowd.find(f=>f.id == myPatient.idx).location);
+          let patientLocation = Vector3.fromObject(t.crowd.find(f=>f.id == myPatient.id).location);
 
           if (myLocation.distanceTo(patientLocation) > 8) {
             me().destination = Vector3.fromObject(patientLocation);
@@ -37,7 +37,7 @@ class GoToLazy{
       })
       //Now return null as we head to that destination
       //We return running until we're close to it.
-      .do("Traveling to goal lazy", (t) => {        
+      .do("Traveling to goal lazy", (t) => {                
         let agent = Hospital.agents.find(a=>a.id==self.index);
         let frameAgentDetail = t.crowd.find(a=>a.id == self.index);
         let next = self.locationFunction();
@@ -56,7 +56,7 @@ class GoToLazy{
 
         if (me().MedicalStaffSubclass == "Triage Nurse") {
           let myPatient = me().getCurrentPatient();
-          let patientLocation = Vector3.fromObject(t.crowd.find(f=>f.id == myPatient.idx).location);
+          let patientLocation = Vector3.fromObject(t.crowd.find(f=>f.id == myPatient.id).location);
           
           //if (myPatient.idx > 24) {
             //console.log("My Location: " + loc);
@@ -73,9 +73,11 @@ class GoToLazy{
           }
           else if (distanceToPatient < 5) {
             agent.destination = next;
+            //console.log(distanceToPatient);
           }
           else {
             agent.destination = patientLocation;
+            //console.log(agent.destination);
           }
           
         }

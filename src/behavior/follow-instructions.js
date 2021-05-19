@@ -22,8 +22,8 @@ class FollowInstructions {
         
         let agentConstant = Hospital.agents.find(a => a.id == self.index);
         
-        let idx = Hospital.agents[self.index].idx;
-        let simulationAgent = t.crowd.find(f=>f.id == idx);
+        let id = Hospital.agents[self.index].id;
+        let simulationAgent = t.crowd.find(f=>f.id == id);
         let loc = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
         let state = me().getPatientTempState();
         let myGoal = Hospital.locations.find(l => l.name == "Check In");
@@ -50,7 +50,7 @@ class FollowInstructions {
           // }
           
           let instructor = me().getInstructor();
-          let instructorLoc = Vector3.fromObject(t.crowd.find(f=>f.id == instructor.idx).location);
+          let instructorLoc = Vector3.fromObject(t.crowd.find(f=>f.id == instructor.id).location);
           let instructorLocation = instructorLoc;
           let myLocation = loc;
           if (myLocation.distanceTo(instructorLocation) < 1) // If we're really close, stop
@@ -86,7 +86,7 @@ class FollowInstructions {
           Hospital.CTQueue.shift();
           Hospital.setCTOccupied(false);
           // SET ROOM AS READY TO CLEAN
-          //me().getPermanentRoom().setLocationStatus(LocationStatus.SANITIZE);
+          me().getPermanentRoom().setLocationStatus(LocationStatus.SANITIZE);
         }
         else if(state == PatientTempState.ARRIVED) {
           agentConstant.destination = myGoal.location;

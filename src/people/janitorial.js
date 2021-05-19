@@ -25,29 +25,29 @@ class janitorial {
       .sequence("Janitorial")
       .splice(new GoTo(self.index, myGoal.location).tree)
       
-      // //find room to clean
-      // .do("Find Room to Clean", (t) => {               
-      //   if (typeof Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE) === 'undefined') {
-      //     return fluentBehaviorTree.BehaviorTreeStatus.Running;
-      //   }
-      //   else {
-      //     return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      //   }
-      // })
+      //find room to clean
+      .do("Find Room to Clean", (t) => {               
+        if (typeof Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE) === 'undefined') {
+          return fluentBehaviorTree.BehaviorTreeStatus.Running;
+        }
+        else {
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        }
+      })
 
-      // // GO TO THE ROOM THAT NEEDS CLEANING
-      // .splice(new GoToLazy(self.index, () => Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE).location).tree)
+      // GO TO THE ROOM THAT NEEDS CLEANING
+      .splice(new GoToLazy(self.index, () => Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE).location).tree)
 
-      // // TAKE TIME IN THE ROOM TO CLEAN
-      // .splice(new TakeTime(60, 120).tree)
+      // TAKE TIME IN THE ROOM TO CLEAN
+      .splice(new TakeTime(60, 120).tree)
 
-      // // set that room's status as NONE
-      // .do("Done with the Room", (t) => {               
-      //   Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE).setLocationStatus(LocationStatus.NONE);
-      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      // })
+      // set that room's status as NONE
+      .do("Done with the Room", (t) => {               
+        Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE).setLocationStatus(LocationStatus.NONE);
+        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+      })
 
-      .splice(new WaitForever(self.index, myGoal.location).tree)
+      //.splice(new WaitForever(self.index, myGoal.location).tree)
             
       .end()
       .build();
