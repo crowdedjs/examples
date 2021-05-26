@@ -97,6 +97,7 @@
       "arrivalTick": 77178,
       "arrivalLocation": "Main Entrance",
       "age": 69,
+      // "severity": "ESI3",
       "severity": "ESI3",
       "patientName": "Susan",
       "gender": "female",

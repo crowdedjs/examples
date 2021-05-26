@@ -22,21 +22,42 @@ class LookForArrivingPatient {
         let myLocation = me().location; // last location
 
         let agentConstantPatients = Hospital.agents.filter(a=>a.name == "patient" && t.crowd.some(t=>t.id==a.id) && a.location);
-        
-        
-        let closestPatients = agentConstantPatients
-          .sort((a, b) => Vector3.fromObject(a.location).distanceTo(myLocation) - Vector3.fromObject(b.location).distanceTo(myLocation))
+
+        // check for any ESI1 patients
+        // let emergencyPatients = agentConstantPatients.filter(a=>a.getSeverity() == "ESI1");
+        // if (emergencyPatients.length > 0) {
+        //   let closestPatients = emergencyPatients.sort((a, b) => Vector3.fromObject(a.location).distanceTo(myLocation) - Vector3.fromObject(b.location).distanceTo(myLocation));
+        //   let closestPatient = closestPatients[0] || null;
+        //   if (closestPatient == null || Vector3.fromObject(closestPatient.location).distanceTo(myLocation) > 3 || closestPatient.patientTempState != PatientState.ARRIVED)
+        //     return fluentBehaviorTree.BehaviorTreeStatus.Running;
+        // }
+        // else {
+        //   let closestPatients = agentConstantPatients
+        //     .sort((a, b) => Vector3.fromObject(a.location).distanceTo(myLocation) - Vector3.fromObject(b.location).distanceTo(myLocation))
+        //   let closestPatient = closestPatients[0] || null;
+        //   if (closestPatient == null || Vector3.fromObject(closestPatient.location).distanceTo(myLocation) > 3 || closestPatient.patientTempState != PatientState.ARRIVED)
+        //     return fluentBehaviorTree.BehaviorTreeStatus.Running;
+        // }
+        let closestPatients = agentConstantPatients.sort((a, b) => Vector3.fromObject(a.location).distanceTo(myLocation) - Vector3.fromObject(b.location).distanceTo(myLocation));
+        //let closestPatientsCopy = closestPatients;
+        let closeEmergencyPatients = closestPatients.filter(a=>a.getSeverity() == "ESI1");
         let closestPatient = closestPatients[0] || null;
+
+        if (closeEmergencyPatients.length > 0) {
+          closestPatient = closeEmergencyPatients[0] || null;
+          if (closestPatient == null || Vector3.fromObject(closestPatient.location).distanceTo(myLocation) > 3 || closestPatient.patientTempState != PatientState.ARRIVED || closestPatient.inSimulation != true) {
+            closestPatient = closestPatients[0] || null;
+          }
+        }
+
         if (closestPatient == null || Vector3.fromObject(closestPatient.location).distanceTo(myLocation) > 3 || closestPatient.patientTempState != PatientState.ARRIVED)
           return fluentBehaviorTree.BehaviorTreeStatus.Running;
+
         //We found our patient
         closestPatient.patientTempState = PatientState.WAITING;
         closestPatient.instructor = me();
         me().currentPatient = closestPatient;
         return fluentBehaviorTree.BehaviorTreeStatus.Success
-        
-
-
 
       })
       .end()

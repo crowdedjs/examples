@@ -8,13 +8,13 @@ export default function setupTable(crowdSetup) {
   var chiefComplaintCell = titleRow.insertCell(1);
   var takenVitalsCell = titleRow.insertCell(2);
   var bedCell = titleRow.insertCell(3);
-  var inSimulation = titleRow.insertCell(4);
+  var severityCell = titleRow.insertCell(4);
   
   titleCell.innerHTML = "Computer Entry";
   chiefComplaintCell.innerHTML = "Chief Complaint";
   takenVitalsCell.innerHTML = "Vitals Taken";
   bedCell.innerHTML = "Assigned Bed";
-  inSimulation.innerHTML = "In Hospital";
+  severityCell.innerHTML = "Severity";
 
   let computerEntries = 0;
 
@@ -36,7 +36,7 @@ export default function setupTable(crowdSetup) {
         }
         else
           cell4.innerHTML = Hospital.computer.entries[computerEntries].getBed().getName();
-        cell5.innerHTML = Hospital.computer.entries[computerEntries].getPatient().inSimulation;
+        cell5.innerHTML = Hospital.computer.entries[computerEntries].getPatient().getSeverity();
 
         computerEntries++;
 
@@ -88,7 +88,7 @@ export default function setupTable(crowdSetup) {
           document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = Hospital.computer.entries[i].getBed().getName();
         }
         
-        document.getElementById("ComputerEntryTable").rows[i + 1].cells[4].innerHTML = Hospital.computer.entries[i].getPatient().inSimulation;
+        document.getElementById("ComputerEntryTable").rows[i + 1].cells[4].innerHTML = Hospital.computer.entries[i].getPatient().getSeverity();
 
       }
 
