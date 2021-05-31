@@ -23,6 +23,7 @@ class ComputerEntry {
   answeredQuestions = false; //bool
   
   assignedTech = null; //MedicalStaff
+  assignedResident = null; //MedicalStaff
 
 
 
@@ -269,6 +270,15 @@ class ComputerEntry {
 
   getTech() {
     return this.assignedTech;
+  }
+
+  setResident(assignedResident) {
+    this.assignedResident = assignedResident;
+    this.change();
+  }
+
+  getResident() {
+    return this.assignedResident;
   }
 
 

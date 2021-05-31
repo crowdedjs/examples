@@ -10,18 +10,18 @@ import ACK from "./ack.js"
 	
 	 get(entry, medicalStaff) {
 		if (entry.getTech() == null || entry.getTech() == medicalStaff) {
+			entry.setTech(medicalStaff);
+
 			if(entry.getVitals() == null) {
-				entry.setTech(medicalStaff);
 				return new TakeVitalsResponsibility( entry, medicalStaff);
 			}
 			else if(entry.getEkg() == null){
-				entry.setTech(medicalStaff);
 				return new TechEKGDo(entry, medicalStaff);
-			}else if(Hospital.getCTQueue().length > 0 && !Hospital.isCTOccupied() && entry.getPatient() == Hospital.getCTQueue()[0]) {
-				entry.setTech(medicalStaff);
+			}
+			else if(Hospital.getCTQueue().length > 0 && !Hospital.isCTOccupied() && entry.getPatient() == Hospital.getCTQueue()[0]) {
 				return new TechEKGTakePatientToResponsibility(entry, medicalStaff, Hospital.getLocationByName("CT 1"));
-			}else if(entry.unacknowledged(ACK.CT_PICKUP)) {
-				entry.setTech(medicalStaff);
+			}
+			else if(entry.unacknowledged(ACK.CT_PICKUP)) {
 				return new TechCATPickupResponsibility(entry, medicalStaff);
 			}
 		}
