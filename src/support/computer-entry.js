@@ -21,6 +21,8 @@ class ComputerEntry {
   reg; //String
   ekg; //EKG
   answeredQuestions = false; //bool
+  
+  assignedTech = null; //MedicalStaff
 
 
 
@@ -258,6 +260,15 @@ class ComputerEntry {
   addUnacknowledged(string) {
     this.unack.push(string);
 
+  }
+
+  setTech(assignedTech) {
+    this.assignedTech = assignedTech;
+    this.change();
+  }
+
+  getTech() {
+    return this.assignedTech;
   }
 
 
