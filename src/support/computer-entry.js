@@ -24,6 +24,7 @@ class ComputerEntry {
   
   assignedTech = null; //MedicalStaff
   assignedResident = null; //MedicalStaff
+  assignedNurse = null; //MedicalStaff
 
 
 
@@ -281,9 +282,14 @@ class ComputerEntry {
     return this.assignedResident;
   }
 
+  setNurse(assignedNurse) {
+    this.assignedNurse = assignedNurse;
+    this.change();
+  }
 
-
-
+  getNurse() {
+    return this.assignedNurse;
+  }
 }
 
 

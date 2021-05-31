@@ -49,11 +49,19 @@ export default
     },
     {
       "name": "Nurse",
+      "type": "Nurse",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 10,
+      //"id": 3
+      "id": 6
+    },
+    {
+      "name": "Nurse",
       "type": "Greeter Nurse",
       "arrivalLocation": "Main Entrance",
       "arrivalTick": 10,
       //"id": 4
-      "id": 6
+      "id": 7
     },
     {
       "name": "Tech",
@@ -61,7 +69,7 @@ export default
       "arrivalLocation": "Main Entrance",
       "arrivalTick": 10,
       //"id": 5
-      "id": 7
+      "id": 8
     },
     {
       "name": "Tech",
@@ -69,7 +77,7 @@ export default
       "arrivalLocation": "Main Entrance",
       "arrivalTick": 10,
       //"id": 6
-      "id": 8
+      "id": 9
     },
     {
       "name": "Tech",
@@ -77,7 +85,7 @@ export default
       "arrivalLocation": "Main Entrance",
       "arrivalTick": 10,
       //"id": 7
-      "id": 9
+      "id": 10
     },
     {
       "name": "Attending",
@@ -85,14 +93,6 @@ export default
       "arrivalLocation": "Main Entrance",
       "arrivalTick": 20,
       //"id": 8
-      "id": 10
-    },
-    {
-      "name": "Resident",
-      "type": "Resident",
-      "arrivalLocation": "Main Entrance",
-      "arrivalTick": 20,
-      //"id": 9
       "id": 11
     },
     {
@@ -104,6 +104,14 @@ export default
       "id": 12
     },
     {
+      "name": "Resident",
+      "type": "Resident",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 20,
+      //"id": 9
+      "id": 13
+    },
+    {
       "name": "patient",
       "arrivalTick": 30057,
       "arrivalLocation": "Main Entrance",
@@ -112,7 +120,7 @@ export default
       "patientName": "James",
       "gender": "male",
       //"id": 10
-      "id": 13
+      "id": 14
     },
     {
       "name": "patient",
@@ -123,7 +131,7 @@ export default
       "patientName": "Emma",
       "gender": "female",
       //"id": 11
-      "id": 14
+      "id": 15
     },
     {
       "name": "patient",
@@ -134,7 +142,7 @@ export default
       "patientName": "Susan",
       "gender": "female",
       //"id": 12
-      "id": 15
+      "id": 16
     },
     {
       "name": "patient",
@@ -145,7 +153,7 @@ export default
       "patientName": "Emma",
       "gender": "female",
       //"id": 13
-      "id": 16
+      "id": 17
     },
     {
       "name": "patient",
@@ -156,7 +164,7 @@ export default
       "patientName": "David",
       "gender": "male",
       //"id": 14
-      "id": 17
+      "id": 18
     },
     {
       "name": "patient",
@@ -167,7 +175,7 @@ export default
       "patientName": "Emily",
       "gender": "female",
       //"id": 15
-      "id": 18
+      "id": 19
     },
     {
       "name": "patient",
@@ -178,7 +186,7 @@ export default
       "patientName": "Michael",
       "gender": "male",
       //"id": 16
-      "id": 19
+      "id": 20
     },
     {
       "name": "patient",
@@ -189,7 +197,7 @@ export default
       "patientName": "David",
       "gender": "male",
       //"id": 17
-      "id": 20
+      "id": 21
     },
     {
       "name": "patient",
@@ -200,6 +208,6 @@ export default
       "patientName": "James",
       "gender": "male",
       //"id": 18
-      "id": 21
+      "id": 22
     }
   ]
