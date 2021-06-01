@@ -7,7 +7,9 @@ class Hospital{
   static CTQueue = [];
   static activePeople = [];
 
-  static CTOccupied = false;
+  //static CTOccupied = false;
+  static CT1Occupied = false;
+  static CT2Occupied = false;
 
   static getFPS(){return 60;}
 
@@ -21,11 +23,23 @@ class Hospital{
 
   
 
-  static isCTOccupied(){
-    return Hospital.CTOccupied;
+  // static isCTOccupied(){
+  //   return Hospital.CTOccupied;
+  // }
+  // static setCTOccupied(occupied){
+  //   Hospital.CTOccupied = occupied;
+  // }
+  static isCT1Occupied() {
+    return Hospital.CT1Occupied;
   }
-  static setCTOccupied(occupied){
-    Hospital.CTOccupied = occupied;
+  static isCT2Occupied() {
+    return Hospital.CT2Occupied;
+  }
+  static setCT1Occupied(occupied){
+    Hospital.CT1Occupied = occupied;
+  }
+  static setCT2Occupied(occupied){
+    Hospital.CT2Occupied = occupied;
   }
 
   static getLocationByName(name){

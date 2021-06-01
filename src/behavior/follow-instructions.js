@@ -84,7 +84,13 @@ class FollowInstructions {
           me().inSimulation = false;
           // ADJUST CTQUEUE SO TECH TAKES NEXT PATIENT TO CT ROOM
           Hospital.CTQueue.shift();
-          Hospital.setCTOccupied(false);
+          //Hospital.setCTOccupied(false);
+          if (me().getCTRoom() == "CT 1") {
+            Hospital.setCT1Occupied(false);
+          }
+          else {
+            Hospital.setCT2Occupied(false);
+          }
           // SET ROOM AS READY TO CLEAN
           me().getPermanentRoom().setLocationStatus(LocationStatus.SANITIZE);
         }

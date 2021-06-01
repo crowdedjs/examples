@@ -77,6 +77,8 @@ class responsibility {
                         break;
                     case "CT":
                         me().Computer = Hospital.locations.find(l => l.name == "CT 1");
+                        if (myIndex == 9)
+                            me().Computer = Hospital.locations.find(l => l.name == "CT 2");
                         break;
                     case "Radiology":
                         me().Computer = Hospital.locations.find(l => l.name == "CT 2");
