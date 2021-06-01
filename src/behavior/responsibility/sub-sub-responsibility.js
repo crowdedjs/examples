@@ -61,6 +61,7 @@ class SubResponsibilty {
         }
 
         let distance = Vector3.fromObject(me().getLocation()).distanceTo(location);
+        
         if (distance < 2) {
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         }

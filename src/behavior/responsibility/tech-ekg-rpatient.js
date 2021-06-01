@@ -10,7 +10,6 @@ class TechEKGTakePatientToResponsibility extends ATransportResponsibility {
 
 	doFinish() {
 		this.entry.addUnacknowledged(ACK.CT_CAT_DO_SCAN);
-		
 	}
 
 }
