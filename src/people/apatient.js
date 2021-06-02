@@ -18,6 +18,7 @@ class APatient extends APerson {
 	instructor; // AMedicalStaff
 
 	ctRoom = null; //room
+	scan = false; //boolean 
 
 	/**
 	 * The room that the patient's bed is in.
@@ -71,6 +72,13 @@ class APatient extends APerson {
 	} 
 	getCTRoom() {
 		return this.ctRoom;
+	}
+	
+	setCATScan(boolean) {
+		this.scan = boolean;
+	}
+	getCATScan() {
+		return this.scan;
 	}
 }
 	

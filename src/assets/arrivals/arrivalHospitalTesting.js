@@ -129,93 +129,93 @@ export default
       "gender": "male",
       //"id": 10
       "id": 15
+    },
+    {
+      "name": "patient",
+      "arrivalTick": 46016,
+      "arrivalLocation": "Main Entrance",
+      "age": 12,
+      "severity": "ESI3",
+      "patientName": "Emma",
+      "gender": "female",
+      //"id": 11
+      "id": 16
+    },
+    {
+      "name": "patient",
+      "arrivalTick": 77178,
+      "arrivalLocation": "Main Entrance",
+      "age": 69,
+      "severity": "ESI3",
+      "patientName": "Susan",
+      "gender": "female",
+      //"id": 12
+      "id": 17
+    },
+    {
+      "name": "patient",
+      "arrivalTick": 105239,
+      "arrivalLocation": "Main Entrance",
+      "age": 12,
+      "severity": "ESI1",
+      "patientName": "Emma",
+      "gender": "female",
+      //"id": 13
+      "id": 18
+    },
+    {
+      "name": "patient",
+      "arrivalTick": 105755,
+      "arrivalLocation": "Main Entrance",
+      "age": 62,
+      "severity": "ESI2",
+      "patientName": "David",
+      "gender": "male",
+      //"id": 14
+      "id": 19
+    },
+    {
+      "name": "patient",
+      "arrivalTick": 108000,
+      "arrivalLocation": "Main Entrance",
+      "age": 17,
+      "severity": "ESI3",
+      "patientName": "Emily",
+      "gender": "female",
+      //"id": 15
+      "id": 20
+    },
+    {
+      "name": "patient",
+      "arrivalTick": 128609,
+      "arrivalLocation": "Main Entrance",
+      "age": 38,
+      "severity": "ESI3",
+      "patientName": "Michael",
+      "gender": "male",
+      //"id": 16
+      "id": 21
+    },
+    {
+      "name": "patient",
+      "arrivalTick": 131256,
+      "arrivalLocation": "Main Entrance",
+      "age": 30,
+      "severity": "ESI3",
+      "patientName": "David",
+      "gender": "male",
+      //"id": 17
+      "id": 22
+    },
+    {
+      "name": "patient",
+      "arrivalTick": 132392,
+      "arrivalLocation": "Main Entrance",
+      "age": 79,
+      "severity": "ESI3",
+      "patientName": "James",
+      "gender": "male",
+      //"id": 18
+      "id": 23
     }
-    // {
-    //   "name": "patient",
-    //   "arrivalTick": 46016,
-    //   "arrivalLocation": "Main Entrance",
-    //   "age": 12,
-    //   "severity": "ESI3",
-    //   "patientName": "Emma",
-    //   "gender": "female",
-    //   //"id": 11
-    //   "id": 16
-    // },
-    // {
-    //   "name": "patient",
-    //   "arrivalTick": 77178,
-    //   "arrivalLocation": "Main Entrance",
-    //   "age": 69,
-    //   "severity": "ESI3",
-    //   "patientName": "Susan",
-    //   "gender": "female",
-    //   //"id": 12
-    //   "id": 17
-    // },
-    // {
-    //   "name": "patient",
-    //   "arrivalTick": 105239,
-    //   "arrivalLocation": "Main Entrance",
-    //   "age": 12,
-    //   "severity": "ESI1",
-    //   "patientName": "Emma",
-    //   "gender": "female",
-    //   //"id": 13
-    //   "id": 18
-    // },
-    // {
-    //   "name": "patient",
-    //   "arrivalTick": 105755,
-    //   "arrivalLocation": "Main Entrance",
-    //   "age": 62,
-    //   "severity": "ESI2",
-    //   "patientName": "David",
-    //   "gender": "male",
-    //   //"id": 14
-    //   "id": 19
-    // },
-    // {
-    //   "name": "patient",
-    //   "arrivalTick": 108000,
-    //   "arrivalLocation": "Main Entrance",
-    //   "age": 17,
-    //   "severity": "ESI3",
-    //   "patientName": "Emily",
-    //   "gender": "female",
-    //   //"id": 15
-    //   "id": 20
-    // },
-    // {
-    //   "name": "patient",
-    //   "arrivalTick": 128609,
-    //   "arrivalLocation": "Main Entrance",
-    //   "age": 38,
-    //   "severity": "ESI3",
-    //   "patientName": "Michael",
-    //   "gender": "male",
-    //   //"id": 16
-    //   "id": 21
-    // },
-    // {
-    //   "name": "patient",
-    //   "arrivalTick": 131256,
-    //   "arrivalLocation": "Main Entrance",
-    //   "age": 30,
-    //   "severity": "ESI3",
-    //   "patientName": "David",
-    //   "gender": "male",
-    //   //"id": 17
-    //   "id": 22
-    // },
-    // {
-    //   "name": "patient",
-    //   "arrivalTick": 132392,
-    //   "arrivalLocation": "Main Entrance",
-    //   "age": 79,
-    //   "severity": "ESI3",
-    //   "patientName": "James",
-    //   "gender": "male",
-    //   //"id": 18
-    //   "id": 23
-    // }
   ]
