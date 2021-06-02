@@ -11,6 +11,7 @@ import greeterNurse from "./greeter-nurse.js"
 import janitorial from "./janitorial.js"
 import nurse from "./nurse.js"
 import patient from "./patient.js"
+import pharmacist from "./pharmacist.js"
 import radiology from "./radiology.js"
 import resident from "./resident.js"
 import tech from "./tech.js"
@@ -94,6 +95,12 @@ class MedicalAgent extends AMedicalStaff {
         this.behavior = new resident(agent.id)
       else
         throw new Exception("That resident type does not exist " + agent.type);
+    }
+    else if (agent.name == "Pharmacist") {
+      if (agent.type == "Pharmacist")
+        this.behavior = new pharmacist(agent.id)
+      else
+        throw new Exception("That pharmacist type does not exist " + agent.type);
     }
     else if (agent.name == "EscapePerson") {
       this.behavior = new EscapePerson(agent.id)

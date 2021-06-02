@@ -23,6 +23,10 @@ function colorFunction(agentDescription) {
   else if (agentDescription.name == "Tech") {
     color = new THREE.Color(0, 0, .75);
   }
+  // CYAN
+  else if (agentDescription.name == "Pharmacist") {
+    color = new THREE.Color(0, .75, .75);
+  }
   // BLACK
   else {
     color = new THREE.Color(0, 0, 0);
