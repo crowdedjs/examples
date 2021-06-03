@@ -1,6 +1,7 @@
 import LocationStatus from "../support/location-status.js";
 import RoomType from "../support/room-type.js"
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
+import PatientTempState from "../support/patient-temp-state.js";
 
 class ComputerAssignPatientRoom {
 
@@ -31,6 +32,11 @@ class ComputerAssignPatientRoom {
             // what rooms do we send ESI1 PATIENTS?
             rooms = Hospital.locations.filter(l=>l.roomType == RoomType.TRAUMA_BAY && l.locationStatus == LocationStatus.NONE );
           }
+          // BOOK INTO MAIN HOSPITAL - NEEDS EDITS TO PARAMETERS
+          else if (patient.getSeverity() == "ESI2") {
+            rooms = Hospital.locations.find(l => l.name == "Main Entrance");
+            //entry.getPatient().setPatientTempState(PatientTempState.BOOKED);
+          }
           else          
             rooms = Hospital.locations.filter(l=>l.roomType == RoomType.C_ROOM && l.locationStatus == LocationStatus.NONE );
           
@@ -42,11 +48,17 @@ class ComputerAssignPatientRoom {
           }
 
           // need to set room as claimed
-          rooms[0].setLocationStatus(LocationStatus.CLAIMED);
-
-          patient.setAssignedRoom(rooms[0]);
-          patient.setPermanentRoom(rooms[0]);
-          entry.setBed(rooms[0]);
+          if (rooms.name != "Main Entrance") {
+            rooms[0].setLocationStatus(LocationStatus.CLAIMED);
+            patient.setAssignedRoom(rooms[0]);
+            patient.setPermanentRoom(rooms[0]);
+            entry.setBed(rooms[0]);
+          }
+          else {
+            patient.setAssignedRoom(rooms);
+            patient.setPermanentRoom(rooms);
+            entry.setBed(rooms);
+          }
 
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
           

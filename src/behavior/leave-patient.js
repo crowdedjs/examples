@@ -18,6 +18,11 @@ class LeavePatient {
         .do("Assign Room", (t) => {
             let patient = me().getCurrentPatient();
             me().setCurrentPatient(null);
+            if (patient.getPermanentRoom().name == "Main Entrance"){
+              patient.setPatientTempState(PatientTempState.BOOKED);
+              return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            }
+
             patient.setPatientTempState(PatientTempState.GO_INTO_ROOM);
             patient.setAssignedRoom(Hospital.computer.getEntry(patient).getBed());
             
