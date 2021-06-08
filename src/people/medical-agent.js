@@ -12,10 +12,12 @@ import janitorial from "./janitorial.js"
 import nurse from "./nurse.js"
 import patient from "./patient.js"
 import pharmacist from "./pharmacist.js"
+import phlebotomist from "./phlebotomist.js"
 import radiology from "./radiology.js"
 import resident from "./resident.js"
 import tech from "./tech.js"
-import triageNurse from "./triage-nurse.js" 
+import triageNurse from "./triage-nurse.js"
+import xray from "./xray.js" 
 
 
 class MedicalAgent extends AMedicalStaff {
@@ -68,8 +70,12 @@ class MedicalAgent extends AMedicalStaff {
         this.behavior = new ct(agent.id)
       else if (agent.type == "Janitorial")
         this.behavior = new janitorial(agent.id)
+      else if (agent.type == "Phlebotomist")
+        this.behavior = new phlebotomist(agent.id)
       else if (agent.type == "Radiology")
         this.behavior = new radiology(agent.id)
+      else if (agent.type == "XRay")
+        this.behavior = new xray(agent.id)
       else
         throw new Exception("That tech type does not exist " + agent.type);
     }

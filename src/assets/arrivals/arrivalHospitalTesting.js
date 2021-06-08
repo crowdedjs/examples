@@ -127,6 +127,48 @@ export default
       "id": 15
     },
     {
+      "name": "Tech",
+      "type": "XRay",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 40,
+      "id": 16
+    },
+    {
+      "name": "Tech",
+      "type": "XRay",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 40,
+      "id": 17
+    },
+    {
+      "name": "Tech",
+      "type": "Phlebotomist",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 50,
+      "id": 18
+    },
+    {
+      "name": "Tech",
+      "type": "Phlebotomist",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 50,
+      "id": 19
+    },
+    {
+      "name": "Tech",
+      "type": "Phlebotomist",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 50,
+      "id": 20
+    },
+    {
+      "name": "Tech",
+      "type": "Phlebotomist",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 50,
+      "id": 21
+    },
+    {
       "name": "patient",
       "arrivalTick": 30057,
       "arrivalLocation": "Main Entrance",
@@ -134,8 +176,7 @@ export default
       "severity": "ESI3",
       "patientName": "James",
       "gender": "male",
-      //"id": 10
-      "id": 16
+      "id": 22
     },
     {
       "name": "patient",
@@ -145,8 +186,7 @@ export default
       "severity": "ESI3",
       "patientName": "Emma",
       "gender": "female",
-      //"id": 11
-      "id": 17
+      "id": 23
     },
     {
       "name": "patient",
@@ -156,8 +196,7 @@ export default
       "severity": "ESI3",
       "patientName": "Susan",
       "gender": "female",
-      //"id": 12
-      "id": 18
+      "id": 24
     },
     {
       "name": "patient",
@@ -167,8 +206,7 @@ export default
       "severity": "ESI1",
       "patientName": "Emma",
       "gender": "female",
-      //"id": 13
-      "id": 19
+      "id": 25
     },
     {
       "name": "patient",
@@ -178,8 +216,7 @@ export default
       "severity": "ESI2",
       "patientName": "David",
       "gender": "male",
-      //"id": 14
-      "id": 20
+      "id": 26
     },
     {
       "name": "patient",
@@ -189,8 +226,7 @@ export default
       "severity": "ESI3",
       "patientName": "Emily",
       "gender": "female",
-      //"id": 15
-      "id": 21
+      "id": 27
     },
     {
       "name": "patient",
@@ -200,8 +236,7 @@ export default
       "severity": "ESI3",
       "patientName": "Michael",
       "gender": "male",
-      //"id": 16
-      "id": 22
+      "id": 28
     },
     {
       "name": "patient",
@@ -211,8 +246,7 @@ export default
       "severity": "ESI3",
       "patientName": "David",
       "gender": "male",
-      //"id": 17
-      "id": 23
+      "id": 29
     },
     {
       "name": "patient",
@@ -222,7 +256,6 @@ export default
       "severity": "ESI3",
       "patientName": "James",
       "gender": "male",
-      //"id": 18
-      "id": 24
+      "id": 30
     }
   ]
