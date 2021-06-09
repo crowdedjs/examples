@@ -26,7 +26,11 @@ class FollowInstructions {
         let simulationAgent = t.crowd.find(f=>f.id == id);
         let loc = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
         let state = me().getPatientTempState();
+        
         let myGoal = Hospital.locations.find(l => l.name == "Check In");
+        if (me().arrivalLocation == "Ambulance Entrance") {
+          myGoal = Hospital.locations.find(l => l.name == "Ambulance Entrance");
+        }
 
         // if (myIndex > 25) {
         //   console.log("My ID: " + myIndex);

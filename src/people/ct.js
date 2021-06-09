@@ -21,7 +21,7 @@ class ct {
       goToName = "CT 2";
     }
    
-    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
+    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
 
     let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);

@@ -221,9 +221,11 @@ export default
     {
       "name": "patient",
       "arrivalTick": 108000,
-      "arrivalLocation": "Main Entrance",
+      // "arrivalLocation": "Main Entrance",
+      "arrivalLocation": "Ambulance Entrance",
       "age": 17,
-      "severity": "ESI3",
+      //"severity": "ESI3",
+      "severity": "ESI1",
       "patientName": "Emily",
       "gender": "female",
       "id": 27
