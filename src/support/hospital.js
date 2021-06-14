@@ -11,6 +11,10 @@ class Hospital{
   static CT1Occupied = false;
   static CT2Occupied = false;
 
+  // doctor = 0, resident = 1, nurse = 2, tech = 3, phlebotomist = 4, imaging = 5
+  static aTeam = [];
+  static emergencyQueue = [];
+
   static getFPS(){return 60;}
 
   static getCTQueue()

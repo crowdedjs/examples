@@ -9,6 +9,22 @@ import ACK from "./ack.js"
 
 	
 	 get(entry, medicalStaff) {
+		
+		if (Hospital.aTeam[3] == null) {
+			Hospital.aTeam[3] = medicalStaff;
+		}
+
+		// what else should the tech do?
+		if (Hospital.emergencyQueue.length > 0) {
+			let emergencyPatient = Hospital.computer.entries.find(i=>i.getPatient().getSeverity() == "ESI1");
+			if (emergencyPatient.getVitals() == null) {
+				// entry.setTech(medicalStaff);
+				emergencyPatient.setTech(medicalStaff);
+				//return new TakeVitalsResponsibility( entry, medicalStaff);
+				return new TakeVitalsResponsibility(emergencyPatient, medicalStaff);
+			}
+		}
+		
 		if (entry.getTech() == null || entry.getTech() == medicalStaff) {
 			entry.setTech(medicalStaff);
 

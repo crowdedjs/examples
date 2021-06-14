@@ -56,7 +56,12 @@ class patient {
       // })
 
       //.splice(new GoToLazy(myIndex, () => this.startLocation.location).tree)// CHECK IN
-      .do("print", async function (t) {
+      .do("Emergency Queue", async function (t) {
+        if (me().emergencyQueue == false && me().getSeverity() == "ESI1") {
+          Hospital.emergencyQueue.push(me());
+          me().emergencyQueue = true;
+        }
+        
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })
 

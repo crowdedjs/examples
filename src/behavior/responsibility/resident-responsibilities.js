@@ -10,6 +10,19 @@ import ResidentPatientConsult from "./resident-patient-consult.js"
 class ResidentResponsibilities extends AResponsibilityFactory {
 
 	get(entry, medicalStaff) {
+		
+		if (Hospital.aTeam[1] == null) {
+			Hospital.aTeam[1] = medicalStaff;
+		}
+		
+		if (Hospital.emergencyQueue.length > 0) {
+			let emergencyPatient = Hospital.computer.entries.find(i=>i.getPatient().getSeverity() == "ESI1");
+			//if (emergencyPatient.getVitals() == null) {
+				emergencyPatient.setResident(medicalStaff);
+				//return new TakeVitalsResponsibility(emergencyPatient, medicalStaff);
+			//}
+		}
+
 		if (entry.getResident() == null || entry.getResident() == medicalStaff) {
 			entry.setResident(medicalStaff);
 

@@ -13,6 +13,7 @@ class PatientAgent extends APatient {
   inSimulation = false;
   hasEntered = false;
   behavior;
+  emergencyQueue = false;
 
   static index = 0;
   idx; //Corresponds to the internal idx number used by recast
