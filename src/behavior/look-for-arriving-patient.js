@@ -45,8 +45,16 @@ class LookForArrivingPatient {
 
         if (closeEmergencyPatients.length > 0) {
           closestPatient = closeEmergencyPatients[0] || null;
-          if (closestPatient == null || Vector3.fromObject(closestPatient.location).distanceTo(myLocation) > 3 || closestPatient.patientTempState != PatientState.ARRIVED || closestPatient.inSimulation != true) {
+          // WORKS FOR PATIENTS AT AMBULANCE ENTRANCE BUT NOT IMMEDIATELY
+          //if (closestPatient == null || Vector3.fromObject(closestPatient.location).distanceTo(myLocation) > 3 || closestPatient.patientTempState != PatientState.ARRIVED || closestPatient.inSimulation != true) {
+          if (closestPatient == null || closestPatient.patientTempState != PatientState.ARRIVED || closestPatient.inSimulation != true) {
             closestPatient = closestPatients[0] || null;
+          }
+          else {
+            closestPatient.patientTempState = PatientState.WAITING;
+            closestPatient.instructor = me();
+            me().currentPatient = closestPatient;
+            return fluentBehaviorTree.BehaviorTreeStatus.Success
           }
         }
 
@@ -57,7 +65,7 @@ class LookForArrivingPatient {
         closestPatient.patientTempState = PatientState.WAITING;
         closestPatient.instructor = me();
         me().currentPatient = closestPatient;
-        return fluentBehaviorTree.BehaviorTreeStatus.Success
+        return fluentBehaviorTree.BehaviorTreeStatus.Success;
 
       })
       .end()
