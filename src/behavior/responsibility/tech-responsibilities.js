@@ -16,12 +16,15 @@ import ACK from "./ack.js"
 
 		// what else should the tech do?
 		if (Hospital.emergencyQueue.length > 0) {
-			let emergencyPatient = Hospital.computer.entries.find(i=>i.getPatient().getSeverity() == "ESI1");
-			if (emergencyPatient.getVitals() == null) {
-				// entry.setTech(medicalStaff);
-				emergencyPatient.setTech(medicalStaff);
-				//return new TakeVitalsResponsibility( entry, medicalStaff);
-				return new TakeVitalsResponsibility(emergencyPatient, medicalStaff);
+			let emergencyPatients = Hospital.computer.entries.filter(i=>i.getPatient().getSeverity() == "ESI1");
+			for (let i = 0; i < emergencyPatients.length; i++) {
+				let emergencyPatient = emergencyPatients[i];
+				if (emergencyPatient.getVitals() == null) {
+					// entry.setTech(medicalStaff);
+					emergencyPatient.setTech(medicalStaff);
+					//return new TakeVitalsResponsibility( entry, medicalStaff);
+					return new TakeVitalsResponsibility(emergencyPatient, medicalStaff);
+				}
 			}
 		}
 		
