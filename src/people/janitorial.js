@@ -39,7 +39,7 @@ class janitorial {
       .splice(new GoToLazy(self.index, () => Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE).location).tree)
 
       // TAKE TIME IN THE ROOM TO CLEAN
-      .splice(new TakeTime(60, 120).tree)
+      .splice(new TakeTime(300, 600).tree)
 
       // set that room's status as NONE
       .do("Done with the Room", (t) => {               

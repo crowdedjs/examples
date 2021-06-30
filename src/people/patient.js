@@ -22,6 +22,8 @@ class patient {
     }
     let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
+
+    let wait = Hospital.locations.find(l=> l.name == "Waiting Room");
     //let myGoal = Hospital.locations.find(l => l.name == "Check In");
     //let emergencyGoal = Hospital.locations.find(l => l.name == "Ambulance Entrance");
     //if (this.startLocation == emergencyGoal)
@@ -68,6 +70,24 @@ class patient {
       .splice(new GoToLazy(myIndex, () => myGoal.location).tree)
 
       .splice(new Stop(myIndex).tree)
+
+      // Make patient go to the Waiting Room after being checked in
+      .do("Waiting Room", async function (t) {
+        if(me().getPermanentRoom() == null) {
+          return fluentBehaviorTree.BehaviorTreeStatus.Running;
+        }
+        else if (me().getInstructor() == null) {
+          wait = Hospital.locations.find(l=> l.name == "Waiting Room");
+          console.log(wait);
+        }
+        else {
+          wait = myGoal;
+          console.log(wait);
+        }
+        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+      })
+
+      .splice(new GoToLazy(myIndex, () => wait.location).tree)
 
       .splice(new FollowInstructions(myIndex).tree)
       .do("Done following instructions", async function (t) {

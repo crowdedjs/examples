@@ -45,11 +45,11 @@ class greeterNurse {
 
             .splice(new ComputerAssignPatientRoom(myIndex).tree)
 
-            .untilFail("Assign Patient to Triage Nurse successfully")
-              .inverter("invert result")            
+            //.untilFail("Assign Patient to Triage Nurse successfully")
+              //.inverter("invert result")            
                 .splice(new AssignPatientToTriageNurse(myIndex).tree)
-              .end()
-            .end()
+              //.end()
+            //.end()
 
             //.splice(new WaitForever(myIndex).tree)
                     
