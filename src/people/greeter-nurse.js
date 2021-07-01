@@ -23,35 +23,53 @@ class greeterNurse {
       if (!myGoal) throw new Exception("We couldn't find a location called Check In");
   
       //this.goTo = new GoTo(self.index, myGoal.location);
-  
-  
-  
+      let numRequiredToFail = 10;
+      let numRequiredToSucceed = 3;
+
       this.tree = builder
         .sequence("Greeter Nurse Behaviors")
             .splice(new GoTo(self.index, myGoal.location).tree)
 
             // waits for patient to be nearby, and be in ARRIVED state
-            .splice(new LookForArrivingPatient(myIndex).tree)
+            // .splice(new LookForArrivingPatient(myIndex).tree)
 
-            .splice(new TakeTime(30, 90).tree) // seconds: uniform, 30, 90
+            // .splice(new TakeTime(30, 90).tree) // seconds: uniform, 30, 90
 
-            .splice(new ComputerEnterPatient(myIndex).tree)
+            // .splice(new ComputerEnterPatient(myIndex).tree)
 
-            .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
+            // .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
 
-            .splice(new ComputerScorePatient(myIndex).tree)
+            // .splice(new ComputerScorePatient(myIndex).tree)
 
-            .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
+            // .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
 
-            .splice(new ComputerAssignPatientRoom(myIndex).tree)
+            // .splice(new ComputerAssignPatientRoom(myIndex).tree)
 
             //.untilFail("Assign Patient to Triage Nurse successfully")
               //.inverter("invert result")            
-                .splice(new AssignPatientToTriageNurse(myIndex).tree)
+                //.splice(new AssignPatientToTriageNurse(myIndex).tree)
               //.end()
             //.end()
 
             //.splice(new WaitForever(myIndex).tree)
+
+            // Once the greeter nurse has arrived, run in parallel
+            .parallel("look and book", numRequiredToFail, numRequiredToSucceed)
+              .sequence("Check in Patients")
+                .splice(new LookForArrivingPatient(myIndex).tree)
+                .splice(new TakeTime(30, 90).tree)
+                .splice(new ComputerEnterPatient(myIndex).tree)
+                // .do("testing", async function (t) {
+                //   console.log("testing")
+                //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                // })
+                .splice(new TakeTime(30, 90).tree)
+                .splice(new ComputerScorePatient(myIndex).tree)
+                .splice(new TakeTime(30, 90).tree)
+                .splice(new ComputerAssignPatientRoom(myIndex).tree)
+              .end()
+              .splice(new AssignPatientToTriageNurse(myIndex).tree)
+            .end()
                     
         .end()
         .build();

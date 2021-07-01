@@ -41,10 +41,12 @@ class AssignPatientToTriageNurse {
           let closestTriageNurse = closestTriageNursesSorted[0];
           if(!closestTriageNurse) return fluentBehaviorTree.BehaviorTreeStatus.Running;
 
-          let myPatient = me().getCurrentPatient();
+          //let myPatient = me().getCurrentPatient();
+          let myPatient = me().PatientList[0];
+
           
           // This should work for multiple triage nurses as long as inactive triage nurses wait at TriageNursePlace
-          if (closestTriageNurse.getBusy())
+          if (closestTriageNurse.getBusy() || me().PatientList[0].getPermanentRoom() == null)
           {
             return fluentBehaviorTree.BehaviorTreeStatus.Failure;
           }
@@ -53,7 +55,8 @@ class AssignPatientToTriageNurse {
             closestTriageNurse.setCurrentPatient(myPatient);
             myPatient.setInstructor(closestTriageNurse);
             myPatient.setPatientTempState(PatientTempState.FOLLOWING);
-            me().setCurrentPatient(null);
+            //me().setCurrentPatient(null);
+            me().PatientList.pop();
             //hospital.addComment(me, myPatient, "Follow that nurse.");
 
             return fluentBehaviorTree.BehaviorTreeStatus.Success;

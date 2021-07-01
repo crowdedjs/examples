@@ -16,9 +16,21 @@ class ComputerAssignPatientRoom {
     this.tree = builder
       .sequence("Computer Assign Patient Room")
         .do("Assign Room", (t) => {
-          let patient = me().getCurrentPatient();
-          let entry = Hospital.computer.getEntry(patient);
-
+          //let patient = me().getCurrentPatient();
+          // let patient = me().PatientList[0];
+          // let entry = Hospital.computer.getEntry(patient);
+          let patient;
+          let entry;
+          for(let i = 0; i < me().PatientList.length; i++) {
+            if (me().PatientList[i].getPermanentRoom() == null || me().PatientList[i].getPermanentRoom().getName() == "Waiting Room") {
+              patient = me().PatientList[i];
+              entry = Hospital.computer.getEntry(patient);
+              break;
+            }
+          }
+          if (patient == null) {
+            return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+          }
           // get rooms C_ROOM
           // if you get back LocationStatus.NONE then return Running
           /*List<IRoom> cRooms = HospitalModel.get().getLocations(RoomType.C_ROOM);
@@ -41,10 +53,10 @@ class ComputerAssignPatientRoom {
             rooms = Hospital.locations.filter(l=>l.roomType == RoomType.C_ROOM && l.locationStatus == LocationStatus.NONE );
           
           if(rooms.length == 0) {
-          // patient.setAssignedRoom(waitingRoom);
-          // patient.setPermanentRoom(waitingRoom);
-          // entry.setBed(waitingRoom);
-          return fluentBehaviorTree.BehaviorTreeStatus.Running;
+            // patient.setAssignedRoom(waitingRoom);
+            // patient.setPermanentRoom(waitingRoom);
+            // entry.setBed(waitingRoom);
+            return fluentBehaviorTree.BehaviorTreeStatus.Running;
           }
 
           // need to set room as claimed

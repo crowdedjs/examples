@@ -78,11 +78,11 @@ class patient {
         }
         else if (me().getInstructor() == null) {
           wait = Hospital.locations.find(l=> l.name == "Waiting Room");
-          console.log(wait);
+          //console.log(wait);
         }
         else {
           wait = myGoal;
-          console.log(wait);
+          //console.log(wait);
         }
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })

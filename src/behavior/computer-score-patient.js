@@ -13,8 +13,9 @@ class ComputerScorePatient {
     this.tree = builder
       .sequence("Computer Score Patient")
         .do("Score Patient", (t) => {
-            let patient = me().getCurrentPatient();
-            let entry = Hospital.computer.getEntry(patient);
+            //let patient = me().getCurrentPatient();
+            //let patient = me().PatientList[0];
+            //let entry = Hospital.computer.getEntry(patient);
 
             // get rooms C_ROOM
             // if you get back LocationStatus.NONE then return Running
@@ -24,7 +25,15 @@ class ComputerScorePatient {
             IRoom chosenRoom = cRooms.stream().filter(i->i.getLocationStatus()==LocationStatus.NONE).findFirst().get();
             */
            
-            entry.es = 3;
+            //entry.es = 3;
+
+            for(let i = 0; i < me().PatientList.length; i++) {
+              let patient = me().PatientList[i];
+              let entry = Hospital.computer.getEntry(patient);
+              if (entry.es == null) {
+                entry.es = 3;
+              }
+            }
 
             return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })
