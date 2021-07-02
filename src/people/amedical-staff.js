@@ -6,6 +6,7 @@ class AMedicalStaff extends APerson {
     doctorYear; //DoctorYear -> string
     currentPatient; //IPatient -> APatient
 	patientList; //Array of Patients
+	triageList; //Array of Patients ready for Triage
     myRooms; //List<IRooms> -> []
     responsibility; //AResponsibility
     computer; //IRoom -> ARoom
@@ -25,6 +26,7 @@ class AMedicalStaff extends APerson {
 		}
 		this.myRooms = [];
 		this.patientList = [];
+		this.triageList = [];
 
 
 	}
@@ -92,6 +94,14 @@ class AMedicalStaff extends APerson {
 
     set PatientList(patientList) {
         this.patientList = patientList;
+    }
+
+	get triageList() {
+        return this.triageList;
+    }
+
+    set triageList(triageList) {
+        this.triageList = triageList;
     }
 
 	get MedicalStaffSubclass() {

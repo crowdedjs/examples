@@ -23,8 +23,8 @@ class greeterNurse {
       if (!myGoal) throw new Exception("We couldn't find a location called Check In");
   
       //this.goTo = new GoTo(self.index, myGoal.location);
-      let numRequiredToFail = 10;
-      let numRequiredToSucceed = 3;
+      let numRequiredToFail = 1;
+      let numRequiredToSucceed = 2;
 
       this.tree = builder
         .sequence("Greeter Nurse Behaviors")
@@ -59,14 +59,14 @@ class greeterNurse {
                 .splice(new LookForArrivingPatient(myIndex).tree)
                 .splice(new TakeTime(30, 90).tree)
                 .splice(new ComputerEnterPatient(myIndex).tree)
-                // .do("testing", async function (t) {
-                //   console.log("testing")
-                //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                // })
                 .splice(new TakeTime(30, 90).tree)
                 .splice(new ComputerScorePatient(myIndex).tree)
                 .splice(new TakeTime(30, 90).tree)
                 .splice(new ComputerAssignPatientRoom(myIndex).tree)
+                // .do("testing", async function (t) {
+                //   console.log("testing")
+                //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                // })
               .end()
               .splice(new AssignPatientToTriageNurse(myIndex).tree)
             .end()

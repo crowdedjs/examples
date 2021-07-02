@@ -21,12 +21,16 @@ class ComputerAssignPatientRoom {
           // let entry = Hospital.computer.getEntry(patient);
           let patient;
           let entry;
-          for(let i = 0; i < me().PatientList.length; i++) {
-            if (me().PatientList[i].getPermanentRoom() == null || me().PatientList[i].getPermanentRoom().getName() == "Waiting Room") {
-              patient = me().PatientList[i];
-              entry = Hospital.computer.getEntry(patient);
-              break;
-            }
+          // for(let i = 0; i < me().PatientList.length; i++) {
+          //   if (me().PatientList[i].getPermanentRoom() == null || me().PatientList[i].getPermanentRoom().getName() == "Waiting Room") {
+          //     patient = me().PatientList[i];
+          //     entry = Hospital.computer.getEntry(patient);
+          //     break;
+          //   }
+          // }
+          if (me().PatientList[0].getPermanentRoom() == null || me().PatientList[0].getPermanentRoom().getName() == "Waiting Room") {
+            patient = me().PatientList[0];
+            entry = Hospital.computer.getEntry(patient);
           }
           if (patient == null) {
             return fluentBehaviorTree.BehaviorTreeStatus.Failure;
@@ -72,8 +76,9 @@ class ComputerAssignPatientRoom {
             entry.setBed(rooms);
           }
 
+          me().triageList.push(me().patientList[0]);
+          me().patientList.shift();
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
-          
       })
       .end()
       .build();

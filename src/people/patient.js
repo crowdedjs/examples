@@ -58,14 +58,15 @@ class patient {
       // })
 
       //.splice(new GoToLazy(myIndex, () => this.startLocation.location).tree)// CHECK IN
-      .do("Emergency Queue", async function (t) {
-        if (me().emergencyQueue == false && me().getSeverity() == "ESI1") {
-          Hospital.emergencyQueue.push(me());
-          me().emergencyQueue = true;
-        }
+      // THIS WOULD PROBABLY BE BETTER AS A CONDITION NODE RATHER THAN HAVING AN IF INSIDE IT
+      // .do("Emergency Queue", async function (t) {
+      //   if (me().emergencyQueue == false && me().getSeverity() == "ESI1") {
+      //     Hospital.emergencyQueue.push(me());
+      //     me().emergencyQueue = true;
+      //   }
         
-        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      })
+      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
+      // })
 
       .splice(new GoToLazy(myIndex, () => myGoal.location).tree)
 

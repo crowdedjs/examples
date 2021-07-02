@@ -39,14 +39,16 @@ class AssignPatientToTriageNurse {
           let closestTriageNursesSorted = closestTriageNurses.sort((a,b)=>Vector3.subtract(a.location, myLocation).length() - Vector3.subtract(b.location, myLocation).length());
           //let closestTriageNursesSorted = closestTriageNurses.sort((a,b)=>a.location.distanceTo(myLocation) - b.location.distanceTo(myLocation));
           let closestTriageNurse = closestTriageNursesSorted[0];
-          if(!closestTriageNurse) return fluentBehaviorTree.BehaviorTreeStatus.Running;
+          if(closestTriageNurse == null) {
+            return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+          }
 
           //let myPatient = me().getCurrentPatient();
-          let myPatient = me().PatientList[0];
+          let myPatient = me().triageList[0];
 
           
           // This should work for multiple triage nurses as long as inactive triage nurses wait at TriageNursePlace
-          if (closestTriageNurse.getBusy() || me().PatientList[0].getPermanentRoom() == null)
+          if (closestTriageNurse.getBusy() || myPatient.getPermanentRoom() == null || myPatient.getInstructor() != me())
           {
             return fluentBehaviorTree.BehaviorTreeStatus.Failure;
           }
@@ -56,9 +58,8 @@ class AssignPatientToTriageNurse {
             myPatient.setInstructor(closestTriageNurse);
             myPatient.setPatientTempState(PatientTempState.FOLLOWING);
             //me().setCurrentPatient(null);
-            me().PatientList.pop();
+            me().triageList.shift();
             //hospital.addComment(me, myPatient, "Follow that nurse.");
-
             return fluentBehaviorTree.BehaviorTreeStatus.Success;
           }
       })

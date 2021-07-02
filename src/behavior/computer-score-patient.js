@@ -27,12 +27,22 @@ class ComputerScorePatient {
            
             //entry.es = 3;
 
-            for(let i = 0; i < me().PatientList.length; i++) {
-              let patient = me().PatientList[i];
-              let entry = Hospital.computer.getEntry(patient);
-              if (entry.es == null) {
-                entry.es = 3;
-              }
+            //
+            //
+            //
+
+            // for(let i = 0; i < me().PatientList.length; i++) {
+            //   let patient = me().PatientList[i];
+            //   let entry = Hospital.computer.getEntry(patient);
+            //   if (entry.es == null) {
+            //     entry.es = 3;
+            //   }
+            // }
+
+            let patient = me().PatientList[0];
+            let entry = Hospital.computer.getEntry(patient);
+            if (entry.es == null) {
+              entry.es = 3;
             }
 
             return fluentBehaviorTree.BehaviorTreeStatus.Success;
