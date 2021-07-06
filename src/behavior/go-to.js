@@ -30,9 +30,11 @@ class GoTo {
         let waypoint = Vector3.fromObject(self.start);
 
         let difference = Vector3.subtract(loc, waypoint)
-        let distanceToWaypoint = difference.length();
+        //let distanceToWaypoint = difference.length();
+        let distanceToWaypoint = difference.lengthSquared();
 
-        if (distanceToWaypoint < 2)
+        //if (distanceToWaypoint < 2)
+        if (distanceToWaypoint < 4)
         {
           frameAgentDetail.pose = "Idle";
           return fluentBehaviorTree.BehaviorTreeStatus.Success;

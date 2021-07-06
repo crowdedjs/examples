@@ -28,7 +28,8 @@ class GoToLazy{
           let myPatient = me().getCurrentPatient();
           let patientLocation = Vector3.fromObject(t.crowd.find(f=>f.id == myPatient.id).location);
 
-          if (myLocation.distanceTo(patientLocation) > 8) {
+          //if (myLocation.distanceTo(patientLocation) > 8) {
+          if (myLocation.distanceToSquared(patientLocation) > 64) {
             me().destination = Vector3.fromObject(patientLocation);
           }
         }
@@ -52,7 +53,8 @@ class GoToLazy{
         let waypoint = Vector3.fromObject(self.locationFunction());
 
         let difference = Vector3.subtract(loc, waypoint);
-        let distanceToWaypoint = difference.length();
+        //let distanceToWaypoint = difference.length();
+        let distanceToWaypoint = difference.lengthSquared();
 
         if (me().MedicalStaffSubclass == "Triage Nurse") {
           let myPatient = me().getCurrentPatient();
@@ -65,13 +67,16 @@ class GoToLazy{
           //}
 
           let differencePatient = Vector3.subtract(loc, patientLocation);
-          let distanceToPatient = differencePatient.length();
+          //let distanceToPatient = differencePatient.length();
+          let distanceToPatient = differencePatient.lengthSquared();
 
-          if (distanceToWaypoint < 2 && distanceToPatient < 2) {
+          //if (distanceToWaypoint < 2 && distanceToPatient < 2) {
+          if (distanceToWaypoint < 4 && distanceToPatient < 4) {
             frameAgentDetail.pose = "Idle";
             return fluentBehaviorTree.BehaviorTreeStatus.Success;
           }
-          else if (distanceToPatient < 5) {
+          //else if (distanceToPatient < 5) {
+          else if (distanceToPatient < 25) {
             agent.destination = next;
             //console.log(distanceToPatient);
           }
@@ -81,7 +86,8 @@ class GoToLazy{
           }
           
         }
-        else if (distanceToWaypoint < 2) {
+        //else if (distanceToWaypoint < 2) {
+        else if (distanceToWaypoint < 4) {
           frameAgentDetail.pose = "Idle";
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         }

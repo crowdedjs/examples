@@ -60,9 +60,11 @@ class SubResponsibilty {
           location = Vector3.fromObject(patient.getLocation());
         }
 
-        let distance = Vector3.fromObject(me().getLocation()).distanceTo(location);
-        
-        if (distance < 2) {
+        //let distance = Vector3.fromObject(me().getLocation()).distanceTo(location);
+        let distance = Vector3.fromObject(me().getLocation()).distanceToSquared(location);
+
+        //if (distance < 2) {
+        if (distance < 4) {
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         }
         return fluentBehaviorTree.BehaviorTreeStatus.Running;

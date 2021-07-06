@@ -57,13 +57,16 @@ class FollowInstructions {
           let instructorLoc = Vector3.fromObject(t.crowd.find(f=>f.id == instructor.id).location);
           let instructorLocation = instructorLoc;
           let myLocation = loc;
-          if (myLocation.distanceTo(instructorLocation) < 1) // If we're really close, stop
+      
+          //if (myLocation.distanceTo(instructorLocation) < 1) // If we're really close, stop
+          if (myLocation.distanceToSquared(instructorLocation) < 1) // If we're really close, stop
           {
             agentConstant.destination = new Vector3(loc.x, loc.y, loc.z);//Stop
           }
           // the patient needs to hold their horses. Wait for their instructor to come to them, then follow.
           // THE DISTANCE THEY FOLLOW GIVES WEIRD OUTCOMES
-          else if (myLocation.distanceTo(instructorLocation) > 10) {
+          //else if (myLocation.distanceTo(instructorLocation) > 10) {
+          else if (myLocation.distanceToSquared(instructorLocation) > 100) {
             //console.log("Waiting for my instructor!");
           }
           else {
@@ -76,7 +79,8 @@ class FollowInstructions {
         }
         else if (state == PatientTempState.GO_INTO_ROOM) {
           let destination = me().getAssignedRoom().getLocation();
-          if(Vector3.fromObject(destination).distanceTo(me().getLocation()) < .5){
+          //if(Vector3.fromObject(destination).distanceTo(me().getLocation()) < .5){
+          if(Vector3.fromObject(destination).distanceToSquared(me().getLocation()) < .5){
             me().setPatientTempState(PatientTempState.WAITING)
           }
           else{

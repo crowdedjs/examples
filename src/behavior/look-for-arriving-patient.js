@@ -21,7 +21,8 @@ class LookForArrivingPatient {
 
         let agentConstantPatients = Hospital.agents.filter(a=>a.name == "patient" && t.crowd.some(t=>t.id==a.id) && a.location);
 
-        let closestPatients = agentConstantPatients.sort((a, b) => Vector3.fromObject(a.location).distanceTo(myLocation) - Vector3.fromObject(b.location).distanceTo(myLocation));
+        //let closestPatients = agentConstantPatients.sort((a, b) => Vector3.fromObject(a.location).distanceTo(myLocation) - Vector3.fromObject(b.location).distanceTo(myLocation));
+        let closestPatients = agentConstantPatients.sort((a, b) => Vector3.fromObject(a.location).distanceToSquared(myLocation) - Vector3.fromObject(b.location).distanceToSquared(myLocation));
         let closeEmergencyPatients = closestPatients.filter(a=>a.getSeverity() == "ESI1");
         let closestPatient = closestPatients[0] || null;
 
@@ -67,9 +68,11 @@ class LookForArrivingPatient {
           }
         }
         // ADD OTHER PATIENTS TO THE BACK
-        if (closestPatient != null && closestPatient.inSimulation == true && Vector3.fromObject(closestPatient.location).distanceTo(myLocation) < 3 && closestPatient.patientTempState == PatientState.ARRIVED) {
+        //if (closestPatient != null && closestPatient.inSimulation == true && Vector3.fromObject(closestPatient.location).distanceTo(myLocation) < 3 && closestPatient.patientTempState == PatientState.ARRIVED) {
+        if (closestPatient != null && closestPatient.inSimulation == true && Vector3.fromObject(closestPatient.location).distanceToSquared(myLocation) < 9 && closestPatient.patientTempState == PatientState.ARRIVED) {
           for (let i = 0; i < closestPatients.length; i++) {
-            if (closestPatients[i] != null && Vector3.fromObject(closestPatients[i].location).distanceTo(myLocation) < 3 && closestPatients[i].patientTempState == PatientState.ARRIVED && !me().PatientList.includes(closestPatients[i])) {
+            //if (closestPatients[i] != null && Vector3.fromObject(closestPatients[i].location).distanceTo(myLocation) < 3 && closestPatients[i].patientTempState == PatientState.ARRIVED && !me().PatientList.includes(closestPatients[i])) {
+            if (closestPatients[i] != null && Vector3.fromObject(closestPatients[i].location).distanceToSquared(myLocation) < 9 && closestPatients[i].patientTempState == PatientState.ARRIVED && !me().PatientList.includes(closestPatients[i])) {
               closestPatients[i].patientTempState = PatientState.WAITING;
               closestPatients[i].instructor = me();
               me().PatientList.push(closestPatients[i]);

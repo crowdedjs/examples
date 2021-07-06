@@ -17,8 +17,10 @@ class Reassess {
 					return fluentBehaviorTree.BehaviorTreeStatus.Failure;
 				
 				//We can't reassess someone we're not next to.
-				let distance = Vector3.fromObject(patient.location).distanceTo(me().location);
-				if(distance > 2){
+				//let distance = Vector3.fromObject(patient.location).distanceTo(me().location);
+				let distance = Vector3.fromObject(patient.location).distanceToSquared(me().location);
+				//if(distance > 2){
+				if(distance > 4){
 					return fluentBehaviorTree.BehaviorTreeStatus.Failure;
 				}
 

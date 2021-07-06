@@ -36,7 +36,8 @@ class AssignPatientToTriageNurse {
          
          
           // DISTANCETO NOT WORKING NOW FOR SOME REASON???
-          let closestTriageNursesSorted = closestTriageNurses.sort((a,b)=>Vector3.subtract(a.location, myLocation).length() - Vector3.subtract(b.location, myLocation).length());
+          //let closestTriageNursesSorted = closestTriageNurses.sort((a,b)=>Vector3.subtract(a.location, myLocation).length() - Vector3.subtract(b.location, myLocation).length());
+          let closestTriageNursesSorted = closestTriageNurses.sort((a,b)=>Vector3.subtract(a.location, myLocation).lengthSquared() - Vector3.subtract(b.location, myLocation).lengthSquared());
           //let closestTriageNursesSorted = closestTriageNurses.sort((a,b)=>a.location.distanceTo(myLocation) - b.location.distanceTo(myLocation));
           let closestTriageNurse = closestTriageNursesSorted[0];
           if(closestTriageNurse == null) {
