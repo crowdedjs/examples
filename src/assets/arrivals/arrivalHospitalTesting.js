@@ -10,6 +10,7 @@ export default
       "gender": "male",
       "id": 0
     },
+    // THESE ARE THE 6 AM NURSES
     {
       "name": "Nurse",
       "type": "Triage Nurse",
@@ -260,4 +261,152 @@ export default
       "gender": "male",
       "id": 30
     }
+    // PAST HERE ARE THE SHIFT CHANGES AT 6 PM
+    // {
+    //   "name": "Nurse",
+    //   "type": "Triage Nurse",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 10,
+    //   "id": 31
+    // },
+    // {
+    //   "name": "Nurse",
+    //   "type": "Triage Nurse",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 10,
+    //   "id": 32
+    // },
+    // {
+    //   "name": "Tech",
+    //   "type": "Tech",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 10,
+    //   "id": 33
+    // },
+    // {
+    //   "name": "Tech",
+    //   "type": "Tech",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 10,
+    //   "id": 34
+    // },
+    // {
+    //   "name": "Nurse",
+    //   "type": "Nurse",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 10,
+    //   "id": 35
+    // },
+    // {
+    //   "name": "Nurse",
+    //   "type": "Nurse",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 10,
+    //   "id": 36
+    // },
+    // {
+    //   "name": "Nurse",
+    //   "type": "Greeter Nurse",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 10,
+    //   "id": 37
+    // },
+    // {
+    //   "name": "Tech",
+    //   "type": "CT",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 10,
+    //   "id": 38
+    // },
+    // {
+    //   "name": "Tech",
+    //   "type": "CT",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 10,
+    //   "id": 39
+    // },
+    // {
+    //   "name": "Tech",
+    //   "type": "Janitorial",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 10,
+    //   "id": 40
+    // },
+    // {
+    //   "name": "Tech",
+    //   "type": "Radiology",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 10,
+    //   "id": 41
+    // },
+    // {
+    //   "name": "Attending",
+    //   "type": "Attending",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 20,
+    //   "id": 42
+    // },
+    // {
+    //   "name": "Resident",
+    //   "type": "Resident",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 20,
+    //   "id": 43
+    // },
+    // {
+    //   "name": "Resident",
+    //   "type": "Resident",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 20,
+    //   "id": 44
+    // },
+    // {
+    //   "name": "Pharmacist",
+    //   "type": "Pharmacist",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 30,
+    //   "id": 45
+    // },
+    // {
+    //   "name": "Tech",
+    //   "type": "XRay",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 40,
+    //   "id": 46
+    // },
+    // {
+    //   "name": "Tech",
+    //   "type": "XRay",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 40,
+    //   "id": 47
+    // },
+    // {
+    //   "name": "Tech",
+    //   "type": "Phlebotomist",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 50,
+    //   "id": 48
+    // },
+    // {
+    //   "name": "Tech",
+    //   "type": "Phlebotomist",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 50,
+    //   "id": 49
+    // },
+    // {
+    //   "name": "Tech",
+    //   "type": "Phlebotomist",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 50,
+    //   "id": 50
+    // },
+    // {
+    //   "name": "Tech",
+    //   "type": "Phlebotomist",
+    //   "arrivalLocation": "Main Entrance",
+    //   "arrivalTick": 50,
+    //   "id": 51
+    // }
   ]

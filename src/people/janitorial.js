@@ -15,7 +15,7 @@ class janitorial {
 
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
     let goToName = "Fast Track 1";
-    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
+    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
 
     let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
@@ -23,6 +23,11 @@ class janitorial {
 
     this.tree = builder
       .sequence("Janitorial")
+      
+      // SHIFT CHANGE BEHAVIOR
+      
+      
+      
       .splice(new GoTo(self.index, myGoal.location).tree)
       
       //find room to clean
