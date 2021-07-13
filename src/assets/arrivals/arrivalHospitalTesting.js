@@ -260,7 +260,7 @@ export default
       "patientName": "James",
       "gender": "male",
       "id": 30
-    }
+    },
     // PAST HERE ARE THE SHIFT CHANGES AT 6 PM
     // {
     //   "name": "Nurse",
@@ -325,13 +325,14 @@ export default
     //   "arrivalTick": 10,
     //   "id": 39
     // },
-    // {
-    //   "name": "Tech",
-    //   "type": "Janitorial",
-    //   "arrivalLocation": "Main Entrance",
-    //   "arrivalTick": 10,
-    //   "id": 40
-    // },
+    {
+      "name": "Tech",
+      "type": "Janitorial",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 100016,
+      //"id": 40
+      "id": 31
+    }
     // {
     //   "name": "Tech",
     //   "type": "Radiology",

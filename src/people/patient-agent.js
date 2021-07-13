@@ -22,7 +22,7 @@ class PatientAgent extends APatient {
     super(location, UUID, severity, arrivalCount);
 
     this.name = agent.name;
-     this.startMSec = agent.arrivalTick * 25; // We simulate 25 fps
+    this.startMSec = agent.arrivalTick * 25; // We simulate 25 fps
     this.arrivalLocation = agent.arrivalLocation;
     this.age = agent.age;
     this.severity = agent.severity;

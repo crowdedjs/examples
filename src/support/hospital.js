@@ -15,6 +15,20 @@ class Hospital{
   static aTeam = [];
   static emergencyQueue = [];
 
+  // USING THIS FOR SHIFT CHANGES
+  static activeAttending = [];
+  static activeCT = [];
+  static activeGreeter = [];
+  static activeJanitor = [];
+  static activeNurse = [];
+  static activePharm = [];
+  static activePhleb = [];
+  static activeRadio = [];
+  static activeResident = [];
+  static activeTech = [];
+  static activeTriage = [];
+  static activeXRay = [];
+
   static getFPS(){return 60;}
 
   static getCTQueue()

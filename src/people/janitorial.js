@@ -20,12 +20,21 @@ class janitorial {
     let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
 
+    // SHIFT CHANGE
+    //if (Hospital.activeJanitor[0] != null) Hospital.activeJanitor[0].replacement = true;
+    //Hospital.activeJanitor.push(me());
 
     this.tree = builder
       .sequence("Janitorial")
-      
-      // SHIFT CHANGE BEHAVIOR
-      
+      // SHIFT CHANGE SEQUENCE OF BEHAVIORS
+      // .condition("Replacement is Here", async (t) => me().replacement)
+      //   .sequence("Exit Procedure")
+      //     .splice(new GoTo(self.index, () => Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+      //     .do("Leave Simulation", (t) => {
+      //       Hospital.activeJanitor.pop;
+      //       me().inSimulation = false;
+      //     })
+      //   .end()
       
       
       .splice(new GoTo(self.index, myGoal.location).tree)

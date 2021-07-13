@@ -19,6 +19,10 @@ function colorFunction(agentDescription) {
   else if (agentDescription.name == "Resident") {
     color = new THREE.Color(.75, .75, 0);
   }
+  // TEMPORARY CYAN FOR TESTING
+  else if (agentDescription.medicalStaffSubclass == "Janitorial") {
+    color = new THREE.Color(0, .75, .75);
+  }
   // BLUE
   else if (agentDescription.name == "Tech") {
     color = new THREE.Color(0, 0, .75);
