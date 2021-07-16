@@ -311,27 +311,29 @@ export default
     //   "arrivalTick": 10,
     //   "id": 37
     // },
-    // {
-    //   "name": "Tech",
-    //   "type": "CT",
-    //   "arrivalLocation": "Main Entrance",
-    //   "arrivalTick": 10,
-    //   "id": 38
-    // },
-    // {
-    //   "name": "Tech",
-    //   "type": "CT",
-    //   "arrivalLocation": "Main Entrance",
-    //   "arrivalTick": 10,
-    //   "id": 39
-    // },
+    {
+      "name": "Tech",
+      "type": "CT",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 50000,
+      //"id": 38
+      "id": 31
+    },
+    {
+      "name": "Tech",
+      "type": "CT",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 50000,
+      //"id": 39
+      "id": 32
+    },
     {
       "name": "Tech",
       "type": "Janitorial",
       "arrivalLocation": "Main Entrance",
-      "arrivalTick": 50016,
+      "arrivalTick": 50000,
       //"id": 40
-      "id": 31
+      "id": 33
     }
     // {
     //   "name": "Tech",

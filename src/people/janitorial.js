@@ -29,7 +29,10 @@ class janitorial {
           if (me().onTheClock == false) {
             me().onTheClock = true;
             Hospital.activeJanitor.push(me());
-            if (Hospital.activeJanitor[0] != me()) Hospital.activeJanitor[0].replacement = true;
+            if (Hospital.activeJanitor[0] != me() && Hospital.activeJanitor.length > 1) {
+              Hospital.activeJanitor[0].replacement = true;
+              Hospital.activeJanitor.pop;
+            }
           }
           
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -42,7 +45,6 @@ class janitorial {
         .sequence("Exit Procedure")
           .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
           .do("Leave Simulation", (t) => {
-            Hospital.activeJanitor.pop;
             me().inSimulation = false;
             return fluentBehaviorTree.BehaviorTreeStatus.Running;
           })

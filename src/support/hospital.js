@@ -28,6 +28,9 @@ class Hospital{
   static activeTech = [];
   static activeTriage = [];
   static activeXRay = [];
+  // USING THIS TO ASSIGN CT ROOMS TO CT AGENTS
+  static CT1Agents = 0;
+  static CT2Agents = 0;
 
   static getFPS(){return 60;}
 
