@@ -3,7 +3,6 @@ import GoToLazy from "../behavior/go-to-lazy.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 import LocationStatus from "../support/location-status.js";
 import TakeTime from "../behavior/take-time.js";
-import WaitForever from "../behavior/wait-forever.js";
 
 class janitorial {
 
@@ -20,29 +19,42 @@ class janitorial {
     let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
 
-    // SHIFT CHANGE
-    //if (Hospital.activeJanitor[0] != null) Hospital.activeJanitor[0].replacement = true;
-    //Hospital.activeJanitor.push(me());
-
     this.tree = builder
       .sequence("Janitorial")
-      // SHIFT CHANGE SEQUENCE OF BEHAVIORS
-      // .condition("Replacement is Here", async (t) => me().replacement)
-      //   .sequence("Exit Procedure")
-      //     .splice(new GoTo(self.index, () => Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
-      //     .do("Leave Simulation", (t) => {
-      //       Hospital.activeJanitor.pop;
-      //       me().inSimulation = false;
-      //     })
-      //   .end()
       
+      .selector("Check for arrival")  
+        .condition("Clock in", async (t) => me().onTheClock)
+        .do("SHIFT CHANGE", (t) => {
+          // SHIFT CHANGE
+          if (me().onTheClock == false) {
+            me().onTheClock = true;
+            Hospital.activeJanitor.push(me());
+            if (Hospital.activeJanitor[0] != me()) Hospital.activeJanitor[0].replacement = true;
+          }
+          
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        })
+      .end()
+      
+      // SHIFT CHANGE SEQUENCE OF BEHAVIORS
+      .selector("Check for Replacement")
+        .condition("Replacement is Here", async (t) => !me().replacement)
+        .sequence("Exit Procedure")
+          .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+          .do("Leave Simulation", (t) => {
+            Hospital.activeJanitor.pop;
+            me().inSimulation = false;
+            return fluentBehaviorTree.BehaviorTreeStatus.Running;
+          })
+        .end()
+      .end()
       
       .splice(new GoTo(self.index, myGoal.location).tree)
       
       //find room to clean
       .do("Find Room to Clean", (t) => {               
         if (typeof Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE) === 'undefined') {
-          return fluentBehaviorTree.BehaviorTreeStatus.Running;
+          return fluentBehaviorTree.BehaviorTreeStatus.Failure;
         }
         else {
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -60,8 +72,6 @@ class janitorial {
         Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE).setLocationStatus(LocationStatus.NONE);
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })
-
-      //.splice(new WaitForever(self.index, myGoal.location).tree)
             
       .end()
       .build();

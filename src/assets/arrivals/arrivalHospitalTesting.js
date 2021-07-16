@@ -329,7 +329,7 @@ export default
       "name": "Tech",
       "type": "Janitorial",
       "arrivalLocation": "Main Entrance",
-      "arrivalTick": 100016,
+      "arrivalTick": 50016,
       //"id": 40
       "id": 31
     }
