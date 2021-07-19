@@ -1,6 +1,4 @@
 import GoTo from "../behavior/go-to.js"
-import WaitForever from "../behavior/wait-forever.js"
-
 import AssignComputer from "../behavior/assign-computer.js";
 import responsibility from "../behavior/responsibility/responsibility.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
@@ -16,18 +14,13 @@ class ct {
     this.toReturn = null;
 
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
-    //let goToName = "CT 1";
-    let goToName;
-    if (Hospital.CT1Agents > Hospital.CT2Agents) {
-      Hospital.CT2Agents++;
+       
+    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
+
+    let goToName = "CT 1";
+    if (myIndex % 2 == 1) {
       goToName = "CT 2";
     }
-    else if (Hospital.CT1Agents < Hospital.CT2Agents || Hospital.CT1Agents == Hospital.CT2Agents) {
-      Hospital.CT1Agents++;
-      goToName = "CT 1";
-    }
-   
-    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
 
     let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
@@ -64,12 +57,6 @@ class ct {
         .sequence("Exit Procedure")
           .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
           .do("Leave Simulation", (t) => {
-            if (myGoal.name == "CT 1") {
-              Hospital.CT1Agents--;
-            }
-            else {
-              Hospital.CT2Agents--;
-            }
             me().inSimulation = false;
             return fluentBehaviorTree.BehaviorTreeStatus.Running;
           })
@@ -77,15 +64,6 @@ class ct {
       .end()
 
       // .do("test", (t) => {
-      //   if (Hospital.CT1Agents > Hospital.CT2Agents) {
-      //     Hospital.CT2Agents++;
-      //     goToName = "CT 2";
-      //     myGoal = Hospital.locations.find(l => l.name == goToName);
-      //   }
-      //   else if (Hospital.CT1Agents < Hospital.CT2Agents || Hospital.CT1Agents == Hospital.CT2Agents) {
-      //     Hospital.CT1Agents++;
-      //     goToName = "CT 1";
-      //   }
       //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
       // })
 
