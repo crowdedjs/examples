@@ -5,7 +5,6 @@ import ComputerScorePatient from "../behavior/computer-score-patient.js";
 import GoTo from "../behavior/go-to.js"
 import LookForArrivingPatient from "../behavior/look-for-arriving-patient.js";
 import TakeTime from "../behavior/take-time.js";
-import WaitForever from "../behavior/wait-forever.js"
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
 
@@ -28,48 +27,77 @@ class greeterNurse {
 
       this.tree = builder
         .sequence("Greeter Nurse Behaviors")
-            .splice(new GoTo(self.index, myGoal.location).tree)
+          
+          .selector("Check for arrival")  
+            .condition("Clock in", async (t) => me().onTheClock)
+            .do("SHIFT CHANGE", (t) => {
+              // SHIFT CHANGE
+              if (me().onTheClock == false) {
+                me().onTheClock = true;
+                Hospital.activeGreeter.push(me());
+                if (Hospital.activeGreeter[0] != me() && Hospital.activeGreeter.length > 1) {
+                  for (let i = 0; i < Hospital.activeGreeter.length; i++) {
+                    if (!Hospital.activeGreeter[i].replacement) {
+                      Hospital.activeGreeter[i].replacement = true;
+                      Hospital.activeGreeter.pop;
+                      break;
+                    }
+                  }
+                }
+              }
+              
+              return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            })
+        .end()
 
-            // waits for patient to be nearby, and be in ARRIVED state
-            // .splice(new LookForArrivingPatient(myIndex).tree)
+        // SHIFT CHANGE SEQUENCE OF BEHAVIORS
+        .selector("Check for Replacement")
+          .condition("Replacement is Here", async (t) => !me().replacement)
+          .sequence("Exit Procedure")
+            .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+            .do("Leave Simulation", (t) => {
+              me().inSimulation = false;
+              return fluentBehaviorTree.BehaviorTreeStatus.Running;
+            })
+          .end()
+        .end()
 
-            // .splice(new TakeTime(30, 90).tree) // seconds: uniform, 30, 90
+        .splice(new GoTo(self.index, myGoal.location).tree)
 
-            // .splice(new ComputerEnterPatient(myIndex).tree)
+          // waits for patient to be nearby, and be in ARRIVED state
+          // .splice(new LookForArrivingPatient(myIndex).tree)
 
-            // .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
+          // .splice(new TakeTime(30, 90).tree) // seconds: uniform, 30, 90
 
-            // .splice(new ComputerScorePatient(myIndex).tree)
+          // .splice(new ComputerEnterPatient(myIndex).tree)
 
-            // .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
+          // .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
 
-            // .splice(new ComputerAssignPatientRoom(myIndex).tree)
+          // .splice(new ComputerScorePatient(myIndex).tree)
 
-            //.untilFail("Assign Patient to Triage Nurse successfully")
-              //.inverter("invert result")            
-                //.splice(new AssignPatientToTriageNurse(myIndex).tree)
-              //.end()
+          // .splice(new TakeTime(30, 60).tree) // seconds: uniform, 30, 60
+
+          // .splice(new ComputerAssignPatientRoom(myIndex).tree)
+
+          //.untilFail("Assign Patient to Triage Nurse successfully")
+            //.inverter("invert result")            
+              //.splice(new AssignPatientToTriageNurse(myIndex).tree)
             //.end()
+          //.end()
 
-            //.splice(new WaitForever(myIndex).tree)
-
-            // Once the greeter nurse has arrived, run in parallel
-            .parallel("look and book", numRequiredToFail, numRequiredToSucceed)
-              .sequence("Check in Patients")
-                .splice(new LookForArrivingPatient(myIndex).tree)
-                .splice(new TakeTime(30, 90).tree)
-                .splice(new ComputerEnterPatient(myIndex).tree)
-                .splice(new TakeTime(30, 90).tree)
-                .splice(new ComputerScorePatient(myIndex).tree)
-                .splice(new TakeTime(30, 90).tree)
-                .splice(new ComputerAssignPatientRoom(myIndex).tree)
-                // .do("testing", async function (t) {
-                //   console.log("testing")
-                //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                // })
-              .end()
-              .splice(new AssignPatientToTriageNurse(myIndex).tree)
+          // Once the greeter nurse has arrived, run in parallel
+          .parallel("look and book", numRequiredToFail, numRequiredToSucceed)
+            .sequence("Check in Patients")
+              .splice(new LookForArrivingPatient(myIndex).tree)
+              .splice(new TakeTime(30, 90).tree)
+              .splice(new ComputerEnterPatient(myIndex).tree)
+              .splice(new TakeTime(30, 90).tree)
+              .splice(new ComputerScorePatient(myIndex).tree)
+              .splice(new TakeTime(30, 90).tree)
+              .splice(new ComputerAssignPatientRoom(myIndex).tree)
             .end()
+            .splice(new AssignPatientToTriageNurse(myIndex).tree)
+          .end()
                     
         .end()
         .build();
