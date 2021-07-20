@@ -75,7 +75,10 @@ class patient {
       // Make patient go to the Waiting Room after being checked in
       .do("Waiting Room", async function (t) {
         //console.log(me().getInstructor().MedicalStaffSubclass);
-        if(me().getPermanentRoom() == null) {
+        if (goToName == "Ambulance Entrance") {
+          wait = myGoal;
+        }
+        else if(me().getPermanentRoom() == null) {
           return fluentBehaviorTree.BehaviorTreeStatus.Running;
         }
         else if (me().getInstructor().MedicalStaffSubclass == "Greeter Nurse") {
