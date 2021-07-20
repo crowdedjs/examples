@@ -18,21 +18,55 @@ class resident {
 
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
     let goToName = "ResidentStart";
-    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
+    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
 
     let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
 
 
     this.tree = builder
-      .sequence("Assign")
+    .sequence("Assign")
+
+      // .selector("Check for arrival")  
+      // .condition("Clock in", async (t) => me().onTheClock)
+      // .do("SHIFT CHANGE", (t) => {
+      //   // SHIFT CHANGE
+      //   if (me().onTheClock == false) {
+      //     me().onTheClock = true;
+      //     Hospital.activeResident.push(me());
+      //     if (Hospital.activeResident[0] != me() && Hospital.activeResident.length > 2) {
+      //       for (let i = 0; i < Hospital.activeResident.length; i++) {
+      //         if (!Hospital.activeResident[i].replacement) {
+      //           Hospital.activeResident[i].replacement = true;
+      //           Hospital.activeResident.pop;
+      //           break;
+      //         }
+      //       }
+      //     }
+      //   }
+      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
+      // })
+      // .end()
+
+      // // SHIFT CHANGE SEQUENCE OF BEHAVIORS
+      // .selector("Check for Replacement")
+      //   .condition("Replacement is Here", async (t) => !me().replacement)
+      //   .sequence("Exit Procedure")
+      //     .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+      //     .do("Leave Simulation", (t) => {
+      //       me().inSimulation = false;
+      //       return fluentBehaviorTree.BehaviorTreeStatus.Running;
+      //     })
+      //   .end()
+      // .end()
+
       .splice(new GoTo(self.index, myGoal.location).tree)
       .splice(new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").location).tree) // C1
       .splice(new AssignComputer(myIndex, Hospital.locations.find(l => l.name == "ResidentStart").location).tree) // ResidentStart
       .splice(new responsibility(myIndex).tree) // lazy: true
 
-      .end()
-      .build();
+    .end()
+    .build();
   }
 
   async update( crowd, msec) {
