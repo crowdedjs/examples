@@ -290,29 +290,29 @@ export default
     //   "arrivalTick": 10,
     //   "id": 34
     // },
-    // {
-    //   "name": "Nurse",
-    //   "type": "Nurse",
-    //   "arrivalLocation": "Main Entrance",
-    //   "arrivalTick": 50000,
-    //   //"id": 35
-    //   "id": 31
-    // },
-    // {
-    //   "name": "Nurse",
-    //   "type": "Nurse",
-    //   "arrivalLocation": "Main Entrance",
-    //   "arrivalTick": 50000,
-    //   //"id": 36
-    //   "id": 32
-    // },
+    {
+      "name": "Nurse",
+      "type": "Nurse",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 50000,
+      //"id": 35
+      "id": 31
+    },
+    {
+      "name": "Nurse",
+      "type": "Nurse",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 50000,
+      //"id": 36
+      "id": 32
+    },
     {
       "name": "Nurse",
       "type": "Greeter Nurse",
       "arrivalLocation": "Main Entrance",
       "arrivalTick": 50000,
       //"id": 37
-      "id": 31
+      "id": 33
     },
     {
       "name": "Tech",
@@ -320,7 +320,7 @@ export default
       "arrivalLocation": "Main Entrance",
       "arrivalTick": 50000,
       //"id": 38
-      "id": 32
+      "id": 34
     },
     {
       "name": "Tech",
@@ -328,7 +328,7 @@ export default
       "arrivalLocation": "Main Entrance",
       "arrivalTick": 50000,
       //"id": 39
-      "id": 33
+      "id": 35
     },
     {
       "name": "Tech",
@@ -336,7 +336,7 @@ export default
       "arrivalLocation": "Main Entrance",
       "arrivalTick": 50000,
       //"id": 40
-      "id": 34
+      "id": 36
     },
     {
       "name": "Tech",
@@ -344,7 +344,7 @@ export default
       "arrivalLocation": "Main Entrance",
       "arrivalTick": 50000,
       //"id": 41
-      "id": 35
+      "id": 37
     },
     // {
     //   "name": "Attending",

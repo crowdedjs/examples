@@ -3,8 +3,6 @@ import GoTo from "../behavior/go-to.js";
 import AssignComputer from "../behavior/assign-computer.js"
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
-
-
 class nurse {
 
     constructor(myIndex) {
@@ -23,38 +21,41 @@ class nurse {
 
       .sequence("Assign Nurse")
 
-        // .selector("Check for arrival")  
-        //   .condition("Clock in", async (t) => me().onTheClock)
-        //   .do("SHIFT CHANGE", (t) => {
-        //     // SHIFT CHANGE
-        //     if (me().onTheClock == false) {
-        //       me().onTheClock = true;
-        //       Hospital.activeNurse.push(me());
-        //       if (Hospital.activeNurse[0] != me() && Hospital.activeNurse.length > 2) {
-        //         for (let i = 0; i < Hospital.activeNurse.length; i++) {
-        //           if (!Hospital.activeNurse[i].replacement) {
-        //             Hospital.activeNurse[i].replacement = true;
-        //             Hospital.activeNurse.pop;
-        //             break;
-        //           }
-        //         }
-        //       }
-        //     }
-        //     return fluentBehaviorTree.BehaviorTreeStatus.Success;
-        //   })
-        // .end()
+        .selector("Check for arrival")  
+          .condition("Clock in", async (t) => me().onTheClock)
+          .do("SHIFT CHANGE", (t) => {
+            // SHIFT CHANGE
+            if (me().onTheClock == false) {
+              me().onTheClock = true;
+              Hospital.activeNurse.push(me());
+              if (Hospital.activeNurse[0] != me() && Hospital.activeNurse.length > 2) {
+                for (let i = 0; i < Hospital.activeNurse.length; i++) {
+                  if (!Hospital.activeNurse[i].replacement) {
+                    Hospital.activeNurse[i].replacement = true;
+                    Hospital.activeNurse.pop;
+                    break;
+                  }
+                }
+              }
+            }
+            return fluentBehaviorTree.BehaviorTreeStatus.Success;
+          })
+        .end()
 
-        // // SHIFT CHANGE SEQUENCE OF BEHAVIORS
-        // .selector("Check for Replacement")
-        //   .condition("Replacement is Here", async (t) => !me().replacement)
-        //   .sequence("Exit Procedure")
-        //     .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
-        //     .do("Leave Simulation", (t) => {
-        //       me().inSimulation = false;
-        //       return fluentBehaviorTree.BehaviorTreeStatus.Running;
-        //     })
-        //   .end()
-        // .end()
+        // SHIFT CHANGE SEQUENCE OF BEHAVIORS
+        .selector("Check for Replacement")
+          .condition("Replacement is Here", async (t) => !me().replacement)
+          .sequence("Exit Procedure")
+            .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+            .do("Leave Simulation", (t) => {
+              for(let i = 0; i < me().PatientList.length; i++) {
+                Hospital.computer.getEntry(me().PatientList[i]).setNurse(null);
+              }
+              me().inSimulation = false;
+              return fluentBehaviorTree.BehaviorTreeStatus.Running;
+            })
+          .end()
+        .end()
 
         .splice(new GoTo(self.index, myGoal.location).tree)
         .splice(new AssignComputer(myIndex, computer.location).tree) // NURSE PLACE
