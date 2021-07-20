@@ -14,7 +14,6 @@ class ResidentEKGOrderCAT extends AResponsibility{
 		let myPatient = this.entry.getPatient();
 		if (myPatient.getSeverity() == "ESI1" && Hospital.CTQueue[0].getSeverity() != "ESI1") {
 			Hospital.CTQueue.unshift(myPatient);
-			//console.log(Hospital.getCTQueue());
 		}
 		else if (myPatient.getSeverity() == "ESI1" && Hospital.CTQueue[0].getSeverity() == "ESI1") {
 			let i = 0;
@@ -23,15 +22,10 @@ class ResidentEKGOrderCAT extends AResponsibility{
 			}
 			
 			Hospital.CTQueue.splice(i, 0, myPatient);
-			//console.log(Hospital.getCTQueue());
 		}
 		else {
 			Hospital.CTQueue.push(myPatient);
-			//console.log(Hospital.getCTQueue());
 		}
-		
-		//console.log(Hospital.getCTQueue());
-
 	}
 }
 

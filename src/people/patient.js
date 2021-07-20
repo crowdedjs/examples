@@ -24,49 +24,9 @@ class patient {
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
 
     let wait = Hospital.locations.find(l=> l.name == "Waiting Room");
-    //let myGoal = Hospital.locations.find(l => l.name == "Check In");
-    //let emergencyGoal = Hospital.locations.find(l => l.name == "Ambulance Entrance");
-    //if (this.startLocation == emergencyGoal)
-    //{
-    //  myGoal = emergencyGoal;
-    //}
-    //if (!myGoal) throw new Exception("We couldn't find a location called Check In");
-
-    // this.goTo = new GoTo(self.index, myGoal.location);
 
     this.tree = builder
-
-      .sequence("Patient Actions")
-      //.selector("Check In")
-
-      // .do("Stop", async function (t) {
-      //   if (myIndex > 25) {
-      //     console.log("My ID: " + myIndex);
-      //     console.log(startLocation);
-      //     let state = me().getPatientTempState();
-      //     console.log(state);
-      //   }
-      // 
-      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      // })
-
-      // .do("Wait For Patient Assignment", (t) => {
-      //   console.log(me());
-       
-      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-
-      // })
-
-      //.splice(new GoToLazy(myIndex, () => this.startLocation.location).tree)// CHECK IN
-      // THIS WOULD PROBABLY BE BETTER AS A CONDITION NODE RATHER THAN HAVING AN IF INSIDE IT
-      // .do("Emergency Queue", async function (t) {
-      //   if (me().emergencyQueue == false && me().getSeverity() == "ESI1") {
-      //     Hospital.emergencyQueue.push(me());
-      //     me().emergencyQueue = true;
-      //   }
-        
-      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      // })
+    .sequence("Patient Actions")
 
       .splice(new GoToLazy(myIndex, () => myGoal.location).tree)
 
@@ -74,7 +34,6 @@ class patient {
 
       // Make patient go to the Waiting Room after being checked in
       .do("Waiting Room", async function (t) {
-        //console.log(me().getInstructor().MedicalStaffSubclass);
         if (goToName == "Ambulance Entrance") {
           wait = myGoal;
         }
@@ -83,11 +42,9 @@ class patient {
         }
         else if (me().getInstructor().MedicalStaffSubclass == "Greeter Nurse") {
           wait = Hospital.locations.find(l=> l.name == "Waiting Room");
-          //console.log(wait);
         }
         else {
           wait = myGoal;
-          //console.log(wait);
         }
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })
@@ -100,9 +57,8 @@ class patient {
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })
 
-      //.splice(new WaitForever(myIndex).tree)
-      .end()
-      .build();
+    .end()
+    .build();
   }
 
   async update(crowd, msec) {
