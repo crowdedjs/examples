@@ -32,12 +32,6 @@ class FollowInstructions {
           myGoal = Hospital.locations.find(l => l.name == "Ambulance Entrance");
         }
 
-        // if (myIndex > 25) {
-        //   console.log("My ID: " + myIndex);
-        //   console.log(loc);
-        //   console.log(state);
-        // }
-
         if (state == PatientTempState.WAITING) {         
           //agentConstant.destination = new Vector3(loc.x, loc.y, loc.z);
           //agentConstant.destination = Vector3.fromObject(t.crowd.find(f=>f.id == me().idx).location);

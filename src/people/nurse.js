@@ -48,8 +48,12 @@ class nurse {
           .sequence("Exit Procedure")
             .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
             .do("Leave Simulation", (t) => {
-              for(let i = 0; i < me().PatientList.length; i++) {
-                Hospital.computer.getEntry(me().PatientList[i]).setNurse(null);
+              //console.log(Hospital.computer.print());
+              for(let i = 0; i < Hospital.computer.entries.length; i++) {
+                if (Hospital.computer.entries[i].getNurse() == me()) {
+                  Hospital.computer.entries[i].setNurse(null);
+                  console.log("got here");
+                }
               }
               me().inSimulation = false;
               return fluentBehaviorTree.BehaviorTreeStatus.Running;
