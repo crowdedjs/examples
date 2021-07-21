@@ -11,7 +11,7 @@ import NurseEscortPatientToExit from "./nurse-escort-patient-to-exit.js"
 			Hospital.aTeam[2] = medicalStaff;
 		}
 		
-		// if (Hospital.emergencyQueue.length > 0) {
+		// if (Hospital.emergencyQueue.length > 0 && Hospital.aTeam[2] == medicalStaff) {
 		// 	let emergencyPatient = Hospital.computer.entries.find(i=>i.getPatient().getSeverity() == "ESI1");
 		// 	if (!emergencyPatient.isAnsweredQuestions()) {
 		// 		emergencyPatient.setNurse(medicalStaff);

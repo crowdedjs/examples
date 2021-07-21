@@ -59,6 +59,9 @@ class resident {
                 Hospital.computer.entries[i].setResident(null);
               }
             }
+            if (Hospital.aTeam[1] == me()) {
+              Hospital.aTeam[1] = null;
+            }
             me().inSimulation = false;
             return fluentBehaviorTree.BehaviorTreeStatus.Running;
           })

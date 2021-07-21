@@ -53,6 +53,9 @@ class nurse {
                   Hospital.computer.entries[i].setNurse(null);
                 }
               }
+              if (Hospital.aTeam[2] == me()) {
+                Hospital.aTeam[2] = null;
+              }
               me().inSimulation = false;
               return fluentBehaviorTree.BehaviorTreeStatus.Running;
             })

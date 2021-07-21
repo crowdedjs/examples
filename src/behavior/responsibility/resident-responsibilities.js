@@ -15,7 +15,7 @@ class ResidentResponsibilities extends AResponsibilityFactory {
 			Hospital.aTeam[1] = medicalStaff;
 		}
 		
-		if (Hospital.emergencyQueue.length > 0) {
+		if (Hospital.emergencyQueue.length > 0 && Hospital.aTeam[1] == medicalStaff) {
 			let emergencyPatient = Hospital.computer.entries.find(i=>i.getPatient().getSeverity() == "ESI1");
 			//if (emergencyPatient.getVitals() == null) {
 				emergencyPatient.setResident(medicalStaff);

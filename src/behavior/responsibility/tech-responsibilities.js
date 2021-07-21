@@ -15,7 +15,7 @@ import ACK from "./ack.js"
 		}
 
 		// what else should the tech do?
-		if (Hospital.emergencyQueue.length > 0) {
+		if (Hospital.emergencyQueue.length > 0 && Hospital.aTeam[3] == medicalStaff) {
 			let emergencyPatients = Hospital.computer.entries.filter(i=>i.getPatient().getSeverity() == "ESI1");
 			for (let i = 0; i < emergencyPatients.length; i++) {
 				let emergencyPatient = emergencyPatients[i];

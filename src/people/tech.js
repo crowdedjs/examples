@@ -1,11 +1,8 @@
 import GoTo from "../behavior/go-to.js"
-import WaitForever from "../behavior/wait-forever.js"
-
 import AssignBed from "../behavior/assign-bed.js";
 import AssignComputer from "../behavior/assign-computer.js";
 import responsibility from "../behavior/responsibility/responsibility.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
-
 
 class tech {
 
@@ -15,7 +12,7 @@ class tech {
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
     this.toReturn = null;
     let goToName = "TechPlace";
-    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
+    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
        
     let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
@@ -27,11 +24,51 @@ class tech {
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
 
     this.tree = builder
-      .sequence("Assign")
-      .splice(new GoTo(self.index, myGoal.location).tree)
-      //.splice(new WaitForever(myIndex).tree)
+    .sequence("Assign")
+      
+      .selector("Check for arrival")  
+        .condition("Clock in", async (t) => me().onTheClock)
+        .do("SHIFT CHANGE", (t) => {
+          // SHIFT CHANGE
+          if (me().onTheClock == false) {
+            me().onTheClock = true;
+            Hospital.activeTech.push(me());
+            if (Hospital.activeTech[0] != me() && Hospital.activeTech.length > 2) {
+              for (let i = 0; i < Hospital.activeTech.length; i++) {
+                if (!Hospital.activeTech[i].replacement) {
+                  Hospital.activeTech[i].replacement = true;
+                  Hospital.activeTech.pop;
+                  break;
+                }
+              }
+            }
+          }
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        })
+      .end()
 
-      // original tree sequence below
+      // SHIFT CHANGE SEQUENCE OF BEHAVIORS
+      .selector("Check for Replacement")
+        .condition("Replacement is Here", async (t) => !me().replacement)
+        .sequence("Exit Procedure")
+          .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+          .do("Leave Simulation", (t) => {
+            for(let i = 0; i < Hospital.computer.entries.length; i++) {
+              if (Hospital.computer.entries[i].getTech() == me()) {
+                Hospital.computer.entries[i].setTech(null);
+              }
+            }
+            if (Hospital.aTeam[3] == me()) {
+              Hospital.aTeam[3] = null;
+            }
+            me().inSimulation = false;
+            return fluentBehaviorTree.BehaviorTreeStatus.Running;
+          })
+        .end()
+      .end()
+
+      .splice(new GoTo(self.index, myGoal.location).tree)
+
       .do("Assigning Bed", async t=>{
         let result = await assignBed.tick(t);
         return result;
@@ -45,8 +82,8 @@ class tech {
         return result;
       }) // lazy: true
 
-      .end()
-      .build();
+    .end()
+    .build();
   }
 
   async update( crowd, msec) {
