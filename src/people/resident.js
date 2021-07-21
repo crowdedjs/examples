@@ -27,38 +27,43 @@ class resident {
     this.tree = builder
     .sequence("Assign")
 
-      // .selector("Check for arrival")  
-      // .condition("Clock in", async (t) => me().onTheClock)
-      // .do("SHIFT CHANGE", (t) => {
-      //   // SHIFT CHANGE
-      //   if (me().onTheClock == false) {
-      //     me().onTheClock = true;
-      //     Hospital.activeResident.push(me());
-      //     if (Hospital.activeResident[0] != me() && Hospital.activeResident.length > 2) {
-      //       for (let i = 0; i < Hospital.activeResident.length; i++) {
-      //         if (!Hospital.activeResident[i].replacement) {
-      //           Hospital.activeResident[i].replacement = true;
-      //           Hospital.activeResident.pop;
-      //           break;
-      //         }
-      //       }
-      //     }
-      //   }
-      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      // })
-      // .end()
+      .selector("Check for arrival")  
+        .condition("Clock in", async (t) => me().onTheClock)
+        .do("SHIFT CHANGE", (t) => {
+          // SHIFT CHANGE
+          if (me().onTheClock == false) {
+            me().onTheClock = true;
+            Hospital.activeResident.push(me());
+            if (Hospital.activeResident[0] != me() && Hospital.activeResident.length > 2) {
+              for (let i = 0; i < Hospital.activeResident.length; i++) {
+                if (!Hospital.activeResident[i].replacement) {
+                  Hospital.activeResident[i].replacement = true;
+                  Hospital.activeResident.pop;
+                  break;
+                }
+              }
+            }
+          }
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        })
+      .end()
 
-      // // SHIFT CHANGE SEQUENCE OF BEHAVIORS
-      // .selector("Check for Replacement")
-      //   .condition("Replacement is Here", async (t) => !me().replacement)
-      //   .sequence("Exit Procedure")
-      //     .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
-      //     .do("Leave Simulation", (t) => {
-      //       me().inSimulation = false;
-      //       return fluentBehaviorTree.BehaviorTreeStatus.Running;
-      //     })
-      //   .end()
-      // .end()
+      // SHIFT CHANGE SEQUENCE OF BEHAVIORS
+      .selector("Check for Replacement")
+        .condition("Replacement is Here", async (t) => !me().replacement)
+        .sequence("Exit Procedure")
+          .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+          .do("Leave Simulation", (t) => {
+            for(let i = 0; i < Hospital.computer.entries.length; i++) {
+              if (Hospital.computer.entries[i].getResident() == me()) {
+                Hospital.computer.entries[i].setResident(null);
+              }
+            }
+            me().inSimulation = false;
+            return fluentBehaviorTree.BehaviorTreeStatus.Running;
+          })
+        .end()
+      .end()
 
       .splice(new GoTo(self.index, myGoal.location).tree)
       .splice(new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").location).tree) // C1
