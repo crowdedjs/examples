@@ -1,10 +1,7 @@
 import GoTo from "../behavior/go-to.js"
 import GoToLazy from "../behavior/go-to-lazy.js";
 import LeavePatient from "../behavior/leave-patient.js";
-import WaitForever from "../behavior/wait-forever.js"
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
-
-
 
 class triageNurse {
 
@@ -17,7 +14,7 @@ class triageNurse {
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
     let goToName = "TriageNursePlace";
     //let goToName = "Check In"
-    let me = () => Hospital.agents.find(a => a.id == myIndex);;
+    let me = () => Hospital.agents.find(a => a.id == myIndex);
 
     let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
@@ -26,44 +23,68 @@ class triageNurse {
 
 
     this.tree = builder
-      .sequence("Pick Triage Room")
+    .sequence("Pick Triage Room")
+
+      .selector("Check for arrival")  
+        .condition("Clock in", async (t) => me().onTheClock)
+        .do("SHIFT CHANGE", (t) => {
+          // SHIFT CHANGE
+          if (me().onTheClock == false) {
+            me().onTheClock = true;
+            Hospital.activeTriage.push(me());
+            if (Hospital.activeTriage[0] != me() && Hospital.activeTriage.length > 2) {
+              for (let i = 0; i < Hospital.activeTriage.length; i++) {
+                if (!Hospital.activeTriage[i].replacement) {
+                  Hospital.activeTriage[i].replacement = true;
+                  Hospital.activeTriage.pop;
+                  break;
+                }
+              }
+            }
+          }
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        })
+      .end()
+
+      // SHIFT CHANGE SEQUENCE OF BEHAVIORS
+      .selector("Check for Replacement")
+        .condition("Replacement is Here", async (t) => !me().replacement)
+        .sequence("Exit Procedure")
+          .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+          .do("Leave Simulation", (t) => {
+            // for(let i = 0; i < Hospital.computer.entries.length; i++) {
+            //   if (Hospital.computer.entries[i].getNurse() == me()) {
+            //     Hospital.computer.entries[i].setNurse(null);
+            //   }
+            // }
+            // if (Hospital.aTeam[2] == me()) {
+            //   Hospital.aTeam[2] = null;
+            // }
+            me().inSimulation = false;
+            return fluentBehaviorTree.BehaviorTreeStatus.Running;
+          })
+        .end()
+      .end()
+
       //.splice(new GoTo(self.index, myGoal.location).tree)
       .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "TriageNursePlace").location).tree)
 
       .do("Wait For Patient Assignment", (t) => {
-        //console.log("I'm " + myIndex + " and this is my patient: ");
-        //console.log(me().getCurrentPatient());
         if (!me().getCurrentPatient()) return fluentBehaviorTree.BehaviorTreeStatus.Running;
         me().setBusy(true);
-        //console.log("I'm Busy!");
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
 
       })
-      
-      // .do("Test", (t) => {
-      //   if (me().getCurrentPatient().idx > 0) {
-      //     console.log(me().getCurrentPatient().getAssignedRoom());
-      //   }
-      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      // })
 
       .splice(new GoToLazy(self.index, () => me().getCurrentPatient().getAssignedRoom().location).tree)
       
-      // .do("Testing", (t) => {
-      //   if (me().getCurrentPatient().idx > 0) {
-      //     console.log(myIndex + " Got here!");
-      //   }
-      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      // })
-
       .do("Leave Patient", (t) => {
         let result = leavePatient.tick(t)
         me().setBusy(false);
-        //console.log("I'm free!");
         return result;
       })
-      .end()
-      .build();
+    .end()
+    .build();
   }
 
   async update(crowd, msec) {

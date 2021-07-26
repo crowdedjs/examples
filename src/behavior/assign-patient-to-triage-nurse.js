@@ -32,14 +32,16 @@ class AssignPatientToTriageNurse {
           if(closestTriageNurse == null || closestTriageNurse.getLocation().distanceTo(myLocation) > 3)
             return Status.RUNNING; //No triage nurse is available or close enough
           */
-         let closestTriageNurses = Hospital.agents.filter(a=>a.medicalStaffType == "Nurse" && a.medicalStaffSubclass == "Triage Nurse" && a.getCurrentPatient() == null);
-         
+         let closestTriageNurses = Hospital.agents.filter(a=>a.medicalStaffType == "Nurse" && a.medicalStaffSubclass == "Triage Nurse" && a.getCurrentPatient() == null && a.inSimulation == true);
+
          
           // DISTANCETO NOT WORKING NOW FOR SOME REASON???
           //let closestTriageNursesSorted = closestTriageNurses.sort((a,b)=>Vector3.subtract(a.location, myLocation).length() - Vector3.subtract(b.location, myLocation).length());
           let closestTriageNursesSorted = closestTriageNurses.sort((a,b)=>Vector3.subtract(a.location, myLocation).lengthSquared() - Vector3.subtract(b.location, myLocation).lengthSquared());
+
           //let closestTriageNursesSorted = closestTriageNurses.sort((a,b)=>a.location.distanceTo(myLocation) - b.location.distanceTo(myLocation));
           let closestTriageNurse = closestTriageNursesSorted[0];
+
           if(closestTriageNurse == null) {
             return fluentBehaviorTree.BehaviorTreeStatus.Failure;
           }
@@ -47,7 +49,6 @@ class AssignPatientToTriageNurse {
           //let myPatient = me().getCurrentPatient();
           let myPatient = me().triageList[0];
 
-          
           // This should work for multiple triage nurses as long as inactive triage nurses wait at TriageNursePlace
           if (closestTriageNurse.getBusy() || myPatient.getPermanentRoom() == null || myPatient.getInstructor() != me())
           {

@@ -100,8 +100,9 @@ class FollowInstructions {
           agentConstant.destination = myGoal.location;
         }
         else if(state == PatientTempState.BOOKED){
-          //agentConstant.destination = myGoal.location;
           me().inSimulation = false;
+          myGoal = Hospital.locations.find(l => l.name == "Main Entrance");
+          agentConstant.destination = myGoal.location;
         }
         else {
           console.log("Invalid patient temp state " + state);
