@@ -77,7 +77,7 @@ class triageNurse {
       .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "TriageNursePlace").location).tree)
 
       .do("Wait For Patient Assignment", (t) => {
-        if (!me().getCurrentPatient()) return fluentBehaviorTree.BehaviorTreeStatus.Running;
+        if (!me().getCurrentPatient()) return fluentBehaviorTree.BehaviorTreeStatus.Failure;
         me().setBusy(true);
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
 

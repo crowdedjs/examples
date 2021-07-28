@@ -261,26 +261,31 @@ export default
       "gender": "male",
       "id": 30
     },
+    //
     // PAST HERE ARE THE SHIFT CHANGES AT 6 PM
+    //
     {
       "name": "Nurse",
       "type": "Triage Nurse",
       "arrivalLocation": "Main Entrance",
-      "arrivalTick": 60000,
+      //"arrivalTick": 60000,
+      "arrivalTick": 1728000,
       "id": 31
     },
     {
       "name": "Nurse",
       "type": "Triage Nurse",
       "arrivalLocation": "Main Entrance",
-      "arrivalTick": 60000,
+      //"arrivalTick": 60000,
+      "arrivalTick": 1728000,
       "id": 32
     },
     {
       "name": "Tech",
       "type": "Tech",
       "arrivalLocation": "Main Entrance",
-      "arrivalTick": 50000,
+      //"arrivalTick": 50000,
+      "arrivalTick": 1728000,
       "id": 33
       //"id": 31
     },
@@ -288,7 +293,8 @@ export default
       "name": "Tech",
       "type": "Tech",
       "arrivalLocation": "Main Entrance",
-      "arrivalTick": 50000,
+      //"arrivalTick": 50000,
+      "arrivalTick": 1728000,
       "id": 34
       //"id": 32
     },
@@ -296,7 +302,8 @@ export default
       "name": "Nurse",
       "type": "Nurse",
       "arrivalLocation": "Main Entrance",
-      "arrivalTick": 50000,
+      //"arrivalTick": 50000,
+      "arrivalTick": 1728000,
       "id": 35
       //"id": 33
     },
@@ -304,7 +311,8 @@ export default
       "name": "Nurse",
       "type": "Nurse",
       "arrivalLocation": "Main Entrance",
-      "arrivalTick": 50000,
+      //"arrivalTick": 50000,
+      "arrivalTick": 1728000,
       "id": 36
       //"id": 34
     },
@@ -312,7 +320,8 @@ export default
       "name": "Nurse",
       "type": "Greeter Nurse",
       "arrivalLocation": "Main Entrance",
-      "arrivalTick": 50000,
+      //"arrivalTick": 50000,
+      "arrivalTick": 1728000,
       "id": 37
       //"id": 35
     },
@@ -320,7 +329,8 @@ export default
       "name": "Tech",
       "type": "CT",
       "arrivalLocation": "Main Entrance",
-      "arrivalTick": 50000,
+      //"arrivalTick": 50000,
+      "arrivalTick": 1728000,
       "id": 38
       //"id": 36
     },
@@ -328,7 +338,8 @@ export default
       "name": "Tech",
       "type": "CT",
       "arrivalLocation": "Main Entrance",
-      "arrivalTick": 50000,
+      //"arrivalTick": 50000,
+      "arrivalTick": 1728000,
       "id": 39
       //"id": 37
     },
@@ -336,7 +347,8 @@ export default
       "name": "Tech",
       "type": "Janitorial",
       "arrivalLocation": "Main Entrance",
-      "arrivalTick": 50000,
+      //"arrivalTick": 50000,
+      "arrivalTick": 1728000,
       "id": 40
       //"id": 38
     },
@@ -344,7 +356,8 @@ export default
       "name": "Tech",
       "type": "Radiology",
       "arrivalLocation": "Main Entrance",
-      "arrivalTick": 50000,
+      //"arrivalTick": 50000,
+      "arrivalTick": 1728000,
       "id": 41
       //"id": 39
     },
@@ -359,7 +372,8 @@ export default
       "name": "Resident",
       "type": "Resident",
       "arrivalLocation": "Main Entrance",
-      "arrivalTick": 60000,
+      //"arrivalTick": 60000,
+      "arrivalTick": 1728000,
       //"id": 43
       "id": 42
     },
@@ -367,7 +381,8 @@ export default
       "name": "Resident",
       "type": "Resident",
       "arrivalLocation": "Main Entrance",
-      "arrivalTick": 60000,
+      //"arrivalTick": 60000,
+      "arrivalTick": 1728000,
       //"id": 44
       "id": 43
     },
