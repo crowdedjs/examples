@@ -37,7 +37,7 @@ class tech {
               for (let i = 0; i < Hospital.activeTech.length; i++) {
                 if (!Hospital.activeTech[i].replacement) {
                   Hospital.activeTech[i].replacement = true;
-                  Hospital.activeTech.pop;
+                  Hospital.activeTech.shift();
                   break;
                 }
               }

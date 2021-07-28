@@ -1,7 +1,9 @@
-import GoTo from "../behavior/go-to.js"
+import GoTo from "../behavior/go-to.js";
 import GoToLazy from "../behavior/go-to-lazy.js";
 import LeavePatient from "../behavior/leave-patient.js";
-import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree";
+import PatientTempState from "../support/patient-temp-state.js";
+
 
 class triageNurse {
 
@@ -36,7 +38,7 @@ class triageNurse {
               for (let i = 0; i < Hospital.activeTriage.length; i++) {
                 if (!Hospital.activeTriage[i].replacement) {
                   Hospital.activeTriage[i].replacement = true;
-                  Hospital.activeTriage.pop;
+                  Hospital.activeTriage.shift();
                   break;
                 }
               }
@@ -52,11 +54,13 @@ class triageNurse {
         .sequence("Exit Procedure")
           .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
           .do("Leave Simulation", (t) => {
-            // for(let i = 0; i < Hospital.computer.entries.length; i++) {
-            //   if (Hospital.computer.entries[i].getNurse() == me()) {
-            //     Hospital.computer.entries[i].setNurse(null);
-            //   }
-            // }
+            for(let i = 0; i < Hospital.computer.entries.length; i++) {
+              if (Hospital.computer.entries[i].getPatient().getInstructor() != null && Hospital.computer.entries[i].getPatient().getInstructor() == me() && Hospital.computer.entries[i].getPatient().getPatientTempState() == PatientTempState.FOLLOWING) {
+                Hospital.computer.entries[i].getPatient().setInstructor(null);
+                Hospital.computer.entries[i].getPatient().setPatientTempState(PatientTempState.WAITING);
+                Hospital.activeGreeter[0].triageList.push(Hospital.computer.entries[i].getPatient());
+              }
+            }
             // if (Hospital.aTeam[2] == me()) {
             //   Hospital.aTeam[2] = null;
             // }

@@ -9,12 +9,14 @@ export default function setupTable(crowdSetup) {
   var takenVitalsCell = titleRow.insertCell(2);
   var bedCell = titleRow.insertCell(3);
   var severityCell = titleRow.insertCell(4);
+  var triageCell = titleRow.insertCell(5);
   
   titleCell.innerHTML = "Computer Entry";
   chiefComplaintCell.innerHTML = "Chief Complaint";
   takenVitalsCell.innerHTML = "Vitals Taken";
   bedCell.innerHTML = "Assigned Bed";
   severityCell.innerHTML = "Severity";
+  triageCell.innerHTML = "Triage Nurse";
 
   let computerEntries = 0;
 
@@ -28,6 +30,7 @@ export default function setupTable(crowdSetup) {
         var cell3 = tempRow.insertCell(2);
         var cell4 = tempRow.insertCell(3);
         var cell5 = tempRow.insertCell(4);
+        var cell6 = tempRow.insertCell(5);
         cell1.innerHTML = computerEntries + 1;
         cell2.innerHTML = Hospital.computer.entries[computerEntries].getChiefComplaint();
         cell3.innerHTML = Hospital.computer.entries[computerEntries].getVitals();
@@ -37,7 +40,13 @@ export default function setupTable(crowdSetup) {
         else
           cell4.innerHTML = Hospital.computer.entries[computerEntries].getBed().getName();
         cell5.innerHTML = Hospital.computer.entries[computerEntries].getPatient().getSeverity();
-
+        if (Hospital.computer.entries[computerEntries].getPatient().getInstructor() != null) {
+          cell6.innerHTML = Hospital.computer.entries[computerEntries].getPatient().getInstructor().id;
+        }
+        else {
+          cell6.innerHTML = "No Instructor";
+        }
+        
         computerEntries++;
 
         // var tempRow1 = table.insertRow(2)
@@ -90,6 +99,12 @@ export default function setupTable(crowdSetup) {
         
         document.getElementById("ComputerEntryTable").rows[i + 1].cells[4].innerHTML = Hospital.computer.entries[i].getPatient().getSeverity();
 
+        if (Hospital.computer.entries[i].getPatient().getInstructor() != null) {
+          document.getElementById("ComputerEntryTable").rows[i + 1].cells[5].innerHTML = Hospital.computer.entries[i].getPatient().getInstructor().id;
+        }
+        else {
+          document.getElementById("ComputerEntryTable").rows[i + 1].cells[5].innerHTML = "No Instructor";
+        }
       }
 
       if (!Hospital.computer.entries[i].getPatient().inSimulation) {

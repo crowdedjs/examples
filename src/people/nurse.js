@@ -32,7 +32,7 @@ class nurse {
                 for (let i = 0; i < Hospital.activeNurse.length; i++) {
                   if (!Hospital.activeNurse[i].replacement) {
                     Hospital.activeNurse[i].replacement = true;
-                    Hospital.activeNurse.pop;
+                    Hospital.activeNurse.shift();
                     break;
                   }
                 }

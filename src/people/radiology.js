@@ -33,7 +33,7 @@ class radiology {
               for (let i = 0; i < Hospital.activeRadio.length; i++) {
                 if (!Hospital.activeRadio[i].replacement) {
                   Hospital.activeRadio[i].replacement = true;
-                  Hospital.activeRadio.pop;
+                  Hospital.activeRadio.shift();
                   break;
                 }
               }

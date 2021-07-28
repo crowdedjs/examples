@@ -59,8 +59,23 @@ class AssignPatientToTriageNurse {
             closestTriageNurse.setCurrentPatient(myPatient);
             myPatient.setInstructor(closestTriageNurse);
             myPatient.setPatientTempState(PatientTempState.FOLLOWING);
-            //me().setCurrentPatient(null);
-            me().triageList.shift();
+            me().setCurrentPatient(null);
+            // for (let i = 0; i < me().triageList.length; i++) {
+            //   console.log(me().triageList[i]);
+            // }
+            //console.log("BREAK");
+            
+            // console.log("---");
+            // console.log(me().triageList[0]);
+            // console.log(me().triageList[me().triageList.length - 1]);
+            // console.log(myPatient);
+
+            if (me().triageList[me().triageList.length - 1] == myPatient) {
+              me().triageList.pop();
+            }
+            else if (me().triageList[0] == myPatient) {
+              me().triageList.shift();
+            }
             //hospital.addComment(me, myPatient, "Follow that nurse.");
             return fluentBehaviorTree.BehaviorTreeStatus.Success;
           }
