@@ -55,15 +55,18 @@ class triageNurse {
           .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
           .do("Leave Simulation", (t) => {
             for(let i = 0; i < Hospital.computer.entries.length; i++) {
+              // LEFTOVER ARTIFACT OF ORIGINAL ATTEMPT TO FIX TRIAGE WITH SHIFT CHANGES
+              // THIS IF STATEMENT PROBABLY WON'T EVER RUN DUE TO THE ACTUAL SUCCESSFUL IMPLEMENTATION
               if (Hospital.computer.entries[i].getPatient().getInstructor() != null && Hospital.computer.entries[i].getPatient().getInstructor() == me() && Hospital.computer.entries[i].getPatient().getPatientTempState() == PatientTempState.FOLLOWING) {
                 Hospital.computer.entries[i].getPatient().setInstructor(null);
                 Hospital.computer.entries[i].getPatient().setPatientTempState(PatientTempState.WAITING);
+                // THIS IF STATEMENT DOESN'T DO ANYTHING BECAUSE YOU CAN'T ACCESS THE VALUE FOR SOME REASON
+                if (Hospital.activeGreeter[0].triageList[0] == Hospital.computer.entries[i].getPatient()) {
+                  Hospital.activeGreeter[0].triageList.shift();
+                }
                 Hospital.activeGreeter[0].triageList.push(Hospital.computer.entries[i].getPatient());
               }
             }
-            // if (Hospital.aTeam[2] == me()) {
-            //   Hospital.aTeam[2] = null;
-            // }
             me().inSimulation = false;
             return fluentBehaviorTree.BehaviorTreeStatus.Running;
           })
@@ -84,7 +87,9 @@ class triageNurse {
       
       .do("Leave Patient", (t) => {
         let result = leavePatient.tick(t)
-        me().setBusy(false);
+        if (me().replacement == false) {
+          me().setBusy(false);
+        }
         return result;
       })
     .end()

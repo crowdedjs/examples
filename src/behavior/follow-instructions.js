@@ -36,17 +36,8 @@ class FollowInstructions {
           //agentConstant.destination = new Vector3(loc.x, loc.y, loc.z);
           //agentConstant.destination = Vector3.fromObject(t.crowd.find(f=>f.id == me().idx).location);
           agentConstant.destination = new Vector3(agentConstant.location.x, agentConstant.location.y, agentConstant.location.z);
-          // if (myIndex > 25) {
-          //   console.log(myIndex + " is waiting.");
-          // }
         }
-        else if (state == PatientTempState.FOLLOWING) {
-          // if (myIndex > 25) {
-          //   console.log(myIndex + " is following.");
-          //   let instructor = me().getInstructor();
-          //   console.log(instructor);
-          // }
-          
+        else if (state == PatientTempState.FOLLOWING) {          
           let instructor = me().getInstructor();
           let instructorLoc = Vector3.fromObject(t.crowd.find(f=>f.id == instructor.id).location);
           let instructorLocation = instructorLoc;
@@ -86,7 +77,6 @@ class FollowInstructions {
           me().inSimulation = false;
           // ADJUST CTQUEUE SO TECH TAKES NEXT PATIENT TO CT ROOM
           Hospital.CTQueue.shift();
-          //Hospital.setCTOccupied(false);
           if (me().getCTRoom() == "CT 1") {
             Hospital.setCT1Occupied(false);
           }
