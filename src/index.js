@@ -56,7 +56,7 @@ function boot() {
   let crowdSetup = new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "./crowd-setup/");
 
 
-  setupTable(crowdSetup);
+ // setupTable(crowdSetup);
 
   //  })
   //This can be commented out for debugging purposes. In production, this should not be commented.
