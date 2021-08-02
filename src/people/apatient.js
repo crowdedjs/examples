@@ -10,12 +10,15 @@ class APatient extends APerson {
 
     patientPregnancyState = "NOT_EXPECTING";
     
-    patientTempState = PatientTempState.WAITING;
+    patientTempState = PatientTempState.ARRIVED;
     
 	severity; // Severity
 	// SEVERITY LEVELS: ESI1, ESI2, ESI3, ESI4, ESI5
 	
 	instructor; // AMedicalStaff
+
+	ctRoom = null; //room
+	scan = false; //boolean 
 
 	/**
 	 * The room that the patient's bed is in.
@@ -62,6 +65,20 @@ class APatient extends APerson {
 
 	setPatientPregnancyState(patientPregnancyState) {
 		this.patientPregnancyState = patientPregnancyState;
+	}
+
+	setCTRoom(string) {
+		this.ctRoom = string;
+	} 
+	getCTRoom() {
+		return this.ctRoom;
+	}
+	
+	setCATScan(boolean) {
+		this.scan = boolean;
+	}
+	getCATScan() {
+		return this.scan;
 	}
 }
 	

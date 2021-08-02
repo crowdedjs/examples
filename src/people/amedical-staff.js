@@ -5,9 +5,12 @@ class AMedicalStaff extends APerson {
     medicalStaffSubclass; //MedicalStaffSublcass -> string
     doctorYear; //DoctorYear -> string
     currentPatient; //IPatient -> APatient
+	patientList; //Array of Patients
+	triageList; //Array of Patients ready for Triage
     myRooms; //List<IRooms> -> []
     responsibility; //AResponsibility
     computer; //IRoom -> ARoom
+	busy = false; //boolean (if the nurse needs to finish their behavior before getting another patient)
 
 	constructor(location, UUID, medicalStaffType, medicalStaffSubclass, doctorYear, arrivalTick) {
 		super(location, UUID, arrivalTick);
@@ -22,6 +25,18 @@ class AMedicalStaff extends APerson {
 			this.doctorYear = doctorYear;
 		}
 		this.myRooms = [];
+		this.patientList = [];
+		this.triageList = [];
+
+
+	}
+
+	getBusy() {
+		return this.busy;
+	}
+
+	setBusy(busy) {
+		this.busy = busy;
 	}
 
 	get Computer() {
@@ -50,12 +65,19 @@ class AMedicalStaff extends APerson {
         this.myRooms = myRooms;
     }
 
+	// removeRoom() {
+	// 	this.myRooms.pop();
+	// }
+
     addRoom(room) {
         this.myRooms.push(room);
     }
 
 	hasRoom(room) {
-		return this.MyRooms.some(r=>r.name == room.name)	
+		if (!room || !room.name) {
+			return false;
+		}
+		return this.MyRooms.some(r=>r && r.name == room.name)	
 	}
 
 	getCurrentPatient() {
@@ -65,6 +87,22 @@ class AMedicalStaff extends APerson {
 	setCurrentPatient(currentPatient) {
 		this.currentPatient = currentPatient;
 	}
+
+	get PatientList() {
+        return this.patientList;
+    }
+
+    set PatientList(patientList) {
+        this.patientList = patientList;
+    }
+
+	get triageList() {
+        return this.triageList;
+    }
+
+    set triageList(triageList) {
+        this.triageList = triageList;
+    }
 
 	get MedicalStaffSubclass() {
 		return this.medicalStaffSubclass;

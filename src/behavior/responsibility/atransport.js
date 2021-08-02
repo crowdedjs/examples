@@ -29,9 +29,11 @@ class ATransportResponsibility extends AResponsibility {
       this.start();
     }
 
-    let distance = Vector3.fromObject(this.entry.getPatient().getLocation()).distanceTo(this.room.getLocation());
+    //let distance = Vector3.fromObject(this.entry.getPatient().getLocation()).distanceTo(this.room.getLocation());
+    let distance = Vector3.fromObject(this.entry.getPatient().getLocation()).distanceToSquared(this.room.getLocation());
 
-    if (distance < 1.5 && !this.calledFinished) {
+    //if (distance < 1.5 && !this.calledFinished) {
+    if (distance < 2.25 && !this.calledFinished) {
       this.calledFinished = true;
       this.getMedicalStaff().setCurrentPatient(null);
       this.entry.getPatient().setPatientTempState(PatientTempState.GO_INTO_ROOM);

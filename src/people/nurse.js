@@ -3,8 +3,6 @@ import GoTo from "../behavior/go-to.js";
 import AssignComputer from "../behavior/assign-computer.js"
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
-
-
 class nurse {
 
     constructor(myIndex) {
@@ -22,6 +20,48 @@ class nurse {
       this.tree = builder
 
       .sequence("Assign Nurse")
+
+        .selector("Check for arrival")  
+          .condition("Clock in", async (t) => me().onTheClock)
+          .do("SHIFT CHANGE", (t) => {
+            // SHIFT CHANGE
+            if (me().onTheClock == false) {
+              me().onTheClock = true;
+              Hospital.activeNurse.push(me());
+              if (Hospital.activeNurse[0] != me() && Hospital.activeNurse.length > 2) {
+                for (let i = 0; i < Hospital.activeNurse.length; i++) {
+                  if (!Hospital.activeNurse[i].replacement) {
+                    Hospital.activeNurse[i].replacement = true;
+                    Hospital.activeNurse.shift();
+                    break;
+                  }
+                }
+              }
+            }
+            return fluentBehaviorTree.BehaviorTreeStatus.Success;
+          })
+        .end()
+
+        // SHIFT CHANGE SEQUENCE OF BEHAVIORS
+        .selector("Check for Replacement")
+          .condition("Replacement is Here", async (t) => !me().replacement)
+          .sequence("Exit Procedure")
+            .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+            .do("Leave Simulation", (t) => {
+              for(let i = 0; i < Hospital.computer.entries.length; i++) {
+                if (Hospital.computer.entries[i].getNurse() == me()) {
+                  Hospital.computer.entries[i].setNurse(null);
+                }
+              }
+              if (Hospital.aTeam[2] == me()) {
+                Hospital.aTeam[2] = null;
+              }
+              me().inSimulation = false;
+              return fluentBehaviorTree.BehaviorTreeStatus.Running;
+            })
+          .end()
+        .end()
+
         .splice(new GoTo(self.index, myGoal.location).tree)
         .splice(new AssignComputer(myIndex, computer.location).tree) // NURSE PLACE
         .splice(new responsibility(myIndex).tree) // LAZY: TRUE

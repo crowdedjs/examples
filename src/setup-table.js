@@ -7,9 +7,16 @@ export default function setupTable(crowdSetup) {
   var titleCell = titleRow.insertCell(0);
   var chiefComplaintCell = titleRow.insertCell(1);
   var takenVitalsCell = titleRow.insertCell(2);
+  var bedCell = titleRow.insertCell(3);
+  var severityCell = titleRow.insertCell(4);
+  //var triageCell = titleRow.insertCell(5);
+  
   titleCell.innerHTML = "Computer Entry";
   chiefComplaintCell.innerHTML = "Chief Complaint";
   takenVitalsCell.innerHTML = "Vitals Taken";
+  bedCell.innerHTML = "Assigned Bed";
+  severityCell.innerHTML = "Severity";
+  //triageCell.innerHTML = "Triage Nurse";
 
   let computerEntries = 0;
 
@@ -21,10 +28,25 @@ export default function setupTable(crowdSetup) {
         var cell1 = tempRow.insertCell(0);
         var cell2 = tempRow.insertCell(1);
         var cell3 = tempRow.insertCell(2);
+        var cell4 = tempRow.insertCell(3);
+        var cell5 = tempRow.insertCell(4);
+        //var cell6 = tempRow.insertCell(5);
         cell1.innerHTML = computerEntries + 1;
         cell2.innerHTML = Hospital.computer.entries[computerEntries].getChiefComplaint();
         cell3.innerHTML = Hospital.computer.entries[computerEntries].getVitals();
-
+        if (typeof Hospital.computer.entries[computerEntries].getBed() === 'undefined') {
+          cell4.innerHTML = "Waiting Room";
+        }
+        else
+          cell4.innerHTML = Hospital.computer.entries[computerEntries].getBed().getName();
+        cell5.innerHTML = Hospital.computer.entries[computerEntries].getPatient().getSeverity();
+        // if (Hospital.computer.entries[computerEntries].getPatient().getInstructor() != null) {
+        //   cell6.innerHTML = Hospital.computer.entries[computerEntries].getPatient().getInstructor().id;
+        // }
+        // else {
+        //   cell6.innerHTML = "No Instructor";
+        // }
+        
         computerEntries++;
 
         // var tempRow1 = table.insertRow(2)
@@ -54,9 +76,45 @@ export default function setupTable(crowdSetup) {
       }
 
       //update existing entries in table
-      document.getElementById("ComputerEntryTable").rows[i + 1].cells[1].innerHTML = Hospital.computer.entries[i].getChiefComplaint();
-      document.getElementById("ComputerEntryTable").rows[i + 1].cells[2].innerHTML = Hospital.computer.entries[i].getVitals();
+      if (typeof document.getElementById("ComputerEntryTable").rows[i + 1] === 'undefined') {
+        break;
+      }
+      else {
+        document.getElementById("ComputerEntryTable").rows[i + 1].cells[0].innerHTML = i + 1;
+
+        document.getElementById("ComputerEntryTable").rows[i + 1].cells[1].innerHTML = Hospital.computer.entries[i].getChiefComplaint();
+        if (typeof Hospital.computer.entries[i].getVitals() === 'undefined') {
+          document.getElementById("ComputerEntryTable").rows[i + 1].cells[2].innerHTML = "Not Taken";
+        }
+        else {
+          document.getElementById("ComputerEntryTable").rows[i + 1].cells[2].innerHTML = Hospital.computer.entries[i].getVitals();
+        }
+        
+        if (typeof Hospital.computer.entries[i].getBed() === 'undefined') {
+          document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = "Waiting Room";
+        }
+        else {
+          document.getElementById("ComputerEntryTable").rows[i + 1].cells[3].innerHTML = Hospital.computer.entries[i].getBed().getName();
+        }
+        
+        document.getElementById("ComputerEntryTable").rows[i + 1].cells[4].innerHTML = Hospital.computer.entries[i].getPatient().getSeverity();
+
+        // if (Hospital.computer.entries[i].getPatient().getInstructor() != null) {
+        //   document.getElementById("ComputerEntryTable").rows[i + 1].cells[5].innerHTML = Hospital.computer.entries[i].getPatient().getInstructor().id;
+        // }
+        // else {
+        //   document.getElementById("ComputerEntryTable").rows[i + 1].cells[5].innerHTML = "No Instructor";
+        // }
+      }
+
+      if (!Hospital.computer.entries[i].getPatient().inSimulation) {
+        document.getElementById("ComputerEntryTable").deleteRow(i + 1);
+        Hospital.computer.entries.splice(i, 1);
+        computerEntries--;
+        break;
+      }
     }
+
     requestAnimationFrame(fillComputerTable);
   }
 

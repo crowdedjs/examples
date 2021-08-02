@@ -33,6 +33,7 @@ class BackAndForth {
 
         let difference = Vector3.subtract(loc, waypoint)
         let distanceToWaypoint = difference.length();
+        //let distanceToWaypoint = difference.lengthSquared();
 
         if (distanceToWaypoint < 2)
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -56,6 +57,7 @@ class BackAndForth {
 
         let difference = Vector3.subtract(loc, waypoint)
         let distanceToWaypoint = difference.length();
+        //let distanceToWaypoint = difference.lengthSquared();
 
         if (distanceToWaypoint < 2)
           return fluentBehaviorTree.BehaviorTreeStatus.Success;

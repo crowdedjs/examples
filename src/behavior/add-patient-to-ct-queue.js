@@ -15,6 +15,7 @@ class AssignPatientToCTQueue {
         
         let myPatient = me().getCurrentPatient();
         Hospital.getCTQueue().add(myPatient);
+        console.log(Hospital.getCTQueue());
         
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })

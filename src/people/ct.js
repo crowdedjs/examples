@@ -1,6 +1,4 @@
 import GoTo from "../behavior/go-to.js"
-import WaitForever from "../behavior/wait-forever.js"
-
 import AssignComputer from "../behavior/assign-computer.js";
 import responsibility from "../behavior/responsibility/responsibility.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
@@ -16,8 +14,13 @@ class ct {
     this.toReturn = null;
 
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
+       
+    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
+
     let goToName = "CT 1";
-    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
+    if (myIndex % 2 == 1) {
+      goToName = "CT 2";
+    }
 
     let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
@@ -25,11 +28,50 @@ class ct {
 
     this.tree = builder
       .sequence("Tech Tree")
-      .splice(new GoTo(self.index, myGoal.location).tree)
-      //.splice(new WaitForever(myIndex).tree)
 
-      // original tree is below sequence
-      .splice(new AssignComputer(myIndex, Hospital.locations.find(l => l.name == "CT 1").location).tree) // name CT 1
+      .selector("Check for arrival")  
+        .condition("Clock in", async (t) => me().onTheClock)
+        .do("SHIFT CHANGE", (t) => {
+          // SHIFT CHANGE
+          if (me().onTheClock == false) {
+            me().onTheClock = true;
+            Hospital.activeCT.push(me());
+            if (Hospital.activeCT[0] != me() && Hospital.activeCT.length > 2) {
+              for (let i = 0; i < Hospital.activeCT.length; i++) {
+                if (!Hospital.activeCT[i].replacement) {
+                  Hospital.activeCT[i].replacement = true;
+                  Hospital.activeCT.shift();
+                  break;
+                }
+              }
+            }
+          }
+          
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        })
+      .end()
+
+      // SHIFT CHANGE SEQUENCE OF BEHAVIORS
+      .selector("Check for Replacement")
+        .condition("Replacement is Here", async (t) => !me().replacement)
+        .sequence("Exit Procedure")
+          .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+          .do("Leave Simulation", (t) => {
+            me().inSimulation = false;
+            return fluentBehaviorTree.BehaviorTreeStatus.Running;
+          })
+        .end()
+      .end()
+
+      // .do("test", (t) => {
+      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
+      // })
+
+      .splice(new GoTo(self.index, myGoal.location).tree)
+
+      //.splice(new AssignComputer(myIndex, Hospital.locations.find(l => l.name == goToName).location).tree) // CT 1 or CT 2
+      .splice(new AssignComputer(myIndex, myGoal.location).tree) // CT 1 or CT 2
+
       .splice(new responsibility(myIndex).tree) // lazy: true
       
       .end()

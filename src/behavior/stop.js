@@ -14,7 +14,7 @@ class Stop {
                     let loc = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
                     agent.destination = new Vector3(loc.x, loc.y, loc.z);
 
-                    console.log("Stopped");
+                    //console.log("Stopped");
                     return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
             .end()

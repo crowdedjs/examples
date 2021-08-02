@@ -12,9 +12,20 @@ class ResidentEKGOrderCAT extends AResponsibility{
 	doFinish() {
 		this.entry.acknowledge(ACK.RESIDENT_EKG_ORDER_CAT);
 		let myPatient = this.entry.getPatient();
-		Hospital.CTQueue.push(myPatient);
-		
-
+		if (myPatient.getSeverity() == "ESI1" && Hospital.CTQueue[0].getSeverity() != "ESI1") {
+			Hospital.CTQueue.unshift(myPatient);
+		}
+		else if (myPatient.getSeverity() == "ESI1" && Hospital.CTQueue[0].getSeverity() == "ESI1") {
+			let i = 0;
+			while (Hospital.CTQueue[i].getSeverity() == "ESI1") {
+				i++;
+			}
+			
+			Hospital.CTQueue.splice(i, 0, myPatient);
+		}
+		else {
+			Hospital.CTQueue.push(myPatient);
+		}
 	}
 }
 

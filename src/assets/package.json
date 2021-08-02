@@ -1,0 +1,9 @@
+{
+  "name": "@crowdedjs/assets",
+  "version": "0.1.8",
+  "description": "",
+  "keywords": [],
+  "author": "bricksphd",
+  "license": "MIT",
+  "type":"module"
+}

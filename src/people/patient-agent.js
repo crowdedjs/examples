@@ -13,6 +13,7 @@ class PatientAgent extends APatient {
   inSimulation = false;
   hasEntered = false;
   behavior;
+  emergencyQueue = false;
 
   static index = 0;
   idx; //Corresponds to the internal idx number used by recast
@@ -21,7 +22,7 @@ class PatientAgent extends APatient {
     super(location, UUID, severity, arrivalCount);
 
     this.name = agent.name;
-     this.startMSec = agent.arrivalTick * 25; // We simulate 25 fps
+    this.startMSec = agent.arrivalTick * 25; // We simulate 25 fps
     this.arrivalLocation = agent.arrivalLocation;
     this.age = agent.age;
     this.severity = agent.severity;
@@ -40,11 +41,13 @@ class PatientAgent extends APatient {
     this.destX = 0;
     this.destY = 0;
     this.destZ = 0;
-
-    this.behavior = new patient( agent.id, Hospital.locations.find(l => l.name == "Check In"));
     
+    this.behavior = new patient( agent.id, Hospital.locations.find(l => l.name == "Check In"));
+    if (startLocation == Hospital.locations.find(l => l.name == "Ambulance Entrance")) {
+      this.behavior = new patient( agent.id, Hospital.locations.find(l => l.name == "Ambulance Entrance"));
+    }   
       
-    }
+  }
   
 
 

@@ -32,17 +32,36 @@ class responsibility {
         let handleResponsibility = new HandleResponsibility(myIndex).tree;
         let reassess = new Reassess(myIndex).tree;
         let subResponsibility = new SubResponsibility(myIndex).tree;
+        let i = 1;
         
 
         this.tree = builder
             .sequence("Responsibility")
 
-            .do("getRooms", (t) => {
+            .do("getRooms", (t) => {               
+                // ADD A ROOM EACH LOOP WITHOUT DELETING, EVERYONE LOOPS, AND LOOPS IN ORDER,
+                // BUT THE TECH NEVER TRANSPORTS MORE THAN ONE PATIENT FOR XRAYS LIKE ABOVE
                 let agent = Hospital.agents.find(a => a.id == myIndex);
-                agent.addRoom(Hospital.locations.find(l => l.name == "C1"));
+                let roomName = "C1";
+
+                if (i == 1) {
+                    agent.addRoom(Hospital.locations.find(l => l.name == roomName));
+                    i++;
+                }
+                else if (i <= 21) {
+                    roomName = "C " + i;
+                    agent.addRoom(Hospital.locations.find(l => l.name == roomName));
+                    i++;
+                }
+                
+
+                // ORIGINAL METHOD: ONLY WORKS FOR ONE PATIENT, DOESN'T LOOP ANYONE
+                //let agent = Hospital.agents.find(a => a.id == myIndex);
+                //agent.addRoom(Hospital.locations.find(l => l.name == "C1"));
+
+
                 if (me().name == debug)
                     console.log("getRooms")
-
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
             .do("getComputer", (t) => {
@@ -58,6 +77,8 @@ class responsibility {
                         break;
                     case "CT":
                         me().Computer = Hospital.locations.find(l => l.name == "CT 1");
+                        if (myIndex % 2 == 1)
+                            me().Computer = Hospital.locations.find(l => l.name == "CT 2");
                         break;
                     case "Radiology":
                         me().Computer = Hospital.locations.find(l => l.name == "CT 2");

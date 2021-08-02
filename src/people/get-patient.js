@@ -1,4 +1,3 @@
-// not fully ported
 import GoTo from "../behavior/go-to.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
@@ -41,7 +40,8 @@ class getPatient {
               // UPDATE THIS LINE
               patientLocation = me.getCurrentPatient().getLocation();
               // UPDATE THIS LINE
-              if(patientLocation.distanceTo(me.getLocation() < 1))
+              //if(patientLocation.distanceTo(me.getLocation() < 1))
+              if(patientLocation.distanceToSquared(me.getLocation() < 1))
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
               return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })

@@ -21,13 +21,45 @@ class radiology {
 
 
     this.tree = builder
-      .sequence("Go and Idle")
+    .sequence("Go and Idle")
+      .selector("Check for arrival")  
+        .condition("Clock in", async (t) => me().onTheClock)
+        .do("SHIFT CHANGE", (t) => {
+          // SHIFT CHANGE
+          if (me().onTheClock == false) {
+            me().onTheClock = true;
+            Hospital.activeRadio.push(me());
+            if (Hospital.activeRadio[0] != me() && Hospital.activeRadio.length > 1) {
+              for (let i = 0; i < Hospital.activeRadio.length; i++) {
+                if (!Hospital.activeRadio[i].replacement) {
+                  Hospital.activeRadio[i].replacement = true;
+                  Hospital.activeRadio.shift();
+                  break;
+                }
+              }
+            }
+          }
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        })
+      .end()
+
+      // SHIFT CHANGE SEQUENCE OF BEHAVIORS
+      .selector("Check for Replacement")
+        .condition("Replacement is Here", async (t) => !me().replacement)
+        .sequence("Exit Procedure")
+          .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+          .do("Leave Simulation", (t) => {
+            me().inSimulation = false;
+            return fluentBehaviorTree.BehaviorTreeStatus.Running;
+          })
+        .end()
+      .end()
+
       .splice(new GoTo(self.index, myGoal.location).tree)
-      //.splice(new WaitForever(myIndex).tree)
       .splice(new responsibility(myIndex).tree)
       
-      .end()
-      .build();
+    .end()
+    .build();
   }
 
   async update( crowd, msec) {
