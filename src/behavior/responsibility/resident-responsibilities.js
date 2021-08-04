@@ -16,11 +16,30 @@ class ResidentResponsibilities extends AResponsibilityFactory {
 		}
 		
 		if (Hospital.emergencyQueue.length > 0 && Hospital.aTeam[1] == medicalStaff) {
-			let emergencyPatient = Hospital.computer.entries.find(i=>i.getPatient().getSeverity() == "ESI1");
-			//if (emergencyPatient.getVitals() == null) {
+			let emergencyPatients = Hospital.computer.entries.filter(i=>i.getPatient().getSeverity() == "ESI1");
+			for (let i = 0; i < emergencyPatients.length; i++) {
+				let emergencyPatient = emergencyPatients[i];
 				emergencyPatient.setResident(medicalStaff);
-				//return new TakeVitalsResponsibility(emergencyPatient, medicalStaff);
-			//}
+				
+				if (emergencyPatient.unacknowledged(ACK.RESIDENT_EKG_READ)) {
+					return new ResidentEKGRead(emergencyPatient, medicalStaff);
+				}
+				else if (emergencyPatient.unacknowledged(ACK.RESIDENT_EKG_CONSULT)) {
+					return new ResidentEKGConsult(emergencyPatient, medicalStaff);
+				}
+				else if (emergencyPatient.unacknowledged(ACK.RESIDENT_EKG_ORDER_CAT)) {
+					return new ResidentEKGOrderCAT(emergencyPatient, medicalStaff);
+				}
+				else if (emergencyPatient.unacknowledged(ACK.RESIDENT_SCAN_READ)) {
+					return new ResidentScanRead(emergencyPatient, medicalStaff);
+				}
+				else if (emergencyPatient.unacknowledged(ACK.RESIDENT_ATTENDING_CONSULT)) {
+					return new ResidentAttendingConsult(emergencyPatient, medicalStaff)
+				}
+				else if(emergencyPatient.unacknowledged(ACK.RESIDENT_PATIENT_CONSULT)) {
+					return new ResidentPatientConsult(emergencyPatient, medicalStaff);
+				}
+			}
 		}
 
 		if (entry.getResident() == null || entry.getResident() == medicalStaff) {

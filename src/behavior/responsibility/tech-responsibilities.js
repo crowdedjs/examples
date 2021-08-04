@@ -14,16 +14,44 @@ import ACK from "./ack.js"
 			Hospital.aTeam[3] = medicalStaff;
 		}
 
-		// what else should the tech do?
 		if (Hospital.emergencyQueue.length > 0 && Hospital.aTeam[3] == medicalStaff) {
 			let emergencyPatients = Hospital.computer.entries.filter(i=>i.getPatient().getSeverity() == "ESI1");
 			for (let i = 0; i < emergencyPatients.length; i++) {
 				let emergencyPatient = emergencyPatients[i];
+				emergencyPatient.setTech(medicalStaff);
+
 				if (emergencyPatient.getVitals() == null) {
-					// entry.setTech(medicalStaff);
-					emergencyPatient.setTech(medicalStaff);
-					//return new TakeVitalsResponsibility( entry, medicalStaff);
+					console.log("Checking Emergency Vitals");
 					return new TakeVitalsResponsibility(emergencyPatient, medicalStaff);
+				}
+				else if(emergencyPatient.getEkg() == null){
+					console.log("Checking Emergency EKG");
+					return new TechEKGDo(emergencyPatient, medicalStaff);
+				}
+				else if(emergencyPatient.unacknowledged(ACK.CT_PICKUP)) {
+					console.log("Fetching Emergency Patient");
+					emergencyPatient.getPatient().setCATScan(true);
+					return new TechCATPickupResponsibility(emergencyPatient, medicalStaff);
+				}
+				else if(!emergencyPatient.getPatient().getCATScan() && emergencyPatient.getPatient().getCTRoom() == null && Hospital.getCTQueue().length > 0 && !Hospital.isCT1Occupied() && (emergencyPatient.getPatient() == Hospital.getCTQueue()[0] || emergencyPatient.getPatient() == Hospital.getCTQueue()[1])) {
+					console.log("Set for Emergency CAT scan in CT 1");
+					Hospital.setCT1Occupied(true);
+					emergencyPatient.getPatient().setCTRoom("CT 1");
+					return new TechEKGTakePatientToResponsibility(emergencyPatient, medicalStaff, Hospital.getLocationByName("CT 1"));
+				}
+				else if(!emergencyPatient.getPatient().getCATScan() && emergencyPatient.getPatient().getCTRoom() == null && Hospital.getCTQueue().length > 0 && !Hospital.isCT2Occupied() && (emergencyPatient.getPatient() == Hospital.getCTQueue()[0] || emergencyPatient.getPatient() == Hospital.getCTQueue()[1])) {
+					console.log("Set for Emergency CAT scan in CT 2");
+					Hospital.setCT2Occupied(true);
+					emergencyPatient.getPatient().setCTRoom("CT 2");
+					return new TechEKGTakePatientToResponsibility(emergencyPatient, medicalStaff, Hospital.getLocationByName("CT 2"));
+				}
+				else if(!emergencyPatient.getPatient().getCATScan() && emergencyPatient.getPatient().getCTRoom() == "CT 1") {
+					console.log("Set for Emergency CAT scan in CT 1 - 2");
+					return new TechEKGTakePatientToResponsibility(emergencyPatient, medicalStaff, Hospital.getLocationByName("CT 1"));
+				}
+				else if(!emergencyPatient.getPatient().getCATScan() && emergencyPatient.getPatient().getCTRoom() == "CT 2") {
+					console.log("Set for Emergency CAT scan in CT 2 - 2");
+					return new TechEKGTakePatientToResponsibility(emergencyPatient, medicalStaff, Hospital.getLocationByName("CT 2"));
 				}
 			}
 		}

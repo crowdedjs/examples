@@ -1,6 +1,5 @@
 import PatientState from "../support/patient-temp-state.js";
-import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
-
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree";
 
 class LookForArrivingPatient {
   constructor(myIndex) {

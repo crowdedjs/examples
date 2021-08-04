@@ -1,3 +1,5 @@
+import * as THREE from "three"
+
 class Hospital{
 
   static agentConstants;
@@ -68,8 +70,73 @@ class Hospital{
 
   }
 
-  
+  //From https://threejsfundamentals.org/threejs/lessons/threejs-billboards.html
+  makeLabelCanvas(baseWidth, size, name) {
+    const borderSize = 2;
+    const ctx = document.createElement('canvas').getContext('2d');
+    const font =  `${size}px bold sans-serif`;
+    ctx.font = font;
+    // measure how long the name will be
+    const textWidth = ctx.measureText(name).width;
 
+    const doubleBorderSize = borderSize * 2;
+    const width = baseWidth + doubleBorderSize;
+    const height = size + doubleBorderSize;
+    ctx.canvas.width = width;
+    ctx.canvas.height = height;
+
+    // need to set font again after resizing canvas
+    ctx.font = font;
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+
+    ctx.fillStyle = 'transparent';
+    ctx.fillRect(0, 0, width, height);
+
+    // scale to fit but don't stretch
+    const scaleFactor = Math.min(1, baseWidth / textWidth);
+    ctx.translate(width / 2, height / 2);
+    ctx.scale(scaleFactor, 1);
+    ctx.fillStyle = 'white';
+    ctx.fillText(name, 0, 0);
+
+    return ctx.canvas;
+  }
+
+  // makeLabel(labelWidth, size, name) {
+  //   //const ctx = document.createElement('canvas').getContext('2d');
+  //   //document.body.appendChild(ctx.canvas);
+  //   //ctx.canvas.width = 256;
+  //   //ctx.canvas.height = 256;
+  //   //ctx.fillStyle = '#FFF';
+  //   //ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    
+  //   const canvas = makeLabelCanvas(labelWidth, size, name);
+  //   const texture = new THREE.CanvasTexture(canvas);
+  //   texture.minFilter = THREE.LinearFilter;
+  //   texture.wrapS = THREE.ClampToEdgeWrapping;
+  //   texture.wrapT = THREE.ClampToEdgeWrapping;
+  //   const labelMaterial = new THREE.SpriteMaterial({
+  //     map: texture,
+  //     transparent: true,
+  //   });
+    
+  //   const label = new THREE.Sprite(labelMaterial);
+  //   //root.add(label);
+  //   label.position.x = 0;
+  //   label.position.y = 0;
+  //   label.position.z = 0;
+
+  //   // if units are meters then 0.01 here makes size
+  //   // of the label into centimeters.
+  //   const labelBaseScale = 0.01;
+  //   label.scale.x = canvas.width  * labelBaseScale;
+  //   label.scale.y = canvas.height * labelBaseScale;
+
+  //   //scene.add(root);
+  //   scene.add(label);
+  //   return label;
+  // }
 }
 
 export default Hospital;
