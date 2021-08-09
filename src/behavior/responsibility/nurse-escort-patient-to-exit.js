@@ -12,6 +12,13 @@ class NurseEscortPatientToExit extends ATransportResponsibility {
   doFinish() {
     this.entry.acknowledge(ACK.NURSE_ESCORT_PATIENT_TO_EXIT);
     this.entry.getPatient().setPatientTempState(PatientTempState.DONE);
+    for (let i = 0; i < Hospital.emergencyQueue.length; i++) {
+      if (this.entry.getPatient() == Hospital.emergencyQueue[i]) {
+        Hospital.emergencyQueue.splice(i, 1);
+        console.log(true);
+        console.log(Hospital.emergencyQueue);
+      }
+    }
   }
 }
 
