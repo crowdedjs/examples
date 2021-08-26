@@ -76,7 +76,12 @@ class FollowInstructions {
           //console.log("Done")
           me().inSimulation = false;
           // ADJUST CTQUEUE SO TECH TAKES NEXT PATIENT TO CT ROOM
-          Hospital.CTQueue.shift();
+          //Hospital.CTQueue.shift();
+          for (let i = 0; i < Hospital.CTQueue.length; i++) {
+            if (Hospital.CTQueue[i] == me()) {
+              Hospital.CTQueue.splice(i, 1);
+            }
+          }
           if (me().getCTRoom() == "CT 1") {
             Hospital.setCT1Occupied(false);
           }
