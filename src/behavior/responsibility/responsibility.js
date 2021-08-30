@@ -83,6 +83,9 @@ class responsibility {
                     case "Radiology":
                         me().Computer = Hospital.locations.find(l => l.name == "CT 2");
                         break;
+                    case "Phlebotomist":
+                        me().Computer = Hospital.locations.find(l => l.name == "Tech Start");
+                        break;
                     default:
                         console.error("Bad Subclass Name")
                 }
