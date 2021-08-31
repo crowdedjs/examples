@@ -39,7 +39,8 @@ class greeterNurse {
                   for (let i = 0; i < Hospital.activeGreeter.length; i++) {
                     if (!Hospital.activeGreeter[i].replacement) {
                       Hospital.activeGreeter[i].replacement = true;
-                      Hospital.activeGreeter.shift();
+                      //Hospital.activeGreeter.shift();
+                      Hospital.activeGreeter.splice(i, 1);
                       break;
                     }
                   }

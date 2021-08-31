@@ -33,7 +33,8 @@ class janitorial {
               for (let i = 0; i < Hospital.activeJanitor.length; i++) {
                 if (!Hospital.activeJanitor[i].replacement) {
                   Hospital.activeJanitor[i].replacement = true;
-                  Hospital.activeJanitor.shift();
+                  //Hospital.activeJanitor.shift();
+                  Hospital.activeJanitor.splice(i, 1);
                   break;
                 }
               }

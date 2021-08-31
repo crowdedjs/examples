@@ -40,7 +40,8 @@ class phlebotomist {
             for (let i = 0; i < Hospital.activePhleb.length; i++) {
               if (!Hospital.activePhleb[i].replacement) {
                 Hospital.activePhleb[i].replacement = true;
-                Hospital.activePhleb.shift();
+                //Hospital.activePhleb.shift();
+                Hospital.activePhleb.splice(i, 1);
                 break;
               }
             }

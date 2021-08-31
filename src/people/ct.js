@@ -40,7 +40,8 @@ class ct {
               for (let i = 0; i < Hospital.activeCT.length; i++) {
                 if (!Hospital.activeCT[i].replacement) {
                   Hospital.activeCT[i].replacement = true;
-                  Hospital.activeCT.shift();
+                  //Hospital.activeCT.shift();
+                  Hospital.activeCT.splice(i, 1);
                   break;
                 }
               }
