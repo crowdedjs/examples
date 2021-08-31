@@ -268,7 +268,6 @@ export default
       "name": "Nurse",
       "type": "Triage Nurse",
       "arrivalLocation": "Main Entrance",
-      //"arrivalTick": 60000,
       "arrivalTick": 1728000,
       "id": 31
     },
@@ -276,7 +275,6 @@ export default
       "name": "Nurse",
       "type": "Triage Nurse",
       "arrivalLocation": "Main Entrance",
-      //"arrivalTick": 60000,
       "arrivalTick": 1728000,
       "id": 32
     },
@@ -284,7 +282,6 @@ export default
       "name": "Tech",
       "type": "Tech",
       "arrivalLocation": "Main Entrance",
-      //"arrivalTick": 50000,
       "arrivalTick": 1728000,
       "id": 33
       //"id": 31
@@ -293,7 +290,6 @@ export default
       "name": "Tech",
       "type": "Tech",
       "arrivalLocation": "Main Entrance",
-      //"arrivalTick": 50000,
       "arrivalTick": 1728000,
       "id": 34
       //"id": 32
@@ -302,7 +298,6 @@ export default
       "name": "Nurse",
       "type": "Nurse",
       "arrivalLocation": "Main Entrance",
-      //"arrivalTick": 50000,
       "arrivalTick": 1728000,
       "id": 35
       //"id": 33
@@ -311,7 +306,6 @@ export default
       "name": "Nurse",
       "type": "Nurse",
       "arrivalLocation": "Main Entrance",
-      //"arrivalTick": 50000,
       "arrivalTick": 1728000,
       "id": 36
       //"id": 34
@@ -320,7 +314,6 @@ export default
       "name": "Nurse",
       "type": "Greeter Nurse",
       "arrivalLocation": "Main Entrance",
-      //"arrivalTick": 50000,
       "arrivalTick": 1728000,
       "id": 37
       //"id": 35
@@ -329,7 +322,6 @@ export default
       "name": "Tech",
       "type": "CT",
       "arrivalLocation": "Main Entrance",
-      //"arrivalTick": 50000,
       "arrivalTick": 1728000,
       "id": 38
       //"id": 36
@@ -338,7 +330,6 @@ export default
       "name": "Tech",
       "type": "CT",
       "arrivalLocation": "Main Entrance",
-      //"arrivalTick": 50000,
       "arrivalTick": 1728000,
       "id": 39
       //"id": 37
@@ -347,7 +338,6 @@ export default
       "name": "Tech",
       "type": "Janitorial",
       "arrivalLocation": "Main Entrance",
-      //"arrivalTick": 50000,
       "arrivalTick": 1728000,
       "id": 40
       //"id": 38
@@ -356,7 +346,6 @@ export default
       "name": "Tech",
       "type": "Radiology",
       "arrivalLocation": "Main Entrance",
-      //"arrivalTick": 50000,
       "arrivalTick": 1728000,
       "id": 41
       //"id": 39
@@ -365,14 +354,13 @@ export default
     //   "name": "Attending",
     //   "type": "Attending",
     //   "arrivalLocation": "Main Entrance",
-    //   "arrivalTick": 20,
+    //   "arrivalTick": 1728000,
     //   "id": 42
     // },
     {
       "name": "Resident",
       "type": "Resident",
       "arrivalLocation": "Main Entrance",
-      //"arrivalTick": 60000,
       "arrivalTick": 1728000,
       //"id": 43
       "id": 42
@@ -381,7 +369,6 @@ export default
       "name": "Resident",
       "type": "Resident",
       "arrivalLocation": "Main Entrance",
-      //"arrivalTick": 60000,
       "arrivalTick": 1728000,
       //"id": 44
       "id": 43
@@ -390,49 +377,53 @@ export default
     //   "name": "Pharmacist",
     //   "type": "Pharmacist",
     //   "arrivalLocation": "Main Entrance",
-    //   "arrivalTick": 30,
+    //   "arrivalTick": 1728000,
     //   "id": 45
     // },
     // {
     //   "name": "Tech",
     //   "type": "XRay",
     //   "arrivalLocation": "Main Entrance",
-    //   "arrivalTick": 40,
+    //   "arrivalTick": 1728000,
     //   "id": 46
     // },
     // {
     //   "name": "Tech",
     //   "type": "XRay",
     //   "arrivalLocation": "Main Entrance",
-    //   "arrivalTick": 40,
+    //   "arrivalTick": 1728000,
     //   "id": 47
     // },
-    // {
-    //   "name": "Tech",
-    //   "type": "Phlebotomist",
-    //   "arrivalLocation": "Main Entrance",
-    //   "arrivalTick": 50,
-    //   "id": 48
-    // },
-    // {
-    //   "name": "Tech",
-    //   "type": "Phlebotomist",
-    //   "arrivalLocation": "Main Entrance",
-    //   "arrivalTick": 50,
-    //   "id": 49
-    // },
-    // {
-    //   "name": "Tech",
-    //   "type": "Phlebotomist",
-    //   "arrivalLocation": "Main Entrance",
-    //   "arrivalTick": 50,
-    //   "id": 50
-    // },
-    // {
-    //   "name": "Tech",
-    //   "type": "Phlebotomist",
-    //   "arrivalLocation": "Main Entrance",
-    //   "arrivalTick": 50,
-    //   "id": 51
-    // }
+    {
+      "name": "Tech",
+      "type": "Phlebotomist",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 1728000,
+      //"id": 48
+      "id": 44
+    },
+    {
+      "name": "Tech",
+      "type": "Phlebotomist",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 1728000,
+      //"id": 49
+      "id": 45
+    },
+    {
+      "name": "Tech",
+      "type": "Phlebotomist",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 1728000,
+      //"id": 50
+      "id": 46
+    },
+    {
+      "name": "Tech",
+      "type": "Phlebotomist",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 1728000,
+      //"id": 51
+      "id": 47
+    }
   ]

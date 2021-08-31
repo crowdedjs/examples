@@ -26,8 +26,7 @@ class ComputerEntry {
   assignedTech = null; //MedicalStaff
   assignedResident = null; //MedicalStaff
   assignedNurse = null; //MedicalStaff
-
-
+  assignedPhlebotomist = null; //MedicalStaff
 
   isAnsweredQuestions() {
     return this.answeredQuestions;
@@ -300,6 +299,15 @@ class ComputerEntry {
 
   getNurse() {
     return this.assignedNurse;
+  }
+
+  setPhlebotomist(assignedPhlebotomist) {
+    this.assignedPhlebotomist = assignedPhlebotomist;
+    this.change();
+  }
+
+  getPhlebotomist() {
+    return this.assignedPhlebotomist;
   }
 }
 
