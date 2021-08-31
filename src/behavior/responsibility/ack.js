@@ -11,6 +11,9 @@ class ACK {
   static CT_CAT_DO_SCAN = "CTCATDoScan";
   static CT_PICKUP = "CTPickup";
 
+  static XRAY_DO_SCAN = "XRayDoScan";
+  static XRAY_PICKUP = "XRayPickup";
+
   static RADIOLOGY_REVIEW_SCAN = "RadiologyReviewScan"
 
   static NURSE_DISCHARGE_PATIENT = "NurseDischargePatient"

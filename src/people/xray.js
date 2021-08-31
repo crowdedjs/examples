@@ -1,8 +1,7 @@
 import GoTo from "../behavior/go-to.js"
-import WaitForever from "../behavior/wait-forever.js"
+import AssignComputer from "../behavior/assign-computer.js";
+import responsibility from "../behavior/responsibility/responsibility.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
-
-
 
 class xray {
 
@@ -17,7 +16,7 @@ class xray {
       goToName = "XRay 2";
     }
 
-    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);;
+    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
     let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new Exception("We couldn't find a location called " + goToName);
 
@@ -26,8 +25,55 @@ class xray {
 
     this.tree = builder
       .sequence("X-Ray Tree")
+
+      .selector("Check for arrival")  
+        .condition("Clock in", async (t) => me().onTheClock)
+        .do("SHIFT CHANGE", (t) => {
+          // SHIFT CHANGE
+          if (me().onTheClock == false) {
+            me().onTheClock = true;
+            Hospital.activeXRay.push(me());
+            if (Hospital.activeXRay[0] != me() && Hospital.activeXRay.length > 2) {
+              for (let i = 0; i < Hospital.activeXRay.length; i++) {
+                if (!Hospital.activeXRay[i].replacement) {
+                  Hospital.activeXRay[i].replacement = true;
+                  //Hospital.activeXRay.shift();
+                  Hospital.activeXRay.splice(i, 1);
+                  break;
+                }
+              }
+            }
+          }
+          
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        })
+      .end()
+
+      // SHIFT CHANGE SEQUENCE OF BEHAVIORS
+      .selector("Check for Replacement")
+        .condition("Replacement is Here", async (t) => !me().replacement)
+        .sequence("Exit Procedure")
+          .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+          .do("Leave Simulation", (t) => {
+            // for(let i = 0; i < Hospital.computer.entries.length; i++) {
+            //   if (Hospital.computer.entries[i].getTech() == me()) {
+            //     Hospital.computer.entries[i].setTech(null);
+            //   }
+            // }
+            if (Hospital.aTeam[5] == me()) {
+              Hospital.aTeam[5] = null;
+            }
+            me().inSimulation = false;
+            return fluentBehaviorTree.BehaviorTreeStatus.Running;
+          })
+        .end()
+      .end()
+
       .splice(this.goTo.tree)
-      .splice(new WaitForever(myIndex).tree)
+
+      .splice(new AssignComputer(myIndex, myGoal.location).tree) // XRay 1 or XRay 2
+
+      .splice(new responsibility(myIndex).tree) // lazy: true
             
       .end()
       .build();

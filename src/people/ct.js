@@ -3,8 +3,6 @@ import AssignComputer from "../behavior/assign-computer.js";
 import responsibility from "../behavior/responsibility/responsibility.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
-
-
 class ct {
 
   constructor(myIndex) {
@@ -63,10 +61,6 @@ class ct {
           })
         .end()
       .end()
-
-      // .do("test", (t) => {
-      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      // })
 
       .splice(new GoTo(self.index, myGoal.location).tree)
 
