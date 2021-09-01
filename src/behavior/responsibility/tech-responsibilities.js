@@ -3,6 +3,7 @@ import TakeVitalsResponsibility from "./take-vitals.js"
 import TechEKGDo from "./teck-ekg-do.js";
 import TechEKGTakePatientToResponsibility from "./tech-ekg-rpatient.js"
 import TechCATPickupResponsibility from "./tech-cat-pickup.js"
+import TechXRayPickupResponsibility from "./tech-xray-pickup"
 import ACK from "./ack.js"
 
  class TechResponsibilities extends AResponsibilityFactory {
@@ -30,28 +31,44 @@ import ACK from "./ack.js"
 				}
 				else if(emergencyPatient.unacknowledged(ACK.CT_PICKUP)) {
 					//console.log("Fetching Emergency Patient");
-					emergencyPatient.getPatient().setCATScan(true);
+					emergencyPatient.getPatient().setScan(true);
 					return new TechCATPickupResponsibility(emergencyPatient, medicalStaff);
 				}
-				else if(!emergencyPatient.getPatient().getCATScan() && emergencyPatient.getPatient().getCTRoom() == null && Hospital.getCTQueue().length > 0 && !Hospital.isCT1Occupied() && (emergencyPatient.getPatient() == Hospital.getCTQueue()[0] || emergencyPatient.getPatient() == Hospital.getCTQueue()[1])) {
-					//console.log("Set for Emergency CAT scan in CT 1");
+				else if(emergencyPatient.unacknowledged(ACK.XRAY_PICKUP)) {
+					emergencyPatient.getPatient().setScan(true);
+					return new TechXRayPickupResponsibility(emergencyPatient, medicalStaff);
+				}
+				else if (!emergencyPatient.getPatient().getScan() && emergencyPatient.getPatient().getImagingRoom() == null && Hospital.getXRayQueue().length > 0 && !Hospital.isXRay1Occupied() && (emergencyPatient.getPatient() == Hospital.getXRayQueue()[0] || emergencyPatient.getPatient() == Hospital.getXRayQueue()[1])) {
+					Hospital.setXRay1Occupied(true);
+					emergencyPatient.getPatient().setImagingRoom("XRay 1");
+					return new TechEKGTakePatientToResponsibility(emergencyPatient, medicalStaff, Hospital.getLocationByName("XRay 1"));
+				}
+				else if (!emergencyPatient.getPatient().getScan() && emergencyPatient.getPatient().getImagingRoom() == null && Hospital.getXRayQueue().length > 0 && !Hospital.isXRay2Occupied() && (emergencyPatient.getPatient() == Hospital.getXRayQueue()[0] || emergencyPatient.getPatient() == Hospital.getXRayQueue()[1])) {
+					Hospital.setXRay2Occupied(true);
+					emergencyPatient.getPatient().setImagingRoom("XRay 2");
+					return new TechEKGTakePatientToResponsibility(emergencyPatient, medicalStaff, Hospital.getLocationByName("XRay 2"));
+				}
+				else if(!emergencyPatient.getPatient().getScan() && emergencyPatient.getPatient().getImagingRoom() == null && Hospital.getCTQueue().length > 0 && !Hospital.isCT1Occupied() && (emergencyPatient.getPatient() == Hospital.getCTQueue()[0] || emergencyPatient.getPatient() == Hospital.getCTQueue()[1])) {
 					Hospital.setCT1Occupied(true);
-					emergencyPatient.getPatient().setCTRoom("CT 1");
+					emergencyPatient.getPatient().setImagingRoom("CT 1");
 					return new TechEKGTakePatientToResponsibility(emergencyPatient, medicalStaff, Hospital.getLocationByName("CT 1"));
 				}
-				else if(!emergencyPatient.getPatient().getCATScan() && emergencyPatient.getPatient().getCTRoom() == null && Hospital.getCTQueue().length > 0 && !Hospital.isCT2Occupied() && (emergencyPatient.getPatient() == Hospital.getCTQueue()[0] || emergencyPatient.getPatient() == Hospital.getCTQueue()[1])) {
-					//console.log("Set for Emergency CAT scan in CT 2");
+				else if(!emergencyPatient.getPatient().getScan() && emergencyPatient.getPatient().getImagingRoom() == null && Hospital.getCTQueue().length > 0 && !Hospital.isCT2Occupied() && (emergencyPatient.getPatient() == Hospital.getCTQueue()[0] || emergencyPatient.getPatient() == Hospital.getCTQueue()[1])) {
 					Hospital.setCT2Occupied(true);
-					emergencyPatient.getPatient().setCTRoom("CT 2");
+					emergencyPatient.getPatient().setImagingRoom("CT 2");
 					return new TechEKGTakePatientToResponsibility(emergencyPatient, medicalStaff, Hospital.getLocationByName("CT 2"));
 				}
-				else if(!emergencyPatient.getPatient().getCATScan() && emergencyPatient.getPatient().getCTRoom() == "CT 1") {
-					//console.log("Set for Emergency CAT scan in CT 1 - 2");
+				else if(!emergencyPatient.getPatient().getScan() && emergencyPatient.getPatient().getImagingRoom() == "CT 1") {
 					return new TechEKGTakePatientToResponsibility(emergencyPatient, medicalStaff, Hospital.getLocationByName("CT 1"));
 				}
-				else if(!emergencyPatient.getPatient().getCATScan() && emergencyPatient.getPatient().getCTRoom() == "CT 2") {
-					//console.log("Set for Emergency CAT scan in CT 2 - 2");
+				else if(!emergencyPatient.getPatient().getScan() && emergencyPatient.getPatient().getImagingRoom() == "CT 2") {
 					return new TechEKGTakePatientToResponsibility(emergencyPatient, medicalStaff, Hospital.getLocationByName("CT 2"));
+				}
+				else if(!emergencyPatient.getPatient().getScan() && emergencyPatient.getPatient().getImagingRoom() == "XRay 1") {
+					return new TechEKGTakePatientToResponsibility(emergencyPatient, medicalStaff, Hospital.getLocationByName("XRay 1"));
+				}
+				else if(!emergencyPatient.getPatient().getScan() && emergencyPatient.getPatient().getImagingRoom() == "XRay 2") {
+					return new TechEKGTakePatientToResponsibility(emergencyPatient, medicalStaff, Hospital.getLocationByName("XRay 2"));
 				}
 			}
 		}
@@ -66,25 +83,45 @@ import ACK from "./ack.js"
 				return new TechEKGDo(entry, medicalStaff);
 			}
 			else if(entry.unacknowledged(ACK.CT_PICKUP)) {
-				entry.getPatient().setCATScan(true);
+				entry.getPatient().setScan(true);
 				return new TechCATPickupResponsibility(entry, medicalStaff);
 			}
+			else if(entry.unacknowledged(ACK.XRAY_PICKUP)) {
+				entry.getPatient().setScan(true);
+				return new TechXRayPickupResponsibility(emergencyPatient, medicalStaff);
+			}
+			else if (!entry.getPatient().getScan() && entry.getPatient().getImagingRoom() == null && Hospital.getXRayQueue().length > 0 && !Hospital.isXRay1Occupied() && (entry.getPatient() == Hospital.getXRayQueue()[0] || entry.getPatient() == Hospital.getXRayQueue()[1])) {
+				Hospital.setXRay1Occupied(true);
+				entry.getPatient().setImagingRoom("XRay 1");
+				return new TechEKGTakePatientToResponsibility(entry, medicalStaff, Hospital.getLocationByName("XRay 1"));
+			}
+			else if (!entry.getPatient().getScan() && entry.getPatient().getImagingRoom() == null && Hospital.getXRayQueue().length > 0 && !Hospital.isXRay2Occupied() && (entry.getPatient() == Hospital.getXRayQueue()[0] || entry.getPatient() == Hospital.getXRayQueue()[1])) {
+				Hospital.setXRay2Occupied(true);
+				entry.getPatient().setImagingRoom("XRay 2");
+				return new TechEKGTakePatientToResponsibility(entry, medicalStaff, Hospital.getLocationByName("XRay 2"));
+			}
 			//else if(Hospital.getCTQueue().length > 0 && !Hospital.isCTOccupied() && entry.getPatient() == Hospital.getCTQueue()[0]) {
-			else if(!entry.getPatient().getCATScan() && entry.getPatient().getCTRoom() == null && Hospital.getCTQueue().length > 0 && !Hospital.isCT1Occupied() && (entry.getPatient() == Hospital.getCTQueue()[0] || entry.getPatient() == Hospital.getCTQueue()[1])) {
+			else if(!entry.getPatient().getScan() && entry.getPatient().getImagingRoom() == null && Hospital.getCTQueue().length > 0 && !Hospital.isCT1Occupied() && (entry.getPatient() == Hospital.getCTQueue()[0] || entry.getPatient() == Hospital.getCTQueue()[1])) {
 				Hospital.setCT1Occupied(true);
-				entry.getPatient().setCTRoom("CT 1");
+				entry.getPatient().setImagingRoom("CT 1");
 				return new TechEKGTakePatientToResponsibility(entry, medicalStaff, Hospital.getLocationByName("CT 1"));
 			}
-			else if(!entry.getPatient().getCATScan() && entry.getPatient().getCTRoom() == null && Hospital.getCTQueue().length > 0 && !Hospital.isCT2Occupied() && (entry.getPatient() == Hospital.getCTQueue()[0] || entry.getPatient() == Hospital.getCTQueue()[1])) {
+			else if(!entry.getPatient().getScan() && entry.getPatient().getImagingRoom() == null && Hospital.getCTQueue().length > 0 && !Hospital.isCT2Occupied() && (entry.getPatient() == Hospital.getCTQueue()[0] || entry.getPatient() == Hospital.getCTQueue()[1])) {
 				Hospital.setCT2Occupied(true);
-				entry.getPatient().setCTRoom("CT 2");
+				entry.getPatient().setImagingRoom("CT 2");
 				return new TechEKGTakePatientToResponsibility(entry, medicalStaff, Hospital.getLocationByName("CT 2"));
 			}
-			else if(!entry.getPatient().getCATScan() && entry.getPatient().getCTRoom() == "CT 1") {
+			else if(!entry.getPatient().getScan() && entry.getPatient().getImagingRoom() == "CT 1") {
 				return new TechEKGTakePatientToResponsibility(entry, medicalStaff, Hospital.getLocationByName("CT 1"));
 			}
-			else if(!entry.getPatient().getCATScan() && entry.getPatient().getCTRoom() == "CT 2") {
+			else if(!entry.getPatient().getScan() && entry.getPatient().getImagingRoom() == "CT 2") {
 				return new TechEKGTakePatientToResponsibility(entry, medicalStaff, Hospital.getLocationByName("CT 2"));
+			}
+			else if(!entry.getPatient().getScan() && entry.getPatient().getImagingRoom() == "XRay 1") {
+				return new TechEKGTakePatientToResponsibility(entry, medicalStaff, Hospital.getLocationByName("XRay 1"));
+			}
+			else if(!entry.getPatient().getScan() && entry.getPatient().getImagingRoom() == "XRay 2") {
+				return new TechEKGTakePatientToResponsibility(entry, medicalStaff, Hospital.getLocationByName("XRay 2"));
 			}
 		}
 		//console.log("null");

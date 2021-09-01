@@ -10,7 +10,13 @@ class ResidentEKGConsult extends AResponsibility {
 
 	doFinish() {
 		this.entry.acknowledge(ACK.RESIDENT_EKG_CONSULT);
-		this.entry.addUnacknowledged(ACK.RESIDENT_EKG_ORDER_CAT);
+		// THE PARAMETERS OF THIS WILL CHANGE
+		if (this.entry.getPatient().getSeverity() == "ESI3") {
+			this.entry.addUnacknowledged(ACK.RESIDENT_EKG_ORDER_XRAY);
+		}
+		else {
+			this.entry.addUnacknowledged(ACK.RESIDENT_EKG_ORDER_CAT);
+		}
 		//this.entry.addUnacknowledged(ACK.NURSE_DISCHARGE_PATIENT);
 
 	}

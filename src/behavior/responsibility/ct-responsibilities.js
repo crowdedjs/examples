@@ -21,11 +21,11 @@ class CTResponsibilities extends AResponsibilityFactory{
 			// Hospital.setCTOccupied(true);
 			// if (Hospital.isCT1Occupied()) {
 			// 	Hospital.setCT2Occupied(true);
-			// 	entry.getPatient().setCTRoom("CT 2");
+			// 	entry.getPatient().setImagingRoom("CT 2");
 			// }
 			// else {
 			// 	Hospital.setCT1Occupied(true);
-			// 	entry.getPatient().setCTRoom("CT 1");
+			// 	entry.getPatient().setImagingRoom("CT 1");
 			// }
 			return new CTCATDoScanResponsibility(entry, medicalStaff);
 		}

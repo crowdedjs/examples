@@ -4,6 +4,7 @@ class ACK {
   static RESIDENT_EKG_READ = "ResidentEKGRead";
   static RESIDENT_EKG_CONSULT = "ResidentEKGConsult";
   static RESIDENT_EKG_ORDER_CAT = "ResidentEKGOrderCAT";
+  static RESIDENT_EKG_ORDER_XRAY = "ResidentEKGOrderXRay";
   static RESIDENT_SCAN_READ = "ResidentScanRead"
   static RESIDENT_ATTENDING_CONSULT = "ResidentAttendingConsult"
   static RESIDENT_PATIENT_CONSULT = "ResidentPatientConsult"

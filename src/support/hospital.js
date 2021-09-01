@@ -7,11 +7,15 @@ class Hospital{
   static computer;
   static comments = [];
   static CTQueue = [];
+  static XRayQueue = [];
   static activePeople = [];
 
   //static CTOccupied = false;
   static CT1Occupied = false;
   static CT2Occupied = false;
+
+  static XRay1Occupied = false;
+  static XRay2Occupied = false;
 
   // doctor = 0, resident = 1, nurse = 2, tech = 3, phlebotomist = 4, imaging = 5
   static aTeam = [];
@@ -36,15 +40,19 @@ class Hospital{
 
   static getFPS(){return 60;}
 
-  static getCTQueue()
-  {
+  static getCTQueue() {
     return Hospital.CTQueue;
   }
-  static setCTQueue(queue){
+  static setCTQueue(queue) {
     Hospital.CTQueue = queue;
   }
 
-  
+  static getXRayQueue() {
+    return Hospital.XRayQueue;
+  }
+  static setXRayQueue(queue) {
+    Hospital.XRayQueue = queue;
+  }
 
   // static isCTOccupied(){
   //   return Hospital.CTOccupied;
@@ -63,6 +71,19 @@ class Hospital{
   }
   static setCT2Occupied(occupied){
     Hospital.CT2Occupied = occupied;
+  }
+
+  static isXRay1Occupied() {
+    return Hospital.XRay1Occupied;
+  }
+  static isXRay2Occupied() {
+    return Hospital.XRay2Occupied;
+  }
+  static setXRay1Occupied(occupied) {
+    Hospital.XRay1Occupied = occupied;
+  }
+  static setXRay2Occupied(occupied) {
+    Hospital.XRay2Occupied = occupied;
   }
 
   static getLocationByName(name){

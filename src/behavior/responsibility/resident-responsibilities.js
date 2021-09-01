@@ -2,6 +2,7 @@ import AResponsibilityFactory from "./aresponsibility-factory.js"
 import ACK from "./ack.js"
 import ResidentEKGRead from "./resident-ekg-read.js"
 import ResidentEKGConsult from "./resident-ekg-consult.js"
+import ResidentEKGOrderXRay from "./resident-ekg-order-xray.js"
 import ResidentEKGOrderCAT from "./resident-ekg-order-cat.js"
 import ResidentScanRead from "./resident-scan-read.js"
 import ResidentAttendingConsult from "./resident-attending-consult.js"
@@ -27,6 +28,9 @@ class ResidentResponsibilities extends AResponsibilityFactory {
 				else if (emergencyPatient.unacknowledged(ACK.RESIDENT_EKG_CONSULT)) {
 					return new ResidentEKGConsult(emergencyPatient, medicalStaff);
 				}
+				else if (emergencyPatient.unacknowledged(ACK.RESIDENT_EKG_ORDER_XRAY)) {
+					return new ResidentEKGOrderXRay(emergencyPatient, medicalStaff);
+				}
 				else if (emergencyPatient.unacknowledged(ACK.RESIDENT_EKG_ORDER_CAT)) {
 					return new ResidentEKGOrderCAT(emergencyPatient, medicalStaff);
 				}
@@ -50,6 +54,9 @@ class ResidentResponsibilities extends AResponsibilityFactory {
 			}
 			else if (entry.unacknowledged(ACK.RESIDENT_EKG_CONSULT)) {
 				return new ResidentEKGConsult(entry, medicalStaff);
+			}
+			else if (entry.unacknowledged(ACK.RESIDENT_EKG_ORDER_XRAY)) {
+				return new ResidentEKGOrderXRay(entry, medicalStaff);
 			}
 			else if (entry.unacknowledged(ACK.RESIDENT_EKG_ORDER_CAT)) {
 				return new ResidentEKGOrderCAT(entry, medicalStaff);

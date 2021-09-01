@@ -184,7 +184,7 @@ export default
       "arrivalTick": 46016,
       "arrivalLocation": "Main Entrance",
       "age": 12,
-      "severity": "ESI3",
+      "severity": "ESI4",
       "patientName": "Emma",
       "gender": "female",
       "id": 23
@@ -236,7 +236,7 @@ export default
       "arrivalTick": 128609,
       "arrivalLocation": "Main Entrance",
       "age": 38,
-      "severity": "ESI3",
+      "severity": "ESI4",
       "patientName": "Michael",
       "gender": "male",
       "id": 28
@@ -380,34 +380,20 @@ export default
     //   "arrivalTick": 1728000,
     //   "id": 45
     // },
-    // {
-    //   "name": "Tech",
-    //   "type": "XRay",
-    //   "arrivalLocation": "Main Entrance",
-    //   "arrivalTick": 1728000,
-    //   "id": 46
-    // },
-    // {
-    //   "name": "Tech",
-    //   "type": "XRay",
-    //   "arrivalLocation": "Main Entrance",
-    //   "arrivalTick": 1728000,
-    //   "id": 47
-    // },
     {
       "name": "Tech",
-      "type": "Phlebotomist",
+      "type": "XRay",
       "arrivalLocation": "Main Entrance",
       "arrivalTick": 1728000,
-      //"id": 48
+      //"id": 46
       "id": 44
     },
     {
       "name": "Tech",
-      "type": "Phlebotomist",
+      "type": "XRay",
       "arrivalLocation": "Main Entrance",
       "arrivalTick": 1728000,
-      //"id": 49
+      //"id": 47
       "id": 45
     },
     {
@@ -415,7 +401,7 @@ export default
       "type": "Phlebotomist",
       "arrivalLocation": "Main Entrance",
       "arrivalTick": 1728000,
-      //"id": 50
+      //"id": 48
       "id": 46
     },
     {
@@ -423,7 +409,23 @@ export default
       "type": "Phlebotomist",
       "arrivalLocation": "Main Entrance",
       "arrivalTick": 1728000,
-      //"id": 51
+      //"id": 49
       "id": 47
+    },
+    {
+      "name": "Tech",
+      "type": "Phlebotomist",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 1728000,
+      //"id": 50
+      "id": 48
+    },
+    {
+      "name": "Tech",
+      "type": "Phlebotomist",
+      "arrivalLocation": "Main Entrance",
+      "arrivalTick": 1728000,
+      //"id": 51
+      "id": 49
     }
   ]
