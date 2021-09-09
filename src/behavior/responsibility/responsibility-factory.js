@@ -1,5 +1,5 @@
  import TechResponsibilities from "./tech-responsibilities.js"
- import NurseResponsibilities from "./nurse.js"
+ import NurseResponsibilities from "./nurse-responsibilities.js"
  import ResidentResponsibilities from "./resident-responsibilities.js"
  import CTResponsibilities from "./ct-responsibilities.js"
  import RadiologyResponsibilities from "./radiology-responsibilities.js"

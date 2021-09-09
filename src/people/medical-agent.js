@@ -10,7 +10,6 @@ import EscapePerson from "./escape-person.js";
 import greeterNurse from "./greeter-nurse.js"
 import janitorial from "./janitorial.js"
 import nurse from "./nurse.js"
-import patient from "./patient.js"
 import pharmacist from "./pharmacist.js"
 import phlebotomist from "./phlebotomist.js"
 import radiology from "./radiology.js"

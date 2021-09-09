@@ -19,7 +19,7 @@ class attending {
 
     this.goTo = new GoTo(self.index, myGoal.location);
 
-
+    // attending doctor's behavior is probably to just check in with patients before they are escorted out of the hospital 
     this.tree = builder
       .sequence("Attending Tree")
       .splice(this.goTo.tree)
