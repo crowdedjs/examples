@@ -18,6 +18,7 @@ class Hospital{
   static XRay2Occupied = false;
 
   // doctor = 0, resident = 1, nurse = 2, tech = 3, phlebotomist = 4, imaging = 5
+  // IS THE RESIDENT OR ATTENDING THE DOCTOR?
   static aTeam = [];
   static emergencyQueue = [];
 

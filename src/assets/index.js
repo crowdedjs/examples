@@ -2,6 +2,7 @@ import arrivalHospital from "./arrivals/arrivalHospital.js"
 import arrivalHospitalFew from "./arrivals/arrivalHospitalFew.js"
 import arrivalsFlat from "./arrivals/arrivalsFlat.js"
 import arrivalHospitalTesting from "./arrivals/arrivalHospitalTesting.js"
+import arrivalHospitalThesis from "./arrivals/arrivalHospitalThesis.js"
 
 import locationsFlat from "./locations/locationsFlat.js"
 import locationsHospital from "./locations/locationsHospital.js"
@@ -16,7 +17,8 @@ export default {
     arrivalHospital,
     arrivalHospitalFew,
     arrivalsFlat,
-    arrivalHospitalTesting
+    arrivalHospitalTesting,
+    arrivalHospitalThesis
   },
   locations:{
     locationsFlat,
