@@ -2,6 +2,8 @@ import Agent from "./agent.js"
 import patient from "./patient.js"
 import APatient from "./apatient.js"
 
+import patientThesis from "./thesis/patient-thesis.js";
+
 class PatientAgent extends APatient {
   startX;
   startY;
@@ -42,7 +44,12 @@ class PatientAgent extends APatient {
     this.destY = 0;
     this.destZ = 0;
     
-    this.behavior = new patient( agent.id, Hospital.locations.find(l => l.name == "Check In"));
+    // ORIGINAL BEHAVIOR
+    //this.behavior = new patient( agent.id, Hospital.locations.find(l => l.name == "Check In"));
+    
+    // NEW BEHAVIOR
+    this.behavior = new patientThesis( agent.id, Hospital.locations.find(l => l.name == "Check In"));
+
     if (startLocation == Hospital.locations.find(l => l.name == "Ambulance Entrance")) {
       this.behavior = new patient( agent.id, Hospital.locations.find(l => l.name == "Ambulance Entrance"));
     }   

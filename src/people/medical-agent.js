@@ -18,6 +18,9 @@ import tech from "./tech.js"
 import triageNurse from "./triage-nurse.js"
 import xray from "./xray.js" 
 
+import greeterNurseThesis from "./thesis/greeter-nurse-thesis.js";
+import traigeNurseThesis from "./thesis/triage-nurse-thesis.js";
+
 
 class MedicalAgent extends AMedicalStaff {
   startX;
