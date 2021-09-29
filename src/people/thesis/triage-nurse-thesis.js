@@ -74,25 +74,31 @@ class triageNurseThesis {
       //   .end()
       // .end()
 
-      // //.splice(new GoTo(self.index, myGoal.location).tree)
-      // .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "TriageNursePlace").location).tree)
+      //.splice(new GoTo(self.index, myGoal.location).tree)
+      .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "TriageNursePlace").location).tree)
 
-      // .do("Wait For Patient Assignment", (t) => {
-      //   if (!me().getCurrentPatient()) return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-      //   me().setBusy(true);
+      .do("Wait For Patient Assignment", async (t) => {
+        if (!me().getCurrentPatient()) return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+        me().setBusy(true);
+        //console.log("test");
+        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+
+      })
+
+      // .do("Test", async (t) => {
+      //   console.log("test");
       //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-
       // })
 
-      // .splice(new GoToLazy(self.index, () => me().getCurrentPatient().getAssignedRoom().location).tree)
+      .splice(new GoToLazy(self.index, () => me().getCurrentPatient().getAssignedRoom().location).tree)
       
-      // .do("Leave Patient", (t) => {
-      //   let result = leavePatient.tick(t)
-      //   if (me().replacement == false) {
-      //     me().setBusy(false);
-      //   }
-      //   return result;
-      // })
+      .do("Leave Patient", (t) => {
+        let result = leavePatient.tick(t)
+        if (me().replacement == false) {
+          me().setBusy(false);
+        }
+        return result;
+      })
       
     .end()
     .build();

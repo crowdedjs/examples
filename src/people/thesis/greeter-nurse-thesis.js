@@ -22,12 +22,30 @@ class greeterNurseThesis {
       if (!myGoal) throw new Exception("We couldn't find a location called Check In");
   
       //this.goTo = new GoTo(self.index, myGoal.location);
-      //let numRequiredToFail = 1;
-      //let numRequiredToSucceed = 2;
+      let numRequiredToFail = 1;
+      let numRequiredToSucceed = 2;
 
       this.tree = builder
         .sequence("Greeter Nurse Behaviors")
-          
+          //  
+          // IMPLEMENT A NEW SHIFT CHANGE BEHAVIOR?
+          //
+          .splice(new GoTo(self.index, myGoal.location).tree)
+          // Once the greeter nurse has arrived, run in parallel
+          .parallel("look and book", numRequiredToFail, numRequiredToSucceed)
+            .sequence("Check in Patients")
+              .splice(new LookForArrivingPatient(myIndex).tree)
+              .splice(new TakeTime(30, 90).tree)
+              .splice(new ComputerEnterPatient(myIndex).tree)
+              .splice(new TakeTime(30, 90).tree)
+              .splice(new ComputerScorePatient(myIndex).tree)
+              .splice(new TakeTime(30, 90).tree)
+              .splice(new ComputerAssignPatientRoom(myIndex).tree)
+            .end()
+            .splice(new AssignPatientToTriageNurse(myIndex).tree)
+          .end()
+
+        // ---------------------------------------------------------------------  
         //   .selector("Check for arrival")  
         //     .condition("Clock in", async (t) => me().onTheClock)
         //     .do("SHIFT CHANGE", (t) => {

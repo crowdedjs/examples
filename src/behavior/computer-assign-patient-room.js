@@ -78,6 +78,7 @@ class ComputerAssignPatientRoom {
 
           me().triageList.push(me().patientList[0]);
           me().patientList.shift();
+
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })
       .end()

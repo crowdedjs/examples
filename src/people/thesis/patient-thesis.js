@@ -28,28 +28,48 @@ class patientThesis {
     //let test = "new GoToLazy(" + myIndex + ", () => " + myGoal.location + ")"; - HALF WORKS
     //let test = "new GoToLazy(myIndex, () => myGoal.location)"; - HALF WORKS
     //let test = new GoToLazy(myIndex, () => myGoal.location).tree; - WORKS
+    let testArray = [];
+    let test = new GoToLazy(myIndex, () => Hospital.locations.find(l=> l.name == "Waiting Room").location).tree;
+    testArray.push(test);
+    let test1 = new FollowInstructions(myIndex).tree;
+    testArray.push(test1);
+    let tempvalue = 5;
+    let currentBehavior;
 
     this.tree = builder
     .sequence("Patient Actions")
 
       // STARTING BEHAVIORS
       .splice(new GoToLazy(myIndex, () => myGoal.location).tree)
-      //.splice(test)
-
-      // .do("Test", async function (t) {
-      //   //console.log(myGoal.location);
-
-      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      // })
-
+    
       .splice(new Stop(myIndex).tree)
 
-
-
-
-
-
-
+      // PROBABLY MAKE THIS BEHAVIOR INTO ITS OWN FILE
+      // in the patient's case, they need to stay in this block indefinitely
+      // otherwise they'll head back to the check in area
+      .parallel("Stay in this block", 2, 2)
+        .selector("Check for tasks (jumps out at first success)")
+          .condition("has tasks", async (t) => Hospital.patientToDoList.length == 0)
+          .do("Test", async function (t) {    
+            // console.log(Hospital.patientToDoList.shift());
+            // console.log(testArray[1]);
+            //console.log(testArray[Hospital.patientToDoList.shift()]);
+            //tempvalue = Hospital.patientToDoList.shift();
+            //console.log(tempvalue);
+            //currentBehavior = testArray[Hospital.patientToDoList.shift()];
+            currentBehavior = test1;
+            console.log(currentBehavior);
+            return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+          })
+          //.splice(Hospital.patientToDoList.shift())
+          //.splice(new FollowInstructions(myIndex).tree)
+          //.splice(testArray[Hospital.patientToDoList.shift()])
+          .splice(currentBehavior)
+        .end()
+        .do("Stay Here", async function (t) {    
+            return fluentBehaviorTree.BehaviorTreeStatus.Running;
+          })
+      .end()
 
     // ---------------------------------------------------------------------  
     //   // Make patient go to the Waiting Room after being checked in

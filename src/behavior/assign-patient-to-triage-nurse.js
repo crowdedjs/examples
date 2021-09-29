@@ -1,5 +1,6 @@
 import PatientTempState from "../support/patient-temp-state.js";
-import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
+import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree";
+import FollowInstructions from "../behavior/follow-instructions.js";
 
 
 class AssignPatientToTriageNurse {
@@ -52,6 +53,11 @@ class AssignPatientToTriageNurse {
           // This should work for multiple triage nurses as long as inactive triage nurses wait at TriageNursePlace
           if (closestTriageNurse.getBusy() || myPatient.getPermanentRoom() == null || myPatient.getInstructor() != me())
           {
+            
+            // TELL THE PATIENT TO GO TO THE WAITING ROOM
+            //Hospital.patientToDoList.push(new GoToLazy(myPatient.id, () => Hospital.locations.find(l=> l.name == "Waiting Room").location).tree);
+            Hospital.patientToDoList.push(0);
+
             return fluentBehaviorTree.BehaviorTreeStatus.Failure;
           }
           else
@@ -68,6 +74,11 @@ class AssignPatientToTriageNurse {
               me().triageList.shift();
             }
             //hospital.addComment(me, myPatient, "Follow that nurse.");
+
+            // TELL THE PATIENT TO FOLLOW INSTRUCTIONS
+            //Hospital.patientToDoList.push(new FollowInstructions(myPatient.id).tree);
+            Hospital.patientToDoList.push(1);
+
             return fluentBehaviorTree.BehaviorTreeStatus.Success;
           }
       })
