@@ -4,12 +4,16 @@ class ACK {
   static RESIDENT_EKG_READ = "ResidentEKGRead";
   static RESIDENT_EKG_CONSULT = "ResidentEKGConsult";
   static RESIDENT_EKG_ORDER_CAT = "ResidentEKGOrderCAT";
+  static RESIDENT_EKG_ORDER_XRAY = "ResidentEKGOrderXRay";
   static RESIDENT_SCAN_READ = "ResidentScanRead"
   static RESIDENT_ATTENDING_CONSULT = "ResidentAttendingConsult"
   static RESIDENT_PATIENT_CONSULT = "ResidentPatientConsult"
 
   static CT_CAT_DO_SCAN = "CTCATDoScan";
   static CT_PICKUP = "CTPickup";
+
+  static XRAY_DO_SCAN = "XRayDoScan";
+  static XRAY_PICKUP = "XRayPickup";
 
   static RADIOLOGY_REVIEW_SCAN = "RadiologyReviewScan"
 

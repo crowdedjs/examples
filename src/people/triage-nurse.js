@@ -38,7 +38,8 @@ class triageNurse {
               for (let i = 0; i < Hospital.activeTriage.length; i++) {
                 if (!Hospital.activeTriage[i].replacement) {
                   Hospital.activeTriage[i].replacement = true;
-                  Hospital.activeTriage.shift();
+                  //Hospital.activeTriage.shift();
+                  Hospital.activeTriage.splice(i, 1);
                   break;
                 }
               }

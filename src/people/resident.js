@@ -38,7 +38,8 @@ class resident {
               for (let i = 0; i < Hospital.activeResident.length; i++) {
                 if (!Hospital.activeResident[i].replacement) {
                   Hospital.activeResident[i].replacement = true;
-                  Hospital.activeResident.shift();
+                  //Hospital.activeResident.shift();
+                  Hospital.activeResident.splice(i, 1);
                   break;
                 }
               }

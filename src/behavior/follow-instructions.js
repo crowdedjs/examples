@@ -75,13 +75,29 @@ class FollowInstructions {
         else if(state == PatientTempState.DONE){
           //console.log("Done")
           me().inSimulation = false;
-          // ADJUST CTQUEUE SO TECH TAKES NEXT PATIENT TO CT ROOM
-          Hospital.CTQueue.shift();
-          if (me().getCTRoom() == "CT 1") {
+          // ADJUST CTQUEUE OR XRAYQUEUE SO TECH TAKES NEXT PATIENT TO CT ROOM
+          //Hospital.CTQueue.shift();
+          for (let i = 0; i < Hospital.CTQueue.length; i++) {
+            if (Hospital.CTQueue[i] == me()) {
+              Hospital.CTQueue.splice(i, 1);
+            }
+          }
+          for (let i = 0; i < Hospital.XRayQueue.length; i++) {
+            if (Hospital.XRayQueue[i] == me()) {
+              Hospital.XRayQueue.splice(i, 1);
+            }
+          }
+          if (me().getImagingRoom() == "CT 1") {
             Hospital.setCT1Occupied(false);
           }
-          else {
+          else if (me().getImagingRoom() == "CT 2") {
             Hospital.setCT2Occupied(false);
+          }
+          else if (me().getImagingRoom() == "XRay 1") {
+            Hospital.setXRay1Occupied(false);
+          }
+          else {
+            Hospital.setXRay2Occupied(false);
           }
           // SET ROOM AS READY TO CLEAN
           me().getPermanentRoom().setLocationStatus(LocationStatus.SANITIZE);

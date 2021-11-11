@@ -11,13 +11,22 @@ import NurseEscortPatientToExit from "./nurse-escort-patient-to-exit.js"
 			Hospital.aTeam[2] = medicalStaff;
 		}
 		
-		// if (Hospital.emergencyQueue.length > 0 && Hospital.aTeam[2] == medicalStaff) {
-		// 	let emergencyPatient = Hospital.computer.entries.find(i=>i.getPatient().getSeverity() == "ESI1");
-		// 	if (!emergencyPatient.isAnsweredQuestions()) {
-		// 		emergencyPatient.setNurse(medicalStaff);
-		// 		return new GetHealthInformationResponsibility( entry, medicalStaff);
-		// 	}
-		// }
+		if (Hospital.emergencyQueue.length > 0 && Hospital.aTeam[2] == medicalStaff) {
+			let emergencyPatients = Hospital.computer.entries.filter(i=>i.getPatient().getSeverity() == "ESI1");
+			for (let i = 0; i < emergencyPatients.length; i++) {
+				let emergencyPatient = emergencyPatients[i];
+				emergencyPatient.setNurse(medicalStaff);
+				if(!emergencyPatient.isAnsweredQuestions()) {
+					return new GetHealthInformationResponsibility(emergencyPatient, medicalStaff);
+				}
+				else if(emergencyPatient.unacknowledged(ACK.NURSE_DISCHARGE_PATIENT)){
+					return new NurseDischargePatient(emergencyPatient, medicalStaff);
+				}
+				else if(emergencyPatient.unacknowledged(ACK.NURSE_ESCORT_PATIENT_TO_EXIT)){
+					return new NurseEscortPatientToExit(emergencyPatient, medicalStaff);
+				}
+			}
+		}
 
 		if (entry.getNurse() == null || entry.getNurse() == medicalStaff) {
 			entry.setNurse(medicalStaff);

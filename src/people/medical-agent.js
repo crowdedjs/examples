@@ -10,7 +10,6 @@ import EscapePerson from "./escape-person.js";
 import greeterNurse from "./greeter-nurse.js"
 import janitorial from "./janitorial.js"
 import nurse from "./nurse.js"
-import patient from "./patient.js"
 import pharmacist from "./pharmacist.js"
 import phlebotomist from "./phlebotomist.js"
 import radiology from "./radiology.js"
@@ -18,6 +17,9 @@ import resident from "./resident.js"
 import tech from "./tech.js"
 import triageNurse from "./triage-nurse.js"
 import xray from "./xray.js" 
+
+import greeterNurseThesis from "./thesis/greeter-nurse-thesis.js";
+import traigeNurseThesis from "./thesis/triage-nurse-thesis.js";
 
 
 class MedicalAgent extends AMedicalStaff {

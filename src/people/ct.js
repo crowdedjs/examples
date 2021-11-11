@@ -3,8 +3,6 @@ import AssignComputer from "../behavior/assign-computer.js";
 import responsibility from "../behavior/responsibility/responsibility.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
-
-
 class ct {
 
   constructor(myIndex) {
@@ -40,7 +38,8 @@ class ct {
               for (let i = 0; i < Hospital.activeCT.length; i++) {
                 if (!Hospital.activeCT[i].replacement) {
                   Hospital.activeCT[i].replacement = true;
-                  Hospital.activeCT.shift();
+                  //Hospital.activeCT.shift();
+                  Hospital.activeCT.splice(i, 1);
                   break;
                 }
               }
@@ -62,10 +61,6 @@ class ct {
           })
         .end()
       .end()
-
-      // .do("test", (t) => {
-      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      // })
 
       .splice(new GoTo(self.index, myGoal.location).tree)
 

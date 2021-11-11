@@ -9,6 +9,7 @@ class ComputerEntry {
   chiefComplaint; //String
   arr = new Date(); //Date
   vitals; //String
+  blood; //String
   comments; //String
   rn; //IMedicalStaff
   res; //IMedicalStaff
@@ -25,8 +26,7 @@ class ComputerEntry {
   assignedTech = null; //MedicalStaff
   assignedResident = null; //MedicalStaff
   assignedNurse = null; //MedicalStaff
-
-
+  assignedPhlebotomist = null; //MedicalStaff
 
   isAnsweredQuestions() {
     return this.answeredQuestions;
@@ -59,6 +59,7 @@ class ComputerEntry {
     toReturn += chiefComplaint + ", ";
     toReturn += arr + ", ";
     toReturn += vitals + ", ";
+    toReturn += blood + ", ";
     toReturn += comments + ", ";
     toReturn += rn + ", ";
     toReturn += res + ", ";
@@ -143,6 +144,15 @@ class ComputerEntry {
 
   setVitals(vitals) {
     this.vitals = vitals;
+    this.change();
+  }
+
+  getBlood() {
+    return this.blood;
+  }
+
+  setBlood(blood) {
+    this.blood = blood;
     this.change();
   }
 
@@ -289,6 +299,15 @@ class ComputerEntry {
 
   getNurse() {
     return this.assignedNurse;
+  }
+
+  setPhlebotomist(assignedPhlebotomist) {
+    this.assignedPhlebotomist = assignedPhlebotomist;
+    this.change();
+  }
+
+  getPhlebotomist() {
+    return this.assignedPhlebotomist;
   }
 }
 
