@@ -40,8 +40,7 @@ class Hospital{
   static CT2Agents = 0;
 
   // USING THIS FOR AGENT BEHAVIORS
-  static patientToDoList = [];
-  static triageToDoList = [];
+  static triageTaskList = [];
 
   static getFPS(){return 60;}
 

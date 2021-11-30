@@ -20,19 +20,6 @@ class AssignPatientToTriageNurse {
           let simulationAgent = t.crowd.find(a => a.id == self.index);
           let myLocation = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
           
-          /*
-          List<IPerson> people = hospital.activePeople;
-          IMedicalStaff closestTriageNurse = (IMedicalStaff) people.stream()
-              .filter(i->i instanceof IMedicalStaff 
-                  && ((IMedicalStaff)i).getMedicalStaffType() == MedicalStaffClass.NURSE 
-                  && ((IMedicalStaff)i).getDoctorType() == MedicalStaffSubclass.TRIAGE_NURSE 
-                  &&((IMedicalStaff)i).getCurrentPatient() == null)
-              .sorted((a,b)->(int)(a.getLocation().distanceTo(myLocation) - b.getLocation().distanceTo(myLocation)))
-              .findFirst()
-              .orElse(null);
-          if(closestTriageNurse == null || closestTriageNurse.getLocation().distanceTo(myLocation) > 3)
-            return Status.RUNNING; //No triage nurse is available or close enough
-          */
          let closestTriageNurses = Hospital.agents.filter(a=>a.medicalStaffType == "Nurse" && a.medicalStaffSubclass == "Triage Nurse" && a.getCurrentPatient() == null && a.inSimulation == true);
 
          
@@ -53,11 +40,6 @@ class AssignPatientToTriageNurse {
           // This should work for multiple triage nurses as long as inactive triage nurses wait at TriageNursePlace
           if (closestTriageNurse.getBusy() || myPatient.getPermanentRoom() == null || myPatient.getInstructor() != me())
           {
-            
-            // TELL THE PATIENT TO GO TO THE WAITING ROOM
-            //Hospital.patientToDoList.push(new GoToLazy(myPatient.id, () => Hospital.locations.find(l=> l.name == "Waiting Room").location).tree);
-            Hospital.patientToDoList.push(0);
-
             return fluentBehaviorTree.BehaviorTreeStatus.Failure;
           }
           else
@@ -74,10 +56,6 @@ class AssignPatientToTriageNurse {
               me().triageList.shift();
             }
             //hospital.addComment(me, myPatient, "Follow that nurse.");
-
-            // TELL THE PATIENT TO FOLLOW INSTRUCTIONS
-            //Hospital.patientToDoList.push(new FollowInstructions(myPatient.id).tree);
-            Hospital.patientToDoList.push(1);
 
             return fluentBehaviorTree.BehaviorTreeStatus.Success;
           }
