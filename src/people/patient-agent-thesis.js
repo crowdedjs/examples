@@ -2,7 +2,9 @@ import Agent from "./agent.js"
 import patient from "./patient.js"
 import APatient from "./apatient.js"
 
-class PatientAgent extends APatient {
+import patientThesis from "./patient-thesis.js";
+
+class PatientAgentThesis extends APatient {
   startX;
   startY;
   startZ;
@@ -43,13 +45,14 @@ class PatientAgent extends APatient {
     this.destZ = 0;
     
     // ORIGINAL BEHAVIOR
-    this.behavior = new patient( agent.id, Hospital.locations.find(l => l.name == "Check In"));
+    //this.behavior = new patient( agent.id, Hospital.locations.find(l => l.name == "Check In"));
     
     // NEW BEHAVIOR
-    //this.behavior = new patientThesis( agent.id, Hospital.locations.find(l => l.name == "Check In"));
+    this.behavior = new patientThesis( agent.id, Hospital.locations.find(l => l.name == "Check In"));
 
     if (startLocation == Hospital.locations.find(l => l.name == "Ambulance Entrance")) {
-      this.behavior = new patient( agent.id, Hospital.locations.find(l => l.name == "Ambulance Entrance"));
+      //this.behavior = new patient( agent.id, Hospital.locations.find(l => l.name == "Ambulance Entrance"));
+      this.behavior = new patientThesis( agent.id, Hospital.locations.find(l => l.name == "Ambulance Entrance"));
     }   
       
   }
@@ -72,4 +75,4 @@ class PatientAgent extends APatient {
   setActive(active) { this.active = active; }
 }
 
-export default PatientAgent;
+export default PatientAgentThesis;

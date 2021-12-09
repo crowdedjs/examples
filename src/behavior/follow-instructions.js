@@ -1,6 +1,7 @@
 import PatientTempState from "../support/patient-temp-state.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree";
 import LocationStatus from "../support/location-status.js";
+import task from "../support/task-thesis.js";
 
 class FollowInstructions {
 
@@ -101,6 +102,9 @@ class FollowInstructions {
           }
           // SET ROOM AS READY TO CLEAN
           me().getPermanentRoom().setLocationStatus(LocationStatus.SANITIZE);
+          let sanitizeTask = new task("Sanitize", null, null, null, me().getPermanentRoom());
+          Hospital.janitorTaskList.push(sanitizeTask);
+
         }
         else if(state == PatientTempState.ARRIVED) {
           agentConstant.destination = myGoal.location;

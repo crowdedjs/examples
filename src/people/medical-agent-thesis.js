@@ -18,7 +18,12 @@ import tech from "./tech.js"
 import triageNurse from "./triage-nurse.js"
 import xray from "./xray.js" 
 
-class MedicalAgent extends AMedicalStaff {
+import greeterNurseThesis from "./greeter-nurse-thesis.js";
+import triageNurseThesis from "./triage-nurse-thesis.js";
+import janitorialThesis from "./janitorial-thesis.js";
+
+
+class MedicalAgentThesis extends AMedicalStaff {
   startX;
   startY;
   startZ;
@@ -70,7 +75,8 @@ class MedicalAgent extends AMedicalStaff {
       else if (agent.type == "CT")
         this.behavior = new ct(agent.id)
       else if (agent.type == "Janitorial")
-        this.behavior = new janitorial(agent.id)
+        //this.behavior = new janitorial(agent.id)
+        this.behavior = new janitorialThesis(agent.id)
       else if (agent.type == "Phlebotomist")
         this.behavior = new phlebotomist(agent.id)
       else if (agent.type == "Radiology")
@@ -83,11 +89,13 @@ class MedicalAgent extends AMedicalStaff {
     else if (agent.name == "Nurse") {
       
       if (agent.type == "Triage Nurse")
-        this.behavior = new triageNurse(agent.id)
+        //this.behavior = new triageNurse(agent.id)
+        this.behavior = new triageNurseThesis(agent.id)
       else if (agent.type == "Nurse")
         this.behavior = new nurse(agent.id)
       else if (agent.type == "Greeter Nurse")
-        this.behavior = new greeterNurse(agent.id)
+        //this.behavior = new greeterNurse(agent.id)
+        this.behavior = new greeterNurseThesis(agent.id)
       else
         throw new Exception("That nurse type does not exist " + agent.type);
     }
@@ -135,4 +143,4 @@ class MedicalAgent extends AMedicalStaff {
   getPatientTempState(){return this.patientTempState;}
 }
 
-export default MedicalAgent;
+export default MedicalAgentThesis;

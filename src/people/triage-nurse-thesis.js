@@ -1,8 +1,8 @@
-import GoTo from "../../behavior/go-to.js";
-import GoToLazy from "../../behavior/go-to-lazy.js";
-import LeavePatient from "../../behavior/leave-patient.js";
+import GoTo from "../behavior/go-to.js";
+import GoToLazy from "../behavior/go-to-lazy.js";
+import LeavePatient from "../behavior/leave-patient.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree";
-import PatientTempState from "../../support/patient-temp-state.js";
+import PatientTempState from "../support/patient-temp-state.js";
 
 
 class triageNurseThesis {
@@ -74,21 +74,23 @@ class triageNurseThesis {
       //   .end()
       // .end()
 
-      //.splice(new GoTo(self.index, myGoal.location).tree)
       .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "TriageNursePlace").location).tree)
 
       .do("Wait For Patient Assignment", async (t) => {
-        if (!me().getCurrentPatient()) return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-        me().setBusy(true);
-        //console.log("test");
-        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-
+        if (Hospital.triageTaskList.length == 0) {
+          return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+        }
+        else {
+          // THIS IS NOT DESIGNED WITH SEVERITY/WAIT TIME OR ROOM ASSIGNMENT IN MIND YET
+          let myTask = Hospital.triageTaskList.shift();
+          me().setCurrentPatient(myTask.patient);
+          me().getCurrentPatient().setInstructor(closestTriageNurse);
+          me().getCurrentPatient().setPatientTempState(PatientTempState.FOLLOWING);
+  
+          me().setBusy(true);
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        }
       })
-
-      // .do("Test", async (t) => {
-      //   console.log("test");
-      //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      // })
 
       .splice(new GoToLazy(self.index, () => me().getCurrentPatient().getAssignedRoom().location).tree)
       
