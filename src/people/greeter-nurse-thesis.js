@@ -27,11 +27,6 @@ class greeterNurseThesis {
 
     this.tree = builder
       .sequence("Greeter Nurse Behaviors")
-        // -----------------------------------------------
-        //
-        // POTENTIALLY CHANGE CLOCK IN AND OUT BEHAVIORS
-        //
-        // -----------------------------------------------
         .selector("Check for arrival")  
           .condition("Clock in", async (t) => me().onTheClock)
           .do("SHIFT CHANGE", (t) => {

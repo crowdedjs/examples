@@ -48,9 +48,9 @@ function boot() {
   //Add an agent with a behavior and an id
   arrivalValue.forEach((agent, index) => {
     if (agent.name == "patient")
-      agentConstants.push(new PatientAgent(agent, locationValue));
+      agentConstants.push(new PatientAgentThesis(agent, locationValue));
     else
-      agentConstants.push(new MedicalAgent(agent, locationValue));
+      agentConstants.push(new MedicalAgentThesis(agent, locationValue));
     //Is this line necessary?
     agentConstants[agentConstants.length - 1].setId(index);
   })
@@ -61,7 +61,7 @@ function boot() {
   let crowdSetup = new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "./crowd-setup/");
 
 
- // setupTable(crowdSetup);
+  //setupTable(crowdSetup);
 
   //  })
   //This can be commented out for debugging purposes. In production, this should not be commented.

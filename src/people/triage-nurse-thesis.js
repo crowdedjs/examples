@@ -27,52 +27,52 @@ class triageNurseThesis {
     this.tree = builder
     .sequence("Pick Triage Room")
 
-      // .selector("Check for arrival")  
-      //   .condition("Clock in", async (t) => me().onTheClock)
-      //   .do("SHIFT CHANGE", (t) => {
-      //     // SHIFT CHANGE
-      //     if (me().onTheClock == false) {
-      //       me().onTheClock = true;
-      //       Hospital.activeTriage.push(me());
-      //       if (Hospital.activeTriage[0] != me() && Hospital.activeTriage.length > 2) {
-      //         for (let i = 0; i < Hospital.activeTriage.length; i++) {
-      //           if (!Hospital.activeTriage[i].replacement) {
-      //             Hospital.activeTriage[i].replacement = true;
-      //             //Hospital.activeTriage.shift();
-      //             Hospital.activeTriage.splice(i, 1);
-      //             break;
-      //           }
-      //         }
-      //       }
-      //     }
-      //     return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      //   })
-      // .end()
+      .selector("Check for arrival")  
+        .condition("Clock in", async (t) => me().onTheClock)
+        .do("SHIFT CHANGE", (t) => {
+          // SHIFT CHANGE
+          if (me().onTheClock == false) {
+            me().onTheClock = true;
+            Hospital.activeTriage.push(me());
+            if (Hospital.activeTriage[0] != me() && Hospital.activeTriage.length > 2) {
+              for (let i = 0; i < Hospital.activeTriage.length; i++) {
+                if (!Hospital.activeTriage[i].replacement) {
+                  Hospital.activeTriage[i].replacement = true;
+                  //Hospital.activeTriage.shift();
+                  Hospital.activeTriage.splice(i, 1);
+                  break;
+                }
+              }
+            }
+          }
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        })
+      .end()
 
-      // // SHIFT CHANGE SEQUENCE OF BEHAVIORS
-      // .selector("Check for Replacement")
-      //   .condition("Replacement is Here", async (t) => !me().replacement)
-      //   .sequence("Exit Procedure")
-      //     .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
-      //     .do("Leave Simulation", (t) => {
-      //       for(let i = 0; i < Hospital.computer.entries.length; i++) {
-      //         // LEFTOVER ARTIFACT OF ORIGINAL ATTEMPT TO FIX TRIAGE WITH SHIFT CHANGES
-      //         // THIS IF STATEMENT PROBABLY WON'T EVER RUN DUE TO THE ACTUAL SUCCESSFUL IMPLEMENTATION
-      //         if (Hospital.computer.entries[i].getPatient().getInstructor() != null && Hospital.computer.entries[i].getPatient().getInstructor() == me() && Hospital.computer.entries[i].getPatient().getPatientTempState() == PatientTempState.FOLLOWING) {
-      //           Hospital.computer.entries[i].getPatient().setInstructor(null);
-      //           Hospital.computer.entries[i].getPatient().setPatientTempState(PatientTempState.WAITING);
-      //           // THIS IF STATEMENT DOESN'T DO ANYTHING BECAUSE YOU CAN'T ACCESS THE VALUE FOR SOME REASON
-      //           if (Hospital.activeGreeter[0].triageList[0] == Hospital.computer.entries[i].getPatient()) {
-      //             Hospital.activeGreeter[0].triageList.shift();
-      //           }
-      //           Hospital.activeGreeter[0].triageList.push(Hospital.computer.entries[i].getPatient());
-      //         }
-      //       }
-      //       me().inSimulation = false;
-      //       return fluentBehaviorTree.BehaviorTreeStatus.Running;
-      //     })
-      //   .end()
-      // .end()
+      // SHIFT CHANGE SEQUENCE OF BEHAVIORS
+      .selector("Check for Replacement")
+        .condition("Replacement is Here", async (t) => !me().replacement)
+        .sequence("Exit Procedure")
+          .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+          .do("Leave Simulation", (t) => {
+            for(let i = 0; i < Hospital.computer.entries.length; i++) {
+              // LEFTOVER ARTIFACT OF ORIGINAL ATTEMPT TO FIX TRIAGE WITH SHIFT CHANGES
+              // THIS IF STATEMENT PROBABLY WON'T EVER RUN DUE TO THE ACTUAL SUCCESSFUL IMPLEMENTATION
+              if (Hospital.computer.entries[i].getPatient().getInstructor() != null && Hospital.computer.entries[i].getPatient().getInstructor() == me() && Hospital.computer.entries[i].getPatient().getPatientTempState() == PatientTempState.FOLLOWING) {
+                Hospital.computer.entries[i].getPatient().setInstructor(null);
+                Hospital.computer.entries[i].getPatient().setPatientTempState(PatientTempState.WAITING);
+                // THIS IF STATEMENT DOESN'T DO ANYTHING BECAUSE YOU CAN'T ACCESS THE VALUE FOR SOME REASON
+                if (Hospital.activeGreeter[0].triageList[0] == Hospital.computer.entries[i].getPatient()) {
+                  Hospital.activeGreeter[0].triageList.shift();
+                }
+                Hospital.activeGreeter[0].triageList.push(Hospital.computer.entries[i].getPatient());
+              }
+            }
+            me().inSimulation = false;
+            return fluentBehaviorTree.BehaviorTreeStatus.Running;
+          })
+        .end()
+      .end()
 
       .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "TriageNursePlace").location).tree)
 
@@ -84,7 +84,7 @@ class triageNurseThesis {
           // THIS IS NOT DESIGNED WITH SEVERITY/WAIT TIME OR ROOM ASSIGNMENT IN MIND YET
           let myTask = Hospital.triageTaskList.shift();
           me().setCurrentPatient(myTask.patient);
-          me().getCurrentPatient().setInstructor(closestTriageNurse);
+          me().getCurrentPatient().setInstructor(me());
           me().getCurrentPatient().setPatientTempState(PatientTempState.FOLLOWING);
   
           me().setBusy(true);

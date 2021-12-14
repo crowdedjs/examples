@@ -1,4 +1,5 @@
 import * as THREE from "three"
+import task from "./task-thesis.js";
 
 class Hospital{
 

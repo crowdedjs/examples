@@ -19,9 +19,12 @@ class janitorialThesis {
     let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
 
+    let myRoom;
+
     this.tree = builder
       .sequence("Janitorial")
       
+      // CLOCK IN
       .selector("Check for arrival")  
         .condition("Clock in", async (t) => me().onTheClock)
         .do("SHIFT CHANGE", (t) => {
@@ -56,38 +59,27 @@ class janitorialThesis {
           })
         .end()
       .end()
-      
-      .splice(new GoTo(self.index, myGoal.location).tree)
-      
-      //find room to clean
-      .do("Find Room to Clean", (t) => {               
-        // if (typeof Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE) === 'undefined') {
-        //   return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-        // }
-        // else {
-        //   return fluentBehaviorTree.BehaviorTreeStatus.Success;
-        // }
-        
-        if (Hospital.janitorTaskList.length == 0) {
-            return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-        }
-        else {
-            return fluentBehaviorTree.BehaviorTreeStatus.Success;
-        }
 
-      })
+      .sequence("Clean Room")
+      // GO TO JANITOR CLOSET
+        .splice(new GoTo(self.index, myGoal.location).tree)
+        .condition("Is there a room to clean?", async (t) => Hospital.janitorTaskList.length > 0)
+        // PICK/CLAIM THE ROOM TO CLEAN
+        .do("Pick the room", (t) => {
+          myRoom = Hospital.janitorTaskList.shift().location;
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        })
+        // GO TO THE ROOM THAT NEEDS CLEANING
+        .splice(new GoToLazy(self.index, () => myRoom.location).tree)
+        // TAKE TIME IN THE ROOM TO CLEAN
+        .splice(new TakeTime(300, 600).tree)
+        // SET STATUS AS NONE - PROBABLY DON'T ACTUALLY NEED THIS
+        .do("Done with the Room", (t) => {               
+          myRoom.setLocationStatus(LocationStatus.NONE);
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        })
 
-      // GO TO THE ROOM THAT NEEDS CLEANING
-      .splice(new GoToLazy(self.index, () => Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE).location).tree)
-
-      // TAKE TIME IN THE ROOM TO CLEAN
-      .splice(new TakeTime(300, 600).tree)
-
-      // set that room's status as NONE
-      .do("Done with the Room", (t) => {               
-        Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE).setLocationStatus(LocationStatus.NONE);
-        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      })
+      .end()
             
       .end()
       .build();

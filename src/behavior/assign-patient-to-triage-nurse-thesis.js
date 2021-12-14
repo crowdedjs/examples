@@ -23,7 +23,8 @@ class AssignPatientToTriageNurseThesis {
           else {
             let myPatient = me().triageList.shift();
             // Task ID / Severity / Entry Time / Patient / Location
-            let triageTask = new task("Triage", myPatient.getSeverity(), null, myPatient, myPatient.getAssignedRoom());
+            let triageTask = new task("Triage", myPatient.getSeverity(), 0, myPatient, myPatient.getAssignedRoom());
+
             Hospital.triageTaskList.push(triageTask);
 
             return fluentBehaviorTree.BehaviorTreeStatus.Success;
