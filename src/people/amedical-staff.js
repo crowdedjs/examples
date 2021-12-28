@@ -11,6 +11,7 @@ class AMedicalStaff extends APerson {
     responsibility; //AResponsibility
     computer; //IRoom -> ARoom
 	busy = false; //boolean (if the nurse needs to finish their behavior before getting another patient)
+	task; //Task
 
 	constructor(location, UUID, medicalStaffType, medicalStaffSubclass, doctorYear, arrivalTick) {
 		super(location, UUID, arrivalTick);
@@ -27,8 +28,6 @@ class AMedicalStaff extends APerson {
 		this.myRooms = [];
 		this.patientList = [];
 		this.triageList = [];
-
-
 	}
 
 	getBusy() {
@@ -56,6 +55,14 @@ class AMedicalStaff extends APerson {
         this.responsibility = responsibility;
         this.setCurrentPatient(responsibility.entry.patient);
     }
+
+	get Task() {
+		return this.task;
+	}
+
+	set Task(task) {
+		this.task = task;
+	}
 
     get MyRooms() {
         return this.myRooms;

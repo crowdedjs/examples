@@ -43,6 +43,7 @@ class Hospital{
   // USING THIS FOR AGENT BEHAVIORS
   static triageTaskList = [];
   static janitorTaskList = [];
+  static nurseTaskList = [];
 
   static getFPS(){return 60;}
 

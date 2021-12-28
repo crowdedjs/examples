@@ -19,6 +19,7 @@ import triageNurse from "./triage-nurse.js"
 import xray from "./xray.js" 
 
 import greeterNurseThesis from "./greeter-nurse-thesis.js";
+import nurseThesis from "./nurse-thesis.js";
 import triageNurseThesis from "./triage-nurse-thesis.js";
 import janitorialThesis from "./janitorial-thesis.js";
 
@@ -92,7 +93,8 @@ class MedicalAgentThesis extends AMedicalStaff {
         //this.behavior = new triageNurse(agent.id)
         this.behavior = new triageNurseThesis(agent.id)
       else if (agent.type == "Nurse")
-        this.behavior = new nurse(agent.id)
+        //this.behavior = new nurse(agent.id)
+        this.behavior = new nurseThesis(agent.id)
       else if (agent.type == "Greeter Nurse")
         //this.behavior = new greeterNurse(agent.id)
         this.behavior = new greeterNurseThesis(agent.id)
