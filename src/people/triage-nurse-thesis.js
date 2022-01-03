@@ -3,7 +3,7 @@ import GoToLazy from "../behavior/go-to-lazy.js";
 import LeavePatient from "../behavior/leave-patient.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree";
 import PatientTempState from "../support/patient-temp-state.js";
-
+import task from "../support/task-thesis.js";
 
 class triageNurseThesis {
 
@@ -75,7 +75,7 @@ class triageNurseThesis {
       .end()
 
       .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "TriageNursePlace").location).tree)
-
+      // THESE ASSIGNMENTS ARE GIVEN BY THE GREETER NURSE
       .do("Wait For Patient Assignment", async (t) => {
         if (Hospital.triageTaskList.length == 0) {
           return fluentBehaviorTree.BehaviorTreeStatus.Failure;
@@ -95,10 +95,16 @@ class triageNurseThesis {
       .splice(new GoToLazy(self.index, () => me().getCurrentPatient().getAssignedRoom().location).tree)
       
       .do("Leave Patient", (t) => {
+        // ONCE THE PATIENT HAS BEEN DELIVERED, QUEUE TASKS TO THE APPROPRIATE MEDICAL STAFF
+        // Task ID / Severity / Entry Time / Patient / Location
+        let nurseTask = new task("Get Health Information", me().getCurrentPatient().getSeverity(), 0, me().getCurrentPatient(), me().getCurrentPatient().getAssignedRoom());
+        Hospital.nurseTaskList.push(nurseTask);
+        
         let result = leavePatient.tick(t)
         if (me().replacement == false) {
           me().setBusy(false);
         }
+
         return result;
       })
       

@@ -56,11 +56,11 @@ class AMedicalStaff extends APerson {
         this.setCurrentPatient(responsibility.entry.patient);
     }
 
-	get Task() {
+	getTask() {
 		return this.task;
 	}
 
-	set Task(task) {
+	setTask(task) {
 		this.task = task;
 	}
 

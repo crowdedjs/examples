@@ -12,7 +12,7 @@ The basis of these code changes boil down to this:
 - even getting the number and doing like testArray[tempValue] doesn't work. It must just be a number.
 
 # Questions
-- Should probably have some sort of format/object for what goes in the ToDo arrays:
-{taskname/ID/#, importance/severity, timestep it was entered?, potential patient it concerns, potential location?}
 - the arrays should probably be sorted every so often (by importance and time)?
+- probably should make a flow chart (could include it in thesis as well) that illustrates the flow of tasks
+ greeter --assigns--> triage --assigns--> nurse / tech? / ? -->
 
