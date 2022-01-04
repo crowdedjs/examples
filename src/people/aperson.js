@@ -16,6 +16,7 @@ class APerson extends AThing {
 	UUID; // int
 	assignedRoom; // IRoom -> ARoom
 	moving = true; // boolean
+	taskTime = 0;
 	
 	get Moving() {
 		return this.moving;

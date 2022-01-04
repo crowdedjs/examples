@@ -22,7 +22,7 @@ import greeterNurseThesis from "./greeter-nurse-thesis.js";
 import nurseThesis from "./nurse-thesis.js";
 import triageNurseThesis from "./triage-nurse-thesis.js";
 import janitorialThesis from "./janitorial-thesis.js";
-
+import techThesis from "./tech-thesis.js";
 
 class MedicalAgentThesis extends AMedicalStaff {
   startX;
@@ -72,7 +72,8 @@ class MedicalAgentThesis extends AMedicalStaff {
 
     if (agent.name == "Tech") {
       if (agent.type == "Tech")
-        this.behavior = new tech(agent.id)
+        //this.behavior = new tech(agent.id)
+        this.behavior = new techThesis(agent.id)
       else if (agent.type == "CT")
         this.behavior = new ct(agent.id)
       else if (agent.type == "Janitorial")

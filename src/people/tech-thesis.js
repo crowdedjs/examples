@@ -1,11 +1,12 @@
+import AssignBed from "../behavior/assign-bed.js";
+import AssignComputer from "../behavior/assign-computer.js"
 import GoTo from "../behavior/go-to.js";
 import GoToLazy from "../behavior/go-to-lazy.js";
-import AssignComputer from "../behavior/assign-computer.js"
 import TakeTime from "../behavior/take-time.js";
 import task from "../support/task-thesis.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
-class nurseThesis {
+class techThesis {
 
     constructor(myIndex) {
         this.index = myIndex;
@@ -16,16 +17,17 @@ class nurseThesis {
         let self = this;//Since we need to reference this in anonymous functions, we need a reference
         let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
         
-        let goToName = "NursePlace";
+        let goToName = "TechPlace";
         let myGoal = Hospital.locations.find(l => l.name == goToName);
-        let computer =  Hospital.locations.find(l => l.name == "NursePlace");
+        let computer =  Hospital.locations.find(l => l.name == "TechPlace");
         this.tree = builder
 
         // Consider limiting the rooms nurses can be assigned to tasks to
         // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
-        .sequence("Nurse Behaviors")
+        .sequence("Tech Behaviors")
             .splice(new GoTo(self.index, computer.location).tree)
-            .splice(new AssignComputer(myIndex, computer.location).tree) // NURSE PLACE
+            //.splice(new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").location).tree)
+            .splice(new AssignComputer(myIndex, computer.location).tree) // TECH PLACE
             // Add a behavior here or in the selector that will order the tasks (by severity)?
             .selector("Task List Tasks")
                 .do("Get a Task", (t) => {
@@ -34,8 +36,8 @@ class nurseThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     // CHECK IF ANY TASKS ARE AVAILABLE, CONTINUE
-                    else if (Hospital.nurseTaskList.length != 0) {
-                        me().setTask(Hospital.nurseTaskList.shift());
+                    else if (Hospital.techTaskList.length != 0) {
+                        me().setTask(Hospital.techTaskList.shift());
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     // OTHERWISE DON'T PROCEED (SUCCESS WILL RESTART SELECTOR)
@@ -64,45 +66,58 @@ class nurseThesis {
                     // Could make this a spliced behavior that takes the agent as a parameter
                     //return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 // })
-
+                
                 // THIS TASK IS GIVEN BY THE TRIAGE NURSE
-                .do("Get Health Information", (t) => {
-                    if (me().getTask().taskID != "Get Health Information") {
-                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-                    }
-                    else {
-                        let patientEntry = Hospital.computer.getEntry(me().getTask().patient);
-                        patientEntry.setAnsweredQuestions(true);
-                        me().setTask(null);
-                        me().taskTime = 100;
-                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                    }
+                .do("Get Vitals", (t) => {
+                    Hospital.computer.getEntry(me().getTask().patient).setVitals("Taken");
+                    me().setTask(null);
+                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 })
-                // THIS TASK IS GIVEN BY ?? (probably tech that escorts patient back from CT)
-                .do("Nurse Discharge Patient", (t) => {
-                    if (me().getTask().taskID != "Nurse Discharge Patient") {
-                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-                    }
-                    else {
-                        let exitTask = new task("Nurse Escort Patient To Exit", null, null, me().Task.patient, null);
-                        Hospital.nurseTaskList.push(exitTask);
-                        // Could just change task to escorting to exit immediately
-                        //me().Task(null);
-                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                    }
-                })
-                // THIS TASK IS GIVEN BY THE PREVIOUS TASK
-                // need to code this still
-                .do("Nurse Escort Patient To Exit", (t) => {
-                    if (me().getTask().taskID != "Nurse Escort Patient To Exit") {
-                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-                    }
-                    else {
+                .do("Get EKG", (t) => {
+                    Hospital.computer.getEntry(me().getTask().patient).setEkg("EKG Results");
+                    me().setTask(null);
+                    // CREATE TASK FOR THE RESIDENT : RESIDENT_EKG_READ
+                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                })  
+                .do("CT Pickup", (t) => {
+                    
+                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                })  
+                .do("XRay Pickup", (t) => {
+                    
+                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                })   
+                .do("Escort Patient", (t) => {
+                    
+                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                })          
 
-                        me().setTask(null);
-                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                    }
-                })
+                // // THIS TASK IS GIVEN BY THE TRIAGE NURSE
+                // .do("Get Health Information", (t) => {
+                //     if (me().getTask().taskID != "Get Health Information") {
+                //         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                //     }
+                //     else {
+                //         let patientEntry = Hospital.computer.getEntry(me().getTask().patient);
+                //         patientEntry.setAnsweredQuestions(true);
+                //         me().setTask(null);
+                //         me().taskTime = 100;
+                //         return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                //     }
+                // })
+                // // THIS TASK IS GIVEN BY ?? (probably tech that escorts patient back from CT)
+                // .do("Nurse Discharge Patient", (t) => {
+                //     if (me().getTask().taskID != "Nurse Discharge Patient") {
+                //         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                //     }
+                //     else {
+                //         let exitTask = new task("Nurse Escort Patient To Exit", null, null, me().Task.patient, null);
+                //         Hospital.nurseTaskList.push(exitTask);
+                //         // Could just change task to escorting to exit immediately
+                //         //me().Task(null);
+                //         return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                //     }
+                // })
             .end()
             // IF SUCCEEDING IN TASK, TAKE TIME TO DO THAT TASK
             // TakeTime doesn't work in some instances, but the code itself works. For instance if you remove the next .end(), it will work, but then the sequence is broken.
@@ -123,18 +138,6 @@ class nurseThesis {
     async update( crowd, msec) {
         await this.tree.tick({ crowd, msec }) //Call the behavior tree
     }
-
-    // NEED TO ALTER THIS
-    checkEndOfSimulation() {
-        if (self.Hospital.computer.entries.length > 0) {
-            return self.Hospital.computer.entries[0].unacknowledged("NurseEscortPatientToExit");
-            //let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
-            //let exitTask = new task("Nurse Escort Patient To Exit", null, null, me().Task.patient, null);
-            //return Hospital.nurseTaskList.push(exitTask);
-        }
-        return false;
-    }
-  
 }
 
-export default nurseThesis;
+export default techThesis;

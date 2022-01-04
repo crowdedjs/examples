@@ -100,6 +100,12 @@ class triageNurseThesis {
         let nurseTask = new task("Get Health Information", me().getCurrentPatient().getSeverity(), 0, me().getCurrentPatient(), me().getCurrentPatient().getAssignedRoom());
         Hospital.nurseTaskList.push(nurseTask);
         
+        let techTaskVitals = new task("Get Vitals", me().getCurrentPatient().getSeverity(), 0, me().getCurrentPatient(), me().getCurrentPatient().getAssignedRoom());
+        Hospital.techTaskList.push(techTaskVitals);
+
+        let techTaskEKG = new task("Get EKG", me().getCurrentPatient().getSeverity(), 0, me().getCurrentPatient(), me().getCurrentPatient().getAssignedRoom());
+        Hospital.techTaskList.push(techTaskEKG);
+
         let result = leavePatient.tick(t)
         if (me().replacement == false) {
           me().setBusy(false);
