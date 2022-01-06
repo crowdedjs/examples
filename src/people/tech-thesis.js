@@ -69,55 +69,45 @@ class techThesis {
                 
                 // THIS TASK IS GIVEN BY THE TRIAGE NURSE
                 .do("Get Vitals", (t) => {
-                    Hospital.computer.getEntry(me().getTask().patient).setVitals("Taken");
-                    me().setTask(null);
-                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    if (me().getTask().taskID != "Get Vitals") {
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
+                    else {
+                        Hospital.computer.getEntry(me().getTask().patient).setVitals("Taken");
+                        me().setTask(null);
+                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    }
                 })
+                // THIS TASK IS GIVEN BY THE TRIAGE NURSE
                 .do("Get EKG", (t) => {
-                    Hospital.computer.getEntry(me().getTask().patient).setEkg("EKG Results");
-                    me().setTask(null);
-                    // CREATE TASK FOR THE RESIDENT : RESIDENT_EKG_READ
-                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    if (me().getTask().taskID != "Get EKG") {
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
+                    else {
+                        Hospital.computer.getEntry(me().getTask().patient).setEkg("EKG Results");
+                        me().setTask(null);
+                        // CREATE TASK FOR THE RESIDENT : RESIDENT_EKG_READ
+                        let readTask = new task("EKG Read", null, null, me().Task.patient, null);
+                        Hospital.residentTaskList.push(readTask);
+
+                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    }
                 })  
+                // THIS TASK IS GIVEN BY THE CT
                 .do("CT Pickup", (t) => {
-                    
+                    // ???
                     return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 })  
+                // THIS TASK IS GIVEN BY THE XRAY
                 .do("XRay Pickup", (t) => {
-                    
+                    // ???
                     return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 })   
+                // ESCORTING TO XRAY / CT NEEDS TO BE QUEUED UP SOMEWHERE ...
                 .do("Escort Patient", (t) => {
-                    
+                    // ???
                     return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 })          
-
-                // // THIS TASK IS GIVEN BY THE TRIAGE NURSE
-                // .do("Get Health Information", (t) => {
-                //     if (me().getTask().taskID != "Get Health Information") {
-                //         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-                //     }
-                //     else {
-                //         let patientEntry = Hospital.computer.getEntry(me().getTask().patient);
-                //         patientEntry.setAnsweredQuestions(true);
-                //         me().setTask(null);
-                //         me().taskTime = 100;
-                //         return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                //     }
-                // })
-                // // THIS TASK IS GIVEN BY ?? (probably tech that escorts patient back from CT)
-                // .do("Nurse Discharge Patient", (t) => {
-                //     if (me().getTask().taskID != "Nurse Discharge Patient") {
-                //         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-                //     }
-                //     else {
-                //         let exitTask = new task("Nurse Escort Patient To Exit", null, null, me().Task.patient, null);
-                //         Hospital.nurseTaskList.push(exitTask);
-                //         // Could just change task to escorting to exit immediately
-                //         //me().Task(null);
-                //         return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                //     }
-                // })
             .end()
             // IF SUCCEEDING IN TASK, TAKE TIME TO DO THAT TASK
             // TakeTime doesn't work in some instances, but the code itself works. For instance if you remove the next .end(), it will work, but then the sequence is broken.

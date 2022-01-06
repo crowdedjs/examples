@@ -1,6 +1,7 @@
+import AssignComputer from "../behavior/assign-computer.js"
 import GoTo from "../behavior/go-to.js";
 import GoToLazy from "../behavior/go-to-lazy.js";
-import AssignComputer from "../behavior/assign-computer.js"
+import PatientTempState from "../../support/patient-temp-state.js";
 import TakeTime from "../behavior/take-time.js";
 import task from "../support/task-thesis.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
@@ -78,7 +79,7 @@ class nurseThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                 })
-                // THIS TASK IS GIVEN BY ?? (probably tech that escorts patient back from CT)
+                // THIS TASK IS GIVEN BY THE RESIDENT
                 .do("Nurse Discharge Patient", (t) => {
                     if (me().getTask().taskID != "Nurse Discharge Patient") {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
@@ -86,19 +87,24 @@ class nurseThesis {
                     else {
                         let exitTask = new task("Nurse Escort Patient To Exit", null, null, me().Task.patient, null);
                         Hospital.nurseTaskList.push(exitTask);
-                        // Could just change task to escorting to exit immediately
-                        //me().Task(null);
+                        me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                 })
-                // THIS TASK IS GIVEN BY THE PREVIOUS TASK
-                // need to code this still
+                // THIS TASK IS GIVEN BY NURSE DISCHARGE PATIENT
+                // need to add more to this
                 .do("Nurse Escort Patient To Exit", (t) => {
                     if (me().getTask().taskID != "Nurse Escort Patient To Exit") {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-
+                        let myPatient = me().getTask().patient;
+                        myPatient.setPatientTempState(PatientTempState.DONE);
+                        for (let i = 0; i < Hospital.emergencyQueue.length; i++) {
+                            if (myPatient == Hospital.emergencyQueue[i]) {
+                                Hospital.emergencyQueue.splice(i, 1);
+                            }
+                        }
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }

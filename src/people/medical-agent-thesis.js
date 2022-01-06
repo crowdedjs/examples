@@ -23,6 +23,7 @@ import nurseThesis from "./nurse-thesis.js";
 import triageNurseThesis from "./triage-nurse-thesis.js";
 import janitorialThesis from "./janitorial-thesis.js";
 import techThesis from "./tech-thesis.js";
+import residentThesis from "./resident-thesis.js";
 
 class MedicalAgentThesis extends AMedicalStaff {
   startX;
@@ -110,7 +111,8 @@ class MedicalAgentThesis extends AMedicalStaff {
     }
     else if (agent.name == "Resident") {
       if (agent.type == "Resident")
-        this.behavior = new resident(agent.id)
+        //this.behavior = new resident(agent.id)
+        this.behavior = new residentThesis(agent.id)
       else
         throw new Exception("That resident type does not exist " + agent.type);
     }
