@@ -46,6 +46,9 @@ class Hospital{
   static nurseTaskList = [];
   static techTaskList = [];
   static residentTaskList = [];
+  static ctTaskList = [];
+  static xrayTaskList = [];
+  static radiologyTaskList = [];
 
   static getFPS(){return 60;}
 

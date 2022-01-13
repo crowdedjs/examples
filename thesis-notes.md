@@ -16,3 +16,10 @@ The basis of these code changes boil down to this:
 - probably should make a flow chart (could include it in thesis as well) that illustrates the flow of tasks
  greeter --assigns--> triage --assigns--> nurse / tech? / ? -->
 
+ - need to figure out what tasks require agents to actually go to location (need to pass in null otherwise)
+ - need to set up transport behaviors
+
+# To Do
+ - three versions of the hospital: actual hospital, like the actual hospital, and the minimal viable end product
+    - shouldn't be too much of an issue, i believe the json files with the location flags are really the most important things and minimally needed things (aside from the walls)
+

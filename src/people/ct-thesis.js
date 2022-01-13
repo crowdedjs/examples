@@ -6,7 +6,7 @@ import TakeTime from "../behavior/take-time.js";
 import task from "../support/task-thesis.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
-class techThesis {
+class ctThesis {
 
     constructor(myIndex) {
         this.index = myIndex;
@@ -17,17 +17,23 @@ class techThesis {
         let self = this;//Since we need to reference this in anonymous functions, we need a reference
         let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
         
-        let goToName = "TechPlace";
+        let goToName = "CT 1";
+        if (myIndex % 2 == 1) {
+            goToName = "CT 2";
+        }
+
         let myGoal = Hospital.locations.find(l => l.name == goToName);
-        let computer =  Hospital.locations.find(l => l.name == "TechPlace");
+        if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
+        
+        
         this.tree = builder
 
         // Consider limiting the rooms nurses can be assigned to tasks to
         // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
-        .sequence("Tech Behaviors")
-            .splice(new GoTo(self.index, computer.location).tree)
-            //.splice(new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").location).tree)
-            .splice(new AssignComputer(myIndex, computer.location).tree) // TECH PLACE
+        .sequence("CT Behaviors")
+            .splice(new GoTo(self.index, myGoal.location).tree)
+
+            .splice(new AssignComputer(myIndex, myGoal.location).tree) // RESIDENT PLACE
             // Add a behavior here or in the selector that will order the tasks (by severity)?
             .selector("Task List Tasks")
                 .do("Get a Task", (t) => {
@@ -36,8 +42,8 @@ class techThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     // CHECK IF ANY TASKS ARE AVAILABLE, CONTINUE
-                    else if (Hospital.techTaskList.length != 0) {
-                        me().setTask(Hospital.techTaskList.shift());
+                    else if (Hospital.ctTaskList.length != 0) {
+                        me().setTask(Hospital.ctTaskList.shift());
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     // OTHERWISE DON'T PROCEED (SUCCESS WILL RESTART SELECTOR)
@@ -67,64 +73,37 @@ class techThesis {
                     //return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 // })
                 
-                // THIS TASK IS GIVEN BY THE TRIAGE NURSE
-                .do("Get Vitals", (t) => {
-                    if (me().getTask().taskID != "Get Vitals") {
+                // THIS TASK IS GIVEN BY THE CT TO THE TECH
+                .do("Queue Escort Patient", (t) => {
+                    if (Hospital.CTQueue.length == 0 || (goToName == "CT 1" && Hospital.isCT1Occupied()) || (goToName == "CT 2" && Hospital.isCT2Occupied())) {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        Hospital.computer.getEntry(me().getTask().patient).setVitals("Taken");
-                        me().setTask(null);
-                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                    }
-                })
-                // THIS TASK IS GIVEN BY THE TRIAGE NURSE
-                .do("Get EKG", (t) => {
-                    if (me().getTask().taskID != "Get EKG") {
-                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-                    }
-                    else {
-                        Hospital.computer.getEntry(me().getTask().patient).setEkg("EKG Results");
-                        me().setTask(null);
-                        // CREATE TASK FOR THE RESIDENT : RESIDENT_EKG_READ
-                        let readTask = new task("EKG Read", null, null, me().Task.patient, null);
-                        Hospital.residentTaskList.push(readTask);
+                        // Escort Patient
+                        let techEscortTask = new task("Escort Patient", null, null, Hospital.CTQueue[0], null);
+                        Hospital.techTaskList.push(techEscortTask);
 
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                 })
-                // ESCORTING TO XRAY / CT NEEDS TO BE QUEUED UP SOMEWHERE ... probably queue it from the XRAY / CT when they are ready to receive the patient
-                .do("Escort Patient", (t) => {
-                    if (me().getTask().taskID != "Escort Patient") {
+                
+                // THIS TASK IS GIVEN BY THE TECH  
+                .do("CAT Do Scan", (t) => {
+                    if (me().getTask().taskID != "CAT Do Scan") {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        //me().setDestination(transportResponsibility.getRoom().getLocation());
-                        //patient.setInstructor(me());
-                        //patient.setPatientTempState( PatientTempState.FOLLOWING);
+                        let ctPickupTask = new task("CT Pickup", null, null, me().Task.patient, null);
+                        Hospital.techTaskList.push(ctPickupTask);
 
-                        // CT SCAN
-                        let ctScanTask = new task("CAT Do Scan", null, null, me().Task.patient, null);
-                        Hospital.ctTaskList.push(ctScanTask);
-
-                        // XRAY
-                        //let xrayScanTask = new task("XRay Do Scan", null, null, me().Task.patient, null);
-                        //Hospital.xrayTaskList.push(xrayScanTask);
-
+                        let radiologyReviewTask = new task("Radiology Review Scan", null, null, me().Task.patient, null);
+                        Hospital.radiologyTaskList.push(radiologyReviewTask);
+                        
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
-                })  
-                // THIS TASK IS GIVEN BY THE CT
-                .do("CT Pickup", (t) => {
-                    // ???
-                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                })  
-                // THIS TASK IS GIVEN BY THE XRAY
-                .do("XRay Pickup", (t) => {
-                    // ???
-                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                })             
+                }) 
+                
             .end()
             // IF SUCCEEDING IN TASK, TAKE TIME TO DO THAT TASK
             // TakeTime doesn't work in some instances, but the code itself works. For instance if you remove the next .end(), it will work, but then the sequence is broken.
@@ -147,4 +126,4 @@ class techThesis {
     }
 }
 
-export default techThesis;
+export default ctThesis;
