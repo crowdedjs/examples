@@ -93,37 +93,66 @@ class techThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                 })
-                // ESCORTING TO XRAY / CT NEEDS TO BE QUEUED UP SOMEWHERE ... probably queue it from the XRAY / CT when they are ready to receive the patient
+                // ESCORTING TO XRAY / CT IS QUEUED BY THE CT AND XRAY
+                // THIS IS A 2-PART TASK, THEY GO TO THE PATIENT, THEN THEY ESCORT THE PATIENT TO THE CT OR XRAY
+                .do("Pick Up Patient", (t) => {
+                    if (me().getTask().taskID != "Pick Up Patient") {
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
+                    else {
+                        let myPatient = me().Task.patient;
+                        myPatient.setInstructor(me());
+                        myPatient.setPatientTempState( PatientTempState.FOLLOWING);
+
+                        // NEED TO FIGURE OUT WHEN THEY WOULD GET ONE OVER THE OTHER
+                        if (true) {
+                            // CT SCAN
+                            let ctScanTask = new task("CAT Do Scan", null, 0, me().Task.patient, null);
+                            Hospital.ctTaskList.push(ctScanTask);
+
+                            // NOW ESCORT THE PATIENT
+                            let escortTask = new task("Escort Patient", null, 0, me().Task.patient, me().Task.location);
+                            me().setTask(escortTask);
+                            return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                        }
+                        else {
+                            // XRAY
+                            let xrayScanTask = new task("XRay Do Scan", null, 0, me().Task.patient, null);
+                            Hospital.xrayTaskList.push(xrayScanTask);
+
+                            // NOW ESCORT THE PATIENT
+                            let escortTask = new task("Escort Patient", null, 0, me().Task.patient, me().Task.location);
+                            me().setTask(escortTask);
+                            return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                        }
+                    }
+                })
                 .do("Escort Patient", (t) => {
                     if (me().getTask().taskID != "Escort Patient") {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        //me().setDestination(transportResponsibility.getRoom().getLocation());
-                        //patient.setInstructor(me());
-                        //patient.setPatientTempState( PatientTempState.FOLLOWING);
-
-                        // CT SCAN
-                        let ctScanTask = new task("CAT Do Scan", null, null, me().Task.patient, null);
-                        Hospital.ctTaskList.push(ctScanTask);
-
-                        // XRAY
-                        //let xrayScanTask = new task("XRay Do Scan", null, null, me().Task.patient, null);
-                        //Hospital.xrayTaskList.push(xrayScanTask);
+                        patient.setInstructor(null);
+                        patient.setPatientTempState(PatientTempState.WAITING);
 
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
-                })  
-                // THIS TASK IS GIVEN BY THE CT
-                .do("CT Pickup", (t) => {
-                    // ???
-                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                })  
-                // THIS TASK IS GIVEN BY THE XRAY
-                .do("XRay Pickup", (t) => {
-                    // ???
-                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                }) 
+
+                // THIS TASK IS GIVEN BY THE CT / XRAY
+                .do("CT/XRAY Pickup", (t) => {
+                    if (me().getTask().taskID != "CT Pickup" && me().getTask().taskID != "XRay Pickup") {
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
+                    else {
+                        patient.setInstructor(me());
+                        patient.setPatientTempState(PatientTempState.FOLLOWING);
+                        
+                        let escortTask = new task("Escort Patient", null, 0, me().Task.patient, me().Task.patient.getPermanentRoom());
+                        me().setTask(escortTask);
+                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    }
                 })             
             .end()
             // IF SUCCEEDING IN TASK, TAKE TIME TO DO THAT TASK

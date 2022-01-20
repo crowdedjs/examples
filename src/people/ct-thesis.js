@@ -79,8 +79,8 @@ class ctThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        // Escort Patient
-                        let techEscortTask = new task("Escort Patient", null, null, Hospital.CTQueue[0], null);
+                        // Pick Up Patient
+                        let techEscortTask = new task("Pick Up Patient", Hospital.CTQueue[0].getSeverity(), 0, Hospital.CTQueue[0], myGoal);
                         Hospital.techTaskList.push(techEscortTask);
 
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -93,10 +93,10 @@ class ctThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        let ctPickupTask = new task("CT Pickup", null, null, me().Task.patient, null);
+                        let ctPickupTask = new task("CT Pickup", null, 0, me().Task.patient, myGoal);
                         Hospital.techTaskList.push(ctPickupTask);
 
-                        let radiologyReviewTask = new task("Radiology Review Scan", null, null, me().Task.patient, null);
+                        let radiologyReviewTask = new task("Radiology Review Scan", null, 0, me().Task.patient, null);
                         Hospital.radiologyTaskList.push(radiologyReviewTask);
                         
                         me().setTask(null);

@@ -159,8 +159,8 @@ class residentThesis {
                     }
                 })
                 // THIS TASK IS GIVEN BY THE RADIOLOGIST   
-                .do("Scan Read", (t) => {
-                    if (me().getTask().taskID != "Scan Read") {
+                .do("Resident Scan Read", (t) => {
+                    if (me().getTask().taskID != "Resident Scan Read") {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
