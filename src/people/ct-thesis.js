@@ -36,6 +36,22 @@ class ctThesis {
             .splice(new AssignComputer(myIndex, myGoal.location).tree) // RESIDENT PLACE
             // Add a behavior here or in the selector that will order the tasks (by severity)?
             .selector("Task List Tasks")
+                // THIS TASK IS GIVEN BY THE CT TO THE TECH
+                .do("Queue Escort Patient", (t) => {
+                    if (Hospital.CTQueue.length == 0 || (goToName == "CT 1" && Hospital.isCT1Occupied()) || (goToName == "CT 2" && Hospital.isCT2Occupied())) {
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
+                    else {
+                        // Pick Up Patient
+                        let techEscortTask = new task("Pick Up Patient", Hospital.CTQueue[0].getSeverity(), 0, Hospital.CTQueue[0], myGoal);
+                        Hospital.techTaskList.push(techEscortTask);
+
+                        //return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    }
+
+                    return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                })
+
                 .do("Get a Task", (t) => {
                     // IF ALREADY ALLOCATED A TASK, CONTINUE
                     if (me().getTask() != null) {
@@ -59,7 +75,7 @@ class ctThesis {
                                 myGoal = me().getTask().location;
                             }
                             else {
-                                myGoal = computer;
+                                myGoal = Hospital.locations.find(l => l.name == goToName);
                             }
                             return fluentBehaviorTree.BehaviorTreeStatus.Success; 
                         })
@@ -73,30 +89,16 @@ class ctThesis {
                     //return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 // })
                 
-                // THIS TASK IS GIVEN BY THE CT TO THE TECH
-                .do("Queue Escort Patient", (t) => {
-                    if (Hospital.CTQueue.length == 0 || (goToName == "CT 1" && Hospital.isCT1Occupied()) || (goToName == "CT 2" && Hospital.isCT2Occupied())) {
-                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-                    }
-                    else {
-                        // Pick Up Patient
-                        let techEscortTask = new task("Pick Up Patient", Hospital.CTQueue[0].getSeverity(), 0, Hospital.CTQueue[0], myGoal);
-                        Hospital.techTaskList.push(techEscortTask);
-
-                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                    }
-                })
-                
                 // THIS TASK IS GIVEN BY THE TECH  
                 .do("CAT Do Scan", (t) => {
                     if (me().getTask().taskID != "CAT Do Scan") {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        let ctPickupTask = new task("CT Pickup", null, 0, me().Task.patient, myGoal);
+                        let ctPickupTask = new task("CT Pickup", null, 0, me().getTask().patient, myGoal);
                         Hospital.techTaskList.push(ctPickupTask);
 
-                        let radiologyReviewTask = new task("Radiology Review Scan", null, 0, me().Task.patient, null);
+                        let radiologyReviewTask = new task("Radiology Review Scan", null, 0, me().getTask().patient, null);
                         Hospital.radiologyTaskList.push(radiologyReviewTask);
                         
                         me().setTask(null);

@@ -73,7 +73,7 @@ class residentThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        let consultTask = new task("EKG Consult", null, null, me().Task.patient, null);
+                        let consultTask = new task("EKG Consult", null, null, me().getTask().patient, null);
                         Hospital.residentTaskList.push(consultTask);
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -86,10 +86,10 @@ class residentThesis {
                     }
                     else {
                         // queue CAT or XRAY
-                        let catTask = new task("EKG Order CAT", null, null, me().Task.patient, null);
+                        let catTask = new task("EKG Order CAT", null, null, me().getTask().patient, null);
                         Hospital.residentTaskList.push(catTask);
                         
-                        //let xrayTask = new task("EKG Order XRay", null, null, me().Task.patient, null);
+                        //let xrayTask = new task("EKG Order XRay", null, null, me().getTask().patient, null);
                         //Hospital.residentTaskList.push(xrayTask);
 
                         me().setTask(null);
@@ -164,7 +164,7 @@ class residentThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        let attendingConsultTask = new task("Attending Consult", null, null, me().Task.patient, null);
+                        let attendingConsultTask = new task("Attending Consult", null, null, me().getTask().patient, null);
                         Hospital.residentTaskList.push(attendingConsultTask);
 
                         me().setTask(null);
@@ -177,7 +177,7 @@ class residentThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        let patientConsultTask = new task("Patient Consult", null, null, me().Task.patient, null);
+                        let patientConsultTask = new task("Patient Consult", null, null, me().getTask().patient, null);
                         Hospital.residentTaskList.push(patientConsultTask);
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -189,7 +189,7 @@ class residentThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        let dischargeTask = new task("Nurse Discharge Patient", null, null, me().Task.patient, null);
+                        let dischargeTask = new task("Nurse Discharge Patient", null, null, me().getTask().patient, null);
                         Hospital.nurseTaskList.push(dischargeTask);
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;

@@ -59,7 +59,7 @@ class xrayThesis {
                                 myGoal = me().getTask().location;
                             }
                             else {
-                                myGoal = computer;
+                                myGoal = Hospital.locations.find(l => l.name == goToName);
                             }
                             return fluentBehaviorTree.BehaviorTreeStatus.Success; 
                         })
@@ -74,35 +74,35 @@ class xrayThesis {
                 // })
                 
                 // THIS TASK IS GIVEN BY THE XRAY TO THE TECH
-                .do("Queue Escort Patient", (t) => {
-                    if (Hospital.XRayQueue.length == 0 || (goToName == "XRay 1" && Hospital.isXRay1Occupied()) || (goToName == "XRay 2" && Hospital.isXRay2Occupied())) {
-                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-                    }
-                    else {
-                        // Escort Patient
-                        let techEscortTask = new task("Escort Patient", null, null, Hospital.XRayQueue[0], null);
-                        Hospital.techTaskList.push(techEscortTask);
+                // .do("Queue Escort Patient", (t) => {
+                //     if (Hospital.XRayQueue.length == 0 || (goToName == "XRay 1" && Hospital.isXRay1Occupied()) || (goToName == "XRay 2" && Hospital.isXRay2Occupied())) {
+                //         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                //     }
+                //     else {
+                //         // Escort Patient
+                //         let techEscortTask = new task("Escort Patient", null, null, Hospital.XRayQueue[0], null);
+                //         Hospital.techTaskList.push(techEscortTask);
 
-                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                    }
-                })
+                //         return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                //     }
+                // })
                 
                 // THIS TASK IS GIVEN BY THE TECH  
-                .do("XRay Do Scan", (t) => {
-                    if (me().getTask().taskID != "XRay Do Scan") {
-                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-                    }
-                    else {
-                        let xrayPickupTask = new task("XRay Pickup", null, null, me().Task.patient, null);
-                        Hospital.techTaskList.push(xrayPickupTask);
+                // .do("XRay Do Scan", (t) => {
+                //     if (me().getTask().taskID != "XRay Do Scan") {
+                //         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                //     }
+                //     else {
+                //         let xrayPickupTask = new task("XRay Pickup", null, null, me().getTask().patient, null);
+                //         Hospital.techTaskList.push(xrayPickupTask);
 
-                        let radiologyReviewTask = new task("Radiology Review Scan", null, null, me().Task.patient, null);
-                        Hospital.radiologyTaskList.push(radiologyReviewTask);
+                //         let radiologyReviewTask = new task("Radiology Review Scan", null, null, me().getTask().patient, null);
+                //         Hospital.radiologyTaskList.push(radiologyReviewTask);
                         
-                        me().setTask(null);
-                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                    }
-                }) 
+                //         me().setTask(null);
+                //         return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                //     }
+                // }) 
                 
             .end()
             // IF SUCCEEDING IN TASK, TAKE TIME TO DO THAT TASK

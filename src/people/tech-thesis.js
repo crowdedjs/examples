@@ -4,6 +4,7 @@ import GoTo from "../behavior/go-to.js";
 import GoToLazy from "../behavior/go-to-lazy.js";
 import TakeTime from "../behavior/take-time.js";
 import task from "../support/task-thesis.js";
+import PatientTempState from "../support/patient-temp-state.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
 class techThesis {
@@ -49,7 +50,10 @@ class techThesis {
                 .inverter("Need to return failure")
                     .sequence("Go to Task")
                         .do("Determine Location", (t) => {
-                            if (me().getTask().location != null) {
+                            if (me().getTask().taskID == "Pick Up Patient") {
+                                myGoal = me().getTask().patient.getPermanentRoom();
+                            }
+                            else if (me().getTask().location != null) {
                                 myGoal = me().getTask().location;
                             }
                             else {
@@ -85,10 +89,10 @@ class techThesis {
                     }
                     else {
                         Hospital.computer.getEntry(me().getTask().patient).setEkg("EKG Results");
-                        me().setTask(null);
                         // CREATE TASK FOR THE RESIDENT : RESIDENT_EKG_READ
-                        let readTask = new task("EKG Read", null, null, me().Task.patient, null);
+                        let readTask = new task("EKG Read", null, null, me().getTask().patient, null);
                         Hospital.residentTaskList.push(readTask);
+                        me().setTask(null);
 
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
@@ -100,28 +104,28 @@ class techThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        let myPatient = me().Task.patient;
+                        let myPatient = me().getTask().patient;
                         myPatient.setInstructor(me());
                         myPatient.setPatientTempState( PatientTempState.FOLLOWING);
 
                         // NEED TO FIGURE OUT WHEN THEY WOULD GET ONE OVER THE OTHER
                         if (true) {
                             // CT SCAN
-                            let ctScanTask = new task("CAT Do Scan", null, 0, me().Task.patient, null);
+                            let ctScanTask = new task("CAT Do Scan", null, 0, me().getTask().patient, null);
                             Hospital.ctTaskList.push(ctScanTask);
 
                             // NOW ESCORT THE PATIENT
-                            let escortTask = new task("Escort Patient", null, 0, me().Task.patient, me().Task.location);
+                            let escortTask = new task("Escort Patient", null, 0, me().getTask().patient, me().getTask().location);
                             me().setTask(escortTask);
                             return fluentBehaviorTree.BehaviorTreeStatus.Success;
                         }
                         else {
                             // XRAY
-                            let xrayScanTask = new task("XRay Do Scan", null, 0, me().Task.patient, null);
+                            let xrayScanTask = new task("XRay Do Scan", null, 0, me().getTask().patient, null);
                             Hospital.xrayTaskList.push(xrayScanTask);
 
                             // NOW ESCORT THE PATIENT
-                            let escortTask = new task("Escort Patient", null, 0, me().Task.patient, me().Task.location);
+                            let escortTask = new task("Escort Patient", null, 0, me().getTask().patient, me().getTask().location);
                             me().setTask(escortTask);
                             return fluentBehaviorTree.BehaviorTreeStatus.Success;
                         }
@@ -132,8 +136,9 @@ class techThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        patient.setInstructor(null);
-                        patient.setPatientTempState(PatientTempState.WAITING);
+                        let myPatient = me().getTask().patient;
+                        myPatient.setInstructor(null);
+                        myPatient.setPatientTempState(PatientTempState.WAITING);
 
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -146,10 +151,11 @@ class techThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        patient.setInstructor(me());
-                        patient.setPatientTempState(PatientTempState.FOLLOWING);
+                        let myPatient = me().getTask().patient;
+                        myPatient.setInstructor(me());
+                        myPatient.setPatientTempState(PatientTempState.FOLLOWING);
                         
-                        let escortTask = new task("Escort Patient", null, 0, me().Task.patient, me().Task.patient.getPermanentRoom());
+                        let escortTask = new task("Escort Patient", null, 0, me().getTask().patient, me().getTask().patient.getPermanentRoom());
                         me().setTask(escortTask);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }

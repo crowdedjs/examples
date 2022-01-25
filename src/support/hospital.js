@@ -41,6 +41,7 @@ class Hospital{
   static CT2Agents = 0;
 
   // USING THIS FOR AGENT BEHAVIORS
+  static greeterTaskList = [];
   static triageTaskList = [];
   static janitorTaskList = [];
   static nurseTaskList = [];
@@ -49,6 +50,9 @@ class Hospital{
   static ctTaskList = [];
   static xrayTaskList = [];
   static radiologyTaskList = [];
+  static phlebotomistTaskList = [];
+  static pharmacistTaskList = [];
+  static attendingTaskList = [];
 
   static getFPS(){return 60;}
 

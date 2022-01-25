@@ -1,22 +1,5 @@
-
-import BackAndForth from "../behavior/back-and-forth.js";
-import None from "../behavior/none.js"
-import Agent from "./agent.js"
 import AMedicalStaff from "./amedical-staff.js";
-
-import attending from "./attending.js"
-import ct from "./ct.js"
 import EscapePerson from "./escape-person.js";
-import greeterNurse from "./greeter-nurse.js"
-import janitorial from "./janitorial.js"
-import nurse from "./nurse.js"
-import pharmacist from "./pharmacist.js"
-import phlebotomist from "./phlebotomist.js"
-import radiology from "./radiology.js"
-import resident from "./resident.js"
-import tech from "./tech.js"
-import triageNurse from "./triage-nurse.js"
-import xray from "./xray.js" 
 
 import greeterNurseThesis from "./greeter-nurse-thesis.js";
 import nurseThesis from "./nurse-thesis.js";
@@ -27,6 +10,9 @@ import residentThesis from "./resident-thesis.js";
 import ctThesis from "./ct-thesis.js";
 import xrayThesis from "./xray-thesis.js";
 import radiologyThesis from "./radiology-thesis.js";
+import phlebotomistThesis from "./phlebotomist-thesis.js";
+import pharmacistThesis from "./pharmacist-thesis.js";
+import attendingThesis from "./attending-thesis.js";
 
 class MedicalAgentThesis extends AMedicalStaff {
   startX;
@@ -82,8 +68,7 @@ class MedicalAgentThesis extends AMedicalStaff {
       else if (agent.type == "Janitorial")
         this.behavior = new janitorialThesis(agent.id)
       else if (agent.type == "Phlebotomist")
-        this.behavior = new phlebotomist(agent.id)
-        // NEED TO ADD THIS
+        this.behavior = new phlebotomistThesis(agent.id)
       else if (agent.type == "Radiology")
         this.behavior = new radiologyThesis(agent.id)
       else if (agent.type == "XRay")
@@ -104,8 +89,7 @@ class MedicalAgentThesis extends AMedicalStaff {
     }
     else if (agent.name == "Attending") {
       if (agent.type == "Attending")
-        this.behavior = new attending(agent.id)
-        // NOT ENOUGH FUNCTIONALITY TO CHANGE
+        this.behavior = new attendingThesis(agent.id)
       else
         throw new "That attending type does not exist " + agent.type;
     }
@@ -117,8 +101,7 @@ class MedicalAgentThesis extends AMedicalStaff {
     }
     else if (agent.name == "Pharmacist") {
       if (agent.type == "Pharmacist")
-        this.behavior = new pharmacist(agent.id)
-        // NEED TO ADD THIS
+        this.behavior = new pharmacistThesis(agent.id)
       else
         throw new Exception("That pharmacist type does not exist " + agent.type);
     }

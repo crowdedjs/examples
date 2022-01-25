@@ -53,7 +53,7 @@ class radiologyThesis {
                                 myGoal = me().getTask().location;
                             }
                             else {
-                                myGoal = computer;
+                                myGoal = Hospital.locations.find(l => l.name == goToName);
                             }
                             return fluentBehaviorTree.BehaviorTreeStatus.Success; 
                         })
@@ -73,7 +73,7 @@ class radiologyThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        let residentScanTask = new task("Resident Scan Read", null, null, me().Task.patient, null);
+                        let residentScanTask = new task("Resident Scan Read", null, null, me().getTask().patient, null);
                         Hospital.residentTaskList.push(residentScanTask);
 
                         me().setTask(null);
