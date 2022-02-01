@@ -20,6 +20,9 @@ class residentThesis {
         let goToName = "ResidentStart";
         let myGoal = Hospital.locations.find(l => l.name == goToName);
         let computer =  Hospital.locations.find(l => l.name == "ResidentStart");
+
+        let taskQueue = [];
+
         this.tree = builder
 
         // Consider limiting the rooms nurses can be assigned to tasks to
@@ -76,7 +79,8 @@ class residentThesis {
                         me().taskTime = 100;
                         
                         let consultTask = new task("EKG Consult", null, null, me().getTask().patient, null);
-                        Hospital.residentTaskList.push(consultTask);
+                        taskQueue.push(consultTask);
+                        //Hospital.residentTaskList.push(consultTask);
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
@@ -91,7 +95,8 @@ class residentThesis {
                         
                         // queue CAT or XRAY
                         let catTask = new task("EKG Order CAT", null, null, me().getTask().patient, null);
-                        Hospital.residentTaskList.push(catTask);
+                        taskQueue.push(catTask);
+                        //Hospital.residentTaskList.push(catTask);
                         
                         //let xrayTask = new task("EKG Order XRay", null, null, me().getTask().patient, null);
                         //Hospital.residentTaskList.push(xrayTask);
@@ -175,7 +180,8 @@ class residentThesis {
                         me().taskTime = 100;
                         
                         let attendingConsultTask = new task("Attending Consult", null, null, me().getTask().patient, null);
-                        Hospital.residentTaskList.push(attendingConsultTask);
+                        taskQueue.push(attendingConsultTask);
+                        //Hospital.residentTaskList.push(attendingConsultTask);
 
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -190,7 +196,8 @@ class residentThesis {
                         me().taskTime = 100;
                         
                         let patientConsultTask = new task("Patient Consult", null, null, me().getTask().patient, null);
-                        Hospital.residentTaskList.push(patientConsultTask);
+                        taskQueue.push(patientConsultTask);
+                        //Hospital.residentTaskList.push(patientConsultTask);
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
@@ -204,7 +211,8 @@ class residentThesis {
                         me().taskTime = 100;
                         
                         let dischargeTask = new task("Nurse Discharge Patient", null, null, me().getTask().patient, null);
-                        Hospital.nurseTaskList.push(dischargeTask);
+                        taskQueue.push(dischargeTask);
+                        //Hospital.nurseTaskList.push(dischargeTask);
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
@@ -218,6 +226,31 @@ class residentThesis {
                 {
                     me().taskTime == me().taskTime--;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
+                }
+
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            })
+            // QUEUEING FOLLOWING TASKS NEEDS TO COME LAST, OTHERWISE TASKS ARE BLITZED THROUGH TOO QUICKLY
+            .do("Queue Tasks", (t) => {
+                while (taskQueue.length > 0) {
+                    switch(taskQueue[0].taskID) {
+                        case "EKG Consult":
+                            Hospital.residentTaskList.push(taskQueue.shift());
+                            break;
+                        case "EKG Order CAT":
+                            Hospital.residentTaskList.push(taskQueue.shift());
+                            break;
+                        case "Attending Consult":
+                            Hospital.residentTaskList.push(taskQueue.shift());
+                            break;
+                        case "Patient Consult":
+                            Hospital.residentTaskList.push(taskQueue.shift());
+                            break;
+                        case "Nurse Discharge Patient":
+                            Hospital.nurseTaskList.push(taskQueue.shift());
+                            break;
+                        default: break;
+                    }
                 }
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;

@@ -21,15 +21,20 @@ class techThesis {
         let goToName = "TechPlace";
         let myGoal = Hospital.locations.find(l => l.name == goToName);
         let computer =  Hospital.locations.find(l => l.name == "TechPlace");
+
+        let taskQueue = [];
+
         this.tree = builder
 
         // Consider limiting the rooms nurses can be assigned to tasks to
-        // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
+        // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH TASK FROM LIST -> TAKE TIME -> QUEUE TASKS -> RESTART
         .sequence("Tech Behaviors")
             .splice(new GoTo(self.index, computer.location).tree)
             //.splice(new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").location).tree)
             .splice(new AssignComputer(myIndex, computer.location).tree) // TECH PLACE
+            
             // Add a behavior here or in the selector that will order the tasks (by severity)?
+            
             .selector("Task List Tasks")
                 .do("Get a Task", (t) => {
                     // IF ALREADY ALLOCATED A TASK, CONTINUE
@@ -95,7 +100,8 @@ class techThesis {
                         Hospital.computer.getEntry(me().getTask().patient).setEkg("EKG Results");
                         // CREATE TASK FOR THE RESIDENT : RESIDENT_EKG_READ
                         let readTask = new task("EKG Read", null, null, me().getTask().patient, null);
-                        Hospital.residentTaskList.push(readTask);
+                        taskQueue.push(readTask);
+                        //Hospital.residentTaskList.push(readTask);
                         me().setTask(null);
 
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -141,7 +147,8 @@ class techThesis {
                         if (!me().getTask().patient.getScan()) {
                             // CT SCAN
                             let ctScanTask = new task("CAT Do Scan", null, 0, me().getTask().patient, null);
-                            Hospital.ctTaskList.push(ctScanTask);
+                            taskQueue.push(ctScanTask);
+                            //Hospital.ctTaskList.push(ctScanTask);
 
                             // XRAY
                             //let xrayScanTask = new task("XRay Do Scan", null, 0, me().getTask().patient, null);
@@ -185,6 +192,22 @@ class techThesis {
                 {
                     me().taskTime == me().taskTime--;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
+                }
+
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            })
+            // QUEUEING FOLLOWING TASKS NEEDS TO COME LAST, OTHERWISE TASKS ARE BLITZED THROUGH TOO QUICKLY
+            .do("Queue Tasks", (t) => {
+                while (taskQueue.length > 0) {
+                    switch(taskQueue[0].taskID) {
+                        case "EKG Read":
+                            Hospital.residentTaskList.push(taskQueue.shift());
+                            break;
+                        case "CAT Do Scan":
+                            Hospital.ctTaskList.push(taskQueue.shift());
+                            break;
+                        default: break;
+                    }
                 }
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;

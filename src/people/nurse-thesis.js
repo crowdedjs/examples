@@ -20,6 +20,9 @@ class nurseThesis {
         let goToName = "NursePlace";
         let myGoal = Hospital.locations.find(l => l.name == goToName);
         let computer =  Hospital.locations.find(l => l.name == "NursePlace");
+
+        let taskQueue = [];
+
         this.tree = builder
 
         // Consider limiting the rooms nurses can be assigned to tasks to
@@ -90,16 +93,26 @@ class nurseThesis {
                         me().taskTime = 100;
                         
                         let exitTask = new task("Nurse Escort Patient To Exit", null, null, me().getTask().patient, null);
-                        Hospital.nurseTaskList.push(exitTask);
+                        taskQueue.push(exitTask);
+                        //Hospital.nurseTaskList.push(exitTask);
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                 })
                 // THIS TASK IS GIVEN BY NURSE DISCHARGE PATIENT
-                // need to add more to this
+                // this task keeps running before the patient is actually being escorted by the nurse, deleting them wayyyy prematurely!!!
                 .do("Nurse Escort Patient To Exit", (t) => {
                     if (me().getTask().taskID != "Nurse Escort Patient To Exit") {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
+                    
+                    let id = Hospital.agents[self.index].id;
+                    let simulationAgent = t.crowd.find(f=>f.id == id);
+                    let myLocation = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
+                    let patientLoc = Vector3.fromObject(t.crowd.find(f=>f.id == me().getTask().patient.id).location);
+
+                    if (myLocation.distanceToSquared(patientLoc) > 100) {
+                        return fluentBehaviorTree.BehaviorTreeStatus.Running;
                     }
                     else {
                         let myPatient = me().getTask().patient;
@@ -143,6 +156,19 @@ class nurseThesis {
                 {
                     me().taskTime == me().taskTime--;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
+                }
+
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            })
+            // QUEUEING FOLLOWING TASKS NEEDS TO COME LAST, OTHERWISE TASKS ARE BLITZED THROUGH TOO QUICKLY
+            .do("Queue Tasks", (t) => {
+                while (taskQueue.length > 0) {
+                    switch(taskQueue[0].taskID) {
+                        case "Nurse Escort Patient To Exit":
+                            Hospital.nurseTaskList.push(taskQueue.shift());
+                            break;
+                        default: break;
+                    }
                 }
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;

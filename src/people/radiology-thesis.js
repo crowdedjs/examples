@@ -20,6 +20,7 @@ class radiologyThesis {
         let goToName = "CT 2";
         let myGoal = Hospital.locations.find(l => l.name == goToName);
 
+        let taskQueue = [];
 
         this.tree = builder
 
@@ -76,7 +77,8 @@ class radiologyThesis {
                         me().taskTime = 100;
                         
                         let residentScanTask = new task("Resident Scan Read", null, null, me().getTask().patient, null);
-                        Hospital.residentTaskList.push(residentScanTask);
+                        taskQueue.push(residentScanTask);
+                        //Hospital.residentTaskList.push(residentScanTask);
 
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -92,6 +94,19 @@ class radiologyThesis {
                 {
                     me().taskTime == me().taskTime--;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
+                }
+
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            })
+            // QUEUEING FOLLOWING TASKS NEEDS TO COME LAST, OTHERWISE TASKS ARE BLITZED THROUGH TOO QUICKLY
+            .do("Queue Tasks", (t) => {
+                while (taskQueue.length > 0) {
+                    switch(taskQueue[0].taskID) {
+                        case "Resident Scan Read":
+                            Hospital.residentTaskList.push(taskQueue.shift());
+                            break;
+                        default: break;
+                    }
                 }
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;

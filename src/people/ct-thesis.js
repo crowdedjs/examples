@@ -25,6 +25,7 @@ class ctThesis {
         let myGoal = Hospital.locations.find(l => l.name == goToName);
         if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
         
+        let taskQueue = [];
         
         this.tree = builder
 
@@ -108,10 +109,12 @@ class ctThesis {
                         me().getTask().patient.setScan(true);
                         // queueing this here could be problematic
                         let ctPickupTask = new task("CT Pickup", null, 0, me().getTask().patient, myGoal);
-                        Hospital.techTaskList.push(ctPickupTask);
+                        taskQueue.push(ctPickupTask);
+                        //Hospital.techTaskList.push(ctPickupTask);
 
                         let radiologyReviewTask = new task("Radiology Review Scan", null, 0, me().getTask().patient, null);
-                        Hospital.radiologyTaskList.push(radiologyReviewTask);
+                        taskQueue.push(radiologyReviewTask);
+                        //Hospital.radiologyTaskList.push(radiologyReviewTask);
                         
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -127,6 +130,22 @@ class ctThesis {
                 {
                     me().taskTime == me().taskTime--;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
+                }
+
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            })
+            // QUEUEING FOLLOWING TASKS NEEDS TO COME LAST, OTHERWISE TASKS ARE BLITZED THROUGH TOO QUICKLY
+            .do("Queue Tasks", (t) => {
+                while (taskQueue.length > 0) {
+                    switch(taskQueue[0].taskID) {
+                        case "CT Pickup":
+                            Hospital.techTaskList.push(taskQueue.shift());
+                            break;
+                        case "Radiology Review Scan":
+                            Hospital.radiologyTaskList.push(taskQueue.shift());
+                            break;
+                        default: break;
+                    }
                 }
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
