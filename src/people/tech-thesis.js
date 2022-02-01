@@ -77,6 +77,8 @@ class techThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
+                        me().taskTime = 100;
+                        
                         Hospital.computer.getEntry(me().getTask().patient).setVitals("Taken");
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -88,6 +90,8 @@ class techThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
+                        me().taskTime = 100;
+                        
                         Hospital.computer.getEntry(me().getTask().patient).setEkg("EKG Results");
                         // CREATE TASK FOR THE RESIDENT : RESIDENT_EKG_READ
                         let readTask = new task("EKG Read", null, null, me().getTask().patient, null);
@@ -107,24 +111,18 @@ class techThesis {
                         let myPatient = me().getTask().patient;
                         myPatient.setInstructor(me());
                         myPatient.setPatientTempState( PatientTempState.FOLLOWING);
+                        Hospital.computer.getEntry(myPatient).setTech(me());
 
                         // NEED TO FIGURE OUT WHEN THEY WOULD GET ONE OVER THE OTHER
                         if (true) {
-                            // CT SCAN
-                            let ctScanTask = new task("CAT Do Scan", null, 0, me().getTask().patient, null);
-                            Hospital.ctTaskList.push(ctScanTask);
-
-                            // NOW ESCORT THE PATIENT
+                            // NOW ESCORT THE PATIENT TO CT
                             let escortTask = new task("Escort Patient", null, 0, me().getTask().patient, me().getTask().location);
                             me().setTask(escortTask);
+
                             return fluentBehaviorTree.BehaviorTreeStatus.Success;
                         }
                         else {
-                            // XRAY
-                            let xrayScanTask = new task("XRay Do Scan", null, 0, me().getTask().patient, null);
-                            Hospital.xrayTaskList.push(xrayScanTask);
-
-                            // NOW ESCORT THE PATIENT
+                            // NOW ESCORT THE PATIENT TO XRAY
                             let escortTask = new task("Escort Patient", null, 0, me().getTask().patient, me().getTask().location);
                             me().setTask(escortTask);
                             return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -135,10 +133,20 @@ class techThesis {
                     if (me().getTask().taskID != "Escort Patient") {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
-                    else {
+                    else {                        
                         let myPatient = me().getTask().patient;
                         myPatient.setInstructor(null);
                         myPatient.setPatientTempState(PatientTempState.WAITING);
+                        
+                        if (!me().getTask().patient.getScan()) {
+                            // CT SCAN
+                            let ctScanTask = new task("CAT Do Scan", null, 0, me().getTask().patient, null);
+                            Hospital.ctTaskList.push(ctScanTask);
+
+                            // XRAY
+                            //let xrayScanTask = new task("XRay Do Scan", null, 0, me().getTask().patient, null);
+                            //Hospital.xrayTaskList.push(xrayScanTask);
+                        }
 
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -157,6 +165,14 @@ class techThesis {
                         
                         let escortTask = new task("Escort Patient", null, 0, me().getTask().patient, me().getTask().patient.getPermanentRoom());
                         me().setTask(escortTask);
+
+                        if (myPatient.getImagingRoom() == "CT 1") {
+                            Hospital.setCT1Occupied(false);
+                        }
+                        else {
+                            Hospital.setCT2Occupied(false);
+                        }
+                        
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                 })             

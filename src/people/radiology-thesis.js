@@ -73,6 +73,8 @@ class radiologyThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
+                        me().taskTime = 100;
+                        
                         let residentScanTask = new task("Resident Scan Read", null, null, me().getTask().patient, null);
                         Hospital.residentTaskList.push(residentScanTask);
 

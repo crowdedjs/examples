@@ -36,7 +36,7 @@ class ctThesis {
             .splice(new AssignComputer(myIndex, myGoal.location).tree) // RESIDENT PLACE
             // Add a behavior here or in the selector that will order the tasks (by severity)?
             .selector("Task List Tasks")
-                // THIS TASK IS GIVEN BY THE CT TO THE TECH
+                // THIS TASK IS GIVEN BY THE CT TO THE TECH AND MUST BE DONE BEFORE GETTING A TASK+
                 .do("Queue Escort Patient", (t) => {
                     if (Hospital.CTQueue.length == 0 || (goToName == "CT 1" && Hospital.isCT1Occupied()) || (goToName == "CT 2" && Hospital.isCT2Occupied())) {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
@@ -44,6 +44,15 @@ class ctThesis {
                     else {
                         // Pick Up Patient
                         let techEscortTask = new task("Pick Up Patient", Hospital.CTQueue[0].getSeverity(), 0, Hospital.CTQueue[0], myGoal);
+                        if (goToName == "CT 1") {
+                            Hospital.setCT1Occupied(true);
+                            Hospital.CTQueue[0].setImagingRoom("CT 1");
+                        }
+                        else {
+                            Hospital.setCT2Occupied(true);
+                            Hospital.CTQueue[0].setImagingRoom("CT 2");
+                        }
+                        Hospital.CTQueue.shift();
                         Hospital.techTaskList.push(techEscortTask);
 
                         //return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -89,12 +98,15 @@ class ctThesis {
                     //return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 // })
                 
-                // THIS TASK IS GIVEN BY THE TECH  
+                //THIS TASK IS GIVEN BY THE TECH  
                 .do("CAT Do Scan", (t) => {
                     if (me().getTask().taskID != "CAT Do Scan") {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
+                        me().taskTime = 100;
+                        me().getTask().patient.setScan(true);
+                        // queueing this here could be problematic
                         let ctPickupTask = new task("CT Pickup", null, 0, me().getTask().patient, myGoal);
                         Hospital.techTaskList.push(ctPickupTask);
 

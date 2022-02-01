@@ -72,6 +72,8 @@ class nurseThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
+                        me().taskTime = 100;
+                        
                         let patientEntry = Hospital.computer.getEntry(me().getTask().patient);
                         patientEntry.setAnsweredQuestions(true);
                         me().setTask(null);
@@ -85,6 +87,8 @@ class nurseThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
+                        me().taskTime = 100;
+                        
                         let exitTask = new task("Nurse Escort Patient To Exit", null, null, me().getTask().patient, null);
                         Hospital.nurseTaskList.push(exitTask);
                         me().setTask(null);
@@ -95,6 +99,27 @@ class nurseThesis {
                 // need to add more to this
                 .do("Nurse Escort Patient To Exit", (t) => {
                     if (me().getTask().taskID != "Nurse Escort Patient To Exit") {
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
+                    else {
+                        let myPatient = me().getTask().patient;
+                        myPatient.setInstructor(me());
+                        myPatient.setPatientTempState(PatientTempState.FOLLOWING);
+                        for (let i = 0; i < Hospital.emergencyQueue.length; i++) {
+                            if (myPatient == Hospital.emergencyQueue[i]) {
+                                Hospital.emergencyQueue.splice(i, 1);
+                            }
+                        }
+
+                        let entrance =  Hospital.locations.find(l => l.name == "Main Entrance");
+                        let escortTask = new task("Patient Finished", null, 0, myPatient, entrance);
+                        me().setTask(escortTask);
+
+                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    }
+                })
+                .do("Patient Finished", (t) => {
+                    if (me().getTask().taskID != "Patient Finished") {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
