@@ -97,6 +97,15 @@ class triageNurseThesis {
       .do("Leave Patient", (t) => {
         // ONCE THE PATIENT HAS BEEN DELIVERED, QUEUE TASKS TO THE APPROPRIATE MEDICAL STAFF
         // Task ID / Severity / Entry Time / Patient / Location
+        if (me().getCurrentPatient().getAssignedRoom().name == "Main Entrance") {
+          me().getCurrentPatient().setPatientTempState(PatientTempState.DONE);
+          let result = leavePatient.tick(t)
+          if (me().replacement == false) {
+            me().setBusy(false);
+          }
+          return result;
+        }
+        
         let nurseTask = new task("Get Health Information", me().getCurrentPatient().getSeverity(), 0, me().getCurrentPatient(), me().getCurrentPatient().getAssignedRoom());
         Hospital.nurseTaskList.push(nurseTask);
         

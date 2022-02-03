@@ -58,6 +58,7 @@ class techThesis {
                 .inverter("Need to return failure")
                     .sequence("Go to Task")
                         .do("Determine Location", (t) => {
+                            // THIS IS HERE SO THAT THE CT CAN HAND THEIR SPECIFIC ROOM OVER FOR CT QUEUEING
                             if (me().getTask().taskID == "Pick Up Patient") {
                                 myGoal = me().getTask().patient.getPermanentRoom();
                             }
