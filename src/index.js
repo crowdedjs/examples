@@ -1,7 +1,7 @@
 import CrowdSetup from "@crowdedjs/crowd-setup"
-//import MedicalAgent from "./people/medical-agent.js"
+import MedicalAgent from "./people/medical-agent.js"
 import MedicalAgentThesis from "./people/medical-agent-thesis.js"
-//import PatientAgent from "./people/patient-agent.js"
+import PatientAgent from "./people/patient-agent.js"
 import PatientAgentThesis from "./people/patient-agent-thesis.js"
 import urlParser from "./url-parser.js"
 import colorFunction from "./color-function.js"
@@ -48,8 +48,10 @@ function boot() {
   //Add an agent with a behavior and an id
   arrivalValue.forEach((agent, index) => {
     if (agent.name == "patient")
+      //agentConstants.push(new PatientAgent(agent, locationValue));
       agentConstants.push(new PatientAgentThesis(agent, locationValue));
     else
+      //agentConstants.push(new MedicalAgent(agent, locationValue));
       agentConstants.push(new MedicalAgentThesis(agent, locationValue));
     //Is this line necessary?
     agentConstants[agentConstants.length - 1].setId(index);

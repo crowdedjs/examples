@@ -78,7 +78,7 @@ class residentThesis {
                     else {
                         me().taskTime = 100;
                         
-                        let consultTask = new task("EKG Consult", null, null, me().getTask().patient, null);
+                        let consultTask = new task("EKG Consult", null, null, me().getTask().patient, me().getTask().patient.getPermanentRoom());
                         taskQueue.push(consultTask);
                         //Hospital.residentTaskList.push(consultTask);
                         me().setTask(null);
@@ -94,7 +94,7 @@ class residentThesis {
                         me().taskTime = 100;
                         
                         // queue CAT or XRAY
-                        let catTask = new task("EKG Order CAT", null, null, me().getTask().patient, null);
+                        let catTask = new task("EKG Order CAT", null, null, me().getTask().patient, me().getTask().location);
                         taskQueue.push(catTask);
                         //Hospital.residentTaskList.push(catTask);
                         
@@ -179,6 +179,7 @@ class residentThesis {
                     else {
                         me().taskTime = 100;
                         
+                        // what is ATTENDING as the responsibility subject?
                         let attendingConsultTask = new task("Attending Consult", null, null, me().getTask().patient, null);
                         taskQueue.push(attendingConsultTask);
                         //Hospital.residentTaskList.push(attendingConsultTask);
@@ -195,7 +196,7 @@ class residentThesis {
                     else {
                         me().taskTime = 100;
                         
-                        let patientConsultTask = new task("Patient Consult", null, null, me().getTask().patient, null);
+                        let patientConsultTask = new task("Patient Consult", null, null, me().getTask().patient, me().getTask().patient.getPermanentRoom());
                         taskQueue.push(patientConsultTask);
                         //Hospital.residentTaskList.push(patientConsultTask);
                         me().setTask(null);
@@ -210,7 +211,7 @@ class residentThesis {
                     else {
                         me().taskTime = 100;
                         
-                        let dischargeTask = new task("Nurse Discharge Patient", null, null, me().getTask().patient, null);
+                        let dischargeTask = new task("Nurse Discharge Patient", null, null, me().getTask().patient, me().getTask().location);
                         taskQueue.push(dischargeTask);
                         //Hospital.nurseTaskList.push(dischargeTask);
                         me().setTask(null);

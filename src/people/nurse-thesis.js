@@ -28,7 +28,10 @@ class nurseThesis {
         // Consider limiting the rooms nurses can be assigned to tasks to
         // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
         .sequence("Nurse Behaviors")
-            .splice(new GoTo(self.index, computer.location).tree)
+            .selector("Should I go back to start?")
+                .condition("Do I have patient", async (t) => me().getBusy())
+                .splice(new GoTo(self.index, computer.location).tree)
+            .end()
             .splice(new AssignComputer(myIndex, computer.location).tree) // NURSE PLACE
             // Add a behavior here or in the selector that will order the tasks (by severity)?
             .selector("Task List Tasks")
@@ -89,32 +92,18 @@ class nurseThesis {
                     if (me().getTask().taskID != "Nurse Discharge Patient") {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
-                    else {
-                        me().taskTime = 100;
-                        
-                        let exitTask = new task("Nurse Escort Patient To Exit", null, null, me().getTask().patient, null);
-                        taskQueue.push(exitTask);
-                        //Hospital.nurseTaskList.push(exitTask);
-                        me().setTask(null);
-                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                    }
-                })
-                // THIS TASK IS GIVEN BY NURSE DISCHARGE PATIENT
-                // this task keeps running before the patient is actually being escorted by the nurse, deleting them wayyyy prematurely!!!
-                .do("Nurse Escort Patient To Exit", (t) => {
-                    if (me().getTask().taskID != "Nurse Escort Patient To Exit") {
-                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-                    }
-                    
                     let id = Hospital.agents[self.index].id;
                     let simulationAgent = t.crowd.find(f=>f.id == id);
                     let myLocation = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
                     let patientLoc = Vector3.fromObject(t.crowd.find(f=>f.id == me().getTask().patient.id).location);
 
-                    if (myLocation.distanceToSquared(patientLoc) > 100) {
+                    if (myLocation.distanceToSquared(patientLoc) > 30 || me().getTask().patient.getPatientTempState() != PatientTempState.WAITING) {
                         return fluentBehaviorTree.BehaviorTreeStatus.Running;
                     }
                     else {
+                        me().taskTime = 100;
+                        me().setBusy(true);
+
                         let myPatient = me().getTask().patient;
                         myPatient.setInstructor(me());
                         myPatient.setPatientTempState(PatientTempState.FOLLOWING);
@@ -125,14 +114,14 @@ class nurseThesis {
                         }
 
                         let entrance =  Hospital.locations.find(l => l.name == "Main Entrance");
-                        let escortTask = new task("Patient Finished", null, 0, myPatient, entrance);
+                        let escortTask = new task("Nurse Escort Patient To Exit", null, 0, myPatient, entrance);
                         me().setTask(escortTask);
 
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                 })
-                .do("Patient Finished", (t) => {
-                    if (me().getTask().taskID != "Patient Finished") {
+                .do("Nurse Escort Patient To Exit", (t) => {
+                    if (me().getTask().taskID != "Nurse Escort Patient To Exit") {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
@@ -144,6 +133,7 @@ class nurseThesis {
                             }
                         }
                         me().setTask(null);
+                        me().setBusy(false);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                 })

@@ -29,7 +29,10 @@ class techThesis {
         // Consider limiting the rooms nurses can be assigned to tasks to
         // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH TASK FROM LIST -> TAKE TIME -> QUEUE TASKS -> RESTART
         .sequence("Tech Behaviors")
-            .splice(new GoTo(self.index, computer.location).tree)
+            .selector("Should I go back to start?")
+                .condition("Do I have patient", async (t) => me().getBusy())
+                .splice(new GoTo(self.index, computer.location).tree)
+            .end()
             //.splice(new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").location).tree)
             .splice(new AssignComputer(myIndex, computer.location).tree) // TECH PLACE
             
@@ -108,7 +111,6 @@ class techThesis {
                     }
                 })
                 // ESCORTING TO XRAY / CT IS QUEUED BY THE CT AND XRAY
-                // THIS IS A 2-PART TASK, THEY GO TO THE PATIENT, THEN THEY ESCORT THE PATIENT TO THE CT OR XRAY
                 .do("Pick Up Patient", (t) => {
                     if (me().getTask().taskID != "Pick Up Patient") {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
@@ -118,6 +120,7 @@ class techThesis {
                         myPatient.setInstructor(me());
                         myPatient.setPatientTempState( PatientTempState.FOLLOWING);
                         Hospital.computer.getEntry(myPatient).setTech(me());
+                        me().setBusy(true);
 
                         // NEED TO FIGURE OUT WHEN THEY WOULD GET ONE OVER THE OTHER
                         if (true) {
@@ -135,6 +138,30 @@ class techThesis {
                         }
                     }
                 })
+                // THIS TASK IS GIVEN BY THE CT / XRAY
+                .do("CT/XRAY Pickup", (t) => {
+                    if (me().getTask().taskID != "CT Pickup" && me().getTask().taskID != "XRay Pickup") {
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
+                    else {
+                        let myPatient = me().getTask().patient;
+                        myPatient.setInstructor(me());
+                        myPatient.setPatientTempState(PatientTempState.FOLLOWING);
+                        me().setBusy(true);
+                        if (myPatient.getImagingRoom() == "CT 1") {
+                            Hospital.setCT1Occupied(false);
+                        }
+                        else {
+                            Hospital.setCT2Occupied(false);
+                        }
+                        
+                        let escortTask = new task("Escort Patient", null, 0, me().getTask().patient, me().getTask().patient.getPermanentRoom());
+                        me().setTask(escortTask);
+                        
+                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    }
+                }) 
+                // SECOND PART OF ESCORT TASKS: TAKING PATIENT TO WHERE THEY NEED TO BE
                 .do("Escort Patient", (t) => {
                     if (me().getTask().taskID != "Escort Patient") {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
@@ -143,6 +170,7 @@ class techThesis {
                         let myPatient = me().getTask().patient;
                         myPatient.setInstructor(null);
                         myPatient.setPatientTempState(PatientTempState.WAITING);
+                        Hospital.computer.getEntry(myPatient).setTech(null);
                         
                         if (!me().getTask().patient.getScan()) {
                             // CT SCAN
@@ -156,30 +184,7 @@ class techThesis {
                         }
 
                         me().setTask(null);
-                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                    }
-                }) 
-
-                // THIS TASK IS GIVEN BY THE CT / XRAY
-                .do("CT/XRAY Pickup", (t) => {
-                    if (me().getTask().taskID != "CT Pickup" && me().getTask().taskID != "XRay Pickup") {
-                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-                    }
-                    else {
-                        let myPatient = me().getTask().patient;
-                        myPatient.setInstructor(me());
-                        myPatient.setPatientTempState(PatientTempState.FOLLOWING);
-                        
-                        let escortTask = new task("Escort Patient", null, 0, me().getTask().patient, me().getTask().patient.getPermanentRoom());
-                        me().setTask(escortTask);
-
-                        if (myPatient.getImagingRoom() == "CT 1") {
-                            Hospital.setCT1Occupied(false);
-                        }
-                        else {
-                            Hospital.setCT2Occupied(false);
-                        }
-                        
+                        me().setBusy(false);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                 })             
