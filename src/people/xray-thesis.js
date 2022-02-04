@@ -18,13 +18,17 @@ class xrayThesis {
         let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
         
         let goToName = "XRay 1";
-        if (myIndex == 17) {
+        if (myIndex % 2 == 1) {
             goToName = "XRay 2";
         }
 
         let myGoal = Hospital.locations.find(l => l.name == goToName);
+        let computer = Hospital.locations.find(l => l.name == goToName);
+        let xray1 = Hospital.locations.find(l => l.name == "XRay 1");
+        let xray2 = Hospital.locations.find(l => l.name == "XRay 2");
         if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
         
+        let taskQueue = [];
         
         this.tree = builder
 
@@ -36,14 +40,40 @@ class xrayThesis {
             .splice(new AssignComputer(myIndex, myGoal.location).tree) // RESIDENT PLACE
             // Add a behavior here or in the selector that will order the tasks (by severity)?
             .selector("Task List Tasks")
+                // THIS TASK IS GIVEN BY THE XRAY TO THE TECH AND MUST BE DONE BEFORE GETTING A TASK
+                // THE XRAY QUEUE IS FILLED BY THE RESIDENT
+                .do("Queue Escort Patient", (t) => {
+                    if (Hospital.XRayQueue.length == 0 || (goToName == "XRay 1" && Hospital.isXRay1Occupied()) || (goToName == "XRay 2" && Hospital.isXRay2Occupied())) {
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
+                    else {
+                        // Pick Up Patient
+                        let xrayPatient = Hospital.XRayQueue.shift();
+                        let techEscortTask = new task("Pick Up Patient", xrayPatient.getSeverity(), 0, xrayPatient, myGoal);
+                        if (goToName == "XRay 1") {
+                            Hospital.setXRay1Occupied(true);
+                            xrayPatient.setImagingRoom("XRay 1");
+                            techEscortTask = new task("Pick Up Patient", xrayPatient.getSeverity(), 0, xrayPatient, xray1);
+                        }
+                        else if (goToName == "XRay 2") {
+                            Hospital.setXRay2Occupied(true);
+                            xrayPatient.setImagingRoom("XRay 2");
+                            techEscortTask = new task("Pick Up Patient", xrayPatient.getSeverity(), 0, xrayPatient, xray2);
+                        }
+                        Hospital.techTaskList.push(techEscortTask);
+                    }
+
+                    return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                })
+
                 .do("Get a Task", (t) => {
                     // IF ALREADY ALLOCATED A TASK, CONTINUE
                     if (me().getTask() != null) {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     // CHECK IF ANY TASKS ARE AVAILABLE, CONTINUE
-                    else if (Hospital.ctTaskList.length != 0) {
-                        me().setTask(Hospital.ctTaskList.shift());
+                    else if (Hospital.xrayTaskList.length != 0) {
+                        me().setTask(Hospital.xrayTaskList.shift());
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     // OTHERWISE DON'T PROCEED (SUCCESS WILL RESTART SELECTOR)
@@ -51,7 +81,7 @@ class xrayThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                 })
-                // I think it has to be done this way because you can't do operations in a splice for the most part
+                
                 .inverter("Need to return failure")
                     .sequence("Go to Task")
                         .do("Determine Location", (t) => {
@@ -73,36 +103,33 @@ class xrayThesis {
                     //return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 // })
                 
-                // THIS TASK IS GIVEN BY THE XRAY TO THE TECH
-                // .do("Queue Escort Patient", (t) => {
-                //     if (Hospital.XRayQueue.length == 0 || (goToName == "XRay 1" && Hospital.isXRay1Occupied()) || (goToName == "XRay 2" && Hospital.isXRay2Occupied())) {
-                //         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-                //     }
-                //     else {
-                //         // Escort Patient
-                //         let techEscortTask = new task("Escort Patient", null, null, Hospital.XRayQueue[0], null);
-                //         Hospital.techTaskList.push(techEscortTask);
+                //THIS TASK IS GIVEN BY THE TECH  
+                .do("XRay Do Scan", (t) => {
+                    if (me().getTask().taskID != "XRay Do Scan") {
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
+                    else {
+                        me().taskTime = 100;
+                        me().getTask().patient.setScan(true);
+                        let xrayPickupTask = new task("XRay Pickup", null, 0, me().getTask().patient, myGoal);
+                        if (me().getTask().patient.getImagingRoom() == "XRay 1") {
+                            xrayPickupTask = new task("XRay Pickup", null, 0, me().getTask().patient, xray1);
 
-                //         return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                //     }
-                // })
-                
-                // THIS TASK IS GIVEN BY THE TECH  
-                // .do("XRay Do Scan", (t) => {
-                //     if (me().getTask().taskID != "XRay Do Scan") {
-                //         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-                //     }
-                //     else {
-                //         let xrayPickupTask = new task("XRay Pickup", null, null, me().getTask().patient, null);
-                //         Hospital.techTaskList.push(xrayPickupTask);
+                        }
+                        else {
+                            xrayPickupTask = new task("XRay Pickup", null, 0, me().getTask().patient, xray2);
+                        }
+                        taskQueue.push(xrayPickupTask);
+                        //Hospital.techTaskList.push(xrayPickupTask);
 
-                //         let radiologyReviewTask = new task("Radiology Review Scan", null, null, me().getTask().patient, null);
-                //         Hospital.radiologyTaskList.push(radiologyReviewTask);
+                        let radiologyReviewTask = new task("Radiology Review Scan", null, 0, me().getTask().patient, null);
+                        taskQueue.push(radiologyReviewTask);
+                        //Hospital.radiologyTaskList.push(radiologyReviewTask);
                         
-                //         me().setTask(null);
-                //         return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                //     }
-                // }) 
+                        me().setTask(null);
+                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    }
+                }) 
                 
             .end()
             // IF SUCCEEDING IN TASK, TAKE TIME TO DO THAT TASK
@@ -113,6 +140,22 @@ class xrayThesis {
                 {
                     me().taskTime == me().taskTime--;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
+                }
+
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            })
+            // QUEUEING FOLLOWING TASKS NEEDS TO COME LAST, OTHERWISE TASKS ARE BLITZED THROUGH TOO QUICKLY
+            .do("Queue Tasks", (t) => {
+                while (taskQueue.length > 0) {
+                    switch(taskQueue[0].taskID) {
+                        case "XRay Pickup":
+                            Hospital.techTaskList.push(taskQueue.shift());
+                            break;
+                        case "Radiology Review Scan":
+                            Hospital.radiologyTaskList.push(taskQueue.shift());
+                            break;
+                        default: break;
+                    }
                 }
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;

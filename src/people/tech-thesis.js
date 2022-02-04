@@ -152,8 +152,14 @@ class techThesis {
                         if (myPatient.getImagingRoom() == "CT 1") {
                             Hospital.setCT1Occupied(false);
                         }
-                        else {
+                        else if (myPatient.getImagingRoom() == "CT 2") {
                             Hospital.setCT2Occupied(false);
+                        }
+                        else if (myPatient.getImagingRoom() == "XRay 1") {
+                            Hospital.setXRay1Occupied(false);
+                        }
+                        else {
+                            Hospital.setXRay2Occupied(false);
                         }
                         
                         let escortTask = new task("Escort Patient", null, 0, me().getTask().patient, me().getTask().patient.getPermanentRoom());
@@ -174,14 +180,18 @@ class techThesis {
                         Hospital.computer.getEntry(myPatient).setTech(null);
                         
                         if (!me().getTask().patient.getScan()) {
-                            // CT SCAN
-                            let ctScanTask = new task("CAT Do Scan", null, 0, me().getTask().patient, null);
-                            taskQueue.push(ctScanTask);
-                            //Hospital.ctTaskList.push(ctScanTask);
-
-                            // XRAY
-                            //let xrayScanTask = new task("XRay Do Scan", null, 0, me().getTask().patient, null);
-                            //Hospital.xrayTaskList.push(xrayScanTask);
+                            if (me().getTask().patient.getImagingRoom() == "CT 1" || me().getTask().patient.getImagingRoom() == "CT 2") {
+                                // CT SCAN
+                                let ctScanTask = new task("CAT Do Scan", null, 0, me().getTask().patient, null);
+                                taskQueue.push(ctScanTask);
+                                //Hospital.ctTaskList.push(ctScanTask);
+                            }
+                            else {
+                                // XRAY
+                                let xrayScanTask = new task("XRay Do Scan", null, 0, me().getTask().patient, null);
+                                taskQueue.push(xrayScanTask);
+                                //Hospital.xrayTaskList.push(xrayScanTask);
+                            }                            
                         }
 
                         me().setTask(null);
@@ -208,6 +218,9 @@ class techThesis {
                     switch(taskQueue[0].taskID) {
                         case "EKG Read":
                             Hospital.residentTaskList.push(taskQueue.shift());
+                            break;
+                        case "XRay Do Scan":
+                            Hospital.xrayTaskList.push(taskQueue.shift());
                             break;
                         case "CAT Do Scan":
                             Hospital.ctTaskList.push(taskQueue.shift());

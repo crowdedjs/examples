@@ -1,4 +1,4 @@
-import FollowInstructions from "../behavior/follow-instructions.js";
+import FollowInstructionsThesis from "../behavior/follow-instructions-thesis.js";
 import GoToLazy from "../behavior/go-to-lazy.js";
 // import LOG 
 import Stop from "../behavior/stop.js";
@@ -55,7 +55,7 @@ class patientThesis {
           .splice(new GoToLazy(myIndex, () => wait.location).tree)
       .end()
       // PHYSICALLY FOLLOW NURSES AND STAY IN HOSPITAL ROOM
-      .splice(new FollowInstructions(myIndex).tree)
+      .splice(new FollowInstructionsThesis(myIndex).tree)
     .end()
     .build();
   }

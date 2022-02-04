@@ -93,13 +93,17 @@ class residentThesis {
                     else {
                         me().taskTime = 100;
                         
-                        // queue CAT or XRAY
-                        let catTask = new task("EKG Order CAT", null, null, me().getTask().patient, me().getTask().location);
-                        taskQueue.push(catTask);
-                        //Hospital.residentTaskList.push(catTask);
-                        
-                        //let xrayTask = new task("EKG Order XRay", null, null, me().getTask().patient, null);
-                        //Hospital.residentTaskList.push(xrayTask);
+                        // queue CAT or XRAY - THIS IS AN ARBITRARY DISTINCTION RIGHT NOW
+                        if (me().getTask().patient.getSeverity() == "ESI3") {
+                            let xrayTask = new task("EKG Order XRay", null, null, me().getTask().patient, me().getTask().location);
+                            taskQueue.push(xrayTask);
+                            //Hospital.residentTaskList.push(xrayTask);
+                        }
+                        else {
+                            let catTask = new task("EKG Order CAT", null, null, me().getTask().patient, me().getTask().location);
+                            taskQueue.push(catTask);
+                            //Hospital.residentTaskList.push(catTask);
+                        }
 
                         me().setTask(null);
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -236,6 +240,9 @@ class residentThesis {
                 while (taskQueue.length > 0) {
                     switch(taskQueue[0].taskID) {
                         case "EKG Consult":
+                            Hospital.residentTaskList.push(taskQueue.shift());
+                            break;
+                        case "EKG Order XRay":
                             Hospital.residentTaskList.push(taskQueue.shift());
                             break;
                         case "EKG Order CAT":

@@ -40,7 +40,8 @@ class ctThesis {
             .splice(new AssignComputer(myIndex, myGoal.location).tree) // RESIDENT PLACE
             // Add a behavior here or in the selector that will order the tasks (by severity)?
             .selector("Task List Tasks")
-                // THIS TASK IS GIVEN BY THE CT TO THE TECH AND MUST BE DONE BEFORE GETTING A TASK+
+                // THIS TASK IS GIVEN BY THE CT TO THE TECH AND MUST BE DONE BEFORE GETTING A TASK
+                // THE CT QUEUE IS FILLED BY THE RESIDENT
                 .do("Queue Escort Patient", (t) => {
                     if (Hospital.CTQueue.length == 0 || (goToName == "CT 1" && Hospital.isCT1Occupied()) || (goToName == "CT 2" && Hospital.isCT2Occupied())) {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
@@ -80,22 +81,22 @@ class ctThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                 })
-                // I think it has to be done this way because you can't do operations in a splice for the most part
-                // .inverter("Need to return failure")
-                //     .sequence("Go to Task")
-                //         .do("Determine Location", (t) => {
-                //             if (me().getTask().location != null) {
-                //                 myGoal = me().getTask().location;
-                //             }
-                //             else {
-                //                 myGoal = Hospital.locations.find(l => l.name == goToName);
-                //             }
-                //             return fluentBehaviorTree.BehaviorTreeStatus.Success; 
-                //         })
-                //         // GoTo gives me problems sometimes that GoToLazy does not
-                //         .splice(new GoToLazy(self.index, () => myGoal.location).tree)
-                //     .end()
-                // .end()
+                
+                .inverter("Need to return failure")
+                    .sequence("Go to Task")
+                        .do("Determine Location", (t) => {
+                            if (me().getTask().location != null) {
+                                myGoal = me().getTask().location;
+                            }
+                            else {
+                                myGoal = Hospital.locations.find(l => l.name == goToName);
+                            }
+                            return fluentBehaviorTree.BehaviorTreeStatus.Success; 
+                        })
+                        // GoTo gives me problems sometimes that GoToLazy does not
+                        .splice(new GoToLazy(self.index, () => myGoal.location).tree)
+                    .end()
+                .end()
                 
                 // .do("Clock In / Clock Out", (t) => {
                     // Could make this a spliced behavior that takes the agent as a parameter
