@@ -19,6 +19,7 @@ class radiologyThesis {
         
         let goToName = "CT 2";
         let myGoal = Hospital.locations.find(l => l.name == goToName);
+        let entrance = Hospital.getLocationByName("Main Entrance");
 
         let taskQueue = [];
 
@@ -32,8 +33,21 @@ class radiologyThesis {
             // Add a behavior here or in the selector that will order the tasks (by severity)?
             .selector("Task List Tasks")
                 .do("Get a Task", (t) => {
+                    // CHECK IF NEEDED TO CLOCK IN
+                    if (!me().onTheClock) {
+                        me().onTheClock = true;
+                        Hospital.activeRadio.push(me());
+                        
+                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    }
+                    // CHECK IF NEEDED TO CLOCK OUT
+                    else if (Hospital.activeRadio.length > 1 && Hospital.activeRadio[0] == me()) {
+                        let clockOutTask = new task("Clock Out", null, null, null, entrance);
+                        me().setTask(clockOutTask);
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
                     // IF ALREADY ALLOCATED A TASK, CONTINUE
-                    if (me().getTask() != null) {
+                    else if (me().getTask() != null) {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     // CHECK IF ANY TASKS ARE AVAILABLE, CONTINUE
@@ -63,10 +77,16 @@ class radiologyThesis {
                     .end()
                 .end()
                 
-                // .do("Clock In / Clock Out", (t) => {
-                    // Could make this a spliced behavior that takes the agent as a parameter
-                    //return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                // })
+                .do("Clock Out", (t) => {
+                    if (me().getTask().taskID != "Clock Out") {
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
+                    else {
+                        Hospital.activeRadio.shift();
+                        me().inSimulation = false;
+                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    }
+                })
                 
                 // THIS TASK IS GIVEN BY THE CT (CAT Do Scan Behavior)
                 .do("Radiology Review Scan", (t) => {

@@ -20,6 +20,7 @@ class nurseThesis {
         let goToName = "NursePlace";
         let myGoal = Hospital.locations.find(l => l.name == goToName);
         let computer =  Hospital.locations.find(l => l.name == "NursePlace");
+        let entrance = Hospital.getLocationByName("Main Entrance");
 
         let taskQueue = [];
 
@@ -36,8 +37,24 @@ class nurseThesis {
             // Add a behavior here or in the selector that will order the tasks (by severity)?
             .selector("Task List Tasks")
                 .do("Get a Task", (t) => {
+                    // CHECK IF NEEDED TO CLOCK IN
+                    if (!me().onTheClock) {
+                        me().onTheClock = true;
+                        Hospital.activeNurse.push(me());
+                        if (Hospital.aTeam[2] == null) {
+                            Hospital.aTeam[2] = me();
+                        }
+
+                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    }
+                    // CHECK IF NEEDED TO CLOCK OUT
+                    else if (Hospital.activeNurse.length > 2 && Hospital.activeNurse[0] == me()) {
+                        let clockOutTask = new task("Clock Out", null, null, null, entrance);
+                        me().setTask(clockOutTask);
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
                     // IF ALREADY ALLOCATED A TASK, CONTINUE
-                    if (me().getTask() != null) {
+                    else if (me().getTask() != null) {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     // CHECK IF ANY TASKS ARE AVAILABLE, CONTINUE
@@ -67,10 +84,24 @@ class nurseThesis {
                     .end()
                 .end()
                 
-                // .do("Clock In / Clock Out", (t) => {
-                    // Could make this a spliced behavior that takes the agent as a parameter
-                    //return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                // })
+                .do("Clock Out", (t) => {
+                    if (me().getTask().taskID != "Clock Out") {
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
+                    else {
+                        for(let i = 0; i < Hospital.computer.entries.length; i++) {
+                            if (Hospital.computer.entries[i].getNurse() == me()) {
+                              Hospital.computer.entries[i].setNurse(null);
+                            }
+                        }
+                        if (Hospital.aTeam[2] == me()) {
+                            Hospital.aTeam[2] = null;
+                        }
+                        Hospital.activeNurse.shift();
+                        me().inSimulation = false;
+                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    }
+                })
 
                 // THIS TASK IS GIVEN BY THE TRIAGE NURSE
                 .do("Get Health Information", (t) => {

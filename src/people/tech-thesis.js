@@ -21,6 +21,7 @@ class techThesis {
         let goToName = "TechPlace";
         let myGoal = Hospital.locations.find(l => l.name == goToName);
         let computer =  Hospital.locations.find(l => l.name == "TechPlace");
+        let entrance = Hospital.getLocationByName("Main Entrance");
 
         let taskQueue = [];
 
@@ -37,11 +38,26 @@ class techThesis {
             .splice(new AssignComputer(myIndex, computer.location).tree) // TECH PLACE
             
             // Add a behavior here or in the selector that will order the tasks (by severity)?
-            
             .selector("Task List Tasks")
                 .do("Get a Task", (t) => {
+                    // CHECK IF NEEDED TO CLOCK IN
+                    if (!me().onTheClock) {
+                        me().onTheClock = true;
+                        Hospital.activeTech.push(me());
+                        if (Hospital.aTeam[3] == null) {
+                            Hospital.aTeam[3] = me();
+                        }
+
+                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    }
+                    // CHECK IF NEEDED TO CLOCK OUT
+                    else if (Hospital.activeTech.length > 2 && Hospital.activeTech[0] == me()) {
+                        let clockOutTask = new task("Clock Out", null, null, null, entrance);
+                        me().setTask(clockOutTask);
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
                     // IF ALREADY ALLOCATED A TASK, CONTINUE
-                    if (me().getTask() != null) {
+                    else if (me().getTask() != null) {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     // CHECK IF ANY TASKS ARE AVAILABLE, CONTINUE
@@ -75,10 +91,24 @@ class techThesis {
                     .end()
                 .end()
                 
-                // .do("Clock In / Clock Out", (t) => {
-                    // Could make this a spliced behavior that takes the agent as a parameter
-                    //return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                // })
+                .do("Clock Out", (t) => {
+                    if (me().getTask().taskID != "Clock Out") {
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
+                    else {
+                        for(let i = 0; i < Hospital.computer.entries.length; i++) {
+                            if (Hospital.computer.entries[i].getTech() == me()) {
+                              Hospital.computer.entries[i].setTech(null);
+                            }
+                        }
+                        if (Hospital.aTeam[3] == me()) {
+                            Hospital.aTeam[3] = null;
+                        }
+                        Hospital.activeTech.shift();
+                        me().inSimulation = false;
+                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    }
+                })
                 
                 // THIS TASK IS GIVEN BY THE TRIAGE NURSE
                 .do("Get Vitals", (t) => {

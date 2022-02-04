@@ -9,7 +9,6 @@ class Hospital{
   static comments = [];
   static CTQueue = [];
   static XRayQueue = [];
-  static activePeople = [];
 
   //static CTOccupied = false;
   static CT1Occupied = false;

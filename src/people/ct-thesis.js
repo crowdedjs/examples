@@ -27,7 +27,8 @@ class ctThesis {
         let ct1 = Hospital.locations.find(l => l.name == "CT 1");
         let ct2 = Hospital.locations.find(l => l.name == "CT 2");
         if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
-        
+        let entrance = Hospital.getLocationByName("Main Entrance");
+
         let taskQueue = [];
         
         this.tree = builder
@@ -67,8 +68,21 @@ class ctThesis {
                 })
 
                 .do("Get a Task", (t) => {
+                    // CHECK IF NEEDED TO CLOCK IN
+                    if (!me().onTheClock) {
+                        me().onTheClock = true;
+                        Hospital.activeCT.push(me());
+
+                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    }
+                    // CHECK IF NEEDED TO CLOCK OUT
+                    else if (Hospital.activeCT.length > 2 && Hospital.activeCT[0] == me()) {
+                        let clockOutTask = new task("Clock Out", null, null, null, entrance);
+                        me().setTask(clockOutTask);
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
                     // IF ALREADY ALLOCATED A TASK, CONTINUE
-                    if (me().getTask() != null) {
+                    else if (me().getTask() != null) {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     // CHECK IF ANY TASKS ARE AVAILABLE, CONTINUE
@@ -98,10 +112,16 @@ class ctThesis {
                     .end()
                 .end()
                 
-                // .do("Clock In / Clock Out", (t) => {
-                    // Could make this a spliced behavior that takes the agent as a parameter
-                    //return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                // })
+                .do("Clock Out", (t) => {
+                    if (me().getTask().taskID != "Clock Out") {                        
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
+                    else {
+                        Hospital.activeCT.shift();
+                        me().inSimulation = false;
+                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                    }
+                })
                 
                 //THIS TASK IS GIVEN BY THE TECH  
                 .do("CAT Do Scan", (t) => {
