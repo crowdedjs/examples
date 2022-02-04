@@ -23,6 +23,9 @@ class ctThesis {
         }
 
         let myGoal = Hospital.locations.find(l => l.name == goToName);
+        let computer = Hospital.locations.find(l => l.name == goToName);
+        let ct1 = Hospital.locations.find(l => l.name == "CT 1");
+        let ct2 = Hospital.locations.find(l => l.name == "CT 2");
         if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
         
         let taskQueue = [];
@@ -44,19 +47,19 @@ class ctThesis {
                     }
                     else {
                         // Pick Up Patient
-                        let techEscortTask = new task("Pick Up Patient", Hospital.CTQueue[0].getSeverity(), 0, Hospital.CTQueue[0], myGoal);
+                        let ctPatient = Hospital.CTQueue.shift();
+                        let techEscortTask = new task("Pick Up Patient", ctPatient.getSeverity(), 0, ctPatient, myGoal);
                         if (goToName == "CT 1") {
                             Hospital.setCT1Occupied(true);
-                            Hospital.CTQueue[0].setImagingRoom("CT 1");
+                            ctPatient.setImagingRoom("CT 1");
+                            techEscortTask = new task("Pick Up Patient", ctPatient.getSeverity(), 0, ctPatient, ct1);
                         }
-                        else {
+                        else if (goToName == "CT 2") {
                             Hospital.setCT2Occupied(true);
-                            Hospital.CTQueue[0].setImagingRoom("CT 2");
+                            ctPatient.setImagingRoom("CT 2");
+                            techEscortTask = new task("Pick Up Patient", ctPatient.getSeverity(), 0, ctPatient, ct2);
                         }
-                        Hospital.CTQueue.shift();
                         Hospital.techTaskList.push(techEscortTask);
-
-                        //return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
 
                     return fluentBehaviorTree.BehaviorTreeStatus.Failure;
@@ -107,8 +110,14 @@ class ctThesis {
                     else {
                         me().taskTime = 100;
                         me().getTask().patient.setScan(true);
-                        // queueing this here could be problematic
                         let ctPickupTask = new task("CT Pickup", null, 0, me().getTask().patient, myGoal);
+                        if (me().getTask().patient.getImagingRoom() == "CT 1") {
+                            ctPickupTask = new task("CT Pickup", null, 0, me().getTask().patient, ct1);
+
+                        }
+                        else {
+                            ctPickupTask = new task("CT Pickup", null, 0, me().getTask().patient, ct2);
+                        }
                         taskQueue.push(ctPickupTask);
                         //Hospital.techTaskList.push(ctPickupTask);
 
