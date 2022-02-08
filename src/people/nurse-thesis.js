@@ -181,19 +181,7 @@ class nurseThesis {
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
-            // QUEUEING FOLLOWING TASKS NEEDS TO COME LAST, OTHERWISE TASKS ARE BLITZED THROUGH TOO QUICKLY
-            // .do("Queue Tasks", (t) => {
-            //     while (taskQueue.length > 0) {
-            //         switch(taskQueue[0].taskID) {
-            //             case "Nurse Escort Patient To Exit":
-            //                 Hospital.nurseTaskList.push(taskQueue.shift());
-            //                 break;
-            //             default: break;
-            //         }
-            //     }
-
-            //     return fluentBehaviorTree.BehaviorTreeStatus.Success;
-            // })
+            
         .end()
         .build()
     }
