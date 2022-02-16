@@ -20,6 +20,7 @@ class triageNurseThesis {
 
     let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
+    let entrance = Hospital.getLocationByName("Main Entrance");
 
     let leavePatient = new LeavePatient(self.index).tree;
 

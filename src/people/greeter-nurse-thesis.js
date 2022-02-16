@@ -6,8 +6,7 @@ import GoTo from "../behavior/go-to.js"
 import LookForArrivingPatient from "../behavior/look-for-arriving-patient.js";
 import TakeTime from "../behavior/take-time.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
-
-
+import task from "../support/task-thesis.js";
 
 class greeterNurseThesis {
 
@@ -20,6 +19,7 @@ class greeterNurseThesis {
     let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
     let myGoal = Hospital.locations.find(l => l.name == "Check In");
     if (!myGoal) throw new Exception("We couldn't find a location called Check In");
+    let entrance = Hospital.getLocationByName("Main Entrance");
 
     //this.goTo = new GoTo(self.index, myGoal.location);
     let numRequiredToFail = 1;

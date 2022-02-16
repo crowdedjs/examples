@@ -1,8 +1,7 @@
 import GoTo from "../behavior/go-to.js"
 import WaitForever from "../behavior/wait-forever.js"
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
-
-
+import task from "../support/task-thesis.js";
 
 class pharmacistThesis {
 
@@ -16,6 +15,7 @@ class pharmacistThesis {
     let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
     let myGoal = Hospital.locations.find(l => l.name == "Pharmacy");
     if (!myGoal) throw new Exception("We couldn't find a location called Pharmacy");
+    let entrance = Hospital.getLocationByName("Main Entrance");
 
     this.goTo = new GoTo(self.index, myGoal.location);
 

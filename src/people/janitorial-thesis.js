@@ -2,6 +2,7 @@ import GoTo from "../behavior/go-to.js"
 import GoToLazy from "../behavior/go-to-lazy.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 import LocationStatus from "../support/location-status.js";
+import task from "../support/task-thesis.js";
 import TakeTime from "../behavior/take-time.js";
 
 class janitorialThesis {
@@ -18,6 +19,7 @@ class janitorialThesis {
 
     let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
+    let entrance = Hospital.getLocationByName("Main Entrance");
 
     let myRoom;
 
