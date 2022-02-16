@@ -86,25 +86,26 @@ class janitorialThesis {
               return fluentBehaviorTree.BehaviorTreeStatus.Failure;
             }
             else {
-              myRoom = Hospital.janitorTaskList.shift().location;
+              myRoom = me().getTask().location;
               myRoom.setLocationStatus(LocationStatus.NONE);
+              me().taskTime = 100;
+              me().setTask(null);
               return fluentBehaviorTree.BehaviorTreeStatus.Success;
             }  
           })
-          // IF SUCCEEDING IN TASK, TAKE TIME TO DO THAT TASK
-          // TakeTime doesn't work in some instances, but the code itself works. For instance if you remove the next .end(), it will work, but then the sequence is broken.
-          //.splice(new TakeTime(1000, 2000).tree)
-          .do("Take Time", (t) => {
-            while (me().taskTime > 0)
-            {
-                me().taskTime == me().taskTime--;
-                return fluentBehaviorTree.BehaviorTreeStatus.Running;
-            }
+        .end()
+        // IF SUCCEEDING IN TASK, TAKE TIME TO DO THAT TASK
+        // TakeTime doesn't work in some instances, but the code itself works. For instance if you remove the next .end(), it will work, but then the sequence is broken.
+        //.splice(new TakeTime(1000, 2000).tree)
+        .do("Take Time", (t) => {
+          while (me().taskTime > 0)
+          {
+              me().taskTime == me().taskTime--;
+              return fluentBehaviorTree.BehaviorTreeStatus.Running;
+          }
 
-            return fluentBehaviorTree.BehaviorTreeStatus.Success;
-          })
-
-        .end()      
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        })  
       .end()
       .build();
   }
