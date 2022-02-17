@@ -30,6 +30,7 @@ class techThesis {
         // Consider limiting the rooms nurses can be assigned to tasks to
         // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH TASK FROM LIST -> TAKE TIME -> QUEUE TASKS -> RESTART
         .sequence("Tech Behaviors")
+            // ADDED SELECTOR TO TECH TO RESOLVE ADDED COMPLEXITY WITH ESCORTING AND PICKING UP PATIENTS
             .selector("Should I go back to start?")
                 .condition("Do I have patient", async (t) => me().getBusy())
                 .splice(new GoTo(self.index, computer.location).tree)
@@ -153,20 +154,11 @@ class techThesis {
                         Hospital.computer.getEntry(myPatient).setTech(me());
                         me().setBusy(true);
 
-                        // NEED TO FIGURE OUT WHEN THEY WOULD GET ONE OVER THE OTHER
-                        if (true) {
-                            // NOW ESCORT THE PATIENT TO CT
-                            let escortTask = new task("Escort Patient", null, 0, me().getTask().patient, me().getTask().location);
-                            me().setTask(escortTask);
+                        // NOW ESCORT THE PATIENT TO CT /XRAY
+                        let escortTask = new task("Escort Patient", null, 0, me().getTask().patient, me().getTask().location);
+                        me().setTask(escortTask);
 
-                            return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                        }
-                        else {
-                            // NOW ESCORT THE PATIENT TO XRAY
-                            let escortTask = new task("Escort Patient", null, 0, me().getTask().patient, me().getTask().location);
-                            me().setTask(escortTask);
-                            return fluentBehaviorTree.BehaviorTreeStatus.Success;
-                        }
+                        return fluentBehaviorTree.BehaviorTreeStatus.Success;              
                     }
                 })
                 // THIS TASK IS GIVEN BY THE CT / XRAY
