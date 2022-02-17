@@ -62,9 +62,12 @@ class patient {
   }
 
   async update(crowd, msec) {
-    //this.toReturn = null;//Set the default return value to null (don't change destination)
+    let myself = Hospital.agents.find(a=>a.id==this.index);
+    myself.ticksPresent++;
+    if (myself.getPatientTempState() == PatientTempState.WAITING || myself.getPatientTempState() == PatientTempState.ARRIVED) {
+      myself.waitingTime++;
+    }
     await this.tree.tick({ crowd, msec }) //Call the behavior tree
-    //return this.toReturn; //Return what the behavior tree set the return value to
   }
 
 }

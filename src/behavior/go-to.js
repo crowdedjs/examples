@@ -32,7 +32,7 @@ class GoTo {
         //let distanceToWaypoint = difference.length();
         let distanceToWaypoint = difference.lengthSquared();
 
-        if (distanceToWaypoint < 4)
+        if (distanceToWaypoint < 3)
         {
           agent.destination = new Vector3(loc.x, loc.y, loc.z);
           frameAgentDetail.pose = "Idle";

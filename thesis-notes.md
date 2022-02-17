@@ -10,8 +10,7 @@ The basis of these code changes boil down to this:
 - even getting the number and doing like testArray[tempValue] doesn't work. It must just be a number.
 
 # To Do
- - probably should make a flow chart (could include it in thesis as well) that illustrates the flow of tasks
- greeter --assigns--> triage --assigns--> nurse / tech? / ? -->
+ - probably should make a flow chart (include in thesis) that illustrates the flow of tasks
  - three versions of the hospital: actual hospital, like the actual hospital, and the minimal viable end product
     - shouldn't be too much of an issue, i believe the json files with the location flags are really the most important things and minimally needed things (aside from the walls)
 - Implement priorities / sorting based on priority to trees

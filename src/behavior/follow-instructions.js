@@ -74,7 +74,14 @@ class FollowInstructions {
           }
         }
         else if(state == PatientTempState.DONE){
-          //console.log("Done")
+          // TESTING - FPS is not 25, gives weird answers
+          //me().lengthOfStay = ((me().ticksPresent * 25) / 1000) / 60;
+          me().lengthOfStay = me().ticksPresent;
+          let patientDataValues = [me().lengthOfStay, me().waitingTime];
+          Hospital.patientData.push(patientDataValues);
+          console.log("Patient " + id + " Length of Stay: " + me().lengthOfStay + " ticks");
+          console.log("Patient " + id + " Waited for: " + me().waitingTime + " ticks");
+          
           me().inSimulation = false;
           // ADJUST CTQUEUE OR XRAYQUEUE SO TECH TAKES NEXT PATIENT TO CT ROOM
           //Hospital.CTQueue.shift();
@@ -112,6 +119,14 @@ class FollowInstructions {
           agentConstant.destination = myGoal.location;
         }
         else if(state == PatientTempState.BOOKED){
+          // TESTING - FPS is not 25, gives weird answers
+          //me().lengthOfStay = ((me().ticksPresent * 25) / 1000) / 60;
+          me().lengthOfStay = me().ticksPresent;
+          let patientDataValues = [me().lengthOfStay, me().waitingTime];
+          Hospital.patientData.push(patientDataValues);
+          console.log("Patient " + id + " Length of Stay: " + me().lengthOfStay + " ticks");
+          console.log("Patient " + id + " Waited for: " + me().waitingTime + " ticks");
+          
           me().inSimulation = false;
         }
         else {

@@ -25,6 +25,7 @@ class PatientAgentThesis extends APatient {
 
     this.name = agent.name;
     this.startMSec = agent.arrivalTick * 25; // We simulate 25 fps
+    this.lengthOfStay = this.startMSec;
     this.arrivalLocation = agent.arrivalLocation;
     this.age = agent.age;
     this.severity = agent.severity;

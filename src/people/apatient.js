@@ -21,6 +21,11 @@ class APatient extends APerson {
 
 	scan = false; //boolean
 
+	// testing variables
+	lengthOfStay = 0;
+	ticksPresent = 0;
+	waitingTime = 0;
+
 	/**
 	 * The room that the patient's bed is in.
 	 * Having an assigned room and a permament room 

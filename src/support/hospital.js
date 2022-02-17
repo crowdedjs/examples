@@ -53,6 +53,9 @@ class Hospital{
   static pharmacistTaskList = [];
   static attendingTaskList = [];
 
+  static patientData = [];
+  static techData = [];
+
   static getFPS(){return 60;}
 
   static getCTQueue() {

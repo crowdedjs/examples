@@ -74,7 +74,14 @@ class FollowInstructionsThesis {
           }
         }
         else if(state == PatientTempState.DONE){
-          //console.log("Done")
+          // TESTING - FPS is not 25, gives weird answers
+          //me().lengthOfStay = ((me().ticksPresent * 25) / 1000) / 60;
+          me().lengthOfStay = me().ticksPresent;
+          let patientDataValues = [me().lengthOfStay, me().waitingTime];
+          Hospital.patientData.push(patientDataValues);
+          console.log("Patient " + id + " Length of Stay: " + me().lengthOfStay + " ticks");
+          console.log("Patient " + id + " Waited for: " + me().waitingTime + " ticks");
+
           me().inSimulation = false;
           // ADJUST CTQUEUE OR XRAYQUEUE SO TECH TAKES NEXT PATIENT TO CT ROOM
           //Hospital.CTQueue.shift();
@@ -88,21 +95,6 @@ class FollowInstructionsThesis {
               Hospital.XRayQueue.splice(i, 1);
             }
           }
-       
-        // MADE COPY OF FOLLOW INSTRUCTIONS TO DELETE THIS
-        //   if (me().getImagingRoom() == "CT 1") {
-        //     Hospital.setCT1Occupied(false);
-        //   }
-        //   else if (me().getImagingRoom() == "CT 2") {
-        //     Hospital.setCT2Occupied(false);
-        //   }
-        //   else if (me().getImagingRoom() == "XRay 1") {
-        //     Hospital.setXRay1Occupied(false);
-        //   }
-        //   else {
-        //     Hospital.setXRay2Occupied(false);
-        //   }
-
           // SET ROOM AS READY TO CLEAN
           // OLD METHOD
           me().getPermanentRoom().setLocationStatus(LocationStatus.SANITIZE);
@@ -115,6 +107,14 @@ class FollowInstructionsThesis {
           agentConstant.destination = myGoal.location;
         }
         else if(state == PatientTempState.BOOKED){
+          // TESTING - FPS is not 25, gives weird answers
+          //me().lengthOfStay = ((me().ticksPresent * 25) / 1000) / 60;
+          me().lengthOfStay = me().ticksPresent;
+          let patientDataValues = [me().lengthOfStay, me().waitingTime];
+          Hospital.patientData.push(patientDataValues);
+          console.log("Patient " + id + " Length of Stay: " + me().lengthOfStay + " ticks");
+          console.log("Patient " + id + " Waited for: " + me().waitingTime + " ticks");
+
           me().inSimulation = false;
         }
         else {
