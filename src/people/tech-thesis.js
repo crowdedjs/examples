@@ -114,6 +114,7 @@ class techThesis {
                             Hospital.aTeam[3] = null;
                         }
                         Hospital.activeTech.shift();
+                        
                         // TESTING
                         console.log("Tech Idle Time: " + me().idleTime + " ticks");
                         Hospital.techData.push(me().idleTime);

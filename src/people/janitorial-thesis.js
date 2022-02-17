@@ -24,6 +24,7 @@ class janitorialThesis {
     let myRoom;
 
     this.tree = builder
+      
       .sequence("Janitor Behaviors")
         .splice(new GoTo(self.index, myGoal.location).tree)
         .selector("Task List Tasks")

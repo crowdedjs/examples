@@ -24,8 +24,17 @@ class tech {
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
 
     this.tree = builder
-    .sequence("Assign")
-      
+    
+    // this might actually be kinda difficult to implement
+    .parallel("Testing Parallel", 2, 2)
+      .do("Testing", (t) => {
+          // This would tick up while on the way back to the computer, which isn't desirable.
+          if (me().onTheClock && me().getTask() == null && myGoal == computer) {
+              me().idleTime++;
+          }
+          return fluentBehaviorTree.BehaviorTreeStatus.Running; 
+      })
+    .sequence("Assign")    
       .selector("Check for arrival")  
         .condition("Clock in", async (t) => me().onTheClock)
         .do("SHIFT CHANGE", (t) => {
@@ -62,6 +71,11 @@ class tech {
             if (Hospital.aTeam[3] == me()) {
               Hospital.aTeam[3] = null;
             }
+
+            // TESTING
+            console.log("Tech Idle Time: " + me().idleTime + " ticks");
+            Hospital.techData.push(me().idleTime);
+
             me().inSimulation = false;
             return fluentBehaviorTree.BehaviorTreeStatus.Running;
           })
@@ -83,6 +97,7 @@ class tech {
         return result;
       }) // lazy: true
 
+    .end()
     .end()
     .build();
   }

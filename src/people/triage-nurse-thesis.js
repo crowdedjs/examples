@@ -26,6 +26,7 @@ class triageNurseThesis {
 
 
     this.tree = builder
+    
     .sequence("Pick Triage Room")
 
       .selector("Check for arrival")  
@@ -54,7 +55,7 @@ class triageNurseThesis {
       .selector("Check for Replacement")
         .condition("Replacement is Here", async (t) => !me().replacement)
         .sequence("Exit Procedure")
-          .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+          .splice(new GoTo(self.index, entrance.location).tree)
           .do("Leave Simulation", (t) => {
             for(let i = 0; i < Hospital.computer.entries.length; i++) {
               // LEFTOVER ARTIFACT OF ORIGINAL ATTEMPT TO FIX TRIAGE WITH SHIFT CHANGES

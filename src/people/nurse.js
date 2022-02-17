@@ -19,8 +19,15 @@ class nurse {
       let computer =  Hospital.locations.find(l => l.name == "NursePlace");
       this.tree = builder
 
+      .parallel("Testing Parallel", 2, 2)
+        .do("Testing", (t) => {
+            // This would tick up while on the way back to the computer, which isn't desirable.
+            if (me().onTheClock && me().getTask() == null && myGoal == computer) {
+                me().idleTime++;
+            }
+            return fluentBehaviorTree.BehaviorTreeStatus.Running; 
+        })
       .sequence("Assign Nurse")
-
         .selector("Check for arrival")  
           .condition("Clock in", async (t) => me().onTheClock)
           .do("SHIFT CHANGE", (t) => {
@@ -57,6 +64,11 @@ class nurse {
               if (Hospital.aTeam[2] == me()) {
                 Hospital.aTeam[2] = null;
               }
+
+              // TESTING
+              console.log("Nurse Idle Time: " + me().idleTime + " ticks");
+              Hospital.nurseData.push(me().idleTime);
+
               me().inSimulation = false;
               return fluentBehaviorTree.BehaviorTreeStatus.Running;
             })
@@ -66,6 +78,7 @@ class nurse {
         .splice(new GoTo(self.index, myGoal.location).tree)
         .splice(new AssignComputer(myIndex, computer.location).tree) // NURSE PLACE
         .splice(new responsibility(myIndex).tree) // LAZY: TRUE
+      .end()
       .end()
       .build();
     }

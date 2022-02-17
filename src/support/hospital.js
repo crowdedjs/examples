@@ -54,7 +54,17 @@ class Hospital{
   static attendingTaskList = [];
 
   static patientData = [];
+  static attendingData = [];
+  static ctData = [];
+  static greeterData = [];
+  static janitorData = [];
+  static nurseData = [];
+  static phlebData = [];
+  static radioData = [];
+  static residentData = [];
   static techData = [];
+  static triageData = [];
+  static xrayData = [];
 
   static getFPS(){return 60;}
 

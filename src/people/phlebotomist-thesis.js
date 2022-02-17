@@ -24,6 +24,14 @@ class phlebotomistThesis {
 
         this.tree = builder
 
+        .parallel("Testing Parallel", 2, 2)
+            .do("Testing", (t) => {
+                // This would tick up while on the way back to the computer, which isn't desirable.
+                if (me().onTheClock && me().getTask() == null && myGoal == computer) {
+                    me().idleTime++;
+                }
+                return fluentBehaviorTree.BehaviorTreeStatus.Running; 
+            })
         // Consider limiting the rooms nurses can be assigned to tasks to
         // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
         .sequence("Phlebotomist Behaviors")
@@ -94,6 +102,11 @@ class phlebotomistThesis {
                             Hospital.aTeam[4] = null;
                         }
                         Hospital.activePhleb.shift();
+                        
+                        // TESTING
+                        console.log("Phlebotomist Idle Time: " + me().idleTime + " ticks");
+                        Hospital.phlebData.push(me().idleTime);
+
                         me().inSimulation = false;
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
@@ -124,6 +137,7 @@ class phlebotomistThesis {
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
+        .end()
         .end()
         .build()
     }

@@ -21,6 +21,15 @@ class radiology {
 
 
     this.tree = builder
+    
+    .parallel("Testing Parallel", 2, 2)
+      .do("Testing", (t) => {
+          // This would tick up while on the way back to the computer, which isn't desirable.
+          if (me().onTheClock && me().getTask() == null && myGoal == computer) {
+              me().idleTime++;
+          }
+          return fluentBehaviorTree.BehaviorTreeStatus.Running; 
+      })
     .sequence("Go and Idle")
       .selector("Check for arrival")  
         .condition("Clock in", async (t) => me().onTheClock)
@@ -50,6 +59,11 @@ class radiology {
         .sequence("Exit Procedure")
           .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
           .do("Leave Simulation", (t) => {
+            
+            // TESTING
+            console.log("Radiology Idle Time: " + me().idleTime + " ticks");
+            Hospital.radioData.push(me().idleTime);
+
             me().inSimulation = false;
             return fluentBehaviorTree.BehaviorTreeStatus.Running;
           })
@@ -59,6 +73,7 @@ class radiology {
       .splice(new GoTo(self.index, myGoal.location).tree)
       .splice(new responsibility(myIndex).tree)
       
+    .end()
     .end()
     .build();
   }

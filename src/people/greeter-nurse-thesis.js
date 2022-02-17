@@ -26,34 +26,35 @@ class greeterNurseThesis {
     let numRequiredToSucceed = 2;
 
     this.tree = builder
-      .sequence("Greeter Nurse Behaviors")
-        .selector("Check for arrival")  
-          .condition("Clock in", async (t) => me().onTheClock)
-          .do("SHIFT CHANGE", (t) => {
-            // SHIFT CHANGE
-            if (me().onTheClock == false) {
-              me().onTheClock = true;
-              Hospital.activeGreeter.push(me());
-              if (Hospital.activeGreeter[0] != me() && Hospital.activeGreeter.length > 1) {
-                for (let i = 0; i < Hospital.activeGreeter.length; i++) {
-                  if (!Hospital.activeGreeter[i].replacement) {
-                    Hospital.activeGreeter[i].replacement = true;
-                    //Hospital.activeGreeter.shift();
-                    Hospital.activeGreeter.splice(i, 1);
-                    break;
-                  }
+      
+    .sequence("Greeter Nurse Behaviors")
+      .selector("Check for arrival")  
+        .condition("Clock in", async (t) => me().onTheClock)
+        .do("SHIFT CHANGE", (t) => {
+          // SHIFT CHANGE
+          if (me().onTheClock == false) {
+            me().onTheClock = true;
+            Hospital.activeGreeter.push(me());
+            if (Hospital.activeGreeter[0] != me() && Hospital.activeGreeter.length > 1) {
+              for (let i = 0; i < Hospital.activeGreeter.length; i++) {
+                if (!Hospital.activeGreeter[i].replacement) {
+                  Hospital.activeGreeter[i].replacement = true;
+                  //Hospital.activeGreeter.shift();
+                  Hospital.activeGreeter.splice(i, 1);
+                  break;
                 }
               }
             }
-            
-            return fluentBehaviorTree.BehaviorTreeStatus.Success;
-          })
+          }
+          
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        })
       .end()
       // SHIFT CHANGE SEQUENCE OF BEHAVIORS
       .selector("Check for Replacement")
         .condition("Replacement is Here", async (t) => !me().replacement)
         .sequence("Exit Procedure")
-          .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+          .splice(new GoTo(self.index, entrance.location).tree)
           .do("Leave Simulation", (t) => {
             me().inSimulation = false;
             return fluentBehaviorTree.BehaviorTreeStatus.Running;

@@ -26,6 +26,14 @@ class residentThesis {
 
         this.tree = builder
 
+        .parallel("Testing Parallel", 2, 2)
+            .do("Testing", (t) => {
+                // This would tick up while on the way back to the computer, which isn't desirable.
+                if (me().onTheClock && me().getTask() == null && myGoal == computer) {
+                    me().idleTime++;
+                }
+                return fluentBehaviorTree.BehaviorTreeStatus.Running; 
+            })
         // Consider limiting the rooms nurses can be assigned to tasks to
         // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
         .sequence("Resident Behaviors")
@@ -96,6 +104,11 @@ class residentThesis {
                             Hospital.aTeam[1] = null;
                         }
                         Hospital.activeResident.shift();
+                        
+                        // TESTING
+                        console.log("Resident Idle Time: " + me().idleTime + " ticks");
+                        Hospital.residentData.push(me().idleTime);
+
                         me().inSimulation = false;
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
@@ -294,6 +307,7 @@ class residentThesis {
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
+        .end()
         .end()
         .build()
     }

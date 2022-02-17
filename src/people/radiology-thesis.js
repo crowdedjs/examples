@@ -19,12 +19,21 @@ class radiologyThesis {
         
         let goToName = "CT 2";
         let myGoal = Hospital.locations.find(l => l.name == goToName);
+        let computer = Hospital.locations.find(l => l.name == goToName);
         let entrance = Hospital.getLocationByName("Main Entrance");
 
         let taskQueue = [];
 
         this.tree = builder
 
+        .parallel("Testing Parallel", 2, 2)
+            .do("Testing", (t) => {
+                // This would tick up while on the way back to the computer, which isn't desirable.
+                if (me().onTheClock && me().getTask() == null && myGoal == computer) {
+                    me().idleTime++;
+                }
+                return fluentBehaviorTree.BehaviorTreeStatus.Running; 
+            })
         // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
         .sequence("Radiology Behaviors")
             .splice(new GoTo(self.index, myGoal.location).tree)
@@ -68,7 +77,7 @@ class radiologyThesis {
                                 myGoal = me().getTask().location;
                             }
                             else {
-                                myGoal = Hospital.locations.find(l => l.name == goToName);
+                                myGoal = computer;
                             }
                             return fluentBehaviorTree.BehaviorTreeStatus.Success; 
                         })
@@ -83,6 +92,11 @@ class radiologyThesis {
                     }
                     else {
                         Hospital.activeRadio.shift();
+                        
+                        // TESTING
+                        console.log("Radiology Idle Time: " + me().idleTime + " ticks");
+                        Hospital.radioData.push(me().idleTime);
+
                         me().inSimulation = false;
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
@@ -131,6 +145,7 @@ class radiologyThesis {
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
+        .end()
         .end()
         .build()
     }

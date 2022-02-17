@@ -26,6 +26,14 @@ class nurseThesis {
 
         this.tree = builder
 
+        .parallel("Testing Parallel", 2, 2)
+            .do("Testing", (t) => {
+                // This would tick up while on the way back to the computer, which isn't desirable.
+                if (me().onTheClock && me().getTask() == null && myGoal == computer) {
+                    me().idleTime++;
+                }
+                return fluentBehaviorTree.BehaviorTreeStatus.Running; 
+            })
         // Consider limiting the rooms nurses can be assigned to tasks to
         // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
         .sequence("Nurse Behaviors")
@@ -98,6 +106,11 @@ class nurseThesis {
                             Hospital.aTeam[2] = null;
                         }
                         Hospital.activeNurse.shift();
+                        
+                        // TESTING
+                        console.log("Nurse Idle Time: " + me().idleTime + " ticks");
+                        Hospital.nurseData.push(me().idleTime);
+
                         me().inSimulation = false;
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
@@ -182,6 +195,7 @@ class nurseThesis {
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
             
+        .end()
         .end()
         .build()
     }
