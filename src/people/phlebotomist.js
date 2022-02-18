@@ -30,8 +30,7 @@ class phlebotomist {
 
     .parallel("Testing Parallel", 2, 2)
       .do("Testing", (t) => {
-          // This would tick up while on the way back to the computer, which isn't desirable.
-          if (me().onTheClock && me().getTask() == null && myGoal == computer) {
+          if (me().amIdle) {
               me().idleTime++;
           }
           return fluentBehaviorTree.BehaviorTreeStatus.Running; 

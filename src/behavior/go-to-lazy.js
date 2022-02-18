@@ -72,6 +72,7 @@ class GoToLazy{
 
           //if (distanceToWaypoint < 2 && distanceToPatient < 2) {
           if (distanceToWaypoint < 4 && distanceToPatient < 4) {
+            agent.destination = new Vector3(loc.x, loc.y, loc.z);
             frameAgentDetail.pose = "Idle";
             return fluentBehaviorTree.BehaviorTreeStatus.Success;
           }
@@ -88,6 +89,7 @@ class GoToLazy{
         }
         //else if (distanceToWaypoint < 2) {
         else if (distanceToWaypoint < 4) {
+          agent.destination = new Vector3(loc.x, loc.y, loc.z);
           frameAgentDetail.pose = "Idle";
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         }

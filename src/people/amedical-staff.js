@@ -12,6 +12,10 @@ class AMedicalStaff extends APerson {
     computer; //IRoom -> ARoom
 	busy = false; //boolean (if the nurse needs to finish their behavior before getting another patient)
 	task; //Task
+	
+	// Testing
+	idleTime = 0;
+	amIdle = false;
 
 	constructor(location, UUID, medicalStaffType, medicalStaffSubclass, doctorYear, arrivalTick) {
 		super(location, UUID, arrivalTick);

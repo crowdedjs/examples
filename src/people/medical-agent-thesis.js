@@ -28,7 +28,6 @@ class MedicalAgentThesis extends AMedicalStaff {
   // SHIFT CHANGE
   replacement = false;
   onTheClock = false;
-  idleTime = 0;
 
   static index = 0;
   idx; //Corresponds to the internal idx number used by recast

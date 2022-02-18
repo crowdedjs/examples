@@ -12,6 +12,8 @@ class ResidentResponsibilities extends AResponsibilityFactory {
 
 	get(entry, medicalStaff) {
 		
+		medicalStaff.amIdle = false;
+
 		if (Hospital.aTeam[1] == null) {
 			Hospital.aTeam[1] = medicalStaff;
 		}
@@ -71,6 +73,9 @@ class ResidentResponsibilities extends AResponsibilityFactory {
 				return new ResidentPatientConsult(entry, medicalStaff);
 			}
 		}
+
+		medicalStaff.amIdle = true;
+
 		return null;
 	}
 }

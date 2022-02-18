@@ -3,8 +3,7 @@ import GoToLazy from "../behavior/go-to-lazy.js";
 // import LOG 
 import Stop from "../behavior/stop.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
-
-
+import PatientTempState from "../support/patient-temp-state.js";
 
 class patient {
 

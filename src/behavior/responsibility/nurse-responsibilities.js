@@ -7,6 +7,8 @@ import NurseEscortPatientToExit from "./nurse-escort-patient-to-exit.js"
 	
 	get( entry, medicalStaff) {
 		
+		medicalStaff.amIdle = false;
+
 		if (Hospital.aTeam[2] == null) {
 			Hospital.aTeam[2] = medicalStaff;
 		}
@@ -42,6 +44,8 @@ import NurseEscortPatientToExit from "./nurse-escort-patient-to-exit.js"
 			}
 		}
 		
+		medicalStaff.amIdle = true;
+
 		return null;
 	}
 }
