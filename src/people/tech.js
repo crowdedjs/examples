@@ -40,7 +40,7 @@ class tech {
           if (me().onTheClock == false) {
             me().onTheClock = true;
             Hospital.activeTech.push(me());
-            if (Hospital.activeTech[0] != me() && Hospital.activeTech.length > 2) {
+            if (Hospital.activeTech[0] != me() && Hospital.activeTech.length > 3) {
               for (let i = 0; i < Hospital.activeTech.length; i++) {
                 if (!Hospital.activeTech[i].replacement) {
                   Hospital.activeTech[i].replacement = true;

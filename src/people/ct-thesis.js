@@ -61,7 +61,8 @@ class ctThesis {
                             ctPatient.setImagingRoom("CT 2");
                             techEscortTask = new task("Pick Up Patient", ctPatient.getSeverity(), 0, ctPatient, ct2);
                         }
-                        Hospital.techTaskList.push(techEscortTask);
+                        //Hospital.techTaskList.push(techEscortTask);
+                        taskQueue.push(techEscortTask);
                     }
 
                     return fluentBehaviorTree.BehaviorTreeStatus.Failure;
@@ -168,6 +169,9 @@ class ctThesis {
             .do("Queue Tasks", (t) => {
                 while (taskQueue.length > 0) {
                     switch(taskQueue[0].taskID) {
+                        case "Queue Escort Patient":
+                            Hospital.techTaskList.push(taskQueue.shift());
+                            break;
                         case "CT Pickup":
                             Hospital.techTaskList.push(taskQueue.shift());
                             break;

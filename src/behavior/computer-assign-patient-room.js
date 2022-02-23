@@ -60,7 +60,7 @@ class ComputerAssignPatientRoom {
             // patient.setAssignedRoom(waitingRoom);
             // patient.setPermanentRoom(waitingRoom);
             // entry.setBed(waitingRoom);
-            return fluentBehaviorTree.BehaviorTreeStatus.Running;
+            return fluentBehaviorTree.BehaviorTreeStatus.Failure;
           }
 
           // need to set room as claimed

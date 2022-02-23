@@ -60,7 +60,7 @@ class techThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                     // CHECK IF NEEDED TO CLOCK OUT
-                    else if (Hospital.activeTech.length > 2 && Hospital.activeTech[0] == me()) {
+                    else if (Hospital.activeTech.length > 3 && Hospital.activeTech[0] == me()) {
                         let clockOutTask = new task("Clock Out", null, null, null, entrance);
                         me().setTask(clockOutTask);
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;

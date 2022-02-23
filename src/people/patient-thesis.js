@@ -39,12 +39,12 @@ class patientThesis {
           .do("Waiting Room", async function (t) {
             if (goToName == "Ambulance Entrance") {
               wait = myGoal;
+            }            
+            else if (me().getInstructor() != null && me().getInstructor().MedicalStaffSubclass == "Greeter Nurse") {
+              wait = Hospital.locations.find(l=> l.name == "Waiting Room");
             }
             else if(me().getPermanentRoom() == null) {
               return fluentBehaviorTree.BehaviorTreeStatus.Running;
-            }
-            else if (me().getInstructor().MedicalStaffSubclass == "Greeter Nurse") {
-              wait = Hospital.locations.find(l=> l.name == "Waiting Room");
             }
             else {
               wait = myGoal;

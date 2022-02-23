@@ -341,7 +341,7 @@ export default [
   {
     "name": "patient",
     "arrivalTick": 432000,
-    "arrivalLocation": "Main Entrance",
+    "arrivalLocation": "Ambulance Entrance",
     "age": 39,
     "severity": "ESI1",
     "patientName": "David",
@@ -841,7 +841,7 @@ export default [
   {
     "name": "patient",
     "arrivalTick": 1236019,
-    "arrivalLocation": "Main Entrance",
+    "arrivalLocation": "Ambulance Entrance",
     "age": 2,
     "severity": "ESI1",
     "patientName": "Isabella",
@@ -1151,7 +1151,7 @@ export default [
   {
     "name": "patient",
     "arrivalTick": 1512000,
-    "arrivalLocation": "Main Entrance",
+    "arrivalLocation": "Ambulance Entrance",
     "age": 14,
     "severity": "ESI1",
     "patientName": "Emma",
@@ -1562,7 +1562,7 @@ export default [
   {
     "name": "patient",
     "arrivalTick": 1764036,
-    "arrivalLocation": "Main Entrance",
+    "arrivalLocation": "Ambulance Entrance",
     "age": 36,
     "severity": "ESI1",
     "patientName": "Christopher",
@@ -2052,7 +2052,7 @@ export default [
   {
     "name": "patient",
     "arrivalTick": 2246522,
-    "arrivalLocation": "Main Entrance",
+    "arrivalLocation": "Ambulance Entrance",
     "age": 9,
     "severity": "ESI1",
     "patientName": "Olivia",
@@ -2318,5 +2318,20 @@ export default [
     "patientName": "Ashley",
     "gender": "female",
     "id": 241
-  }
+  },
+  // EXTRA STAFF TO MEET DEMAND
+  // {
+  //   "name": "Tech",
+  //   "type": "Tech",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 10,
+  //   "id": 242
+  // },
+  // {
+  //   "name": "Tech",
+  //   "type": "Tech",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   "id": 243
+  // },
 ]
