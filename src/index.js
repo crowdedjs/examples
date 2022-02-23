@@ -27,10 +27,14 @@ function boot() {
   window.Vector3 = Vector3;
 
   let objValue = assets.objs.hospital;       //Grab the value of the environment 
+  //let objValue = assets.objs.locationsMinimalObs;
+  
   let locationValue = assets.locations.locationsHospital;  //Grab the value of all the locations
-  let arrivalValue = assets.arrivals.arrivalHospitalTesting;   //Grab the value of all the arrivals
+  //let locationValue = assets.locations.locationsMinimal;
+
+  //let arrivalValue = assets.arrivals.arrivalHospitalTesting;   //Grab the value of all the arrivals
   //let arrivalValue = assets.arrivals.arrivalHospital;
-  //let arrivalValue = assets.arrivals.arrivalHospitalThesis;
+  let arrivalValue = assets.arrivals.arrivalHospitalThesis;
 
   let agentConstants = [];  //An array with all the high-level agent information (not the simulation data)
   let locations = []; //A list of all the adjusted locations

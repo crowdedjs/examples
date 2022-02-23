@@ -6,11 +6,15 @@ import arrivalHospitalThesis from "./arrivals/arrivalHospitalThesis.js"
 
 import locationsFlat from "./locations/locationsFlat.js"
 import locationsHospital from "./locations/locationsHospital.js"
+import locationsMinimal from "./locations/locations_minimal.js"
+import locationsDifferent from "./locations/1locations.js";
 
 import flatWall1 from "./objs/flat-wall-1.js"
 import flatWall2 from "./objs/flat-wall-2.js"
 import flat from "./objs/flat.js"
 import hospital from "./objs/hospital.js"
+import locationsMinimalObs from "./objs/locations_minimal.js"
+import layoutDifferent from "./objs/1layout.js"
 
 export default {
   arrivals:{
@@ -23,11 +27,15 @@ export default {
   locations:{
     locationsFlat,
     locationsHospital,
+    locationsMinimal,
+    locationsDifferent
   },
   objs:{
     flatWall1,
     flatWall2,
     flat,
-    hospital
+    hospital,
+    locationsMinimalObs,
+    layoutDifferent
   }
 }
