@@ -38,7 +38,7 @@ class GoToResponsibility {
         //let distance = Vector3.fromObject(me().location).distanceTo(destination);
         let distance = Vector3.fromObject(me().location).distanceToSquared(destination);
         //if (distance < 2) {
-        if (distance < 4) {
+        if (distance < 3) {
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         }
         return fluentBehaviorTree.BehaviorTreeStatus.Running;

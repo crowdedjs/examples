@@ -75,6 +75,7 @@ class xrayThesis {
                         if (Hospital.aTeam[5] == null) {
                             Hospital.aTeam[5] = me();
                         }
+                        me().replacement = true;
 
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
@@ -130,7 +131,7 @@ class xrayThesis {
                         }
                         Hospital.activeXRay.shift();
                         me().inSimulation = false;
-                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                        return fluentBehaviorTree.BehaviorTreeStatus.Running;
                     }
                 })
                 

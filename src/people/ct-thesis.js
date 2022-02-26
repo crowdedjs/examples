@@ -80,6 +80,7 @@ class ctThesis {
                     else if (Hospital.activeCT.length > 2 && Hospital.activeCT[0] == me()) {
                         let clockOutTask = new task("Clock Out", null, null, null, entrance);
                         me().setTask(clockOutTask);
+                        me().replacement = true;
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     // IF ALREADY ALLOCATED A TASK, CONTINUE
@@ -120,7 +121,7 @@ class ctThesis {
                     else {
                         Hospital.activeCT.shift();
                         me().inSimulation = false;
-                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                        return fluentBehaviorTree.BehaviorTreeStatus.Running;
                     }
                 })
                 

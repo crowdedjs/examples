@@ -59,6 +59,7 @@ class nurseThesis {
                     else if (Hospital.activeNurse.length > 2 && Hospital.activeNurse[0] == me()) {
                         let clockOutTask = new task("Clock Out", null, null, null, entrance);
                         me().setTask(clockOutTask);
+                        me().replacement = true;
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     // IF ALREADY ALLOCATED A TASK, CONTINUE
@@ -112,7 +113,7 @@ class nurseThesis {
                         Hospital.nurseData.push(me().idleTime);
 
                         me().inSimulation = false;
-                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                        return fluentBehaviorTree.BehaviorTreeStatus.Running;
                     }
                 })
 

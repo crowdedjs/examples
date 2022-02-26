@@ -34,7 +34,12 @@ class GoTo {
 
         if (distanceToWaypoint < 4)
         {
-          agent.destination = new Vector3(loc.x, loc.y, loc.z);
+          if (!agent.replacement) {
+            agent.destination = new Vector3(loc.x, loc.y, loc.z);
+          }
+          if (agent.severity != null) {
+            agent.destination = new Vector3(loc.x, loc.y, loc.z);
+          }
           frameAgentDetail.pose = "Idle";
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         }

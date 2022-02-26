@@ -39,6 +39,7 @@ class janitorialThesis {
               else if (Hospital.activeJanitor.length > 1 && Hospital.activeJanitor[0] == me()) {
                   let clockOutTask = new task("Clock Out", null, null, null, entrance);
                   me().setTask(clockOutTask);
+                  me().replacement = true;
                   return fluentBehaviorTree.BehaviorTreeStatus.Failure;
               }
               // IF ALREADY ALLOCATED A TASK, CONTINUE
@@ -108,7 +109,18 @@ class janitorialThesis {
           }
 
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
-        })  
+        })
+        
+      //   .do("Clock Out", (t) => {
+      //     if (!me().replacement) {
+      //       return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+      //     }
+      //     else {
+      //       //Hospital.activeJanitor.shift();
+      //       me().inSimulation = false;
+      //       return fluentBehaviorTree.BehaviorTreeStatus.Running;
+      //     }
+      //   }) 
       .end()
       .build();
   }

@@ -60,9 +60,10 @@ class techThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                     // CHECK IF NEEDED TO CLOCK OUT
-                    else if (Hospital.activeTech.length > 3 && Hospital.activeTech[0] == me()) {
+                    else if (Hospital.activeTech.length > 2 && Hospital.activeTech[0] == me()) {
                         let clockOutTask = new task("Clock Out", null, null, null, entrance);
                         me().setTask(clockOutTask);
+                        me().replacement = true;
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     // IF ALREADY ALLOCATED A TASK, CONTINUE
@@ -120,7 +121,7 @@ class techThesis {
                         Hospital.techData.push(me().idleTime);
 
                         me().inSimulation = false;
-                        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                        return fluentBehaviorTree.BehaviorTreeStatus.Running;
                     }
                 })
                 

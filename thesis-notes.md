@@ -17,3 +17,7 @@ The basis of these code changes boil down to this:
 - Limit rooms each agent should take tasks for
 - Could the code be even DRY-er? Almost every new tree has the same structure, so couldn't it be simplified more? Probably out of scope for the timeline and purpose of this project.
 
+# Bugs
+- Adding an extra tech to the end of the json file (rather than going through all the work to shift the id numbers down by 1 to add them in) causes them to not function. Likely due to a problem with the time they enter. Probably has to be greater or equal to the timestep of the entry above them.
+- Shift change with new implementation won't delete the old agents. 
+
