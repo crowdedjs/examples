@@ -108,12 +108,7 @@ class FollowInstructions {
             Hospital.setXRay2Occupied(false);
           }
           // SET ROOM AS READY TO CLEAN
-          // OLD METHOD
           me().getPermanentRoom().setLocationStatus(LocationStatus.SANITIZE);
-          // NEW METHOD
-          let sanitizeTask = new task("Sanitize", null, null, null, me().getPermanentRoom());
-          Hospital.janitorTaskList.push(sanitizeTask);
-
         }
         else if(state == PatientTempState.ARRIVED) {
           agentConstant.destination = myGoal.location;

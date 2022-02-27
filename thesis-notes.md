@@ -19,5 +19,6 @@ The basis of these code changes boil down to this:
 
 # Bugs
 - Adding an extra tech to the end of the json file (rather than going through all the work to shift the id numbers down by 1 to add them in) causes them to not function. Likely due to a problem with the time they enter. Probably has to be greater or equal to the timestep of the entry above them.
-- Shift change with new implementation won't delete the old agents. 
+- Shift change with new implementation won't delete the old agents.
+- Each tick is about 100 ms? I still don't think that the fps is locked at 25 (or that there is a tick per frame). I will need to record data in ticks because I am greatly unsure about this. 
 

@@ -180,23 +180,13 @@ export default [
   },
   {
     "name": "patient",
-    "arrivalTick": 105755,
-    "arrivalLocation": "Main Entrance",
-    "age": 62,
-    "severity": "ESI2",
-    "patientName": "David",
-    "gender": "male",
-    "id": 24
-  },
-  {
-    "name": "patient",
     "arrivalTick": 128609,
     "arrivalLocation": "Main Entrance",
     "age": 38,
     "severity": "ESI3",
     "patientName": "Michael",
     "gender": "male",
-    "id": 25
+    "id": 24
   },
   {
     "name": "patient",
@@ -206,17 +196,7 @@ export default [
     "severity": "ESI3",
     "patientName": "James",
     "gender": "male",
-    "id": 26
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 216000,
-    "arrivalLocation": "Main Entrance",
-    "age": 57,
-    "severity": "ESI3",
-    "patientName": "Robert",
-    "gender": "male",
-    "id": 27
+    "id": 25
   },
   {
     "name": "patient",
@@ -226,7 +206,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Ethan",
     "gender": "male",
-    "id": 28
+    "id": 26
   },
   {
     "name": "patient",
@@ -236,17 +216,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Michael",
     "gender": "male",
-    "id": 29
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 395765,
-    "arrivalLocation": "Main Entrance",
-    "age": 25,
-    "severity": "ESI2",
-    "patientName": "Joshua",
-    "gender": "male",
-    "id": 30
+    "id": 27
   },
   {
     "name": "patient",
@@ -256,27 +226,17 @@ export default [
     "severity": "ESI1",
     "patientName": "David",
     "gender": "male",
-    "id": 31
+    "id": 28
   },
   {
     "name": "patient",
-    "arrivalTick": 453747,
+    "arrivalTick": 460000,
     "arrivalLocation": "Main Entrance",
     "age": 4,
     "severity": "ESI2",
     "patientName": "Sophia",
     "gender": "female",
-    "id": 32
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 540000,
-    "arrivalLocation": "Main Entrance",
-    "age": 9,
-    "severity": "ESI2",
-    "patientName": "Olivia",
-    "gender": "female",
-    "id": 33
+    "id": 29
   },
   {
     "name": "patient",
@@ -286,7 +246,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Joshua",
     "gender": "male",
-    "id": 34
+    "id": 30
   },
   {
     "name": "patient",
@@ -296,17 +256,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Ava",
     "gender": "female",
-    "id": 35
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 674341,
-    "arrivalLocation": "Main Entrance",
-    "age": 1,
-    "severity": "ESI2",
-    "patientName": "Ava",
-    "gender": "female",
-    "id": 36
+    "id": 31
   },
   {
     "name": "patient",
@@ -316,7 +266,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Kimberly",
     "gender": "female",
-    "id": 37
+    "id": 32
   },
   {
     "name": "patient",
@@ -326,17 +276,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Jennifer",
     "gender": "female",
-    "id": 38
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 846588,
-    "arrivalLocation": "Main Entrance",
-    "age": 65,
-    "severity": "ESI3",
-    "patientName": "Michael",
-    "gender": "male",
-    "id": 39
+    "id": 33
   },
   {
     "name": "patient",
@@ -346,7 +286,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Jessica",
     "gender": "female",
-    "id": 40
+    "id": 34
   },
   {
     "name": "patient",
@@ -356,17 +296,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Joshua",
     "gender": "male",
-    "id": 41
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 938194,
-    "arrivalLocation": "Main Entrance",
-    "age": 10,
-    "severity": "ESI3",
-    "patientName": "Olivia",
-    "gender": "female",
-    "id": 42
+    "id": 35
   },
   {
     "name": "patient",
@@ -376,7 +306,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Jacob",
     "gender": "male",
-    "id": 43
+    "id": 36
   },
   {
     "name": "patient",
@@ -386,17 +316,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Linda",
     "gender": "female",
-    "id": 44
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1024863,
-    "arrivalLocation": "Main Entrance",
-    "age": 70,
-    "severity": "ESI3",
-    "patientName": "John",
-    "gender": "male",
-    "id": 45
+    "id": 37
   },
   {
     "name": "patient",
@@ -406,7 +326,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Donna",
     "gender": "female",
-    "id": 46
+    "id": 38
   },
   {
     "name": "patient",
@@ -416,17 +336,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Michael",
     "gender": "male",
-    "id": 47
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1080000,
-    "arrivalLocation": "Main Entrance",
-    "age": 45,
-    "severity": "ESI3",
-    "patientName": "Christopher",
-    "gender": "male",
-    "id": 48
+    "id": 39
   },
   {
     "name": "patient",
@@ -436,7 +346,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Sarah",
     "gender": "female",
-    "id": 49
+    "id": 40
   },
   {
     "name": "patient",
@@ -446,17 +356,7 @@ export default [
     "severity": "ESI2",
     "patientName": "David",
     "gender": "male",
-    "id": 50
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1143590,
-    "arrivalLocation": "Main Entrance",
-    "age": 43,
-    "severity": "ESI3",
-    "patientName": "David",
-    "gender": "male",
-    "id": 51
+    "id": 41
   },
   {
     "name": "patient",
@@ -466,7 +366,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Oliver",
     "gender": "male",
-    "id": 52
+    "id": 42
   },
   {
     "name": "patient",
@@ -476,17 +376,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Christopher",
     "gender": "male",
-    "id": 53
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1188757,
-    "arrivalLocation": "Main Entrance",
-    "age": 22,
-    "severity": "ESI2",
-    "patientName": "Hannah",
-    "gender": "female",
-    "id": 54
+    "id": 43
   },
   {
     "name": "patient",
@@ -496,7 +386,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Olivia",
     "gender": "female",
-    "id": 55
+    "id": 44
   },
   {
     "name": "patient",
@@ -506,17 +396,7 @@ export default [
     "severity": "ESI1",
     "patientName": "Isabella",
     "gender": "female",
-    "id": 56
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1250087,
-    "arrivalLocation": "Main Entrance",
-    "age": 3,
-    "severity": "ESI2",
-    "patientName": "Ava",
-    "gender": "female",
-    "id": 57
+    "id": 45
   },
   {
     "name": "patient",
@@ -526,7 +406,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Michael",
     "gender": "male",
-    "id": 58
+    "id": 46
   },
   {
     "name": "patient",
@@ -536,17 +416,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Matthew",
     "gender": "male",
-    "id": 59
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1299128,
-    "arrivalLocation": "Main Entrance",
-    "age": 8,
-    "severity": "ESI3",
-    "patientName": "Emma",
-    "gender": "female",
-    "id": 60
+    "id": 47
   },
   {
     "name": "patient",
@@ -556,7 +426,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Robert",
     "gender": "male",
-    "id": 61
+    "id": 48
   },
   {
     "name": "patient",
@@ -566,17 +436,7 @@ export default [
     "severity": "ESI2",
     "patientName": "William",
     "gender": "male",
-    "id": 62
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1340022,
-    "arrivalLocation": "Main Entrance",
-    "age": 44,
-    "severity": "ESI3",
-    "patientName": "Jennifer",
-    "gender": "female",
-    "id": 63
+    "id": 49
   },
   {
     "name": "patient",
@@ -586,7 +446,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Jayden",
     "gender": "male",
-    "id": 64
+    "id": 50
   },
   {
     "name": "patient",
@@ -596,17 +456,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Jennifer",
     "gender": "female",
-    "id": 65
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1404296,
-    "arrivalLocation": "Main Entrance",
-    "age": 56,
-    "severity": "ESI3",
-    "patientName": "Karen",
-    "gender": "female",
-    "id": 66
+    "id": 51
   },
   {
     "name": "patient",
@@ -616,7 +466,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Robert",
     "gender": "male",
-    "id": 67
+    "id": 52
   },
   {
     "name": "patient",
@@ -626,17 +476,7 @@ export default [
     "severity": "ESI2",
     "patientName": "John",
     "gender": "male",
-    "id": 68
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1460411,
-    "arrivalLocation": "Main Entrance",
-    "age": 69,
-    "severity": "ESI3",
-    "patientName": "Susan",
-    "gender": "female",
-    "id": 69
+    "id": 53
   },
   {
     "name": "patient",
@@ -646,7 +486,7 @@ export default [
     "severity": "ESI3",
     "patientName": "James",
     "gender": "male",
-    "id": 70
+    "id": 54
   },
   {
     "name": "patient",
@@ -656,17 +496,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Hannah",
     "gender": "female",
-    "id": 71
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1531543,
-    "arrivalLocation": "Main Entrance",
-    "age": 19,
-    "severity": "ESI3",
-    "patientName": "Madison",
-    "gender": "female",
-    "id": 72
+    "id": 55
   },
   {
     "name": "patient",
@@ -676,7 +506,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Barbara",
     "gender": "female",
-    "id": 73
+    "id": 56
   },
   {
     "name": "patient",
@@ -686,17 +516,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Isabella",
     "gender": "female",
-    "id": 74
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1568116,
-    "arrivalLocation": "Main Entrance",
-    "age": 52,
-    "severity": "ESI3",
-    "patientName": "Mary",
-    "gender": "female",
-    "id": 75
+    "id": 57
   },
   {
     "name": "patient",
@@ -706,7 +526,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Melissa",
     "gender": "female",
-    "id": 76
+    "id": 58
   },
   {
     "name": "patient",
@@ -716,17 +536,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Matthew",
     "gender": "male",
-    "id": 77
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1645655,
-    "arrivalLocation": "Main Entrance",
-    "age": 34,
-    "severity": "ESI3",
-    "patientName": "Jennifer",
-    "gender": "female",
-    "id": 78
+    "id": 59
   },
   {
     "name": "patient",
@@ -736,7 +546,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Madison",
     "gender": "female",
-    "id": 79
+    "id": 60
   },
   {
     "name": "patient",
@@ -746,17 +556,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Ethan",
     "gender": "male",
-    "id": 80
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1702307,
-    "arrivalLocation": "Main Entrance",
-    "age": 45,
-    "severity": "ESI2",
-    "patientName": "Amy",
-    "gender": "female",
-    "id": 81
+    "id": 61
   },
   {
     "name": "patient",
@@ -766,7 +566,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Christopher",
     "gender": "male",
-    "id": 82
+    "id": 62
   },
   //
   // PAST HERE ARE THE SHIFT CHANGES AT 6 PM
@@ -946,7 +746,7 @@ export default [
     "severity": "ESI4",
     "patientName": "Samantha",
     "gender": "female",
-    "id": 83
+    "id": 63
   },
   {
     "name": "patient",
@@ -956,17 +756,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Olivia",
     "gender": "female",
-    "id": 84
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1764036,
-    "arrivalLocation": "Ambulance Entrance",
-    "age": 36,
-    "severity": "ESI1",
-    "patientName": "Christopher",
-    "gender": "male",
-    "id": 85
+    "id": 64
   },
   {
     "name": "patient",
@@ -976,7 +766,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Linda",
     "gender": "female",
-    "id": 86
+    "id": 65
   },
   {
     "name": "patient",
@@ -986,17 +776,7 @@ export default [
     "severity": "ESI3",
     "patientName": "John",
     "gender": "male",
-    "id": 87
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1819639,
-    "arrivalLocation": "Main Entrance",
-    "age": 47,
-    "severity": "ESI3",
-    "patientName": "David",
-    "gender": "male",
-    "id": 88
+    "id": 66
   },
   {
     "name": "patient",
@@ -1006,7 +786,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Sarah",
     "gender": "female",
-    "id": 89
+    "id": 67
   },
   {
     "name": "patient",
@@ -1016,17 +796,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Melissa",
     "gender": "female",
-    "id": 90
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1877474,
-    "arrivalLocation": "Main Entrance",
-    "age": 63,
-    "severity": "ESI3",
-    "patientName": "David",
-    "gender": "male",
-    "id": 91
+    "id": 68
   },
   {
     "name": "patient",
@@ -1036,7 +806,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Michael",
     "gender": "male",
-    "id": 92
+    "id": 69
   },
   {
     "name": "patient",
@@ -1046,17 +816,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Isabella",
     "gender": "female",
-    "id": 93
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1940033,
-    "arrivalLocation": "Main Entrance",
-    "age": 58,
-    "severity": "ESI3",
-    "patientName": "Linda",
-    "gender": "female",
-    "id": 94
+    "id": 70
   },
   {
     "name": "patient",
@@ -1066,7 +826,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Jessica",
     "gender": "female",
-    "id": 95
+    "id": 71
   },
   {
     "name": "patient",
@@ -1076,17 +836,7 @@ export default [
     "severity": "ESI3",
     "patientName": "James",
     "gender": "male",
-    "id": 96
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 1991298,
-    "arrivalLocation": "Main Entrance",
-    "age": 46,
-    "severity": "ESI3",
-    "patientName": "Michelle",
-    "gender": "female",
-    "id": 97
+    "id": 72
   },
   {
     "name": "patient",
@@ -1096,7 +846,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Deborah",
     "gender": "female",
-    "id": 98
+    "id": 73
   },
   {
     "name": "patient",
@@ -1106,17 +856,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Michael",
     "gender": "male",
-    "id": 99
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 2052000,
-    "arrivalLocation": "Main Entrance",
-    "age": 44,
-    "severity": "ESI3",
-    "patientName": "Melissa",
-    "gender": "female",
-    "id": 100
+    "id": 74
   },
   {
     "name": "patient",
@@ -1126,7 +866,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Emma",
     "gender": "female",
-    "id": 101
+    "id": 75
   },
   {
     "name": "patient",
@@ -1136,17 +876,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Andrew",
     "gender": "male",
-    "id": 102
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 2135663,
-    "arrivalLocation": "Main Entrance",
-    "age": 60,
-    "severity": "ESI2",
-    "patientName": "Susan",
-    "gender": "female",
-    "id": 103
+    "id": 76
   },
   {
     "name": "patient",
@@ -1156,7 +886,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Emily",
     "gender": "female",
-    "id": 104
+    "id": 77
   },
   {
     "name": "patient",
@@ -1166,17 +896,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Matthew",
     "gender": "male",
-    "id": 105
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 2172909,
-    "arrivalLocation": "Main Entrance",
-    "age": 23,
-    "severity": "ESI3",
-    "patientName": "Matthew",
-    "gender": "male",
-    "id": 106
+    "id": 78
   },
   {
     "name": "patient",
@@ -1186,7 +906,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Sarah",
     "gender": "female",
-    "id": 107
+    "id": 79
   },
   {
     "name": "patient",
@@ -1196,17 +916,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Brittany",
     "gender": "female",
-    "id": 108
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 2229873,
-    "arrivalLocation": "Main Entrance",
-    "age": 52,
-    "severity": "ESI3",
-    "patientName": "Lisa",
-    "gender": "female",
-    "id": 109
+    "id": 80
   },
   {
     "name": "patient",
@@ -1216,7 +926,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Mary",
     "gender": "female",
-    "id": 110
+    "id": 81
   },
   {
     "name": "patient",
@@ -1226,17 +936,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Samantha",
     "gender": "female",
-    "id": 111
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 2292966,
-    "arrivalLocation": "Main Entrance",
-    "age": 52,
-    "severity": "ESI3",
-    "patientName": "Michelle",
-    "gender": "female",
-    "id": 112
+    "id": 82
   },
   {
     "name": "patient",
@@ -1246,7 +946,7 @@ export default [
     "severity": "ESI3",
     "patientName": "John",
     "gender": "male",
-    "id": 113
+    "id": 83
   },
   {
     "name": "patient",
@@ -1256,17 +956,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Melissa",
     "gender": "female",
-    "id": 114
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 2346837,
-    "arrivalLocation": "Main Entrance",
-    "age": 19,
-    "severity": "ESI2",
-    "patientName": "Madison",
-    "gender": "female",
-    "id": 115
+    "id": 84
   },
   {
     "name": "patient",
@@ -1276,7 +966,7 @@ export default [
     "severity": "ESI3",
     "patientName": "James",
     "gender": "male",
-    "id": 116
+    "id": 85
   },
   {
     "name": "patient",
@@ -1286,17 +976,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Christopher",
     "gender": "male",
-    "id": 117
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 2421623,
-    "arrivalLocation": "Main Entrance",
-    "age": 45,
-    "severity": "ESI2",
-    "patientName": "Jason",
-    "gender": "male",
-    "id": 118
+    "id": 86
   },
   {
     "name": "patient",
@@ -1306,7 +986,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Melissa",
     "gender": "female",
-    "id": 119
+    "id": 87
   },
   {
     "name": "patient",
@@ -1316,17 +996,7 @@ export default [
     "severity": "ESI3",
     "patientName": "Amanda",
     "gender": "female",
-    "id": 120
-  },
-  {
-    "name": "patient",
-    "arrivalTick": 2510054,
-    "arrivalLocation": "Main Entrance",
-    "age": 28,
-    "severity": "ESI3",
-    "patientName": "Christopher",
-    "gender": "male",
-    "id": 121
+    "id": 88
   },
   {
     "name": "patient",
@@ -1336,7 +1006,7 @@ export default [
     "severity": "ESI2",
     "patientName": "Melissa",
     "gender": "female",
-    "id": 122
+    "id": 89
   },
   // EXTRA STAFF TO MEET DEMAND
   // {

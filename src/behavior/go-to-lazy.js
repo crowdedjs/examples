@@ -71,7 +71,7 @@ class GoToLazy{
           let distanceToPatient = differencePatient.lengthSquared();
 
           //if (distanceToWaypoint < 2 && distanceToPatient < 2) {
-          if (distanceToWaypoint < 4 && distanceToPatient < 4) {
+          if (distanceToWaypoint < 2 && distanceToPatient < 2) {
             agent.destination = new Vector3(loc.x, loc.y, loc.z);
             frameAgentDetail.pose = "Idle";
             return fluentBehaviorTree.BehaviorTreeStatus.Success;
