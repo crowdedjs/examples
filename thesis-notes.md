@@ -17,15 +17,17 @@ The basis of these code changes boil down to this:
 - Limit rooms each agent should take tasks for
 - Could the code be even DRY-er? Almost every new tree has the same structure, so couldn't it be simplified more? Probably out of scope for the timeline and purpose of this project.
 
-# Bugs
-- Adding an extra tech to the end of the json file (rather than going through all the work to shift the id numbers down by 1 to add them in) causes them to not function. Likely due to a problem with the time they enter. Probably has to be greater or equal to the timestep of the entry above them.
-- Shift change with new implementation won't delete the old agents.
+# Known Bugs
+- Adding an extra tech/agent to the end of the json file (rather than going through all the work to shift the id numbers down by 1 to add them in) causes them to not function. Likely due to a problem with the time they enter. Probably has to be greater or equal to the timestep of the entry above them.
+- Shift change with new implementation won't delete the old agents. Sometimes patients aren't deleted either and they become an amalgamous monster.
 - Each tick is about 100 ms? I still don't think that the fps is locked at 25 (or that there is a tick per frame). I will need to record data in ticks because I am greatly unsure about this. 
 
 # Data Gathering
-- Should probably limit to about 12 hours, getting too many issues to do full 24.
-- Need to find sweet spot for number of patients to deploy, too many causes issues (usually once the hospital hits capacity).
+- Need to find sweet spot for number of patients to deploy, too many with current amount of medical agents.
 - No shift change, but might need to use it at end of 12 hours to get agent data
-- Crash on new implementation? Why??
+- Need to figure out exact number of agents of each type to use as well.
+- Need to denote the exact behavior line used. For instance, some patients are booked rather than sent to a room. All patients get an xray or ct.
+- Should i exclude booked patient data?
+- Gather data in ticks?
 
 
