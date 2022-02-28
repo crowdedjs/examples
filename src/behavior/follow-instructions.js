@@ -29,7 +29,7 @@ class FollowInstructions {
         let state = me().getPatientTempState();
         
         let myGoal = Hospital.locations.find(l => l.name == "Check In");
-        if (me().arrivalLocation == "Ambulance Entrance") {
+        if (me().arrivalLocation.name == "Ambulance Entrance") {
           myGoal = Hospital.locations.find(l => l.name == "Ambulance Entrance");
         }
 

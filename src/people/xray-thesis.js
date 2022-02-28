@@ -38,7 +38,28 @@ class xrayThesis {
         .sequence("XRay Behaviors")
             .splice(new GoTo(self.index, myGoal.location).tree)
 
-            .splice(new AssignComputer(myIndex, myGoal.location).tree) // RESIDENT PLACE
+            .splice(new AssignComputer(myIndex, computer.location).tree) // RESIDENT PLACE
+
+            // QUEUEING FOLLOWING TASKS NEEDS TO COME LAST, OTHERWISE TASKS ARE BLITZED THROUGH TOO QUICKLY
+            .do("Queue Tasks", (t) => {
+                while (taskQueue.length > 0) {
+                    switch(taskQueue[0].taskID) {
+                        case "Pick Up Patient":
+                            Hospital.techTaskList.push(taskQueue.shift());
+                            break;
+                        case "XRay Pickup":
+                            Hospital.techTaskList.push(taskQueue.shift());
+                            break;
+                        case "Radiology Review Scan":
+                            Hospital.radiologyTaskList.push(taskQueue.shift());
+                            break;
+                        default: break;
+                    }
+                }
+
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            })
+
             // Add a behavior here or in the selector that will order the tasks (by severity)?
             .selector("Task List Tasks")
                 // THIS TASK IS GIVEN BY THE XRAY TO THE TECH AND MUST BE DONE BEFORE GETTING A TASK
@@ -61,10 +82,11 @@ class xrayThesis {
                             xrayPatient.setImagingRoom("XRay 2");
                             techEscortTask = new task("Pick Up Patient", xrayPatient.getSeverity(), 0, xrayPatient, xray2);
                         }
-                        Hospital.techTaskList.push(techEscortTask);
+                        //Hospital.techTaskList.push(techEscortTask);
+                        taskQueue.push(techEscortTask);
                     }
 
-                    return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 })
 
                 .do("Get a Task", (t) => {
@@ -75,7 +97,6 @@ class xrayThesis {
                         if (Hospital.aTeam[5] == null) {
                             Hospital.aTeam[5] = me();
                         }
-                        me().replacement = true;
 
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
@@ -83,6 +104,7 @@ class xrayThesis {
                     else if (Hospital.activeXRay.length > 2 && Hospital.activeXRay[0] == me()) {
                         let clockOutTask = new task("Clock Out", null, null, null, entrance);
                         me().setTask(clockOutTask);
+                        me().replacement = true;
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     // IF ALREADY ALLOCATED A TASK, CONTINUE
@@ -172,22 +194,6 @@ class xrayThesis {
                 {
                     me().taskTime == me().taskTime--;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
-                }
-
-                return fluentBehaviorTree.BehaviorTreeStatus.Success;
-            })
-            // QUEUEING FOLLOWING TASKS NEEDS TO COME LAST, OTHERWISE TASKS ARE BLITZED THROUGH TOO QUICKLY
-            .do("Queue Tasks", (t) => {
-                while (taskQueue.length > 0) {
-                    switch(taskQueue[0].taskID) {
-                        case "XRay Pickup":
-                            Hospital.techTaskList.push(taskQueue.shift());
-                            break;
-                        case "Radiology Review Scan":
-                            Hospital.radiologyTaskList.push(taskQueue.shift());
-                            break;
-                        default: break;
-                    }
                 }
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;

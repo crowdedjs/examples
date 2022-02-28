@@ -22,3 +22,10 @@ The basis of these code changes boil down to this:
 - Shift change with new implementation won't delete the old agents.
 - Each tick is about 100 ms? I still don't think that the fps is locked at 25 (or that there is a tick per frame). I will need to record data in ticks because I am greatly unsure about this. 
 
+# Data Gathering
+- Should probably limit to about 12 hours, getting too many issues to do full 24.
+- Need to find sweet spot for number of patients to deploy, too many causes issues (usually once the hospital hits capacity).
+- No shift change, but might need to use it at end of 12 hours to get agent data
+- Crash on new implementation? Why??
+
+

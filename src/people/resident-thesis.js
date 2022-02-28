@@ -40,6 +40,36 @@ class residentThesis {
             .splice(new GoTo(self.index, computer.location).tree)
             //.splice(new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").location).tree)
             .splice(new AssignComputer(myIndex, computer.location).tree) // RESIDENT PLACE
+
+            // QUEUEING FOLLOWING TASKS NEEDS TO COME LAST, OTHERWISE TASKS ARE BLITZED THROUGH TOO QUICKLY
+            .do("Queue Tasks", (t) => {
+                while (taskQueue.length > 0) {
+                    switch(taskQueue[0].taskID) {
+                        case "EKG Consult":
+                            Hospital.residentTaskList.push(taskQueue.shift());
+                            break;
+                        case "EKG Order XRay":
+                            Hospital.residentTaskList.push(taskQueue.shift());
+                            break;
+                        case "EKG Order CAT":
+                            Hospital.residentTaskList.push(taskQueue.shift());
+                            break;
+                        case "Attending Consult":
+                            Hospital.residentTaskList.push(taskQueue.shift());
+                            break;
+                        case "Patient Consult":
+                            Hospital.residentTaskList.push(taskQueue.shift());
+                            break;
+                        case "Nurse Discharge Patient":
+                            Hospital.nurseTaskList.push(taskQueue.shift());
+                            break;
+                        default: break;
+                    }
+                }
+
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            })
+            
             // Add a behavior here or in the selector that will order the tasks (by severity)?
             .selector("Task List Tasks")
                 .do("Get a Task", (t) => {
@@ -276,34 +306,6 @@ class residentThesis {
                 {
                     me().taskTime == me().taskTime--;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
-                }
-
-                return fluentBehaviorTree.BehaviorTreeStatus.Success;
-            })
-            // QUEUEING FOLLOWING TASKS NEEDS TO COME LAST, OTHERWISE TASKS ARE BLITZED THROUGH TOO QUICKLY
-            .do("Queue Tasks", (t) => {
-                while (taskQueue.length > 0) {
-                    switch(taskQueue[0].taskID) {
-                        case "EKG Consult":
-                            Hospital.residentTaskList.push(taskQueue.shift());
-                            break;
-                        case "EKG Order XRay":
-                            Hospital.residentTaskList.push(taskQueue.shift());
-                            break;
-                        case "EKG Order CAT":
-                            Hospital.residentTaskList.push(taskQueue.shift());
-                            break;
-                        case "Attending Consult":
-                            Hospital.residentTaskList.push(taskQueue.shift());
-                            break;
-                        case "Patient Consult":
-                            Hospital.residentTaskList.push(taskQueue.shift());
-                            break;
-                        case "Nurse Discharge Patient":
-                            Hospital.nurseTaskList.push(taskQueue.shift());
-                            break;
-                        default: break;
-                    }
                 }
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;

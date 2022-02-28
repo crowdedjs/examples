@@ -42,12 +42,8 @@ class PatientAgent extends APatient {
     this.destY = 0;
     this.destZ = 0;
     
-    // ORIGINAL BEHAVIOR
     this.behavior = new patient( agent.id, Hospital.locations.find(l => l.name == "Check In"));
     
-    // NEW BEHAVIOR
-    //this.behavior = new patientThesis( agent.id, Hospital.locations.find(l => l.name == "Check In"));
-
     if (startLocation == Hospital.locations.find(l => l.name == "Ambulance Entrance")) {
       this.behavior = new patient( agent.id, Hospital.locations.find(l => l.name == "Ambulance Entrance"));
     }   

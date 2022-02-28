@@ -38,7 +38,27 @@ class ctThesis {
         .sequence("CT Behaviors")
             .splice(new GoTo(self.index, myGoal.location).tree)
 
-            .splice(new AssignComputer(myIndex, myGoal.location).tree) // RESIDENT PLACE
+            .splice(new AssignComputer(myIndex, computer.location).tree) // RESIDENT PLACE
+
+            // QUEUEING FOLLOWING TASKS NEEDS TO COME LAST, OTHERWISE TASKS ARE BLITZED THROUGH TOO QUICKLY
+            .do("Queue Tasks", (t) => {
+                while (taskQueue.length > 0) {
+                    switch(taskQueue[0].taskID) {
+                        case "Pick Up Patient":
+                            Hospital.techTaskList.push(taskQueue.shift());
+                            break;
+                        case "CT Pickup":
+                            Hospital.techTaskList.push(taskQueue.shift());
+                            break;
+                        case "Radiology Review Scan":
+                            Hospital.radiologyTaskList.push(taskQueue.shift());
+                            break;
+                        default: break;
+                    }
+                }
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            })
+
             // Add a behavior here or in the selector that will order the tasks (by severity)?
             .selector("Task List Tasks")
                 // THIS TASK IS GIVEN BY THE CT TO THE TECH AND MUST BE DONE BEFORE GETTING A TASK
@@ -65,7 +85,7 @@ class ctThesis {
                         taskQueue.push(techEscortTask);
                     }
 
-                    return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    return fluentBehaviorTree.BehaviorTreeStatus.Success;
                 })
 
                 .do("Get a Task", (t) => {
@@ -166,25 +186,7 @@ class ctThesis {
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
-            // QUEUEING FOLLOWING TASKS NEEDS TO COME LAST, OTHERWISE TASKS ARE BLITZED THROUGH TOO QUICKLY
-            .do("Queue Tasks", (t) => {
-                while (taskQueue.length > 0) {
-                    switch(taskQueue[0].taskID) {
-                        case "Queue Escort Patient":
-                            Hospital.techTaskList.push(taskQueue.shift());
-                            break;
-                        case "CT Pickup":
-                            Hospital.techTaskList.push(taskQueue.shift());
-                            break;
-                        case "Radiology Review Scan":
-                            Hospital.radiologyTaskList.push(taskQueue.shift());
-                            break;
-                        default: break;
-                    }
-                }
-
-                return fluentBehaviorTree.BehaviorTreeStatus.Success;
-            })
+            
         .end()
         .build()
     }
