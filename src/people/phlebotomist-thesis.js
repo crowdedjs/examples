@@ -27,14 +27,14 @@ class phlebotomistThesis {
         .parallel("Testing Parallel", 2, 2)
             .do("Testing", (t) => {
                 // This would tick up while on the way back to the computer, which isn't desirable.
-                if (me().onTheClock && me().getTask() == null && myGoal == computer) {
+                if (me().onTheClock && me().getTask() == null && me().taskTime == 0) {
                     me().idleTime++;
                 }
-                if (me().lengthOfStay == 43200 || me().lengthOfStay == 86400) {
+                if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
                     let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
                     console.log("Phlebotomist Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
                     me().idleTime = 0;
-                    me().lengthOfStay = 0;
+                    //me().lengthOfStay = 0;
                 }
                 me().lengthOfStay++;
                 return fluentBehaviorTree.BehaviorTreeStatus.Running; 

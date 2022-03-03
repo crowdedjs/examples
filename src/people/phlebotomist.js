@@ -33,11 +33,11 @@ class phlebotomist {
           if (me().amIdle) {
               me().idleTime++;
           }
-          if (me().lengthOfStay == 43200 || me().lengthOfStay == 86400) {
+          if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
             let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
             console.log("Phlebotomist Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
             me().idleTime = 0;
-            me().lengthOfStay = 0;
+            //me().lengthOfStay = 0;
           }
         me().lengthOfStay++;
           return fluentBehaviorTree.BehaviorTreeStatus.Running; 
