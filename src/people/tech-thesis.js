@@ -33,6 +33,13 @@ class techThesis {
                 if (me().onTheClock && me().getTask() == null && myGoal == computer) {
                     me().idleTime++;
                 }
+                if (me().lengthOfStay == 43200 || me().lengthOfStay == 86400) {
+                    let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+                    console.log("Tech Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    me().idleTime = 0;
+                    me().lengthOfStay = 0;
+                }
+                me().lengthOfStay++;
                 return fluentBehaviorTree.BehaviorTreeStatus.Running; 
             })
         // Consider limiting the rooms nurses can be assigned to tasks to
@@ -45,6 +52,24 @@ class techThesis {
             .end()
             //.splice(new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").location).tree)
             .splice(new AssignComputer(myIndex, computer.location).tree) // TECH PLACE
+
+            .do("Queue Tasks", (t) => {
+                while (taskQueue.length > 0) {
+                    switch(taskQueue[0].taskID) {
+                        case "EKG Read":
+                            Hospital.residentTaskList.push(taskQueue.shift());
+                            break;
+                        case "XRay Do Scan":
+                            Hospital.xrayTaskList.push(taskQueue.shift());
+                            break;
+                        case "CAT Do Scan":
+                            Hospital.ctTaskList.push(taskQueue.shift());
+                            break;
+                        default: break;
+                    }
+                }
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            })
             
             // Add a behavior here or in the selector that will order the tasks (by severity)?
             .selector("Task List Tasks")
@@ -117,7 +142,9 @@ class techThesis {
                         Hospital.activeTech.shift();
                         
                         // TESTING
-                        console.log("Tech Idle Time: " + me().idleTime + " ticks");
+                        let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+                        console.log("Tech Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                        //console.log("Tech LOS: " + me().lengthOfStay + " ticks");
                         Hospital.techData.push(me().idleTime);
 
                         me().inSimulation = false;
@@ -247,26 +274,7 @@ class techThesis {
                 }
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
-            })
-            // QUEUEING FOLLOWING TASKS NEEDS TO COME LAST, OTHERWISE TASKS ARE BLITZED THROUGH TOO QUICKLY
-            .do("Queue Tasks", (t) => {
-                while (taskQueue.length > 0) {
-                    switch(taskQueue[0].taskID) {
-                        case "EKG Read":
-                            Hospital.residentTaskList.push(taskQueue.shift());
-                            break;
-                        case "XRay Do Scan":
-                            Hospital.xrayTaskList.push(taskQueue.shift());
-                            break;
-                        case "CAT Do Scan":
-                            Hospital.ctTaskList.push(taskQueue.shift());
-                            break;
-                        default: break;
-                    }
-                }
-
-                return fluentBehaviorTree.BehaviorTreeStatus.Success;
-            })
+            })            
         .end()
         .end()
         .build()

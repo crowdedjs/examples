@@ -32,6 +32,13 @@ class residentThesis {
                 if (me().onTheClock && me().getTask() == null && myGoal == computer) {
                     me().idleTime++;
                 }
+                if (me().lengthOfStay == 43200 || me().lengthOfStay == 86400) {
+                    let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+                    console.log("Resident Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    me().idleTime = 0;
+                    me().lengthOfStay = 0;
+                }
+                me().lengthOfStay++;
                 return fluentBehaviorTree.BehaviorTreeStatus.Running; 
             })
         // Consider limiting the rooms nurses can be assigned to tasks to
@@ -137,7 +144,8 @@ class residentThesis {
                         Hospital.activeResident.shift();
                         
                         // TESTING
-                        console.log("Resident Idle Time: " + me().idleTime + " ticks");
+                        let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+                        console.log("Resident Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
                         Hospital.residentData.push(me().idleTime);
 
                         me().inSimulation = false;

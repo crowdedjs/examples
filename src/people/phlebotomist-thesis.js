@@ -30,6 +30,13 @@ class phlebotomistThesis {
                 if (me().onTheClock && me().getTask() == null && myGoal == computer) {
                     me().idleTime++;
                 }
+                if (me().lengthOfStay == 43200 || me().lengthOfStay == 86400) {
+                    let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+                    console.log("Phlebotomist Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    me().idleTime = 0;
+                    me().lengthOfStay = 0;
+                }
+                me().lengthOfStay++;
                 return fluentBehaviorTree.BehaviorTreeStatus.Running; 
             })
         // Consider limiting the rooms nurses can be assigned to tasks to
@@ -105,7 +112,8 @@ class phlebotomistThesis {
                         Hospital.activePhleb.shift();
                         
                         // TESTING
-                        console.log("Phlebotomist Idle Time: " + me().idleTime + " ticks");
+                        let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+                        console.log("Phlebotomist Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
                         Hospital.phlebData.push(me().idleTime);
 
                         me().inSimulation = false;
@@ -113,12 +121,13 @@ class phlebotomistThesis {
                     }
                 })
                 
-                // THIS TASK IS GIVEN BY ...
+                // THIS TASK IS GIVEN BY THE NURSE
                 .do("Take Blood", (t) => {
                     if (me().getTask().taskID != "Take Blood") {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
+                        me().taskTime = 100;
                         Hospital.computer.getEntry(me().getTask().patient).setPhlebotomist(me());
                         Hospital.computer.getEntry(me().getTask().patient).setBlood("Drawn");
                         me().setTask(null);

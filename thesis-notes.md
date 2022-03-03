@@ -8,6 +8,7 @@ The basis of these code changes boil down to this:
 - There cannot be an operation in .splice(HERE). It can accept a variable or an array value, but you cannot pull a value from an array in another file (like Hospital.sampleArray[number]) or even get a value from an operation and plug it into an existing array. This means to send behaviors back and forth, you must initialize it into the file, and then use that variable.
 - Behavior must be stated outright and or must be established at the top of the file
 - even getting the number and doing like testArray[tempValue] doesn't work. It must just be a number.
+- There are 3,456,000 ticks total in the simulation. 1 tick per frame, 25 frames per second. Can confirm, 1,728,000 ticks is 12 hours on the dot into the simulation. (86400 x 1000 = 86400000 / 25 = 3456000)
 
 # To Do
  - probably should make a flow chart (include in thesis) that illustrates the flow of tasks
@@ -20,14 +21,14 @@ The basis of these code changes boil down to this:
 # Known Bugs
 - Adding an extra tech/agent to the end of the json file (rather than going through all the work to shift the id numbers down by 1 to add them in) causes them to not function. Likely due to a problem with the time they enter. Probably has to be greater or equal to the timestep of the entry above them.
 - Shift change with new implementation won't delete the old agents. Sometimes patients aren't deleted either and they become an amalgamous monster.
-- Each tick is about 100 ms? I still don't think that the fps is locked at 25 (or that there is a tick per frame). I will need to record data in ticks because I am greatly unsure about this. 
+- Ticks values used in json arrival file is odd. It is based on (actual tick value * 1000) / 25. The actual number of ticks in the simulation is 86400, with 1 tick per second.
 
 # Data Gathering
-- Need to find sweet spot for number of patients to deploy, too many with current amount of medical agents.
+- Need to find sweet spot for number of patients to deploy, too many with current amount of medical agents, so up the current # of medical agents.
 - No shift change, but might need to use it at end of 12 hours to get agent data
-- Need to figure out exact number of agents of each type to use as well.
-- Need to denote the exact behavior line used. For instance, some patients are booked rather than sent to a room. All patients get an xray or ct.
-- Should i exclude booked patient data?
-- Gather data in ticks?
+- Need to figure out exact number of agents of each type to use as well --> Dr Ricks will get this info to me, just up the agents asap
+- Need to denote the exact behavior line used. All patients get an xray or ct.
+- Should i exclude booked patient data --> Yes, remove booking patients entirely for now.
+- Convert ticks to in-simulation time
 
 

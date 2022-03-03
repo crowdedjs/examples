@@ -18,13 +18,28 @@ class janitorialThesis {
     let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
 
     let myGoal = Hospital.locations.find(l => l.name == goToName);
+    let computer = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
     let entrance = Hospital.getLocationByName("Main Entrance");
 
     let myRoom;
 
     this.tree = builder
-      
+    
+      .parallel("Testing Parallel", 2, 2)
+        .do("Testing", (t) => {
+            if (me().onTheClock && me().getTask() == null && myGoal == computer) {
+                me().idleTime++;
+            }
+            if (me().lengthOfStay == 43200 || me().lengthOfStay == 86400) {
+              let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+              console.log("Janitor Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+              me().idleTime = 0;
+              me().lengthOfStay = 0;
+            }
+            me().lengthOfStay++;
+            return fluentBehaviorTree.BehaviorTreeStatus.Running; 
+        })
       .sequence("Janitor Behaviors")
         .splice(new GoTo(self.index, myGoal.location).tree)
         .selector("Task List Tasks")
@@ -61,10 +76,11 @@ class janitorialThesis {
               .sequence("Go to Task")
                   .do("Determine Location", (t) => {
                       if (me().getTask().location != null) {
-                          myGoal = me().getTask().location;
+                        myGoal = me().getTask().location;
                       }
                       else {
-                          myGoal = Hospital.locations.find(l => l.name == goToName);
+                        //myGoal = Hospital.locations.find(l => l.name == goToName);
+                        myGoal = computer;
                       }
                       return fluentBehaviorTree.BehaviorTreeStatus.Success; 
                   })
@@ -110,17 +126,7 @@ class janitorialThesis {
 
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         })
-        
-      //   .do("Clock Out", (t) => {
-      //     if (!me().replacement) {
-      //       return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-      //     }
-      //     else {
-      //       //Hospital.activeJanitor.shift();
-      //       me().inSimulation = false;
-      //       return fluentBehaviorTree.BehaviorTreeStatus.Running;
-      //     }
-      //   }) 
+      .end()
       .end()
       .build();
   }

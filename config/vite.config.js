@@ -4,9 +4,9 @@ export default {
   },
   resolve: {
     alias: {
-      //"@crowdedjs/crowd-setup/": "/../crowd-setup/",
+      //"@crowdedjs/crowd-setup/": "/../node_modules/@crowdedjs/crowd-setup/",
       //"@crowdedjs/worker":"../worker/",
-      //"@crowdedjs/fluent-behavior-tree":"../fluent-behavior-tree/"
+      //"@crowdedjs/fluent-behavior-tree":"../fluent-behavior-tree/",
       //"@crowdedjs/assets":"/../assets/"
     }
   }

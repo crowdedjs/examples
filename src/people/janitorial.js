@@ -20,8 +20,22 @@ class janitorial {
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
 
     this.tree = builder
-      .sequence("Janitorial")
-      
+    
+    .parallel("Testing Parallel", 2, 2)
+      .do("Testing", (t) => {
+          if (me().amIdle) {
+              me().idleTime++;
+          }
+          if (me().lengthOfStay == 43200 || me().lengthOfStay == 86400) {
+            let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+            console.log("Janitor Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+            me().idleTime = 0;
+            me().lengthOfStay = 0;
+          }
+          me().lengthOfStay++;
+          return fluentBehaviorTree.BehaviorTreeStatus.Running; 
+      })  
+    .sequence("Janitorial")
       .selector("Check for arrival")  
         .condition("Clock in", async (t) => me().onTheClock)
         .do("SHIFT CHANGE", (t) => {
@@ -62,9 +76,11 @@ class janitorial {
       //find room to clean
       .do("Find Room to Clean", (t) => {               
         if (typeof Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE) === 'undefined') {
+          medicalStaff.amIdle = true;
           return fluentBehaviorTree.BehaviorTreeStatus.Failure;
         }
         else {
+          medicalStaff.amIdle = false;
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         }
       })
@@ -80,9 +96,10 @@ class janitorial {
         Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE).setLocationStatus(LocationStatus.NONE);
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })
-            
-      .end()
-      .build();
+    
+    .end()      
+    .end()
+    .build();
   }
 
   async update( crowd, msec) {

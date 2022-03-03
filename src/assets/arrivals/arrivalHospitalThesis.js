@@ -221,9 +221,11 @@ export default [
   {
     "name": "patient",
     "arrivalTick": 432000,
-    "arrivalLocation": "Ambulance Entrance",
+    //"arrivalLocation": "Ambulance Entrance",
+    "arrivalLocation": "Main Entrance",
     "age": 39,
-    "severity": "ESI1",
+    //"severity": "ESI1",
+    "severity": "ESI3",
     "patientName": "David",
     "gender": "male",
     "id": 28
@@ -391,9 +393,11 @@ export default [
   {
     "name": "patient",
     "arrivalTick": 1236019,
-    "arrivalLocation": "Ambulance Entrance",
+    //"arrivalLocation": "Ambulance Entrance",
+    "arrivalLocation": "Main Entrance",
     "age": 2,
-    "severity": "ESI1",
+    //"severity": "ESI1",
+    "severity": "ESI3",
     "patientName": "Isabella",
     "gender": "female",
     "id": 45
@@ -575,89 +579,89 @@ export default [
   //   "name": "Nurse",
   //   "type": "Triage Nurse",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 143
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 63
   // },
   // {
   //   "name": "Nurse",
   //   "type": "Triage Nurse",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 144
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 64
   // },
   // {
   //   "name": "Tech",
   //   "type": "Tech",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 145
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 65
   // },
   // {
   //   "name": "Tech",
   //   "type": "Tech",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 146
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 66
   // },
   // {
   //   "name": "Nurse",
   //   "type": "Nurse",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 147
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 67
   // },
   // {
   //   "name": "Nurse",
   //   "type": "Nurse",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 148
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 68
   // },
   // {
   //   "name": "Nurse",
   //   "type": "Greeter Nurse",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 149
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 69
   // },
   // {
   //   "name": "Tech",
   //   "type": "CT",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 150
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 70
   // },
   // {
   //   "name": "Tech",
   //   "type": "CT",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 151
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 71
   // },
   // {
   //   "name": "Tech",
   //   "type": "Janitorial",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 152
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 72
   // },
   // {
   //   "name": "Tech",
   //   "type": "Radiology",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 153
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 73
   // },
   // // {
   // //   "name": "Attending",
@@ -670,17 +674,17 @@ export default [
   //   "name": "Resident",
   //   "type": "Resident",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 154
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 74
   // },
   // {
   //   "name": "Resident",
   //   "type": "Resident",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 155
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 75
   // },
   // // {
   // //   "name": "Pharmacist",
@@ -693,49 +697,49 @@ export default [
   //   "name": "Tech",
   //   "type": "XRay",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 156
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 76
   // },
   // {
   //   "name": "Tech",
   //   "type": "XRay",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 157
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 77
   // },
   // {
   //   "name": "Tech",
   //   "type": "Phlebotomist",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 158
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 78
   // },
   // {
   //   "name": "Tech",
   //   "type": "Phlebotomist",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 159
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 79
   // },
   // {
   //   "name": "Tech",
   //   "type": "Phlebotomist",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 160
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 80
   // },
   // {
   //   "name": "Tech",
   //   "type": "Phlebotomist",
   //   "arrivalLocation": "Main Entrance",
-  //   //"arrivalTick": 1728000,
-  //   "arrivalTick": 116000,
-  //   "id": 161
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 81
   // },
   // PATIENTS ON SECOND HALF OF SIMULATION
   {
@@ -1008,19 +1012,4 @@ export default [
     "gender": "female",
     "id": 89
   },
-  // EXTRA STAFF TO MEET DEMAND
-  // {
-  //   "name": "Tech",
-  //   "type": "Tech",
-  //   "arrivalLocation": "Main Entrance",
-  //   "arrivalTick": 10,
-  //   "id": 242
-  // },
-  // {
-  //   "name": "Tech",
-  //   "type": "Tech",
-  //   "arrivalLocation": "Main Entrance",
-  //   "arrivalTick": 1728000,
-  //   "id": 243
-  // },
 ]

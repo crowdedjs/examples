@@ -32,6 +32,13 @@ class radiologyThesis {
                 if (me().onTheClock && me().getTask() == null && myGoal == computer) {
                     me().idleTime++;
                 }
+                if (me().lengthOfStay == 43200 || me().lengthOfStay == 86400) {
+                    let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+                    console.log("Radiology Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    me().idleTime = 0;
+                    me().lengthOfStay = 0;
+                }
+                me().lengthOfStay++;
                 return fluentBehaviorTree.BehaviorTreeStatus.Running; 
             })
         // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
@@ -39,7 +46,22 @@ class radiologyThesis {
             .splice(new GoTo(self.index, myGoal.location).tree)
             //.splice(new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").location).tree)
             .splice(new AssignComputer(myIndex, myGoal.location).tree) // CT 2
+            
             // Add a behavior here or in the selector that will order the tasks (by severity)?
+            
+            .do("Queue Tasks", (t) => {
+                while (taskQueue.length > 0) {
+                    switch(taskQueue[0].taskID) {
+                        case "Resident Scan Read":
+                            Hospital.residentTaskList.push(taskQueue.shift());
+                            break;
+                        default: break;
+                    }
+                }
+
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            })
+
             .selector("Task List Tasks")
                 .do("Get a Task", (t) => {
                     // CHECK IF NEEDED TO CLOCK IN
@@ -95,7 +117,8 @@ class radiologyThesis {
                         Hospital.activeRadio.shift();
                         
                         // TESTING
-                        console.log("Radiology Idle Time: " + me().idleTime + " ticks");
+                        let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+                        console.log("Radiology Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
                         Hospital.radioData.push(me().idleTime);
 
                         me().inSimulation = false;
@@ -132,20 +155,7 @@ class radiologyThesis {
                 }
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
-            })
-            // QUEUEING FOLLOWING TASKS NEEDS TO COME LAST, OTHERWISE TASKS ARE BLITZED THROUGH TOO QUICKLY
-            .do("Queue Tasks", (t) => {
-                while (taskQueue.length > 0) {
-                    switch(taskQueue[0].taskID) {
-                        case "Resident Scan Read":
-                            Hospital.residentTaskList.push(taskQueue.shift());
-                            break;
-                        default: break;
-                    }
-                }
-
-                return fluentBehaviorTree.BehaviorTreeStatus.Success;
-            })
+            })            
         .end()
         .end()
         .build()

@@ -32,6 +32,13 @@ class nurseThesis {
                 if (me().onTheClock && me().getTask() == null && myGoal == computer) {
                     me().idleTime++;
                 }
+                if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
+                    let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+                    console.log("Nurse Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    me().idleTime = 0;
+                    me().lengthOfStay = 0;
+                }
+                me().lengthOfStay++;
                 return fluentBehaviorTree.BehaviorTreeStatus.Running; 
             })
         // Consider limiting the rooms nurses can be assigned to tasks to
@@ -42,7 +49,22 @@ class nurseThesis {
                 .splice(new GoTo(self.index, computer.location).tree)
             .end()
             .splice(new AssignComputer(myIndex, computer.location).tree) // NURSE PLACE
+            
             // Add a behavior here or in the selector that will order the tasks (by severity)?
+
+            .do("Queue Tasks", (t) => {
+                while (taskQueue.length > 0) {
+                    switch(taskQueue[0].taskID) {
+                        case "Take Blood":
+                            Hospital.phlebotomistTaskList.push(taskQueue.shift());
+                            break;
+                        default: break;
+                    }
+                }
+
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            })
+
             .selector("Task List Tasks")
                 .do("Get a Task", (t) => {
                     // CHECK IF NEEDED TO CLOCK IN
@@ -109,7 +131,8 @@ class nurseThesis {
                         Hospital.activeNurse.shift();
                         
                         // TESTING
-                        console.log("Nurse Idle Time: " + me().idleTime + " ticks");
+                        let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+                        console.log("Nurse Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
                         Hospital.nurseData.push(me().idleTime);
 
                         me().inSimulation = false;
@@ -127,8 +150,13 @@ class nurseThesis {
                         
                         let patientEntry = Hospital.computer.getEntry(me().getTask().patient);
                         patientEntry.setAnsweredQuestions(true);
+                        
+                        // Queue Phlebotomist to take blood
+                        let takeBlood = new task("Take Blood", null, null, me().getTask().patient, me().getTask().location);
+                        taskQueue.push(takeBlood);
+                        
                         me().setTask(null);
-                        me().taskTime = 100;
+
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                 })

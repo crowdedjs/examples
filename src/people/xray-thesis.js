@@ -35,6 +35,20 @@ class xrayThesis {
 
         // Consider limiting the rooms nurses can be assigned to tasks to
         // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
+        .parallel("Testing Parallel", 2, 2)
+            .do("Testing", (t) => {
+                if (me().onTheClock && me().getTask() == null && myGoal == computer) {
+                    me().idleTime++;
+                }
+                if (me().lengthOfStay == 43200 || me().lengthOfStay == 86400) {
+                    let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+                    console.log("X-Ray Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    me().idleTime = 0;
+                    me().lengthOfStay = 0;
+                }
+                me().lengthOfStay++;
+                return fluentBehaviorTree.BehaviorTreeStatus.Running; 
+            })
         .sequence("XRay Behaviors")
             .splice(new GoTo(self.index, myGoal.location).tree)
 
@@ -129,7 +143,8 @@ class xrayThesis {
                                 myGoal = me().getTask().location;
                             }
                             else {
-                                myGoal = Hospital.locations.find(l => l.name == goToName);
+                                //myGoal = Hospital.locations.find(l => l.name == goToName);
+                                myGoal = computer;
                             }
                             return fluentBehaviorTree.BehaviorTreeStatus.Success; 
                         })
@@ -198,6 +213,7 @@ class xrayThesis {
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
+        .end()
         .end()
         .build()
     }

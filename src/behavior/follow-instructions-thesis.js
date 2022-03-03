@@ -74,13 +74,14 @@ class FollowInstructionsThesis {
           }
         }
         else if(state == PatientTempState.DONE){
-          // TESTING - FPS is not 25, gives weird answers
-          //me().lengthOfStay = ((me().ticksPresent * 25) / 1000) / 60;
           me().lengthOfStay = me().ticksPresent;
           let patientDataValues = [me().lengthOfStay, me().waitingTime];
           Hospital.patientData.push(patientDataValues);
-          console.log("Patient " + id + " Length of Stay: " + me().lengthOfStay + " ticks");
-          console.log("Patient " + id + " Waited for: " + me().waitingTime + " ticks");
+          // total simulation time: 24 hours -> 86400 ticks
+          let lengthOfStayMinutes = ((1440 * me().lengthOfStay) / 86400);
+          let waitingTimeMinutes = ((1440 * me().waitingTime) / 86400);
+          console.log("Patient " + id + " Length of Stay: " + me().lengthOfStay + " ticks / " + lengthOfStayMinutes + " minutes in-simulation");
+          console.log("Patient " + id + " Waited for: " + me().waitingTime + " ticks / " + waitingTimeMinutes + " minutes in-simulation");
 
           me().inSimulation = false;
           // ADJUST CTQUEUE OR XRAYQUEUE SO TECH TAKES NEXT PATIENT TO CT ROOM
@@ -107,14 +108,6 @@ class FollowInstructionsThesis {
           agentConstant.destination = myGoal.location;
         }
         else if(state == PatientTempState.BOOKED){
-          // TESTING - FPS is not 25, gives weird answers
-          //me().lengthOfStay = ((me().ticksPresent * 25) / 1000) / 60;
-          me().lengthOfStay = me().ticksPresent;
-          let patientDataValues = [me().lengthOfStay, me().waitingTime];
-          Hospital.patientData.push(patientDataValues);
-          console.log("Patient " + id + " Length of Stay: " + me().lengthOfStay + " ticks");
-          console.log("Patient " + id + " Waited for: " + me().waitingTime + " ticks");
-
           me().inSimulation = false;
         }
         else {

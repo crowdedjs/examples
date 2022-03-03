@@ -49,10 +49,10 @@ class ComputerAssignPatientRoom {
             rooms = Hospital.locations.filter(l=>l.roomType == RoomType.TRAUMA_BAY && l.locationStatus == LocationStatus.NONE );
           }
           // BOOK INTO MAIN HOSPITAL - NEEDS EDITS TO PARAMETERS
-          else if (patient.getSeverity() == "ESI2") {
-            rooms = Hospital.locations.find(l => l.name == "Main Entrance");
+          //else if (patient.getSeverity() == "ESI2") {
+            //rooms = Hospital.locations.find(l => l.name == "Main Entrance");
             //entry.getPatient().setPatientTempState(PatientTempState.BOOKED);
-          }
+          //}
           else          
             rooms = Hospital.locations.filter(l=>l.roomType == RoomType.C_ROOM && l.locationStatus == LocationStatus.NONE );
           

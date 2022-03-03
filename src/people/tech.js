@@ -30,6 +30,13 @@ class tech {
           if (me().amIdle) {
               me().idleTime++;
           }
+          if (me().lengthOfStay == 43200 || me().lengthOfStay == 86400) {
+            let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+            console.log("Tech Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+            me().idleTime = 0;
+            me().lengthOfStay = 0;
+          }
+          me().lengthOfStay++;
           return fluentBehaviorTree.BehaviorTreeStatus.Running; 
       })
     .sequence("Assign")    
@@ -71,7 +78,8 @@ class tech {
             }
 
             // TESTING
-            console.log("Tech Idle Time: " + me().idleTime + " ticks");
+            let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+            console.log("Tech Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
             Hospital.techData.push(me().idleTime);
 
             me().inSimulation = false;

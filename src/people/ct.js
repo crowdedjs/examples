@@ -25,8 +25,22 @@ class ct {
 
 
     this.tree = builder
-      .sequence("Tech Tree")
-
+    
+    .parallel("Testing Parallel", 2, 2)
+      .do("Testing", (t) => {
+          if (me().amIdle) {
+              me().idleTime++;
+          }
+          if (me().lengthOfStay == 43200 || me().lengthOfStay == 86400) {
+            let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+            console.log("CT Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+            me().idleTime = 0;
+            me().lengthOfStay = 0;
+          }
+          me().lengthOfStay++;
+          return fluentBehaviorTree.BehaviorTreeStatus.Running; 
+      })  
+    .sequence("Tech Tree")
       .selector("Check for arrival")  
         .condition("Clock in", async (t) => me().onTheClock)
         .do("SHIFT CHANGE", (t) => {
@@ -68,9 +82,10 @@ class ct {
       .splice(new AssignComputer(myIndex, myGoal.location).tree) // CT 1 or CT 2
 
       .splice(new responsibility(myIndex).tree) // lazy: true
-      
-      .end()
-      .build();
+    
+    .end()
+    .end()
+    .build();
   }
 
   async update( crowd, msec) {
