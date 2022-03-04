@@ -15,7 +15,7 @@ class AMedicalStaff extends APerson {
 	
 	// Testing
 	idleTime = 0;
-	amIdle = false;
+	amIdle = true;
 	lengthOfStay = 0;
 
 	constructor(location, UUID, medicalStaffType, medicalStaffSubclass, doctorYear, arrivalTick) {

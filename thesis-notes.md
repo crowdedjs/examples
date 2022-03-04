@@ -22,13 +22,16 @@ The basis of these code changes boil down to this:
 - Adding an extra tech/agent to the end of the json file (rather than going through all the work to shift the id numbers down by 1 to add them in) causes them to not function. Likely due to a problem with the time they enter. Probably has to be greater or equal to the timestep of the entry above them.
 - Shift change with new implementation won't delete the old agents. Sometimes patients aren't deleted either and they become an amalgamous monster.
 - Ticks values used in json arrival file is odd. It is based on (actual tick value * 1000) / 25. The actual number of ticks in the simulation is 86400, with 1 tick per second.
+- When all the rooms in the hospital are full, patients stop going to the waiting room and crowd the greeter nurse.
 
 # Data Gathering
 - Need to find sweet spot for number of patients to deploy, too many with current amount of medical agents, so up the current # of medical agents.
-- No shift change, but might need to use it at end of 12 hours to get agent data
-- Need to figure out exact number of agents of each type to use as well --> Dr Ricks will get this info to me, just up the agents asap
+- No shift change due to bug with agent bodies not deleting
 - Need to denote the exact behavior line used. All patients get an xray or ct.
-- Should i exclude booked patient data --> Yes, remove booking patients entirely for now.
+- Exclude booked patient data and emergency patients --> Yes, remove booking patients entirely for now.
 - Convert ticks to in-simulation time
+
+- Need to make modifications to old implementation data gathering
+- Need to get json file for improved # of agents
 
 

@@ -76,11 +76,11 @@ class janitorial {
       //find room to clean
       .do("Find Room to Clean", (t) => {               
         if (typeof Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE) === 'undefined') {
-          medicalStaff.amIdle = true;
+          me().amIdle = true;
           return fluentBehaviorTree.BehaviorTreeStatus.Failure;
         }
         else {
-          medicalStaff.amIdle = false;
+          me().amIdle = false;
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         }
       })

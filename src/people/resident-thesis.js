@@ -266,8 +266,9 @@ class residentThesis {
                     else {
                         me().taskTime = 100;
                         
-                        // what is ATTENDING as the responsibility subject?
-                        let attendingConsultTask = new task("Attending Consult", null, null, me().getTask().patient, null);
+                        // GO TO THE ATTENDING NURSE
+                        let attending = Hospital.agents.find(a => a.name == "Attending").location;
+                        let attendingConsultTask = new task("Attending Consult", null, null, me().getTask().patient, attending);
                         taskQueue.push(attendingConsultTask);
                         //Hospital.residentTaskList.push(attendingConsultTask);
 
