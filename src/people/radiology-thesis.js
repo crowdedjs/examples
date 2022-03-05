@@ -29,7 +29,7 @@ class radiologyThesis {
         .parallel("Testing Parallel", 2, 2)
             .do("Testing", (t) => {
                 // This would tick up while on the way back to the computer, which isn't desirable.
-                if (me().onTheClock && me().getTask() == null && me().taskTime == 0) {
+                if (me().onTheClock && me().getTask() == null && me().taskTime == 0 && !me().moving) {
                     me().idleTime++;
                 }
                 if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
@@ -43,8 +43,20 @@ class radiologyThesis {
             })
         // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
         .sequence("Radiology Behaviors")
+            
+            .do("Testing", (t) => {
+                me().moving = true;
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;            
+            })
+            
             .splice(new GoTo(self.index, myGoal.location).tree)
             //.splice(new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").location).tree)
+            
+            .do("Testing", (t) => {
+                me().moving = false;
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;            
+            })
+
             .splice(new AssignComputer(myIndex, myGoal.location).tree) // CT 2
             
             // Add a behavior here or in the selector that will order the tasks (by severity)?
@@ -153,7 +165,6 @@ class radiologyThesis {
                     me().taskTime == me().taskTime--;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
                 }
-
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })            
         .end()

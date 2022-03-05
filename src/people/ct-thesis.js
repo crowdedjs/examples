@@ -37,7 +37,7 @@ class ctThesis {
         // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
         .parallel("Testing Parallel", 2, 2)
             .do("Testing", (t) => {
-                if (me().onTheClock && me().getTask() == null && me().taskTime == 0) {
+                if (me().onTheClock && me().getTask() == null && me().taskTime == 0 && !me().moving) {
                     me().idleTime++;
                 }
                 if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
@@ -50,7 +50,18 @@ class ctThesis {
                 return fluentBehaviorTree.BehaviorTreeStatus.Running; 
             })
         .sequence("CT Behaviors")
+            
+            .do("Testing", (t) => {
+                me().moving = true;
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;            
+            })
+
             .splice(new GoTo(self.index, myGoal.location).tree)
+
+            .do("Testing", (t) => {
+                me().moving = false;
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;            
+            })
 
             .splice(new AssignComputer(myIndex, computer.location).tree) // RESIDENT PLACE
 
@@ -198,7 +209,6 @@ class ctThesis {
                     me().taskTime == me().taskTime--;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
                 }
-
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
         .end()    

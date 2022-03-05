@@ -30,7 +30,7 @@ class techThesis {
         .parallel("Testing Parallel", 2, 2)
             .do("Testing", (t) => {
                 // This would tick up while on the way back to the computer, which isn't desirable.
-                if (me().onTheClock && me().getTask() == null && me().taskTime == 0) {
+                if (me().onTheClock && me().getTask() == null && me().taskTime == 0 && !me().moving) {
                     me().idleTime++;
                 }
                 if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
@@ -45,11 +45,23 @@ class techThesis {
         // Consider limiting the rooms nurses can be assigned to tasks to
         // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH TASK FROM LIST -> TAKE TIME -> QUEUE TASKS -> RESTART
         .sequence("Tech Behaviors")
+            
+            .do("Testing", (t) => {
+                me().moving = true;
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;            
+            })
+
             // ADDED SELECTOR TO TECH TO RESOLVE ADDED COMPLEXITY WITH ESCORTING AND PICKING UP PATIENTS
             .selector("Should I go back to start?")
                 .condition("Do I have patient", async (t) => me().getBusy())
                 .splice(new GoTo(self.index, computer.location).tree)
             .end()
+
+            .do("Testing", (t) => {
+                me().moving = false;
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;            
+            })
+
             //.splice(new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").location).tree)
             .splice(new AssignComputer(myIndex, computer.location).tree) // TECH PLACE
 
@@ -272,7 +284,6 @@ class techThesis {
                     me().taskTime == me().taskTime--;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
                 }
-
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })            
         .end()

@@ -29,7 +29,7 @@ class nurseThesis {
         .parallel("Testing Parallel", 2, 2)
             .do("Testing", (t) => {
                 // This would tick up while on the way back to the computer, which isn't desirable.
-                if (me().onTheClock && me().getTask() == null && me().taskTime == 0) {
+                if (me().onTheClock && me().getTask() == null && me().taskTime == 0 && !me().moving) {
                     me().idleTime++;
                 }
                 if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
@@ -44,10 +44,22 @@ class nurseThesis {
         // Consider limiting the rooms nurses can be assigned to tasks to
         // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
         .sequence("Nurse Behaviors")
+            
+            .do("Testing", (t) => {
+                me().moving = true;
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;            
+            })
+
             .selector("Should I go back to start?")
                 .condition("Do I have patient", async (t) => me().getBusy())
                 .splice(new GoTo(self.index, computer.location).tree)
             .end()
+            
+            .do("Testing", (t) => {
+                me().moving = false;
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;            
+            })
+
             .splice(new AssignComputer(myIndex, computer.location).tree) // NURSE PLACE
             
             // Add a behavior here or in the selector that will order the tasks (by severity)?
@@ -220,7 +232,6 @@ class nurseThesis {
                     me().taskTime == me().taskTime--;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
                 }
-
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
             

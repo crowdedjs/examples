@@ -34,4 +34,14 @@ The basis of these code changes boil down to this:
 - Need to make modifications to old implementation data gathering
 - Need to get json file for improved # of agents
 
+- 1 tech for every 2 nurses
+- 1 nurse for every 4 rooms
+- 1 resident for every 2 nurses
+- 1 faculty doctor for every 2 residents
+
+2 doctor (attending physician)
+4 residents
+8 nurses
+4 tech
+2 janitors?
 

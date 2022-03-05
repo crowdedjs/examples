@@ -28,7 +28,7 @@ class janitorialThesis {
     
       .parallel("Testing Parallel", 2, 2)
         .do("Testing", (t) => {
-            if (me().onTheClock && me().getTask() == null && me().taskTime == 0) {
+            if (me().onTheClock && me().getTask() == null && me().taskTime == 0 && !me().moving) {
                 me().idleTime++;
             }
             if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
@@ -41,7 +41,19 @@ class janitorialThesis {
             return fluentBehaviorTree.BehaviorTreeStatus.Running; 
         })
       .sequence("Janitor Behaviors")
+        
+        .do("Testing", (t) => {
+          me().moving = true;
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;            
+        })
+
         .splice(new GoTo(self.index, myGoal.location).tree)
+        
+        .do("Testing", (t) => {
+          me().moving = false;
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;            
+        })
+        
         .selector("Task List Tasks")
           .do("Get a Task", (t) => {
               // CHECK IF NEEDED TO CLOCK IN
@@ -68,7 +80,7 @@ class janitorialThesis {
               }
               // OTHERWISE DON'T PROCEED (SUCCESS WILL RESTART SELECTOR)
               else {
-                  return fluentBehaviorTree.BehaviorTreeStatus.Success;
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;
               }
           })
           // I think it has to be done this way because you can't do operations in a splice for the most part
@@ -123,7 +135,6 @@ class janitorialThesis {
               me().taskTime == me().taskTime--;
               return fluentBehaviorTree.BehaviorTreeStatus.Running;
           }
-
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         })
       .end()
