@@ -5,7 +5,8 @@ export default [
     //"arrivalPath" : "arrivalHospital.json",
     //"arrivalPath" : "arrivalHospitalTesting.json",
     //"arrivalPath" : "arrivalSecondPatient.json",
-    "arrivalPath" : "arrivalHospitalThesis.json",
+    //"arrivalPath" : "arrivalHospitalThesis.json",
+    "arrivalPath" : "arrivalHospitalThesisFinal.json",
     "secondsOfSimulation" : 4500,
     "locationsPath" : "locationsHospital.json"
   },

@@ -43,7 +43,7 @@ class janitorial {
           if (me().onTheClock == false) {
             me().onTheClock = true;
             Hospital.activeJanitor.push(me());
-            if (Hospital.activeJanitor[0] != me() && Hospital.activeJanitor.length > 1) {
+            if (Hospital.activeJanitor[0] != me() && Hospital.activeJanitor.length > 2) {
               for (let i = 0; i < Hospital.activeJanitor.length; i++) {
                 if (!Hospital.activeJanitor[i].replacement) {
                   Hospital.activeJanitor[i].replacement = true;

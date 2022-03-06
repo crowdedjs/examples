@@ -41,7 +41,7 @@ class nurse {
             if (me().onTheClock == false) {
               me().onTheClock = true;
               Hospital.activeNurse.push(me());
-              if (Hospital.activeNurse[0] != me() && Hospital.activeNurse.length > 2) {
+              if (Hospital.activeNurse[0] != me() && Hospital.activeNurse.length > 8) {
                 for (let i = 0; i < Hospital.activeNurse.length; i++) {
                   if (!Hospital.activeNurse[i].replacement) {
                     Hospital.activeNurse[i].replacement = true;

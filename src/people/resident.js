@@ -48,7 +48,7 @@ class resident {
           if (me().onTheClock == false) {
             me().onTheClock = true;
             Hospital.activeResident.push(me());
-            if (Hospital.activeResident[0] != me() && Hospital.activeResident.length > 2) {
+            if (Hospital.activeResident[0] != me() && Hospital.activeResident.length > 4) {
               for (let i = 0; i < Hospital.activeResident.length; i++) {
                 if (!Hospital.activeResident[i].replacement) {
                   Hospital.activeResident[i].replacement = true;

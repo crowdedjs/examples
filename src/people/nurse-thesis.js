@@ -90,7 +90,7 @@ class nurseThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                     // CHECK IF NEEDED TO CLOCK OUT
-                    else if (Hospital.activeNurse.length > 2 && Hospital.activeNurse[0] == me()) {
+                    else if (Hospital.activeNurse.length > 8 && Hospital.activeNurse[0] == me()) {
                         let clockOutTask = new task("Clock Out", null, null, null, entrance);
                         me().setTask(clockOutTask);
                         me().replacement = true;

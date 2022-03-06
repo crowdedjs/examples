@@ -33,6 +33,7 @@ class residentThesis {
                     me().idleTime++;
                 }
                 if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
+                //if (me().lengthOfStay == 21600 || me().lengthOfStay == 86399) {
                     let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
                     console.log("Resident Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
                     me().idleTime = 0;
@@ -103,7 +104,7 @@ class residentThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }
                     // CHECK IF NEEDED TO CLOCK OUT
-                    else if (Hospital.activeResident.length > 2 && Hospital.activeResident[0] == me()) {
+                    else if (Hospital.activeResident.length > 4 && Hospital.activeResident[0] == me()) {
                         let clockOutTask = new task("Clock Out", null, null, null, entrance);
                         me().setTask(clockOutTask);
                         me().replacement = true;
