@@ -286,7 +286,7 @@ class residentThesis {
                         //let attending = Hospital.agents.find(a => a.name == "Attending").location;
                         //let attendingConsultTask = new task("Attending Consult", null, null, me().getTask().patient, attending);
                         let attending = Hospital.locations.find(l => l.name == "Fast Track 2");
-                        let attendingConsultTask = new task("Attending Consult", null, null, me().getTask().patient, attending.location);
+                        let attendingConsultTask = new task("Attending Consult", null, null, me().getTask().patient, attending);
                         taskQueue.push(attendingConsultTask);
                         //Hospital.residentTaskList.push(attendingConsultTask);
 
