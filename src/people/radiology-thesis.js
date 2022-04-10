@@ -34,7 +34,9 @@ class radiologyThesis {
                 }
                 if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
                     let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
-                    console.log("Radiology Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
+                    //console.log("Radiology Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    console.log(idleTimeMinutes);
                     me().idleTime = 0;
                     //me().lengthOfStay = 0;
                 }
@@ -130,6 +132,7 @@ class radiologyThesis {
                         
                         // TESTING
                         let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+                        idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
                         console.log("Radiology Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
                         Hospital.radioData.push(me().idleTime);
 
@@ -144,7 +147,7 @@ class radiologyThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        me().taskTime = 100;
+                        me().taskTime = 60;
                         
                         let residentScanTask = new task("Resident Scan Read", null, null, me().getTask().patient, null);
                         taskQueue.push(residentScanTask);
@@ -162,7 +165,7 @@ class radiologyThesis {
             .do("Take Time", (t) => {
                 while (me().taskTime > 0)
                 {
-                    me().taskTime == me().taskTime--;
+                    me().taskTime = me().taskTime - 1;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
                 }
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;

@@ -66,6 +66,7 @@ class Hospital{
   static triageData = [];
   static xrayData = [];
 
+  // returned 60 before? Dr. Ricks said it is locked at 25 fps.
   static getFPS(){return 60;}
 
   static getCTQueue() {

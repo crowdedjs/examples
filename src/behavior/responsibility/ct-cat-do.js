@@ -6,6 +6,7 @@ class CTCATDoScanResponsibility extends AResponsibility  {
 	
 	constructor(entry, medicalStaff) {
 		super("CT CAT Do Scan", 1 * 1, entry, 4, ResponsibilitySubject.COMPUTER, medicalStaff);
+		//super("CT CAT Do Scan", 72, entry, 4, ResponsibilitySubject.COMPUTER, medicalStaff);
 	}
 
 	doFinish() {

@@ -28,7 +28,9 @@ class janitorial {
           }
           if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
             let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
-            console.log("Janitor Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+            idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
+            //console.log("Janitor Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+            console.log(idleTimeMinutes);
             me().idleTime = 0;
             //me().lengthOfStay = 0;
           }
@@ -81,19 +83,33 @@ class janitorial {
         }
         else {
           me().amIdle = false;
+          Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE).setLocationStatus(LocationStatus.CLEANING);
+          me().taskTime = 60;
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         }
       })
 
       // GO TO THE ROOM THAT NEEDS CLEANING
-      .splice(new GoToLazy(self.index, () => Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE).location).tree)
+      .splice(new GoToLazy(self.index, () => Hospital.locations.find(l => l.locationStatus == LocationStatus.CLEANING).location).tree)
 
       // TAKE TIME IN THE ROOM TO CLEAN
-      .splice(new TakeTime(300, 600).tree)
+      //.splice(new TakeTime(300, 600).tree)
+      .do("Take Time", (t) => {
+        //console.log("Test 1");
+        while (me().taskTime > 0)
+        {
+            //console.log("Test 2: " + me().taskTime);
+            //me().testTime = me().testTime + 1;
+            me().taskTime = me().taskTime - 1;
+            return fluentBehaviorTree.BehaviorTreeStatus.Running;
+        }
+        //console.log("Test 3: " + me().testTime);
+        return fluentBehaviorTree.BehaviorTreeStatus.Success;
+      })
 
       // set that room's status as NONE
       .do("Done with the Room", (t) => {               
-        Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE).setLocationStatus(LocationStatus.NONE);
+        Hospital.locations.find(l => l.locationStatus == LocationStatus.CLEANING).setLocationStatus(LocationStatus.NONE);
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
       })
     

@@ -33,9 +33,11 @@ class phlebotomist {
           if (me().amIdle) {
               me().idleTime++;
           }
-          if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
+          if (me().lengthOfStay == 43200 || me().lengthOfStay == 86398) {
             let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
-            console.log("Phlebotomist Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+            idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
+            //console.log("Phlebotomist Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+            console.log(idleTimeMinutes);
             me().idleTime = 0;
             //me().lengthOfStay = 0;
           }
@@ -82,6 +84,7 @@ class phlebotomist {
 
             // TESTING
             let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+            idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
             console.log("Phlebotomist Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
             Hospital.phlebData.push(me().idleTime);
 

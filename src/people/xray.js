@@ -12,7 +12,7 @@ class xray {
 
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
     let goToName = "XRay 1";
-    if (myIndex == 17) {
+    if (myIndex % 2 == 1) {
       goToName = "XRay 2";
     }
 
@@ -32,7 +32,9 @@ class xray {
           }
           if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
             let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
-            console.log("X-Ray Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+            idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
+            //console.log("X-Ray Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+            console.log(idleTimeMinutes);
             me().idleTime = 0;
             //me().lengthOfStay = 0;
           }

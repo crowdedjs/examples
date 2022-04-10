@@ -35,7 +35,9 @@ class techThesis {
                 }
                 if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
                     let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
-                    console.log("Tech Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
+                    //console.log("Tech Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    console.log(idleTimeMinutes);
                     me().idleTime = 0;
                     //me().lengthOfStay = 0;
                 }
@@ -155,6 +157,7 @@ class techThesis {
                         
                         // TESTING
                         let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+                        idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
                         console.log("Tech Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
                         //console.log("Tech LOS: " + me().lengthOfStay + " ticks");
                         Hospital.techData.push(me().idleTime);
@@ -170,7 +173,7 @@ class techThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        me().taskTime = 100;
+                        me().taskTime = 60;
                         
                         Hospital.computer.getEntry(me().getTask().patient).setVitals("Taken");
                         me().setTask(null);
@@ -183,7 +186,7 @@ class techThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        me().taskTime = 100;
+                        me().taskTime = 60;
                         
                         Hospital.computer.getEntry(me().getTask().patient).setEkg("EKG Results");
                         // CREATE TASK FOR THE RESIDENT : RESIDENT_EKG_READ
@@ -281,7 +284,7 @@ class techThesis {
             .do("Take Time", (t) => {
                 while (me().taskTime > 0)
                 {
-                    me().taskTime == me().taskTime--;
+                    me().taskTime = me().taskTime - 1;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
                 }
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;

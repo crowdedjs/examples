@@ -33,7 +33,9 @@ class janitorialThesis {
             }
             if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
               let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
-              console.log("Janitor Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+              idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
+              //console.log("Janitor Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+              console.log(idleTimeMinutes);
               me().idleTime = 0;
               //me().lengthOfStay = 0;
             }
@@ -120,7 +122,7 @@ class janitorialThesis {
             else {
               myRoom = me().getTask().location;
               myRoom.setLocationStatus(LocationStatus.NONE);
-              me().taskTime = 100;
+              me().taskTime = 60;
               me().setTask(null);
               return fluentBehaviorTree.BehaviorTreeStatus.Success;
             }  
@@ -132,7 +134,7 @@ class janitorialThesis {
         .do("Take Time", (t) => {
           while (me().taskTime > 0)
           {
-              me().taskTime == me().taskTime--;
+              me().taskTime = me().taskTime - 1;
               return fluentBehaviorTree.BehaviorTreeStatus.Running;
           }
           return fluentBehaviorTree.BehaviorTreeStatus.Success;

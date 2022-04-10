@@ -35,7 +35,9 @@ class residentThesis {
                 if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
                 //if (me().lengthOfStay == 21600 || me().lengthOfStay == 86399) {
                     let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
-                    console.log("Resident Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
+                    //console.log("Resident Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    console.log(idleTimeMinutes);
                     me().idleTime = 0;
                     //me().lengthOfStay = 0;
                 }
@@ -158,6 +160,7 @@ class residentThesis {
                         
                         // TESTING
                         let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+                        idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
                         console.log("Resident Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
                         Hospital.residentData.push(me().idleTime);
 
@@ -172,7 +175,7 @@ class residentThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        me().taskTime = 100;
+                        me().taskTime = 60;
                         
                         let consultTask = new task("EKG Consult", null, null, me().getTask().patient, me().getTask().patient.getPermanentRoom());
                         taskQueue.push(consultTask);
@@ -187,7 +190,7 @@ class residentThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        me().taskTime = 100;
+                        me().taskTime = 60;
                         
                         // queue CAT or XRAY - THIS IS AN ARBITRARY DISTINCTION RIGHT NOW
                         if (me().getTask().patient.getSeverity() == "ESI3") {
@@ -211,7 +214,7 @@ class residentThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        me().taskTime = 100;
+                        me().taskTime = 60;
                         
                         let myPatient = me().getTask().patient;
                         // if (myPatient.getSeverity() == "ESI1" && Hospital.CTQueue.length > 0 && Hospital.CTQueue[0].getSeverity() != "ESI1") {
@@ -244,7 +247,7 @@ class residentThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        me().taskTime = 100;
+                        me().taskTime = 60;
                         
                         let myPatient = me().getTask().patient;
                         if (myPatient.getSeverity() == "ESI1" && Hospital.CTQueue.length > 0 && Hospital.CTQueue[0].getSeverity() != "ESI1") {
@@ -277,12 +280,13 @@ class residentThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        me().taskTime = 100;
+                        me().taskTime = 60;
                         
                         // GO TO THE ATTENDING NURSE
                         //let attending = Hospital.agents.find(a => a.name == "Attending").location;
                         //let attendingConsultTask = new task("Attending Consult", null, null, me().getTask().patient, attending);
-                        let attendingConsultTask = new task("Attending Consult", null, null, me().getTask().patient, null);
+                        let attending = Hospital.locations.find(l => l.name == "Fast Track 2");
+                        let attendingConsultTask = new task("Attending Consult", null, null, me().getTask().patient, attending.location);
                         taskQueue.push(attendingConsultTask);
                         //Hospital.residentTaskList.push(attendingConsultTask);
 
@@ -296,7 +300,7 @@ class residentThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        me().taskTime = 100;
+                        me().taskTime = 60;
                         
                         let patientConsultTask = new task("Patient Consult", null, null, me().getTask().patient, me().getTask().patient.getPermanentRoom());
                         taskQueue.push(patientConsultTask);
@@ -311,7 +315,7 @@ class residentThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        me().taskTime = 100;
+                        me().taskTime = 60;
                         
                         let dischargeTask = new task("Nurse Discharge Patient", null, null, me().getTask().patient, me().getTask().location);
                         taskQueue.push(dischargeTask);
@@ -327,7 +331,7 @@ class residentThesis {
             .do("Take Time", (t) => {
                 while (me().taskTime > 0)
                 {
-                    me().taskTime == me().taskTime--;
+                    me().taskTime = me().taskTime - 1;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
                 }
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;

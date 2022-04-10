@@ -79,10 +79,15 @@ class FollowInstructions {
           Hospital.patientData.push(patientDataValues);
           // total simulation time: 24 hours -> 86400 ticks
           let lengthOfStayMinutes = ((1440 * me().lengthOfStay) / 86400);
+          lengthOfStayMinutes = Math.round((lengthOfStayMinutes + Number.EPSILON) * 100) / 100
+
           let waitingTimeMinutes = ((1440 * me().waitingTime) / 86400);
-          console.log("Patient " + id + " Length of Stay: " + me().lengthOfStay + " ticks / " + lengthOfStayMinutes + " minutes in-simulation");
-          console.log("Patient " + id + " Waited for: " + me().waitingTime + " ticks / " + waitingTimeMinutes + " minutes in-simulation");
-          
+          waitingTimeMinutes = Math.round((waitingTimeMinutes + Number.EPSILON) * 100) / 100
+
+          // console.log("Patient " + id + " Length of Stay: " + me().lengthOfStay + " ticks / " + lengthOfStayMinutes + " minutes in-simulation");
+          // console.log("Patient " + id + " Waited for: " + me().waitingTime + " ticks / " + waitingTimeMinutes + " minutes in-simulation");
+          console.log(lengthOfStayMinutes + "\t" + waitingTimeMinutes);
+          //console.log(waitingTimeMinutes);
           me().inSimulation = false;
           // ADJUST CTQUEUE OR XRAYQUEUE SO TECH TAKES NEXT PATIENT TO CT ROOM
           //Hospital.CTQueue.shift();

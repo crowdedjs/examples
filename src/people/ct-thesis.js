@@ -42,7 +42,9 @@ class ctThesis {
                 }
                 if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
                     let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
-                    console.log("CT Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
+                    //console.log("CT Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    console.log(idleTimeMinutes);
                     me().idleTime = 0;
                     //me().lengthOfStay = 0;
                 }
@@ -177,7 +179,8 @@ class ctThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        me().taskTime = 100;
+                        // 30 minutes = 1800 ticks
+                        me().taskTime = 1800;
                         me().getTask().patient.setScan(true);
                         let ctPickupTask = new task("CT Pickup", null, 0, me().getTask().patient, myGoal);
                         if (me().getTask().patient.getImagingRoom() == "CT 1") {
@@ -206,7 +209,7 @@ class ctThesis {
             .do("Take Time", (t) => {
                 while (me().taskTime > 0)
                 {
-                    me().taskTime == me().taskTime--;
+                    me().taskTime = me().taskTime - 1;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
                 }
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;

@@ -30,9 +30,11 @@ class phlebotomistThesis {
                 if (me().onTheClock && me().getTask() == null && me().taskTime == 0 && !me().moving) {
                     me().idleTime++;
                 }
-                if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
+                if (me().lengthOfStay == 43200 || me().lengthOfStay == 86398) {
                     let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
-                    console.log("Phlebotomist Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
+                    //console.log("Phlebotomist Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+                    console.log(idleTimeMinutes);
                     me().idleTime = 0;
                     //me().lengthOfStay = 0;
                 }
@@ -126,6 +128,7 @@ class phlebotomistThesis {
                         
                         // TESTING
                         let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+                        idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
                         console.log("Phlebotomist Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
                         Hospital.phlebData.push(me().idleTime);
 
@@ -140,7 +143,7 @@ class phlebotomistThesis {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     else {
-                        me().taskTime = 100;
+                        me().taskTime = 60;
                         Hospital.computer.getEntry(me().getTask().patient).setPhlebotomist(me());
                         Hospital.computer.getEntry(me().getTask().patient).setBlood("Drawn");
                         me().setTask(null);
@@ -154,7 +157,7 @@ class phlebotomistThesis {
             .do("Take Time", (t) => {
                 while (me().taskTime > 0)
                 {
-                    me().taskTime == me().taskTime--;
+                    me().taskTime = me().taskTime - 1;
                     return fluentBehaviorTree.BehaviorTreeStatus.Running;
                 }
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;

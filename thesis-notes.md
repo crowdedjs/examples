@@ -8,7 +8,6 @@ The basis of these code changes boil down to this:
 - There cannot be an operation in .splice(HERE). It can accept a variable or an array value, but you cannot pull a value from an array in another file (like Hospital.sampleArray[number]) or even get a value from an operation and plug it into an existing array. This means to send behaviors back and forth, you must initialize it into the file, and then use that variable.
 - Behavior must be stated outright and or must be established at the top of the file
 - even getting the number and doing like testArray[tempValue] doesn't work. It must just be a number.
-- There are 3,456,000 ticks total in the simulation. 1 tick per frame, 25 frames per second. Can confirm, 1,728,000 ticks is 12 hours on the dot into the simulation. (86400 x 1000 = 86400000 / 25 = 3456000)
 
 # To Do
  - probably should make a flow chart (include in thesis) that illustrates the flow of tasks
