@@ -42,7 +42,7 @@ class patientThesis {
             }            
             else if (me().getInstructor() != null && me().getInstructor().MedicalStaffSubclass == "Greeter Nurse") {
               wait = Hospital.locations.find(l=> l.name == "Waiting Room");
-              me().waitToCheckIn = false;
+              //me().waitToCheckIn = false;
               me().waitInWaitingRoom = true;
             }
             else if(me().getPermanentRoom() == null) {
@@ -50,10 +50,10 @@ class patientThesis {
             }
             else {
               wait = myGoal;
-              if (wait != Hospital.locations.find(l=> l.name == "Waiting Room")) {
-                me().waitToCheckIn = false;
-                me().waitInWaitingRoom = false;
-              }
+              //if (wait != Hospital.locations.find(l=> l.name == "Waiting Room")) {
+                // me().waitToCheckIn = false;
+                // me().waitInWaitingRoom = false;
+              //}
             }
             return fluentBehaviorTree.BehaviorTreeStatus.Success;
           })
@@ -73,20 +73,20 @@ class patientThesis {
       myself.waitingTime++;
     }
     // testing wait values
-    if (myself.waitToCheckIn) {
-      myself.waitToCheckInValue++;
-    }
-    else if (myself.waitInWaitingRoom) {
-      myself.waitInWaitingRoomValue++;
-    }
-    else if (myself.waitInRoom1) {
-      myself.waitInRoom1Value++;
+    if (myself.waitInRoom2) {
+      myself.waitInRoom2Value++;
     }
     else if (myself.waitInScanRoom) {
       myself.waitInScanRoomValue++;
     }
-    else if (myself.waitInRoom2) {
-      myself.waitInRoom2Value++;
+    else if (myself.waitInRoom1) {
+      myself.waitInRoom1Value++;
+    }
+    else if (myself.waitInWaitingRoom) {
+      myself.waitInWaitingRoomValue++;
+    }
+    else if (myself.waitToCheckIn) {
+      myself.waitToCheckInValue++;
     }
 
     await this.tree.tick({ crowd, msec }) //Call the behavior tree

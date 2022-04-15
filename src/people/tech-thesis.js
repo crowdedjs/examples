@@ -242,6 +242,7 @@ class techThesis {
                         
                         let escortTask = new task("Escort Patient", null, 0, me().getTask().patient, me().getTask().patient.getPermanentRoom());
                         me().setTask(escortTask);
+                        myPatient.waitInScanRoom = true;
                         
                         return fluentBehaviorTree.BehaviorTreeStatus.Success;
                     }

@@ -37,7 +37,6 @@ class FollowInstructionsThesis {
           //agentConstant.destination = new Vector3(loc.x, loc.y, loc.z);
           //agentConstant.destination = Vector3.fromObject(t.crowd.find(f=>f.id == me().idx).location);
           agentConstant.destination = new Vector3(agentConstant.location.x, agentConstant.location.y, agentConstant.location.z);
-          me().waitInRoom1 = true;
 
           // KEEP BELOW EDIT TO ADDRESS PATIENTS GETTING PUSHED OUT OF ROOMS, BUT NEED TO FIX PATIENTS FLEEING THEIR SCANNING ROOM
           // let destination = me().getAssignedRoom().getLocation();
@@ -49,11 +48,11 @@ class FollowInstructionsThesis {
           // }
         }
         else if (state == PatientTempState.FOLLOWING) {          
-          me().waitToCheckIn = false;
-          me().waitInWaitingRoom = false;
-          me().waitInRoom1 = false;
-          me().waitInScanRoom = false;
-          me().waitInRoom2 = false;
+          // me().waitToCheckIn = false;
+          // me().waitInWaitingRoom = false;
+          // me().waitInRoom1 = false;
+          // me().waitInScanRoom = false;
+          // me().waitInRoom2 = false;
           
           let instructor = me().getInstructor();
           let instructorLoc = Vector3.fromObject(t.crowd.find(f=>f.id == instructor.id).location);
@@ -80,6 +79,8 @@ class FollowInstructionsThesis {
           }
         }
         else if (state == PatientTempState.GO_INTO_ROOM) {
+          me().waitInRoom1 = true;
+
           let destination = me().getAssignedRoom().getLocation();
           //if(Vector3.fromObject(destination).distanceTo(me().getLocation()) < .5){
           if(Vector3.fromObject(destination).distanceToSquared(me().getLocation()) < .5){
