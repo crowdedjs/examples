@@ -36,7 +36,15 @@ class FollowInstructions {
         if (state == PatientTempState.WAITING) {         
           //agentConstant.destination = new Vector3(loc.x, loc.y, loc.z);
           //agentConstant.destination = Vector3.fromObject(t.crowd.find(f=>f.id == me().idx).location);
-          agentConstant.destination = new Vector3(agentConstant.location.x, agentConstant.location.y, agentConstant.location.z);
+          //agentConstant.destination = new Vector3(agentConstant.location.x, agentConstant.location.y, agentConstant.location.z);
+          
+          let destination = me().getAssignedRoom().getLocation();
+          if(Vector3.fromObject(destination).distanceToSquared(me().getLocation()) > .5){
+            me().setPatientTempState(PatientTempState.GO_INTO_ROOM)
+          }
+          else{
+            agentConstant.destination = new Vector3(agentConstant.location.x, agentConstant.location.y, agentConstant.location.z);
+          }
         }
         else if (state == PatientTempState.FOLLOWING) {          
           let instructor = me().getInstructor();

@@ -100,7 +100,7 @@ class triageNurseThesis {
         // ONCE THE PATIENT HAS BEEN DELIVERED, QUEUE TASKS TO THE APPROPRIATE MEDICAL STAFF
         // Task ID / Severity / Entry Time / Patient / Location
         if (me().getCurrentPatient().getAssignedRoom().name == "Main Entrance") {
-          me().getCurrentPatient().setPatientTempState(PatientTempState.DONE);
+          me().getCurrentPatient().setPatientTempState(PatientTempState.GO_INTO_ROOM);
           let result = leavePatient.tick(t)
           if (me().replacement == false) {
             me().setBusy(false);

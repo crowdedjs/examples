@@ -180,8 +180,10 @@ class ctThesis {
                     }
                     else {
                         // 30 minutes = 1800 ticks
-                        me().taskTime = 1800;
+                        //me().taskTime = 1800;
+                        me().taskTime = 60;
                         me().getTask().patient.setScan(true);
+                        me().getTask().patient.waitInScanRoom = true;
                         let ctPickupTask = new task("CT Pickup", null, 0, me().getTask().patient, myGoal);
                         if (me().getTask().patient.getImagingRoom() == "CT 1") {
                             ctPickupTask = new task("CT Pickup", null, 0, me().getTask().patient, ct1);

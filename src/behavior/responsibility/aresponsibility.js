@@ -92,12 +92,10 @@ class AResponsibility {
 			this.calledStarted = true;
 			this.start();
 		}
-		//this.test++;
+
 		this.remaining -= amount;
 		if (this.remaining <= 0 && !this.calledFinished) {
 			this.calledFinished = true;
-			//console.log(this.test);
-			//this.test = 0;
 			this.finish();
 		}
 	}

@@ -271,6 +271,9 @@ class techThesis {
                                 //Hospital.xrayTaskList.push(xrayScanTask);
                             }                            
                         }
+                        else {
+                            myPatient.waitInRoom2 = true;
+                        }
 
                         me().setTask(null);
                         me().setBusy(false);

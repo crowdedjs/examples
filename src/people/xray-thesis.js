@@ -192,8 +192,10 @@ class xrayThesis {
                     }
                     else {
                         // 30 minutes = 1800 ticks
-                        me().taskTime = 1800;
+                        //me().taskTime = 1800;
+                        me().taskTime = 60;
                         me().getTask().patient.setScan(true);
+                        me().getTask().patient.waitInScanRoom = true;
                         let xrayPickupTask = new task("XRay Pickup", null, 0, me().getTask().patient, myGoal);
                         if (me().getTask().patient.getImagingRoom() == "XRay 1") {
                             xrayPickupTask = new task("XRay Pickup", null, 0, me().getTask().patient, xray1);

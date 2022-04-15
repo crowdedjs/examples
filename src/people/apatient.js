@@ -26,6 +26,23 @@ class APatient extends APerson {
 	ticksPresent = 0;
 	waitingTime = 0;
 
+	// wait time categories
+	waitToCheckIn = false;
+	waitToCheckInValue = 0;
+	//
+	waitInWaitingRoom = false;
+	waitInWaitingRoomValue = 0;
+	//
+	waitInRoom1 = false;
+	waitInRoom1Value = 0;
+	//
+	waitInScanRoom = false;
+	waitInScanRoomValue = 0;
+	//
+	waitInRoom2 = false;
+	waitInRoom2Value = 0;
+	//
+
 	/**
 	 * The room that the patient's bed is in.
 	 * Having an assigned room and a permament room 

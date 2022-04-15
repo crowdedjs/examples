@@ -36,6 +36,7 @@ function boot() {
   //let arrivalValue = assets.arrivals.arrivalHospital;
   //let arrivalValue = assets.arrivals.arrivalHospitalThesis;
   let arrivalValue = assets.arrivals.arrivalHospitalThesisFinal;
+  //let arrivalValue = assets.arrivals.arrivalHospitalThesisFinalCopy;
 
   let agentConstants = [];  //An array with all the high-level agent information (not the simulation data)
   let locations = []; //A list of all the adjusted locations
