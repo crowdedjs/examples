@@ -1,7 +1,7 @@
 import PatientTempState from "../support/patient-temp-state.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree";
 import LocationStatus from "../support/location-status.js";
-import task from "../support/task-thesis.js";
+import task from "../support/task.js";
 
 class FollowInstructionsThesis {
 

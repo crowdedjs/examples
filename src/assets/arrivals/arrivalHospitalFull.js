@@ -1,15 +1,15 @@
+// TICK AND ID VALUES MUST BE IN ASCENDING ORDER TO FUNCTION CORRECTLY!!!
+// DON'T KNOW WHY THIS IS, BUT HERE IS MATH FOR DETERMING TICK TIME RELATIVE TO SIMULATION TIME:
+//     (86400 SECONDS OF SIMULATION * 1000 MILLISECONDS BETWEEN FRAMES) / 25 = 3,456,000 MAX ARRIVAL TICKS
 export default [
-    {
-    "name": "patient",
-    "arrivalTick": 0,
+  // 6 AM NURSES CHECK IN
+  {
+    "name": "Nurse",
+    "type": "Triage Nurse",
     "arrivalLocation": "Main Entrance",
-    "age": 23,
-    "severity": "ESI3",
-    "patientName": "Ryan",
-    "gender": "male",
+    "arrivalTick": 10,
     "id": 0
-    },
-    // THESE ARE THE 6 AM NURSES
+  },
   {
     "name": "Nurse",
     "type": "Triage Nurse",
@@ -18,8 +18,8 @@ export default [
     "id": 1
   },
   {
-    "name": "Nurse",
-    "type": "Triage Nurse",
+    "name": "Tech",
+    "type": "Tech",
     "arrivalLocation": "Main Entrance",
     "arrivalTick": 10,
     "id": 2
@@ -46,8 +46,8 @@ export default [
     "id": 5
   },
   {
-    "name": "Tech",
-    "type": "Tech",
+    "name": "Nurse",
+    "type": "Nurse",
     "arrivalLocation": "Main Entrance",
     "arrivalTick": 10,
     "id": 6
@@ -103,14 +103,14 @@ export default [
   },
   {
     "name": "Nurse",
-    "type": "Nurse",
+    "type": "Greeter Nurse",
     "arrivalLocation": "Main Entrance",
     "arrivalTick": 10,
     "id": 14
   },
   {
-    "name": "Nurse",
-    "type": "Greeter Nurse",
+    "name": "Tech",
+    "type": "CT",
     "arrivalLocation": "Main Entrance",
     "arrivalTick": 10,
     "id": 15
@@ -124,7 +124,7 @@ export default [
   },
   {
     "name": "Tech",
-    "type": "CT",
+    "type": "Janitorial",
     "arrivalLocation": "Main Entrance",
     "arrivalTick": 10,
     "id": 17
@@ -138,16 +138,16 @@ export default [
   },
   {
     "name": "Tech",
-    "type": "Janitorial",
+    "type": "Radiology",
     "arrivalLocation": "Main Entrance",
     "arrivalTick": 10,
     "id": 19
   },
   {
-    "name": "Tech",
-    "type": "Radiology",
+    "name": "Attending",
+    "type": "Attending",
     "arrivalLocation": "Main Entrance",
-    "arrivalTick": 10,
+    "arrivalTick": 20,
     "id": 20
   },
   {
@@ -158,8 +158,8 @@ export default [
     "id": 21
   },
   {
-    "name": "Attending",
-    "type": "Attending",
+    "name": "Resident",
+    "type": "Resident",
     "arrivalLocation": "Main Entrance",
     "arrivalTick": 20,
     "id": 22
@@ -186,17 +186,17 @@ export default [
     "id": 25
   },
   {
-    "name": "Resident",
-    "type": "Resident",
-    "arrivalLocation": "Main Entrance",
-    "arrivalTick": 20,
-    "id": 26
-  },
-  {
     "name": "Pharmacist",
     "type": "Pharmacist",
     "arrivalLocation": "Main Entrance",
     "arrivalTick": 30,
+    "id": 26
+  },
+  {
+    "name": "Tech",
+    "type": "XRay",
+    "arrivalLocation": "Main Entrance",
+    "arrivalTick": 40,
     "id": 27
   },
   {
@@ -208,9 +208,9 @@ export default [
   },
   {
     "name": "Tech",
-    "type": "XRay",
+    "type": "Phlebotomist",
     "arrivalLocation": "Main Entrance",
-    "arrivalTick": 40,
+    "arrivalTick": 50,
     "id": 29
   },
   {
@@ -234,17 +234,20 @@ export default [
     "arrivalTick": 50,
     "id": 32
   },
-  {
-    "name": "Tech",
-    "type": "Phlebotomist",
-    "arrivalLocation": "Main Entrance",
-    "arrivalTick": 50,
-    "id": 33
-  },
   // PATIENTS
   {
     "name": "patient",
-    "arrivalTick": 0,
+    "arrivalTick": 10000,
+    "arrivalLocation": "Main Entrance",
+    "age": 23,
+    "severity": "ESI3",
+    "patientName": "Ryan",
+    "gender": "male",
+    "id": 33
+  },
+  {
+    "name": "patient",
+    "arrivalTick": 20000,
     "arrivalLocation": "Main Entrance",
     "age": 34,
     "severity": "ESI3",
@@ -1466,6 +1469,178 @@ export default [
   //   "gender": "male",
   //   "id": 155
   // },
+  //
+  // PLACE SHIFT CHANGES AFTER THIS BLOCK - THIS IS HALFWAY THROUGH THE SIMULATION
+  //
+  // {
+  //   "name": "Nurse",
+  //   "type": "Triage Nurse",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 63
+  // },
+  // {
+  //   "name": "Nurse",
+  //   "type": "Triage Nurse",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 64
+  // },
+  // {
+  //   "name": "Tech",
+  //   "type": "Tech",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 65
+  // },
+  // {
+  //   "name": "Tech",
+  //   "type": "Tech",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 66
+  // },
+  // {
+  //   "name": "Nurse",
+  //   "type": "Nurse",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 67
+  // },
+  // {
+  //   "name": "Nurse",
+  //   "type": "Nurse",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 68
+  // },
+  // {
+  //   "name": "Nurse",
+  //   "type": "Greeter Nurse",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 69
+  // },
+  // {
+  //   "name": "Tech",
+  //   "type": "CT",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 70
+  // },
+  // {
+  //   "name": "Tech",
+  //   "type": "CT",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 71
+  // },
+  // {
+  //   "name": "Tech",
+  //   "type": "Janitorial",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 72
+  // },
+  // {
+  //   "name": "Tech",
+  //   "type": "Radiology",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 73
+  // },
+  // // {
+  // //   "name": "Attending",
+  // //   "type": "Attending",
+  // //   "arrivalLocation": "Main Entrance",
+  // //   "arrivalTick": 1728000,
+  // //   "id": 42
+  // // },
+  // {
+  //   "name": "Resident",
+  //   "type": "Resident",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 74
+  // },
+  // {
+  //   "name": "Resident",
+  //   "type": "Resident",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 75
+  // },
+  // // {
+  // //   "name": "Pharmacist",
+  // //   "type": "Pharmacist",
+  // //   "arrivalLocation": "Main Entrance",
+  // //   "arrivalTick": 1728000,
+  // //   "id": 45
+  // // },
+  // {
+  //   "name": "Tech",
+  //   "type": "XRay",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 76
+  // },
+  // {
+  //   "name": "Tech",
+  //   "type": "XRay",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 77
+  // },
+  // {
+  //   "name": "Tech",
+  //   "type": "Phlebotomist",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 78
+  // },
+  // {
+  //   "name": "Tech",
+  //   "type": "Phlebotomist",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 79
+  // },
+  // {
+  //   "name": "Tech",
+  //   "type": "Phlebotomist",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 80
+  // },
+  // {
+  //   "name": "Tech",
+  //   "type": "Phlebotomist",
+  //   "arrivalLocation": "Main Entrance",
+  //   "arrivalTick": 1728000,
+  //   //"arrivalTick": 116000,
+  //   "id": 81
+  // },
+  //
+  // PATIENTS IN SECOND HALF
+  // 
   // {
   //   "name": "patient",
   //   "arrivalTick": 1728000,

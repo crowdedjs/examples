@@ -3,7 +3,7 @@ import AssignComputer from "../behavior/assign-computer.js"
 import GoTo from "../behavior/go-to.js";
 import GoToLazy from "../behavior/go-to-lazy.js";
 import TakeTime from "../behavior/take-time.js";
-import task from "../support/task-thesis.js";
+import task from "../support/task.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
 class xrayThesis {
@@ -26,7 +26,11 @@ class xrayThesis {
         let computer = Hospital.locations.find(l => l.name == goToName);
         let xray1 = Hospital.locations.find(l => l.name == "XRay 1");
         let xray2 = Hospital.locations.find(l => l.name == "XRay 2");
-        if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
+        //if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
+        if (!myGoal) { 
+            myGoal = xray1;
+            computer = xray1;
+        };
         let entrance = Hospital.getLocationByName("Main Entrance");
 
         let taskQueue = [];

@@ -1,22 +1,22 @@
 
-import BackAndForth from "../behavior/back-and-forth.js";
-import None from "../behavior/none.js"
-import Agent from "./agent.js"
-import AMedicalStaff from "./amedical-staff.js";
+import BackAndForth from "../../behavior/back-and-forth.js";
+import None from "../../behavior/none.js"
+import Agent from "../agent.js"
+import AMedicalStaff from "../amedical-staff.js";
 
-import attending from "./attending.js"
-import ct from "./ct.js"
-import EscapePerson from "./escape-person.js";
-import greeterNurse from "./greeter-nurse.js"
-import janitorial from "./janitorial.js"
-import nurse from "./nurse.js"
-import pharmacist from "./pharmacist.js"
-import phlebotomist from "./phlebotomist.js"
-import radiology from "./radiology.js"
-import resident from "./resident.js"
-import tech from "./tech.js"
-import triageNurse from "./triage-nurse.js"
-import xray from "./xray.js" 
+import attending from "./attending-old.js"
+import ct from "./ct-old.js"
+import EscapePerson from "../escape-person.js";
+import greeterNurse from "./greeter-nurse-old.js"
+import janitorial from "./janitorial-old.js"
+import nurse from "./nurse-old.js"
+import pharmacist from "./pharmacist-old.js"
+import phlebotomist from "./phlebotomist-old.js"
+import radiology from "./radiology-old.js"
+import resident from "./resident-old.js"
+import tech from "./tech-old.js"
+import triageNurse from "./triage-nurse-old.js"
+import xray from "./xray-old.js" 
 
 class MedicalAgent extends AMedicalStaff {
   startX;

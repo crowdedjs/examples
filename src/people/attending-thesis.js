@@ -1,7 +1,7 @@
 import GoTo from "../behavior/go-to.js"
 import WaitForever from "../behavior/wait-forever.js"
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
-import task from "../support/task-thesis.js";
+import task from "../support/task.js";
 
 class attendingThesis {
 
@@ -16,7 +16,10 @@ class attendingThesis {
     //let myGoal = Hospital.locations.find(l => l.name == "B Desk");
     //if (!myGoal) throw new Exception("We couldn't find a location called B Desk");
     let myGoal = Hospital.locations.find(l => l.name == "Fast Track 2");
-    if (!myGoal) throw new Exception("We couldn't find a location called Fast Track 2");
+    //if (!myGoal) throw new Exception("We couldn't find a location called Fast Track 2");
+    if (!myGoal) {
+      myGoal = Hospital.locations.find(l => l.name == "Fast Track 1");
+    }
     let entrance = Hospital.getLocationByName("Main Entrance");
 
     this.goTo = new GoTo(self.index, myGoal.location);

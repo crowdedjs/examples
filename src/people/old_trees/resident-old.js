@@ -1,27 +1,28 @@
-import GoTo from "../behavior/go-to.js"
-import AssignBed from "../behavior/assign-bed.js";
-import AssignComputer from "../behavior/assign-computer.js";
-import responsibility from "../behavior/responsibility/responsibility.js";
+import GoTo from "../../behavior/go-to.js"
+import WaitForever from "../../behavior/wait-forever.js"
+
+import AssignBed from "../../behavior/assign-bed.js";
+import AssignComputer from "../../behavior/assign-computer.js";
+import responsibility from "../../behavior/responsibility/responsibility.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
-class tech {
+
+
+class resident {
 
   constructor(myIndex) {
     this.index = myIndex;
 
     const builder = new fluentBehaviorTree.BehaviorTreeBuilder();
     this.toReturn = null;
-    let goToName = "TechPlace";
-    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
-       
-    let myGoal = Hospital.locations.find(l => l.name == goToName);
-    if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
-    let computer = Hospital.locations.find(l => l.name == "TechPlace");
-    let assignBed = new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").location).tree
-    let assignComputer = new AssignComputer(myIndex, computer.location).tree; 
-    let assignResponsibility = new responsibility(myIndex).tree;
 
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
+    let goToName = "ResidentStart";
+    let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
+
+    let myGoal = Hospital.locations.find(l => l.name == goToName);
+    if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
+
 
     this.tree = builder
     
@@ -33,7 +34,7 @@ class tech {
           if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
             let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
             idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
-            //console.log("Tech Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+            //console.log("Resident Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
             console.log(idleTimeMinutes);
             me().idleTime = 0;
             //me().lengthOfStay = 0;
@@ -41,20 +42,20 @@ class tech {
           me().lengthOfStay++;
           return fluentBehaviorTree.BehaviorTreeStatus.Running; 
       })
-    .sequence("Assign")    
+    .sequence("Assign")
       .selector("Check for arrival")  
         .condition("Clock in", async (t) => me().onTheClock)
         .do("SHIFT CHANGE", (t) => {
           // SHIFT CHANGE
           if (me().onTheClock == false) {
             me().onTheClock = true;
-            Hospital.activeTech.push(me());
-            if (Hospital.activeTech[0] != me() && Hospital.activeTech.length > 4) {
-              for (let i = 0; i < Hospital.activeTech.length; i++) {
-                if (!Hospital.activeTech[i].replacement) {
-                  Hospital.activeTech[i].replacement = true;
-                  //Hospital.activeTech.shift();
-                  Hospital.activeTech.splice(i, 1);
+            Hospital.activeResident.push(me());
+            if (Hospital.activeResident[0] != me() && Hospital.activeResident.length > 4) {
+              for (let i = 0; i < Hospital.activeResident.length; i++) {
+                if (!Hospital.activeResident[i].replacement) {
+                  Hospital.activeResident[i].replacement = true;
+                  //Hospital.activeResident.shift();
+                  Hospital.activeResident.splice(i, 1);
                   break;
                 }
               }
@@ -71,19 +72,19 @@ class tech {
           .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
           .do("Leave Simulation", (t) => {
             for(let i = 0; i < Hospital.computer.entries.length; i++) {
-              if (Hospital.computer.entries[i].getTech() == me()) {
-                Hospital.computer.entries[i].setTech(null);
+              if (Hospital.computer.entries[i].getResident() == me()) {
+                Hospital.computer.entries[i].setResident(null);
               }
             }
-            if (Hospital.aTeam[3] == me()) {
-              Hospital.aTeam[3] = null;
+            if (Hospital.aTeam[1] == me()) {
+              Hospital.aTeam[1] = null;
             }
 
             // TESTING
             let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
             idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
-            console.log("Tech Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
-            Hospital.techData.push(me().idleTime);
+            console.log("Resident Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+            Hospital.residentData.push(me().idleTime);
 
             me().inSimulation = false;
             return fluentBehaviorTree.BehaviorTreeStatus.Running;
@@ -92,19 +93,9 @@ class tech {
       .end()
 
       .splice(new GoTo(self.index, myGoal.location).tree)
-
-      .do("Assigning Bed", async t=>{
-        let result = await assignBed.tick(t);
-        return result;
-      }) // C1
-      .do("Assign Computer", async t=>{
-        let result = await assignComputer.tick(t);
-        return result;
-      }) // TechPlace
-      .do("Assign Responsibility", async t=>{
-        let result = await assignResponsibility.tick(t);
-        return result;
-      }) // lazy: true
+      .splice(new AssignBed(myIndex, Hospital.locations.find(l => l.name == "C1").location).tree) // C1
+      .splice(new AssignComputer(myIndex, Hospital.locations.find(l => l.name == "ResidentStart").location).tree) // ResidentStart
+      .splice(new responsibility(myIndex).tree) // lazy: true
 
     .end()
     .end()
@@ -119,4 +110,4 @@ class tech {
 
 }
 
-export default tech;
+export default resident;

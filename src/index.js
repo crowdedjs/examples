@@ -1,7 +1,7 @@
 import CrowdSetup from "@crowdedjs/crowd-setup"
-import MedicalAgent from "./people/medical-agent.js"
+import MedicalAgent from "./people/old_trees/medical-agent-old.js"
 import MedicalAgentThesis from "./people/medical-agent-thesis.js"
-import PatientAgent from "./people/patient-agent.js"
+import PatientAgent from "./people/old_trees/patient-agent-old.js"
 import PatientAgentThesis from "./people/patient-agent-thesis.js"
 import urlParser from "./url-parser.js"
 import colorFunction from "./color-function.js"
@@ -15,28 +15,38 @@ import setupTable from "./setup-table.js"
 import assets from "./assets/index.js"
 
 function boot() {
-  //Setup simulation parameters
+  // SIMULATION PARAMETERS - THESE ARE CORRECT!
   let params = {};
   params.secondsOfSimulation = 86400;
   params.millisecondsBetweenFrames = 1000;
 
-
-  //Add static references
-
+  // ADDING STATIC REFERENCES
   window.Hospital = HospitalClass;
   window.Vector3 = Vector3;
 
-  let objValue = assets.objs.hospital;       //Grab the value of the environment 
-  //let objValue = assets.objs.locationsMinimalObs;
-  
-  let locationValue = assets.locations.locationsHospital;  //Grab the value of all the locations
-  //let locationValue = assets.locations.locationsMinimal;
+  // MUST SET UP OBJ/LOCATIONS/ARRIVALS IN THESE FILES FIRST:
+    // examples\src\assets\index.js
+    // examples\src\simulations.js 
 
-  //let arrivalValue = assets.arrivals.arrivalHospitalTesting;   //Grab the value of all the arrivals
+  // IMPORTS OBJ FILE FOR THE SIMULATED ENVIRONMENT (examples\src\objs)
+  let objValue = assets.objs.hospital;
+  //let objValue = assets.objs.locationsMinimalObs;
+  //let objValue = assets.objs.layoutDifferent;
+  //let objValue = assets.objs.flat;
+
+
+  // IMPORTS THE LOCATION VALUES OF THE FLAG MARKERS DESIGNATING ROOMS AND AREAS (examples\src\assets\locations)
+  let locationValue = assets.locations.locationsHospital;
+  //let locationValue = assets.locations.locationsMinimal;
+  //let locationValue = assets.locations.locationsDifferent;
+  //let locationValue = assets.locations.locationsFlat;
+
+
+  // IMPORTS THE LISTS OF AGENT ARRIVALS; PATIENTS + MEDICAL AGENTS (examples\src\assets\arrivals)
+  //let arrivalValue = assets.arrivals.arrivalHospitalTesting;
   //let arrivalValue = assets.arrivals.arrivalHospital;
-  //let arrivalValue = assets.arrivals.arrivalHospitalThesis;
-  let arrivalValue = assets.arrivals.arrivalHospitalThesisFinal;
-  //let arrivalValue = assets.arrivals.arrivalHospitalThesisFinalCopy;
+  let arrivalValue = assets.arrivals.arrivalHospitalFull;
+
 
   let agentConstants = [];  //An array with all the high-level agent information (not the simulation data)
   let locations = []; //A list of all the adjusted locations
@@ -51,24 +61,24 @@ function boot() {
   Hospital.locations = locations;
   Hospital.computer = new Computer();
 
-  //Add an agent with a behavior and an id
+  // ADDS BEHAVIOR TREES TO LIST OF AGENTS; BRANCHES BASED ON PATIENT VS MEDICAL AGENT (WHICH BRANCHES FURTHER FROM THERE) 
   arrivalValue.forEach((agent, index) => {
     if (agent.name == "patient")
-      //agentConstants.push(new PatientAgent(agent, locationValue));
-      agentConstants.push(new PatientAgentThesis(agent, locationValue));
+      agentConstants.push(new PatientAgent(agent, locationValue));
+      //agentConstants.push(new PatientAgentThesis(agent, locationValue));
     else
-      //agentConstants.push(new MedicalAgent(agent, locationValue));
-      agentConstants.push(new MedicalAgentThesis(agent, locationValue));
+      agentConstants.push(new MedicalAgent(agent, locationValue));
+      //agentConstants.push(new MedicalAgentThesis(agent, locationValue));
     //Is this line necessary?
     agentConstants[agentConstants.length - 1].setId(index);
   })
 
 
 
-  //Start the simulation.
+  // STARTS THE SIMULATION
   let crowdSetup = new CrowdSetup(objValue, agentConstants, params.secondsOfSimulation, params.millisecondsBetweenFrames, locationValue, window, document.body, colorFunction, simulations, "./crowd-setup/");
 
-
+  // THIS SETS UP THE TABLE FIGURE ON THE BOTTOM LEFT OF THE SCREEN
   //setupTable(crowdSetup);
 
   //  })

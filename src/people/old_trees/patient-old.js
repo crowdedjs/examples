@@ -1,9 +1,9 @@
-import FollowInstructions from "../behavior/follow-instructions.js";
-import GoToLazy from "../behavior/go-to-lazy.js";
+import FollowInstructions from "../../behavior/follow-instructions-old.js";
+import GoToLazy from "../../behavior/go-to-lazy.js";
 // import LOG 
-import Stop from "../behavior/stop.js";
+import Stop from "../../behavior/stop.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
-import PatientTempState from "../support/patient-temp-state.js";
+import PatientTempState from "../../support/patient-temp-state.js";
 
 class patient {
 

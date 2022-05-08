@@ -234,7 +234,7 @@ export default [
 		}
 	},
 	{
-		"name": "Resident Start",
+		"name": "ResidentStart",
 		"annotationName": "Resident Start",
 		"position": {
 			"x": 6.583333333333329,
@@ -244,7 +244,7 @@ export default [
 	},
 	{
 		"name": "TechPlace",
-		"annotationName": "TechPlace",
+		"annotationName": "Tech Place",
 		"position": {
 			"x": -6.583333333333336,
 			"y": 0,

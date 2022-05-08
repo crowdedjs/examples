@@ -3,7 +3,7 @@ import GoToLazy from "../behavior/go-to-lazy.js";
 import LeavePatient from "../behavior/leave-patient.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree";
 import PatientTempState from "../support/patient-temp-state.js";
-import task from "../support/task-thesis.js";
+import task from "../support/task.js";
 
 class triageNurseThesis {
 

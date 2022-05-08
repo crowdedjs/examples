@@ -1,6 +1,6 @@
 import PatientTempState from "../support/patient-temp-state.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree";
-import FollowInstructions from "../behavior/follow-instructions.js";
+import FollowInstructions from "./follow-instructions-old.js";
 
 
 class AssignPatientToTriageNurse {

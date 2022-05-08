@@ -1,8 +1,8 @@
-import GoTo from "../behavior/go-to.js";
-import GoToLazy from "../behavior/go-to-lazy.js";
-import LeavePatient from "../behavior/leave-patient.js";
+import GoTo from "../../behavior/go-to.js";
+import GoToLazy from "../../behavior/go-to-lazy.js";
+import LeavePatient from "../../behavior/leave-patient.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree";
-import PatientTempState from "../support/patient-temp-state.js";
+import PatientTempState from "../../support/patient-temp-state.js";
 
 
 class triageNurse {

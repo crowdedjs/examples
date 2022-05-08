@@ -2,7 +2,7 @@ import GoTo from "../behavior/go-to.js"
 import GoToLazy from "../behavior/go-to-lazy.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 import LocationStatus from "../support/location-status.js";
-import task from "../support/task-thesis.js";
+import task from "../support/task.js";
 import TakeTime from "../behavior/take-time.js";
 
 class janitorialThesis {
