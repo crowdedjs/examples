@@ -1,20 +1,21 @@
 import AMedicalStaff from "./amedical-staff.js";
-import EscapePerson from "./escape-person.js";
+import EscapePerson from "./old_trees/escape-person.js";
 
-import greeterNurseThesis from "./greeter-nurse-thesis.js";
-import nurseThesis from "./nurse-thesis.js";
-import triageNurseThesis from "./triage-nurse-thesis.js";
-import janitorialThesis from "./janitorial-thesis.js";
-import techThesis from "./tech-thesis.js";
-import residentThesis from "./resident-thesis.js";
-import ctThesis from "./ct-thesis.js";
-import xrayThesis from "./xray-thesis.js";
-import radiologyThesis from "./radiology-thesis.js";
-import phlebotomistThesis from "./phlebotomist-thesis.js";
-import pharmacistThesis from "./pharmacist-thesis.js";
-import attendingThesis from "./attending-thesis.js";
+import greeterNurse from "./greeter-nurse.js";
+import nurse from "./nurse.js";
+import triageNurse from "./triage-nurse.js";
+import janitorial from "./janitorial.js";
+import tech from "./tech.js";
+import resident from "./resident.js";
+import ct from "./ct.js";
+import xray from "./xray.js";
+import radiology from "./radiology.js";
+import phlebotomist from "./phlebotomist.js";
+import pharmacist from "./pharmacist.js";
+import attending from "./attending.js";
 
-class MedicalAgentThesis extends AMedicalStaff {
+// THIS CLASS INITIALIZES MEDICAL AGENT BEHAVIOR TREES
+class MedicalAgent extends AMedicalStaff {
   startX;
   startY;
   startZ;
@@ -25,6 +26,7 @@ class MedicalAgentThesis extends AMedicalStaff {
   inSimulation = false;
   hasEntered = false;
   behavior;
+  
   // SHIFT CHANGE
   replacement = false;
   onTheClock = false;
@@ -63,46 +65,46 @@ class MedicalAgentThesis extends AMedicalStaff {
 
     if (agent.name == "Tech") {
       if (agent.type == "Tech")
-        this.behavior = new techThesis(agent.id)
+        this.behavior = new tech(agent.id)
       else if (agent.type == "CT")
-        this.behavior = new ctThesis(agent.id)
+        this.behavior = new ct(agent.id)
       else if (agent.type == "Janitorial")
-        this.behavior = new janitorialThesis(agent.id)
+        this.behavior = new janitorial(agent.id)
       else if (agent.type == "Phlebotomist")
-        this.behavior = new phlebotomistThesis(agent.id)
+        this.behavior = new phlebotomist(agent.id)
       else if (agent.type == "Radiology")
-        this.behavior = new radiologyThesis(agent.id)
+        this.behavior = new radiology(agent.id)
       else if (agent.type == "XRay")
-        this.behavior = new xrayThesis(agent.id)
+        this.behavior = new xray(agent.id)
       else
         throw new Exception("That tech type does not exist " + agent.type);
     }
     else if (agent.name == "Nurse") {
       
       if (agent.type == "Triage Nurse")
-        this.behavior = new triageNurseThesis(agent.id)
+        this.behavior = new triageNurse(agent.id)
       else if (agent.type == "Nurse")
-        this.behavior = new nurseThesis(agent.id)
+        this.behavior = new nurse(agent.id)
       else if (agent.type == "Greeter Nurse")
-        this.behavior = new greeterNurseThesis(agent.id)
+        this.behavior = new greeterNurse(agent.id)
       else
         throw new Exception("That nurse type does not exist " + agent.type);
     }
     else if (agent.name == "Attending") {
       if (agent.type == "Attending")
-        this.behavior = new attendingThesis(agent.id)
+        this.behavior = new attending(agent.id)
       else
         throw new "That attending type does not exist " + agent.type;
     }
     else if (agent.name == "Resident") {
       if (agent.type == "Resident")
-        this.behavior = new residentThesis(agent.id)
+        this.behavior = new resident(agent.id)
       else
         throw new Exception("That resident type does not exist " + agent.type);
     }
     else if (agent.name == "Pharmacist") {
       if (agent.type == "Pharmacist")
-        this.behavior = new pharmacistThesis(agent.id)
+        this.behavior = new pharmacist(agent.id)
       else
         throw new Exception("That pharmacist type does not exist " + agent.type);
     }
@@ -132,4 +134,4 @@ class MedicalAgentThesis extends AMedicalStaff {
   getPatientTempState(){return this.patientTempState;}
 }
 
-export default MedicalAgentThesis;
+export default MedicalAgent;

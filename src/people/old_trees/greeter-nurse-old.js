@@ -9,7 +9,7 @@ import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
 
 
-class greeterNurse {
+class greeterNurseOld {
 
     constructor(myIndex) {
       this.index = myIndex;
@@ -112,4 +112,4 @@ class greeterNurse {
   
   }
 
-export default greeterNurse;
+export default greeterNurseOld;

@@ -6,7 +6,7 @@ import TakeTime from "../behavior/take-time.js";
 import task from "../support/task.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
-class nurseThesis {
+class nurse {
 
     constructor(myIndex) {
         this.index = myIndex;
@@ -26,6 +26,8 @@ class nurseThesis {
 
         this.tree = builder
 
+        // Consider limiting the rooms nurses can be assigned to tasks to
+        // STRUCTURE OF TREES: TESTING -> GO TO START -> QUEUE STORED TASKS -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
         .parallel("Testing Parallel", 2, 2)
             .do("Testing", (t) => {
                 // This would tick up while on the way back to the computer, which isn't desirable.
@@ -43,8 +45,6 @@ class nurseThesis {
                 me().lengthOfStay++;
                 return fluentBehaviorTree.BehaviorTreeStatus.Running; 
             })
-        // Consider limiting the rooms nurses can be assigned to tasks to
-        // General Structure of New Trees: GO TO START -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
         .sequence("Nurse Behaviors")
             
             .do("Testing", (t) => {
@@ -260,4 +260,4 @@ class nurseThesis {
   
 }
 
-export default nurseThesis;
+export default nurse;

@@ -8,7 +8,7 @@ import TakeTime from "../behavior/take-time.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 import task from "../support/task.js";
 
-class greeterNurseThesis {
+class greeterNurse {
 
   constructor(myIndex) {
     this.index = myIndex;
@@ -92,4 +92,4 @@ class greeterNurseThesis {
   
 }
 
-export default greeterNurseThesis;
+export default greeterNurse;

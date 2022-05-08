@@ -4,7 +4,7 @@ import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
 
 
-class attending {
+class attendingOld {
 
   constructor(myIndex) {
     this.index = myIndex;
@@ -41,4 +41,4 @@ class attending {
 
 }
 
-export default attending;
+export default attendingOld;

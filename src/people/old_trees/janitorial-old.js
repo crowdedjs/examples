@@ -4,7 +4,7 @@ import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 import LocationStatus from "../../support/location-status.js";
 import TakeTime from "../../behavior/take-time.js";
 
-class janitorial {
+class janitorialOld {
 
   constructor(myIndex) {
     this.index = myIndex;
@@ -126,4 +126,4 @@ class janitorial {
 
 }
 
-export default janitorial;
+export default janitorialOld;

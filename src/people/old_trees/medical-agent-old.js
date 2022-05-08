@@ -1,12 +1,8 @@
-
-import BackAndForth from "../../behavior/back-and-forth.js";
-import None from "../../behavior/none.js"
-import Agent from "../agent.js"
 import AMedicalStaff from "../amedical-staff.js";
 
 import attending from "./attending-old.js"
 import ct from "./ct-old.js"
-import EscapePerson from "../escape-person.js";
+import EscapePerson from "./escape-person.js";
 import greeterNurse from "./greeter-nurse-old.js"
 import janitorial from "./janitorial-old.js"
 import nurse from "./nurse-old.js"
@@ -18,7 +14,7 @@ import tech from "./tech-old.js"
 import triageNurse from "./triage-nurse-old.js"
 import xray from "./xray-old.js" 
 
-class MedicalAgent extends AMedicalStaff {
+class MedicalAgentOld extends AMedicalStaff {
   startX;
   startY;
   startZ;
@@ -135,4 +131,4 @@ class MedicalAgent extends AMedicalStaff {
   getPatientTempState(){return this.patientTempState;}
 }
 
-export default MedicalAgent;
+export default MedicalAgentOld;

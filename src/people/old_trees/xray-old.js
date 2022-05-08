@@ -3,7 +3,7 @@ import AssignComputer from "../../behavior/assign-computer.js";
 import responsibility from "../../behavior/responsibility/responsibility.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
-class xray {
+class xrayOld {
 
   constructor(myIndex) {
     this.index = myIndex;
@@ -102,4 +102,4 @@ class xray {
 
 }
 
-export default xray;
+export default xrayOld;

@@ -1,5 +1,6 @@
 import APerson from "./aperson.js"
 
+// THIS CLASS HAS ALL THE IMPORTANT MEDICAL-AGENT DATA
 class AMedicalStaff extends APerson {
     medicalStaffType; //MedicalStaffClass -> string
     medicalStaffSubclass; //MedicalStaffSublcass -> string
@@ -13,7 +14,7 @@ class AMedicalStaff extends APerson {
 	busy = false; //boolean (if the nurse needs to finish their behavior before getting another patient)
 	task; //Task
 	
-	// Testing
+	// TESTING VARIABLES
 	idleTime = 0;
 	amIdle = true;
 	lengthOfStay = 0;

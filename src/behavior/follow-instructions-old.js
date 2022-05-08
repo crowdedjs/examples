@@ -3,7 +3,7 @@ import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree";
 import LocationStatus from "../support/location-status.js";
 import task from "../support/task.js";
 
-class FollowInstructions {
+class FollowInstructionsOld {
 
   constructor(myIndex) {
     //this.me = agent;
@@ -146,4 +146,4 @@ class FollowInstructions {
 
 }
 
-export default FollowInstructions;
+export default FollowInstructionsOld;

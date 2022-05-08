@@ -3,7 +3,7 @@ import WaitForever from "../behavior/wait-forever.js"
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 import task from "../support/task.js";
 
-class attendingThesis {
+class attending {
 
   constructor(myIndex) {
     this.index = myIndex;
@@ -13,6 +13,8 @@ class attendingThesis {
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
 
     let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
+    
+    // I BELIEVE I DID THIS SO THAT THEY WOULD STAY OUT OF THE WAY, BECAUSE CURRENTLY AGENTS CAUSE TRAFFIC JAMS
     //let myGoal = Hospital.locations.find(l => l.name == "B Desk");
     //if (!myGoal) throw new Exception("We couldn't find a location called B Desk");
     let myGoal = Hospital.locations.find(l => l.name == "Fast Track 2");
@@ -44,4 +46,4 @@ class attendingThesis {
 
 }
 
-export default attendingThesis;
+export default attending;

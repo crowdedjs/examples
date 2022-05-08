@@ -1,9 +1,10 @@
-
-
+// THE TASK OBJECT EACH AGENT PULLS AND PUSHES INTO THEIR TASK LISTS
 class task {
     taskID; // STRING
     severity; // PATIENT SEVERITY OR NUMBER
+    // ENTRY TIME IS NOT IMPLEMENTED YET, THIS WOULD BE IMPORTANT
     entryTime; // INT
+    // -----------------------
     waitingTime = 0; // INT
     patient; // PATIENT
     location; // LOCATION

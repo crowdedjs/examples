@@ -4,7 +4,7 @@ import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
 
 
-class pharmacist {
+class pharmacistOld {
 
   constructor(myIndex) {
     this.index = myIndex;
@@ -35,4 +35,4 @@ class pharmacist {
 
 }
 
-export default pharmacist;
+export default pharmacistOld;

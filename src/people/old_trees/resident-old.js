@@ -8,7 +8,7 @@ import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
 
 
-class resident {
+class residentOld {
 
   constructor(myIndex) {
     this.index = myIndex;
@@ -110,4 +110,4 @@ class resident {
 
 }
 
-export default resident;
+export default residentOld;

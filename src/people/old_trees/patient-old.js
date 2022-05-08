@@ -1,11 +1,11 @@
-import FollowInstructions from "../../behavior/follow-instructions-old.js";
+import FollowInstructionsOld from "../../behavior/follow-instructions-old.js";
 import GoToLazy from "../../behavior/go-to-lazy.js";
 // import LOG 
 import Stop from "../../behavior/stop.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 import PatientTempState from "../../support/patient-temp-state.js";
 
-class patient {
+class patientOld {
 
   constructor(myIndex, startLocation) {
     this.index = myIndex;
@@ -50,7 +50,7 @@ class patient {
 
       .splice(new GoToLazy(myIndex, () => wait.location).tree)
 
-      .splice(new FollowInstructions(myIndex).tree)
+      .splice(new FollowInstructionsOld(myIndex).tree)
       .do("Done following instructions", async function (t) {
         console.log("Done following instructions")
         return fluentBehaviorTree.BehaviorTreeStatus.Success;
@@ -71,4 +71,4 @@ class patient {
 
 }
 
-export default patient;
+export default patientOld;

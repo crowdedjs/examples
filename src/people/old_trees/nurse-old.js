@@ -3,7 +3,7 @@ import GoTo from "../../behavior/go-to.js";
 import AssignComputer from "../../behavior/assign-computer.js"
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
-class nurse {
+class nurseOld {
 
     constructor(myIndex) {
       this.index = myIndex;
@@ -108,4 +108,4 @@ class nurse {
   
   }
 
-export default nurse;
+export default nurseOld;

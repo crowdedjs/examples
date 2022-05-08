@@ -2,21 +2,24 @@ import * as THREE from "three"
 import task from "./task.js";
 
 class Hospital{
-
+  // INITIALIZE AGENTS, LOCATIONS, AND COMPUTER (FOR BOTTOM LEFT VISUAL TABLE ENTRIES)
   static agentConstants;
   static locations;
   static computer;
+  // COMMENTS AREN'T IMPLEMENTED YET
   static comments = [];
+
+  // LISTS FOR QUEUES OF PATIENTS GOING TO CT OR XRAY
   static CTQueue = [];
   static XRayQueue = [];
 
-  //static CTOccupied = false;
+  // BOOLEAN USED FOR AVOIDING DOUBLES IN CT AND XRAY ROOMS
   static CT1Occupied = false;
   static CT2Occupied = false;
-
   static XRay1Occupied = false;
   static XRay2Occupied = false;
 
+  // A-TEAM ARE MEDICAL STAFF DESIGNATED FOR HELPING ESI1 (EMERGENCY) PATIENTS
   // doctor = 0, resident = 1, nurse = 2, tech = 3, phlebotomist = 4, imaging = 5
   // IS THE RESIDENT OR ATTENDING THE DOCTOR?
   static aTeam = [];
@@ -35,6 +38,7 @@ class Hospital{
   static activeTech = [];
   static activeTriage = [];
   static activeXRay = [];
+
   // USING THIS TO ASSIGN CT ROOMS TO CT AGENTS
   static CT1Agents = 0;
   static CT2Agents = 0;
@@ -53,6 +57,7 @@ class Hospital{
   static pharmacistTaskList = [];
   static attendingTaskList = [];
 
+  // !NOT USED! -- WOULD BE USED FOR EASIER COMBINATION AND OUTPUT OF TEST DATA
   static patientData = [];
   static attendingData = [];
   static ctData = [];
@@ -66,7 +71,7 @@ class Hospital{
   static triageData = [];
   static xrayData = [];
 
-  // returned 60 before? Dr. Ricks said it is locked at 25 fps.
+  // SIMULATION IS LOCKED AT 25 FPS, NOT 60. THIS METHOD IS DEPRECATED (I BELIEVE) AND NOT USED EXCEPT IN MATH FOR TASK TIME IN OLD TREES. CHANGE/DELETE AT YOUR OWN RISK THOUGH.
   static getFPS(){return 60;}
 
   static getCTQueue() {
@@ -153,6 +158,7 @@ class Hospital{
     return ctx.canvas;
   }
 
+  // CODE FOR MAKING COMMENT LABELS? I DON'T REMEMBER. COULD ALSO BE FOR THE LOCATION FLAGS?
   // makeLabel(labelWidth, size, name) {
   //   //const ctx = document.createElement('canvas').getContext('2d');
   //   //document.body.appendChild(ctx.canvas);

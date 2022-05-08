@@ -1,8 +1,8 @@
 import CrowdSetup from "@crowdedjs/crowd-setup"
-import MedicalAgent from "./people/old_trees/medical-agent-old.js"
-import MedicalAgentThesis from "./people/medical-agent-thesis.js"
-import PatientAgent from "./people/old_trees/patient-agent-old.js"
-import PatientAgentThesis from "./people/patient-agent-thesis.js"
+import MedicalAgentOld from "./people/old_trees/medical-agent-old.js"
+import MedicalAgent from "./people/medical-agent.js"
+import PatientAgentOld from "./people/old_trees/patient-agent-old.js"
+import PatientAgent from "./people/patient-agent.js"
 import urlParser from "./url-parser.js"
 import colorFunction from "./color-function.js"
 import simulations from "./simulations.js"
@@ -14,6 +14,7 @@ import setupTable from "./setup-table.js"
 //import assets from "@crowdedjs/assets"
 import assets from "./assets/index.js"
 
+// THIS IS THE MOST IMPORTANT FILE AND FUNCTION IN THE CODEBASE; IT INITIALIZES EVERYTHING.
 function boot() {
   // SIMULATION PARAMETERS - THESE ARE CORRECT!
   let params = {};
@@ -64,11 +65,11 @@ function boot() {
   // ADDS BEHAVIOR TREES TO LIST OF AGENTS; BRANCHES BASED ON PATIENT VS MEDICAL AGENT (WHICH BRANCHES FURTHER FROM THERE) 
   arrivalValue.forEach((agent, index) => {
     if (agent.name == "patient")
+      //agentConstants.push(new PatientAgentOld(agent, locationValue));
       agentConstants.push(new PatientAgent(agent, locationValue));
-      //agentConstants.push(new PatientAgentThesis(agent, locationValue));
     else
+      //agentConstants.push(new MedicalAgentOld(agent, locationValue));
       agentConstants.push(new MedicalAgent(agent, locationValue));
-      //agentConstants.push(new MedicalAgentThesis(agent, locationValue));
     //Is this line necessary?
     agentConstants[agentConstants.length - 1].setId(index);
   })

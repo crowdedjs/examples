@@ -1,11 +1,11 @@
-import FollowInstructionsThesis from "../behavior/follow-instructions-thesis.js";
+import FollowInstructions from "../behavior/follow-instructions.js";
 import GoToLazy from "../behavior/go-to-lazy.js";
 // import LOG 
 import Stop from "../behavior/stop.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 import PatientTempState from "../support/patient-temp-state.js";
 
-class patientThesis {
+class patient {
 
   constructor(myIndex, startLocation) {
     this.index = myIndex;
@@ -61,7 +61,7 @@ class patientThesis {
           .splice(new GoToLazy(myIndex, () => wait.location).tree)
       .end()
       // PHYSICALLY FOLLOW NURSES AND STAY IN HOSPITAL ROOM
-      .splice(new FollowInstructionsThesis(myIndex).tree)
+      .splice(new FollowInstructions(myIndex).tree)
     .end()
     .build();
   }
@@ -94,4 +94,4 @@ class patientThesis {
 
 }
 
-export default patientThesis;
+export default patient;

@@ -1,8 +1,8 @@
-import Agent from "./agent.js"
-import patientThesis from "./patient-thesis.js";
+import patient from "./patient.js";
 import APatient from "./apatient.js"
 
-class PatientAgentThesis extends APatient {
+// THIS CLASS INITIALIZES PATIENT AGENT BEHAVIOR TREES AND IF THEY START AT CHECK IN OR AMBULANCE ENTRANCE
+class PatientAgent extends APatient {
   startX;
   startY;
   startZ;
@@ -43,10 +43,10 @@ class PatientAgentThesis extends APatient {
     this.destY = 0;
     this.destZ = 0;
     
-    this.behavior = new patientThesis( agent.id, Hospital.locations.find(l => l.name == "Check In"));
+    this.behavior = new patient( agent.id, Hospital.locations.find(l => l.name == "Check In"));
 
     if (startLocation == Hospital.locations.find(l => l.name == "Ambulance Entrance")) {
-      this.behavior = new patientThesis( agent.id, Hospital.locations.find(l => l.name == "Ambulance Entrance"));
+      this.behavior = new patient( agent.id, Hospital.locations.find(l => l.name == "Ambulance Entrance"));
     }   
       
   }
@@ -69,4 +69,4 @@ class PatientAgentThesis extends APatient {
   setActive(active) { this.active = active; }
 }
 
-export default PatientAgentThesis;
+export default PatientAgent;

@@ -3,7 +3,7 @@ import WaitForever from "../behavior/wait-forever.js"
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 import task from "../support/task.js";
 
-class pharmacistThesis {
+class pharmacist {
 
   constructor(myIndex) {
     this.index = myIndex;
@@ -37,4 +37,4 @@ class pharmacistThesis {
 
 }
 
-export default pharmacistThesis;
+export default pharmacist;

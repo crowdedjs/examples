@@ -5,7 +5,7 @@ import LocationStatus from "../support/location-status.js";
 import task from "../support/task.js";
 import TakeTime from "../behavior/take-time.js";
 
-class janitorialThesis {
+class janitorial {
 
   constructor(myIndex) {
     this.index = myIndex;
@@ -26,6 +26,7 @@ class janitorialThesis {
 
     this.tree = builder
     
+    // STRUCTURE OF TREES: TESTING -> GO TO START -> QUEUE STORED TASKS -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
       .parallel("Testing Parallel", 2, 2)
         .do("Testing", (t) => {
             if (me().onTheClock && me().getTask() == null && me().taskTime == 0 && !me().moving) {
@@ -150,4 +151,4 @@ class janitorialThesis {
 
 }
 
-export default janitorialThesis;
+export default janitorial;

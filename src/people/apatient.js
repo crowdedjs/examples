@@ -1,6 +1,7 @@
 import APerson from "./aperson.js";
 import PatientTempState from "../support/patient-temp-state.js";
 
+// THIS CLASS HAS ALL THE IMPORTANT PATIENT AGENT DATA
 class APatient extends APerson {
 
 	constructor(location, UUID, severity, arrivalTick) {
@@ -12,8 +13,8 @@ class APatient extends APerson {
     
     patientTempState = PatientTempState.ARRIVED;
     
+    // SEVERITY LEVELS: ESI1, ESI2, ESI3, ESI4, ESI5
 	severity; // Severity
-	// SEVERITY LEVELS: ESI1, ESI2, ESI3, ESI4, ESI5
 	
 	instructor; // AMedicalStaff
 
@@ -21,12 +22,12 @@ class APatient extends APerson {
 
 	scan = false; //boolean
 
-	// testing variables
-	lengthOfStay = 0;
+	// TESTING VARIABLES
+	lengthOfStay = 0; // TOTAL STAY IN HOSPITAL
 	ticksPresent = 0;
-	waitingTime = 0;
+	waitingTime = 0; // TIME THEY ARE NOT CURRENTLY DOING ANYTHING OR BEING HELPED
 
-	// wait time categories
+	// CATEGORIES OF WAIT TIME
 	waitToCheckIn = false;
 	waitToCheckInValue = 0;
 	//

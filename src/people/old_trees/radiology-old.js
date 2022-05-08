@@ -4,7 +4,7 @@ import responsibility from "../../behavior/responsibility/responsibility.js"
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 
 
-class radiology {
+class radiologyOld {
 
   constructor(myIndex) {
     this.index = myIndex;
@@ -96,4 +96,4 @@ class radiology {
 
 }
 
-export default radiology
+export default radiologyOld;

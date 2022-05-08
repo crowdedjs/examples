@@ -5,7 +5,7 @@ import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree";
 import PatientTempState from "../../support/patient-temp-state.js";
 
 
-class triageNurse {
+class triageNurseOld {
 
   constructor(myIndex) {
     this.index = myIndex;
@@ -105,5 +105,5 @@ class triageNurse {
 
 }
 
-export default triageNurse;
+export default triageNurseOld;
 

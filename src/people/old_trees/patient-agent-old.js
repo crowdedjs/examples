@@ -1,8 +1,7 @@
-import Agent from "../agent.js"
 import patient from "./patient-old.js"
 import APatient from "../apatient.js"
 
-class PatientAgent extends APatient {
+class PatientAgentOld extends APatient {
   startX;
   startY;
   startZ;
@@ -68,4 +67,4 @@ class PatientAgent extends APatient {
   setActive(active) { this.active = active; }
 }
 
-export default PatientAgent;
+export default PatientAgentOld;
