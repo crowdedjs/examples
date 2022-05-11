@@ -84,6 +84,15 @@ class phlebotomist {
                     else if (me().getTask() != null) {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
+                    // CHECK IF ON A TEAM AND IF ANY EMERGENCY TASKS ARE AVAILABLE, CONTINUE
+                    else if (Hospital.aTeam[4] == me() && Hospital.phlebotomistTaskList.length != 0) {
+                        for (let i = 0; i < Hospital.phlebotomistTaskList.length; i++) {
+                            if (Hospital.phlebotomistTaskList[i].patient != null && Hospital.phlebotomistTaskList[i].patient.getSeverity() == "ESI1") {
+                                me().setTask(Hospital.phlebotomistTaskList.splice(i, 1));
+                            }
+                        }
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
                     // CHECK IF ANY TASKS ARE AVAILABLE, CONTINUE
                     else if (Hospital.phlebotomistTaskList.length != 0) {
                         me().setTask(Hospital.phlebotomistTaskList.shift());

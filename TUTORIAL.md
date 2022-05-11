@@ -37,9 +37,9 @@ STRUCTURE OF TREES: TESTING -> GO TO START -> QUEUE STORED TASKS -> GET A TASK -
 - Make sure tasks are given times to complete them. (taskTime variable)
 
 ## Instructions to Use
-Make sure you have Node and that it is to date.
+Make sure you have Node and that it is up to date.
 
-Recommend using Visual Studio Code. Open the Terminal and use `npm start`, then use the link it provides once it boots up. This will likely be **localhost:3000**. Any changes you make in the code now will refresh your page and be reflected there. Make sure you're utilizing the browser console for various testing outputs. 
+Recommend using Visual Studio Code. Open the Terminal and use `npm start`, then use the link it provides once it boots up. This will likely be **localhost:3000**. Any changes you make in the code now will refresh your page and be reflected there. Make sure you're utilizing the browser console for various testing outputs. A full run of the simulation on a desktop computer takes around 20ish minutes; laptop computers run the simulation much slower.
 
 If your changes aren't being reflected, try clearing your browser cache or the cache in VS Code.
 
@@ -48,11 +48,11 @@ Dr. Ricks and I have been using Github (https://github.com/crowdedjs/examples) f
 If you need to use local changes to node_modules, you will need to uncomment lines in `config\vite.config.js`. In my experience, I've had to do this a few times for certain 'scoring' output I wanted from `node_modules\@crowdedjs\crowd-setup\index.js`.
 
 ## Links
-Old Implementation: https://er-old.ricks.io/
-New/Most Recent Implementation: https://er-new.ricks.io/
-Github page for Javascript port of Recast & Detour: https://github.com/ricksteam/recastdetourjs
-Github page for behavior tree module: https://github.com/aequasi/fluent-behavior-tree
-Github page for this project: https://github.com/crowdedjs/examples
+- Old Implementation: https://er-old.ricks.io/
+- New/Most Recent Implementation: https://er-new.ricks.io/
+- Github page for Javascript port of Recast & Detour: https://github.com/ricksteam/recastdetourjs
+- Github page for behavior tree module: https://github.com/aequasi/fluent-behavior-tree
+- Github page for this project: https://github.com/crowdedjs/examples
 
 ## Random Tidbits
 - Sequence seems to loop pretty reliably as far as having agents have an OVERALL looping behavior tree.
@@ -60,22 +60,31 @@ Github page for this project: https://github.com/crowdedjs/examples
 
 
 # To Do List
-- Implement priority queuing / sorting based on priority and time a task has been waiting (CT / XRay tasks should probably receive high priority, as it is a blocker currently)
-- Bug fix shift changes (agent models aren't getting deleted). Make sure you go through arrivalHospitalFull.js and make sure new medical agents arrivals are correct. Recommend getting Dr. Ricks's help. Shift changes should be: 0700 - 1500; 1500 - 2200; 2200 - 0700.
+- Implement priority queuing / sorting based on emergency, priority, and time a task has been waiting (CT / XRay tasks should probably receive high priority, as it is a blocker currently)
+    - What metric should be used to sort? 
+        - Make a big list of the queable tasks, then consult with Dr. Zeger to figure out what the priority of each task should be. Should also approach him more generally to see if there are more big ticket tasks or considerations on what tasks take priority.
+        - Will need to go through and make sure the 'severity' value of each created task is this integer metric (rather than patient severity)
+        - Going to CT and XRay would be a high priority task to reduce blocker and length of stay
+        - Using patient severity would cause ESI4 patients to sit idle nearly indefinitely while a stream of ESI3 patients are helped first; a solution to this would be implementing the feature of assigning groups of rooms to certain staff that way there is always someone available.
+        - A janitor's sorting should probably be based on the availability of the type of room to sanitize. If there are very few C rooms left, that should be a bigger priority. A rooms would also be the most important.
+    - Should implement a function to upgrade the importance value used for sorting based on how long a task has been in the list
+    - Prototype sorting do node in nurse.js, sorting algorithm is in hospital.js 
+- Implement entryTime in task.js (always had trouble figuring out how to get access to the current simulation time/tick)
+- Fully implement (use tasks rather than old code) and bug fix shift changes (agent models aren't getting deleted). Make sure you go through arrivalHospitalFull.js and make sure new medical agents arrivals are correct. Recommend getting Dr. Ricks's help. Shift changes should *officially* be: 0700 - 1500; 1500 - 2200; 2200 - 0700. They are currently 0600 - 1800 (first 12 hours) and (second 12 hours) 1800 - 0600.
 - Limit rooms each agent should take tasks for (Dr. Zeger from UNMC says most medical agents have batches of rooms close together, might also be more computer checkpoints they could go to rather than heading all the way back to the one "home" location) (nurses zone 4 rooms, techs zone 8 rooms)
-- Make sure patients stop getting pushed out of their rooms. Fix pathfinding issues in regards to agents being in the way. Workaround in behavior trees might not be worth it, might need to make edits in Recast & Detour module instead, which would require Dr. Ricks's help.
+- Make sure patients stop getting pushed out of their rooms. Utilizing GO_INTO_ROOM patient-temp-state is probably the solution, but it had a few errors I didn't have time to resolve (like the patient trying to go back to their original room if given this state when they go to CT/XRay)
+- Fix pathfinding issues in regards to agents being in the way. Workaround in behavior trees might not be worth it, might need to make edits in Recast & Detour module instead, which would require Dr. Ricks's help.
 - Pharmacist and Attending do not have behaviors.
 - Try to sync the simulation time to real life time. Use taskTime variable for this for tasks, but for travelling you might need to alter agent velocities or the simulation timer. Will need to get data from UNMC for how long each task should reasonably take.
 - Previous take-time behavior (examples\src\behavior\take-time.js) had ranges with the task being randomly generated between them, should try to reimplement that. Also just a heads up, I made take-time into individual behaviors because when I spliced that file in it hardly ever worked and I spent a lot of tries and time trying to debug it.
 - Implement COMMENTS, which were dialogue thought bubbles from the old java version of the simulation.
-- Implement entryTime in task.js
 - Add triage room functionality (not used if large availability of beds)
 - Different ESIs go to different rooms (4s and 5s seen elsewhere, same with 3s)
 - Add support for the other animations of agents. (Not doing the walking animation all the time.)
 - Create a better way for generating arrival files or making simple edits. Appending this as an end-user ability would also be incredible in regards to providing it to UNMC researchers. Notes from previous talk with Dr. Ricks on this topic:
-    https://github.com/ricksteam/ED-ArrivalTimeGenerator
-    https://github.com/ricksteam/crowds2FrontEnd/blob/master/src/assets/Baker.js
-    "Copy lines 79 through 142 into a .js file and run it using node. There are some variables you will need to set at the top of your file, for example you need to set self.arrivals.patientArrivals to be an array of arrivals per hour. This file can create a lot of things, not just arrivals. The function you want to look at is bakeArrivals()"
+    - https://github.com/ricksteam/ED-ArrivalTimeGenerator
+    - https://github.com/ricksteam/crowds2FrontEnd/blob/master/src/assets/Baker.js
+    - "Copy lines 79 through 142 into a .js file and run it using node. There are some variables you will need to set at the top of your file, for example you need to set self.arrivals.patientArrivals to be an array of arrivals per hour. This file can create a lot of things, not just arrivals. The function you want to look at is bakeArrivals()"
 
 - There seems to be a lot of deprecated code(?), for example: examples\public\arrivals & examples\public\locations & examples\public\objs & examples\src\arrivals (what is public folder for?)
 - Could the code be even DRY-er; almost every new tree has the same structure, so could it be simplified more?
@@ -86,5 +95,6 @@ Github page for this project: https://github.com/crowdedjs/examples
 - Shift change with new implementation won't delete the old agents. Sometimes patients aren't deleted either and they become an amalgamous monster.
 - Ticks values used in json arrival file is odd. It is based on (actual tick value * 1000) / 25. The actual number of ticks in the simulation is 86400, with 1 tick per second.
 - Traffic jams
-- Agent models not getting deleted properly
+- Agent models not getting deleted properly in general
 - If there is an issue with Task Queuing, the simulation will simply freeze and there will be no error text. Check spelling and the like.
+- Use distanceTo and distanceToSquared functions interchangeably. My desktop can use distanceToSquared, but my laptop will error out if I do not use distanceTo.

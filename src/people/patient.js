@@ -72,7 +72,7 @@ class patient {
     if (myself.getPatientTempState() == PatientTempState.WAITING || myself.getPatientTempState() == PatientTempState.ARRIVED) {
       myself.waitingTime++;
     }
-    // testing wait values
+    // WAIT TIME TEST VALUES
     if (myself.waitInRoom2) {
       myself.waitInRoom2Value++;
     }

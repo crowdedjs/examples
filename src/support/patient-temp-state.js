@@ -1,12 +1,15 @@
 class PatientTempState{
+  // STATE FOR PATIENTS WAITING TO BE HELPED
   static WAITING = 0;
+  // STATE FOR PATIENTS FOLLOWING A MEDICAL AGENT
   static FOLLOWING = 1;
+  // STATE FOR STAYING IN A ROOM - NOT FULLY IMPLEMENTED IN PRESENT IMPLEMENTATION, COULD HELP WITH PATIENTS BEING PUSHED OUT OF ROOMS PROBLEM
   static GO_INTO_ROOM = 2;
+  // STATE FOR PATIENTS THAT ARE COMPLETE IN THE HOSPITAL AND READY TO BE DELETED
   static DONE = 3;
-
-  // needed to have fresh state, as greeter nurse sets new patients to WAITING, and they already were WAITING.
-  // previously, the greeter nurse was adding the same patient to the computer multiple times because it didn't check for anything but location.
+  // STATE FOR PATIENTS THAT HAVE FRESHLY ARRIVED INTO THE SIMULATION
   static ARRIVED = 4;
+  // STATE FOR PATIENTS THAT ARE BOOKED INTO OTHER AREAS OF THE HOSPITAL (ESCORTED OUT OF MAIN ENTRANCE)
   static BOOKED = 5;
 }
 

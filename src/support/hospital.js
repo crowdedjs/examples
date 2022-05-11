@@ -20,8 +20,8 @@ class Hospital{
   static XRay2Occupied = false;
 
   // A-TEAM ARE MEDICAL STAFF DESIGNATED FOR HELPING ESI1 (EMERGENCY) PATIENTS
-  // doctor = 0, resident = 1, nurse = 2, tech = 3, phlebotomist = 4, imaging = 5
-  // IS THE RESIDENT OR ATTENDING THE DOCTOR?
+  // doctor = 0, resident = 1, nurse = 2, tech = 3, phlebotomist = 4, imaging = 5 (xray for now)
+  // IS THE RESIDENT OR ATTENDING THE "DOCTOR"?
   static aTeam = [];
   static emergencyQueue = [];
 
@@ -122,7 +122,27 @@ class Hospital{
 
   static getLocationByName(name){
     return this.locations.find(i=>i.getName() == name);
+  }
 
+  // BUBBLE SORT ALGORITHM TO SORT TASKS IN LIST BY IMPORTANCE/SEVERITY
+  // When entrytime has been implemented (so as to gauge how long a task has been waiting), should probably 
+  // have a method that upgrades the importance/severity of the task if it hits certain time thresholds
+  static sortTasks(taskList) {
+    let arr = taskList;
+    for (var i = 0; i < arr.length; i++) {  
+      // Last i elements are already in place  
+      for (var j = 0; j < ( arr.length - i - 1 ); j++) {     
+        // Checking if the item at present iteration 
+        // has higher severity (1 is more important than 5)
+        if (arr[j].severity > arr[j + 1].severity) {    
+          // If the condition is true then swap them
+          var temp = arr[j]
+          arr[j] = arr[j + 1]
+          arr[j + 1] = temp
+        }
+      }
+    }
+    return arr;
   }
 
   //From https://threejsfundamentals.org/threejs/lessons/threejs-billboards.html

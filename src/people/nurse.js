@@ -30,13 +30,13 @@ class nurse {
         // STRUCTURE OF TREES: TESTING -> GO TO START -> QUEUE STORED TASKS -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
         .parallel("Testing Parallel", 2, 2)
             .do("Testing", (t) => {
-                // This would tick up while on the way back to the computer, which isn't desirable.
+                // This would tick up while on the way back to the computer, which isn't desirable. (think this is fixed?)
                 if (me().onTheClock && me().getTask() == null && me().taskTime == 0 && !me().moving) {
                     me().idleTime++;
                 }
                 if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
                     let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
-                    idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
+                    idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100;
                     //console.log("Nurse Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
                     console.log(idleTimeMinutes);
                     me().idleTime = 0;
@@ -64,8 +64,6 @@ class nurse {
 
             .splice(new AssignComputer(myIndex, computer.location).tree) // NURSE PLACE
             
-            // Add a behavior here or in the selector that will order the tasks (by severity)?
-
             .do("Queue Tasks", (t) => {
                 while (taskQueue.length > 0) {
                     switch(taskQueue[0].taskID) {
@@ -78,6 +76,16 @@ class nurse {
 
                 return fluentBehaviorTree.BehaviorTreeStatus.Success;
             })
+
+            // SORTS TASKS BY IMPORTANCE
+            // When entrytime has been implemented (so as to gauge how long a task has been waiting), should probably 
+            // have a method that upgrades the importance/severity of the task if it hits certain time thresholds
+            // .do("Sort Tasks", (t) => {
+            //     let taskListCopy = Hospital.nurseTaskList;
+            //     Hospital.nurseTaskList = [];
+            //     Hospital.nurseTaskList = Hospital.sortTasks(taskListCopy);
+            //     return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            // })
 
             .selector("Task List Tasks")
                 .do("Get a Task", (t) => {
@@ -100,6 +108,15 @@ class nurse {
                     }
                     // IF ALREADY ALLOCATED A TASK, CONTINUE
                     else if (me().getTask() != null) {
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
+                    // CHECK IF ON A TEAM AND IF ANY EMERGENCY TASKS ARE AVAILABLE, CONTINUE
+                    else if (Hospital.aTeam[2] == me() && Hospital.nurseTaskList.length != 0) {
+                        for (let i = 0; i < Hospital.nurseTaskList.length; i++) {
+                            if (Hospital.nurseTaskList[i].patient != null && Hospital.nurseTaskList[i].patient.getSeverity() == "ESI1") {
+                                me().setTask(Hospital.nurseTaskList.splice(i, 1));
+                            }
+                        }
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
                     // CHECK IF ANY TASKS ARE AVAILABLE, CONTINUE

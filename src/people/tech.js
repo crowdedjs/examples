@@ -109,6 +109,15 @@ class tech {
                     else if (me().getTask() != null) {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
+                    // CHECK IF ON A TEAM AND IF ANY EMERGENCY TASKS ARE AVAILABLE, CONTINUE
+                    else if (Hospital.aTeam[3] == me() && Hospital.techTaskList.length != 0) {
+                        for (let i = 0; i < Hospital.techTaskList.length; i++) {
+                            if (Hospital.techTaskList[i].patient != null && Hospital.techTaskList[i].patient.getSeverity() == "ESI1") {
+                                me().setTask(Hospital.techTaskList.splice(i, 1));
+                            }
+                        }
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
                     // CHECK IF ANY TASKS ARE AVAILABLE, CONTINUE
                     else if (Hospital.techTaskList.length != 0) {
                         me().setTask(Hospital.techTaskList.shift());

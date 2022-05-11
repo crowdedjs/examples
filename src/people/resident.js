@@ -116,6 +116,15 @@ class resident {
                     else if (me().getTask() != null) {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
+                    // CHECK IF ON A TEAM AND IF ANY EMERGENCY TASKS ARE AVAILABLE, CONTINUE
+                    else if (Hospital.aTeam[1] == me() && Hospital.residentTaskList.length != 0) {
+                        for (let i = 0; i < Hospital.residentTaskList.length; i++) {
+                            if (Hospital.residentTaskList[i].patient != null && Hospital.residentTaskList[i].patient.getSeverity() == "ESI1") {
+                                me().setTask(Hospital.residentTaskList.splice(i, 1));
+                            }
+                        }
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
                     // CHECK IF ANY TASKS ARE AVAILABLE, CONTINUE
                     else if (Hospital.residentTaskList.length != 0) {
                         me().setTask(Hospital.residentTaskList.shift());

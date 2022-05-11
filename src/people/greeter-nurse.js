@@ -1,4 +1,4 @@
-import AssignPatientToTriageNurseThesis from "../behavior/assign-patient-to-triage-nurse-thesis.js";
+import AssignPatientToTriageNurse from "../behavior/assign-patient-to-triage-nurse.js";
 import ComputerAssignPatientRoom from "../behavior/computer-assign-patient-room.js"
 import ComputerEnterPatient from "../behavior/computer-enter-patient.js";
 import ComputerScorePatient from "../behavior/computer-score-patient.js";
@@ -77,7 +77,7 @@ class greeterNurse {
           .splice(new TakeTime(30, 90).tree)
           .splice(new ComputerAssignPatientRoom(myIndex).tree)
         .end()
-        .splice(new AssignPatientToTriageNurseThesis(myIndex).tree)
+        .splice(new AssignPatientToTriageNurse(myIndex).tree)
       .end()
                 
     .end()

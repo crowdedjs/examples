@@ -141,6 +141,15 @@ class xray {
                     else if (me().getTask() != null) {
                         return fluentBehaviorTree.BehaviorTreeStatus.Failure;
                     }
+                    // CHECK IF ON A TEAM AND IF ANY EMERGENCY TASKS ARE AVAILABLE, CONTINUE
+                    else if (Hospital.aTeam[5] == me() && Hospital.xrayTaskList.length != 0) {
+                        for (let i = 0; i < Hospital.xrayTaskList.length; i++) {
+                            if (Hospital.xrayTaskList[i].patient != null && Hospital.xrayTaskList[i].patient.getSeverity() == "ESI1") {
+                                me().setTask(Hospital.xrayTaskList.splice(i, 1));
+                            }
+                        }
+                        return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+                    }
                     // CHECK IF ANY TASKS ARE AVAILABLE, CONTINUE
                     else if (Hospital.xrayTaskList.length != 0) {
                         me().setTask(Hospital.xrayTaskList.shift());

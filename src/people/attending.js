@@ -14,7 +14,7 @@ class attending {
 
     let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
     
-    // I BELIEVE I DID THIS SO THAT THEY WOULD STAY OUT OF THE WAY, BECAUSE CURRENTLY AGENTS CAUSE TRAFFIC JAMS
+    // DID THIS SO THAT THEY WOULD STAY OUT OF THE WAY, BECAUSE CURRENTLY AGENTS CAUSE TRAFFIC JAMS
     //let myGoal = Hospital.locations.find(l => l.name == "B Desk");
     //if (!myGoal) throw new Exception("We couldn't find a location called B Desk");
     let myGoal = Hospital.locations.find(l => l.name == "Fast Track 2");

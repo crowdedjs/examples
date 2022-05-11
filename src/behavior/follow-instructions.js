@@ -82,6 +82,7 @@ class FollowInstructions {
           me().waitInRoom1 = true;
 
           let destination = me().getAssignedRoom().getLocation();
+          
           //if(Vector3.fromObject(destination).distanceTo(me().getLocation()) < .5){
           if(Vector3.fromObject(destination).distanceToSquared(me().getLocation()) < .5){
             me().setPatientTempState(PatientTempState.WAITING)
@@ -138,7 +139,7 @@ class FollowInstructions {
           }
           // SET ROOM AS READY TO CLEAN
           // OLD METHOD
-          me().getPermanentRoom().setLocationStatus(LocationStatus.SANITIZE);
+          //me().getPermanentRoom().setLocationStatus(LocationStatus.SANITIZE);
           // NEW METHOD
           let sanitizeTask = new task("Sanitize", null, null, null, me().getPermanentRoom());
           Hospital.janitorTaskList.push(sanitizeTask);

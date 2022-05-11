@@ -4,7 +4,7 @@ import FollowInstructions from "./follow-instructions-old.js";
 import task from "../support/task.js";
 
 
-class AssignPatientToTriageNurseThesis {
+class AssignPatientToTriageNurse {
 
   constructor(myIndex) {
     this.index = myIndex;
@@ -37,4 +37,4 @@ class AssignPatientToTriageNurseThesis {
 
 }
 
-export default AssignPatientToTriageNurseThesis;
+export default AssignPatientToTriageNurse;
