@@ -1,6 +1,7 @@
 import PatientTempState from "../support/patient-temp-state.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree";
 import LocationStatus from "../support/location-status.js";
+import task from "../support/task.js";
 
 class FollowInstructions {
 
@@ -28,7 +29,7 @@ class FollowInstructions {
         let state = me().getPatientTempState();
         
         let myGoal = Hospital.locations.find(l => l.name == "Check In");
-        if (me().arrivalLocation == "Ambulance Entrance") {
+        if (me().arrivalLocation.name == "Ambulance Entrance") {
           myGoal = Hospital.locations.find(l => l.name == "Ambulance Entrance");
         }
 
@@ -36,8 +37,23 @@ class FollowInstructions {
           //agentConstant.destination = new Vector3(loc.x, loc.y, loc.z);
           //agentConstant.destination = Vector3.fromObject(t.crowd.find(f=>f.id == me().idx).location);
           agentConstant.destination = new Vector3(agentConstant.location.x, agentConstant.location.y, agentConstant.location.z);
+
+          // KEEP BELOW EDIT TO ADDRESS PATIENTS GETTING PUSHED OUT OF ROOMS, BUT NEED TO FIX PATIENTS FLEEING THEIR SCANNING ROOM
+          // let destination = me().getAssignedRoom().getLocation();
+          // if(Vector3.fromObject(destination).distanceToSquared(me().getLocation()) > .5){
+          //   me().setPatientTempState(PatientTempState.GO_INTO_ROOM)
+          // }
+          // else{
+          //   agentConstant.destination = new Vector3(agentConstant.location.x, agentConstant.location.y, agentConstant.location.z);
+          // }
         }
         else if (state == PatientTempState.FOLLOWING) {          
+          // me().waitToCheckIn = false;
+          // me().waitInWaitingRoom = false;
+          // me().waitInRoom1 = false;
+          // me().waitInScanRoom = false;
+          // me().waitInRoom2 = false;
+          
           let instructor = me().getInstructor();
           let instructorLoc = Vector3.fromObject(t.crowd.find(f=>f.id == instructor.id).location);
           let instructorLocation = instructorLoc;
@@ -63,7 +79,10 @@ class FollowInstructions {
           }
         }
         else if (state == PatientTempState.GO_INTO_ROOM) {
+          me().waitInRoom1 = true;
+
           let destination = me().getAssignedRoom().getLocation();
+          
           //if(Vector3.fromObject(destination).distanceTo(me().getLocation()) < .5){
           if(Vector3.fromObject(destination).distanceToSquared(me().getLocation()) < .5){
             me().setPatientTempState(PatientTempState.WAITING)
@@ -73,7 +92,38 @@ class FollowInstructions {
           }
         }
         else if(state == PatientTempState.DONE){
-          //console.log("Done")
+          me().lengthOfStay = me().ticksPresent;
+          let patientDataValues = [me().lengthOfStay, me().waitingTime];
+          Hospital.patientData.push(patientDataValues);
+          // total simulation time: 24 hours -> 86400 ticks
+          let lengthOfStayMinutes = ((1440 * me().lengthOfStay) / 86400);
+          lengthOfStayMinutes = Math.round((lengthOfStayMinutes + Number.EPSILON) * 100) / 100;
+
+          let waitingTimeMinutes = ((1440 * me().waitingTime) / 86400);
+          waitingTimeMinutes = Math.round((waitingTimeMinutes + Number.EPSILON) * 100) / 100;
+          // console.log("Patient " + id + " Length of Stay: " + me().lengthOfStay + " ticks / " + lengthOfStayMinutes + " minutes in-simulation");
+          // console.log("Patient " + id + " Waited for: " + me().waitingTime + " ticks / " + waitingTimeMinutes + " minutes in-simulation");
+          //console.log(lengthOfStayMinutes + "\t" + waitingTimeMinutes);
+          //console.log(waitingTimeMinutes);
+
+          let wait1Minutes = ((1440 * me().waitToCheckInValue) / 86400);
+          wait1Minutes = Math.round((wait1Minutes + Number.EPSILON) * 100) / 100;
+
+          let wait2Minutes = ((1440 * me().waitInWaitingRoomValue) / 86400);
+          wait2Minutes = Math.round((wait2Minutes + Number.EPSILON) * 100) / 100;
+
+          let wait3Minutes = ((1440 * me().waitInRoom1Value) / 86400);
+          wait3Minutes = Math.round((wait3Minutes + Number.EPSILON) * 100) / 100;
+
+          let wait4Minutes = ((1440 * me().waitInScanRoomValue) / 86400);
+          wait4Minutes = Math.round((wait4Minutes + Number.EPSILON) * 100) / 100;
+
+          let wait5Minutes = ((1440 * me().waitInRoom2Value) / 86400);
+          wait5Minutes = Math.round((wait5Minutes + Number.EPSILON) * 100) / 100;
+
+          
+          console.log(lengthOfStayMinutes + "\t" + waitingTimeMinutes + "\n" + wait1Minutes + "\t" + wait2Minutes + "\t" + wait3Minutes + "\t" + wait4Minutes + "\t" + wait5Minutes);
+
           me().inSimulation = false;
           // ADJUST CTQUEUE OR XRAYQUEUE SO TECH TAKES NEXT PATIENT TO CT ROOM
           //Hospital.CTQueue.shift();
@@ -87,23 +137,17 @@ class FollowInstructions {
               Hospital.XRayQueue.splice(i, 1);
             }
           }
-          if (me().getImagingRoom() == "CT 1") {
-            Hospital.setCT1Occupied(false);
-          }
-          else if (me().getImagingRoom() == "CT 2") {
-            Hospital.setCT2Occupied(false);
-          }
-          else if (me().getImagingRoom() == "XRay 1") {
-            Hospital.setXRay1Occupied(false);
-          }
-          else {
-            Hospital.setXRay2Occupied(false);
-          }
           // SET ROOM AS READY TO CLEAN
-          me().getPermanentRoom().setLocationStatus(LocationStatus.SANITIZE);
+          // OLD METHOD
+          //me().getPermanentRoom().setLocationStatus(LocationStatus.SANITIZE);
+          // NEW METHOD
+          let sanitizeTask = new task("Sanitize", null, null, null, me().getPermanentRoom());
+          Hospital.janitorTaskList.push(sanitizeTask);
+
         }
         else if(state == PatientTempState.ARRIVED) {
           agentConstant.destination = myGoal.location;
+          me().waitToCheckIn = true;
         }
         else if(state == PatientTempState.BOOKED){
           me().inSimulation = false;

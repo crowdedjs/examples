@@ -3,7 +3,7 @@ import GoToLazy from "../behavior/go-to-lazy.js";
 import LeavePatient from "../behavior/leave-patient.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree";
 import PatientTempState from "../support/patient-temp-state.js";
-
+import task from "../support/task.js";
 
 class triageNurse {
 
@@ -20,11 +20,13 @@ class triageNurse {
 
     let myGoal = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
+    let entrance = Hospital.getLocationByName("Main Entrance");
 
     let leavePatient = new LeavePatient(self.index).tree;
 
 
     this.tree = builder
+    
     .sequence("Pick Triage Room")
 
       .selector("Check for arrival")  
@@ -53,7 +55,7 @@ class triageNurse {
       .selector("Check for Replacement")
         .condition("Replacement is Here", async (t) => !me().replacement)
         .sequence("Exit Procedure")
-          .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
+          .splice(new GoTo(self.index, entrance.location).tree)
           .do("Leave Simulation", (t) => {
             for(let i = 0; i < Hospital.computer.entries.length; i++) {
               // LEFTOVER ARTIFACT OF ORIGINAL ATTEMPT TO FIX TRIAGE WITH SHIFT CHANGES
@@ -74,36 +76,63 @@ class triageNurse {
         .end()
       .end()
 
-      //.splice(new GoTo(self.index, myGoal.location).tree)
       .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "TriageNursePlace").location).tree)
-
-      .do("Wait For Patient Assignment", (t) => {
-        if (!me().getCurrentPatient()) return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-        me().setBusy(true);
-        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-
+      // THESE ASSIGNMENTS ARE GIVEN BY THE GREETER NURSE
+      .do("Wait For Patient Assignment", async (t) => {
+        if (Hospital.triageTaskList.length == 0) {
+          return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+        }
+        else {
+          // THIS IS NOT DESIGNED WITH SEVERITY/WAIT TIME OR ROOM ASSIGNMENT IN MIND YET
+          let myTask = Hospital.triageTaskList.shift();
+          me().setCurrentPatient(myTask.patient);
+          me().getCurrentPatient().setInstructor(me());
+          me().getCurrentPatient().setPatientTempState(PatientTempState.FOLLOWING);
+  
+          me().setBusy(true);
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;
+        }
       })
 
       .splice(new GoToLazy(self.index, () => me().getCurrentPatient().getAssignedRoom().location).tree)
       
       .do("Leave Patient", (t) => {
+        // ONCE THE PATIENT HAS BEEN DELIVERED, QUEUE TASKS TO THE APPROPRIATE MEDICAL STAFF
+        // Task ID / Severity / Entry Time / Patient / Location
+        if (me().getCurrentPatient().getAssignedRoom().name == "Main Entrance") {
+          me().getCurrentPatient().setPatientTempState(PatientTempState.GO_INTO_ROOM);
+          let result = leavePatient.tick(t)
+          if (me().replacement == false) {
+            me().setBusy(false);
+          }
+          return result;
+        }
+        
+        let nurseTask = new task("Get Health Information", me().getCurrentPatient().getSeverity(), 0, me().getCurrentPatient(), me().getCurrentPatient().getAssignedRoom());
+        Hospital.nurseTaskList.push(nurseTask);
+        
+        let techTaskVitals = new task("Get Vitals", me().getCurrentPatient().getSeverity(), 0, me().getCurrentPatient(), me().getCurrentPatient().getAssignedRoom());
+        Hospital.techTaskList.push(techTaskVitals);
+
+        let techTaskEKG = new task("Get EKG", me().getCurrentPatient().getSeverity(), 0, me().getCurrentPatient(), me().getCurrentPatient().getAssignedRoom());
+        Hospital.techTaskList.push(techTaskEKG);
+
         let result = leavePatient.tick(t)
         if (me().replacement == false) {
           me().setBusy(false);
         }
+
         return result;
       })
+      
     .end()
     .build();
   }
 
   async update(crowd, msec) {
-    //this.toReturn = null;//Set the default return value to null (don't change destination)
     await this.tree.tick({ crowd, msec }) //Call the behavior tree
-    //return this.toReturn; //Return what the behavior tree set the return value to
   }
 
 }
 
 export default triageNurse;
-

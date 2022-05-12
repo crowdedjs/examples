@@ -7,6 +7,8 @@ class PhlebotomistResponsibilities extends AResponsibilityFactory{
 
 	get(entry, medicalStaff) {
 
+		medicalStaff.amIdle = false;
+
 		if (Hospital.aTeam[4] == null) {
 			Hospital.aTeam[4] = medicalStaff;
 		}
@@ -29,7 +31,9 @@ class PhlebotomistResponsibilities extends AResponsibilityFactory{
 				return new TakeBloodResponsibility(entry, medicalStaff);
 			}
 		}
-		
+
+		medicalStaff.amIdle = true;
+
 		return null;
 	}
 

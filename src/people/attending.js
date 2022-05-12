@@ -1,8 +1,7 @@
 import GoTo from "../behavior/go-to.js"
 import WaitForever from "../behavior/wait-forever.js"
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
-
-
+import task from "../support/task.js";
 
 class attending {
 
@@ -14,8 +13,16 @@ class attending {
     let self = this;//Since we need to reference this in anonymous functions, we need a reference
 
     let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
-    let myGoal = Hospital.locations.find(l => l.name == "B Desk");
-    if (!myGoal) throw new Exception("We couldn't find a location called B Desk");
+    
+    // DID THIS SO THAT THEY WOULD STAY OUT OF THE WAY, BECAUSE CURRENTLY AGENTS CAUSE TRAFFIC JAMS
+    //let myGoal = Hospital.locations.find(l => l.name == "B Desk");
+    //if (!myGoal) throw new Exception("We couldn't find a location called B Desk");
+    let myGoal = Hospital.locations.find(l => l.name == "Fast Track 2");
+    //if (!myGoal) throw new Exception("We couldn't find a location called Fast Track 2");
+    if (!myGoal) {
+      myGoal = Hospital.locations.find(l => l.name == "Fast Track 1");
+    }
+    let entrance = Hospital.getLocationByName("Main Entrance");
 
     this.goTo = new GoTo(self.index, myGoal.location);
 

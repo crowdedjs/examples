@@ -2,6 +2,7 @@ import GoTo from "../behavior/go-to.js"
 import GoToLazy from "../behavior/go-to-lazy.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
 import LocationStatus from "../support/location-status.js";
+import task from "../support/task.js";
 import TakeTime from "../behavior/take-time.js";
 
 class janitorial {
@@ -17,78 +18,135 @@ class janitorial {
     let me= ()=>Hospital.agents.find(a=>a.id == myIndex);
 
     let myGoal = Hospital.locations.find(l => l.name == goToName);
+    let computer = Hospital.locations.find(l => l.name == goToName);
     if (!myGoal) throw new exception("We couldn't find a location called " + goToName);
+    let entrance = Hospital.getLocationByName("Main Entrance");
+
+    let myRoom;
 
     this.tree = builder
-      .sequence("Janitorial")
-      
-      .selector("Check for arrival")  
-        .condition("Clock in", async (t) => me().onTheClock)
-        .do("SHIFT CHANGE", (t) => {
-          // SHIFT CHANGE
-          if (me().onTheClock == false) {
-            me().onTheClock = true;
-            Hospital.activeJanitor.push(me());
-            if (Hospital.activeJanitor[0] != me() && Hospital.activeJanitor.length > 1) {
-              for (let i = 0; i < Hospital.activeJanitor.length; i++) {
-                if (!Hospital.activeJanitor[i].replacement) {
-                  Hospital.activeJanitor[i].replacement = true;
-                  //Hospital.activeJanitor.shift();
-                  Hospital.activeJanitor.splice(i, 1);
-                  break;
-                }
-              }
+    
+    // STRUCTURE OF TREES: TESTING -> GO TO START -> QUEUE STORED TASKS -> GET A TASK -> GO TO THE TASK -> ACCOMPLISH THE TASK FROM *LIST OF TASKS* AND TAKE TIME -> RESTART
+      .parallel("Testing Parallel", 2, 2)
+        .do("Testing", (t) => {
+            if (me().onTheClock && me().getTask() == null && me().taskTime == 0 && !me().moving) {
+                me().idleTime++;
             }
+            if (me().lengthOfStay == 43200 || me().lengthOfStay == 86399) {
+              let idleTimeMinutes = ((1440 * me().idleTime) / 86400);
+              idleTimeMinutes = Math.round((idleTimeMinutes + Number.EPSILON) * 100) / 100
+              //console.log("Janitor Idle Time: " + me().idleTime + " ticks / " + idleTimeMinutes + " minutes in-simulation");
+              console.log(idleTimeMinutes);
+              me().idleTime = 0;
+              //me().lengthOfStay = 0;
+            }
+            me().lengthOfStay++;
+            return fluentBehaviorTree.BehaviorTreeStatus.Running; 
+        })
+      .sequence("Janitor Behaviors")
+        
+        .do("Testing", (t) => {
+          me().moving = true;
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;            
+        })
+
+        .splice(new GoTo(self.index, myGoal.location).tree)
+        
+        .do("Testing", (t) => {
+          me().moving = false;
+          return fluentBehaviorTree.BehaviorTreeStatus.Success;            
+        })
+        
+        .selector("Task List Tasks")
+          .do("Get a Task", (t) => {
+              // CHECK IF NEEDED TO CLOCK IN
+              if (!me().onTheClock) {
+                  me().onTheClock = true;
+                  Hospital.activeJanitor.push(me());
+                  return fluentBehaviorTree.BehaviorTreeStatus.Success;
+              }
+              // CHECK IF NEEDED TO CLOCK OUT
+              else if (Hospital.activeJanitor.length > 2 && Hospital.activeJanitor[0] == me()) {
+                  let clockOutTask = new task("Clock Out", null, null, null, entrance);
+                  me().setTask(clockOutTask);
+                  me().replacement = true;
+                  return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+              }
+              // IF ALREADY ALLOCATED A TASK, CONTINUE
+              else if (me().getTask() != null) {
+                  return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+              }
+              // CHECK IF ANY TASKS ARE AVAILABLE, CONTINUE
+              else if (Hospital.janitorTaskList.length != 0) {
+                  me().setTask(Hospital.janitorTaskList.shift());
+                  return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+              }
+              // OTHERWISE DON'T PROCEED (SUCCESS WILL RESTART SELECTOR)
+              else {
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;
+              }
+          })
+          // I think it has to be done this way because you can't do operations in a splice for the most part
+          .inverter("Need to return failure")
+              .sequence("Go to Task")
+                  .do("Determine Location", (t) => {
+                      if (me().getTask().location != null) {
+                        myGoal = me().getTask().location;
+                      }
+                      else {
+                        //myGoal = Hospital.locations.find(l => l.name == goToName);
+                        myGoal = computer;
+                      }
+                      return fluentBehaviorTree.BehaviorTreeStatus.Success; 
+                  })
+                  // GoTo gives me problems sometimes that GoToLazy does not
+                  .splice(new GoToLazy(self.index, () => myGoal.location).tree)
+              .end()
+          .end()
+
+          .do("Clock Out", (t) => {
+              if (me().getTask().taskID != "Clock Out") {
+                return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+              }
+              else {
+                Hospital.activeJanitor.shift();
+                me().inSimulation = false;
+                return fluentBehaviorTree.BehaviorTreeStatus.Success;
+              }
+          })                             
+        
+          // THIS TASK IS GIVEN BY THE PATIENT FOLLOW INSTRUCTIONS
+          .do("Sanitize", (t) => {
+            if (me().getTask().taskID != "Sanitize") {
+              return fluentBehaviorTree.BehaviorTreeStatus.Failure;
+            }
+            else {
+              myRoom = me().getTask().location;
+              myRoom.setLocationStatus(LocationStatus.NONE);
+              me().taskTime = 60;
+              me().setTask(null);
+              return fluentBehaviorTree.BehaviorTreeStatus.Success;
+            }  
+          })
+        .end()
+        // IF SUCCEEDING IN TASK, TAKE TIME TO DO THAT TASK
+        // TakeTime doesn't work in some instances, but the code itself works. For instance if you remove the next .end(), it will work, but then the sequence is broken.
+        //.splice(new TakeTime(1000, 2000).tree)
+        .do("Take Time", (t) => {
+          while (me().taskTime > 0)
+          {
+              me().taskTime = me().taskTime - 1;
+              return fluentBehaviorTree.BehaviorTreeStatus.Running;
           }
-          
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         })
       .end()
-      
-      // SHIFT CHANGE SEQUENCE OF BEHAVIORS
-      .selector("Check for Replacement")
-        .condition("Replacement is Here", async (t) => !me().replacement)
-        .sequence("Exit Procedure")
-          .splice(new GoTo(self.index, Hospital.locations.find(l => l.name == "Main Entrance").location).tree)
-          .do("Leave Simulation", (t) => {
-            me().inSimulation = false;
-            return fluentBehaviorTree.BehaviorTreeStatus.Running;
-          })
-        .end()
-      .end()
-      
-      .splice(new GoTo(self.index, myGoal.location).tree)
-      
-      //find room to clean
-      .do("Find Room to Clean", (t) => {               
-        if (typeof Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE) === 'undefined') {
-          return fluentBehaviorTree.BehaviorTreeStatus.Failure;
-        }
-        else {
-          return fluentBehaviorTree.BehaviorTreeStatus.Success;
-        }
-      })
-
-      // GO TO THE ROOM THAT NEEDS CLEANING
-      .splice(new GoToLazy(self.index, () => Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE).location).tree)
-
-      // TAKE TIME IN THE ROOM TO CLEAN
-      .splice(new TakeTime(300, 600).tree)
-
-      // set that room's status as NONE
-      .do("Done with the Room", (t) => {               
-        Hospital.locations.find(l => l.locationStatus == LocationStatus.SANITIZE).setLocationStatus(LocationStatus.NONE);
-        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      })
-            
       .end()
       .build();
   }
 
   async update( crowd, msec) {
-    //this.toReturn = null;//Set the default return value to null (don't change destination)
     await this.tree.tick({ crowd, msec }) //Call the behavior tree
-    //return this.toReturn; //Return what the behavior tree set the return value to
   }
 
 }

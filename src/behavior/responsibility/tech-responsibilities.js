@@ -11,6 +11,8 @@ import ACK from "./ack.js"
 	
 	 get(entry, medicalStaff) {
 		
+		medicalStaff.amIdle = false;
+
 		if (Hospital.aTeam[3] == null) {
 			Hospital.aTeam[3] = medicalStaff;
 		}
@@ -124,7 +126,8 @@ import ACK from "./ack.js"
 				return new TechEKGTakePatientToResponsibility(entry, medicalStaff, Hospital.getLocationByName("XRay 2"));
 			}
 		}
-		//console.log("null");
+
+		medicalStaff.amIdle = true;
 		return null;
 	}
 }

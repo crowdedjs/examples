@@ -1,27 +1,20 @@
-
-import BackAndForth from "../behavior/back-and-forth.js";
-import None from "../behavior/none.js"
-import Agent from "./agent.js"
 import AMedicalStaff from "./amedical-staff.js";
+import EscapePerson from "./old_trees/escape-person.js";
 
-import attending from "./attending.js"
-import ct from "./ct.js"
-import EscapePerson from "./escape-person.js";
-import greeterNurse from "./greeter-nurse.js"
-import janitorial from "./janitorial.js"
-import nurse from "./nurse.js"
-import pharmacist from "./pharmacist.js"
-import phlebotomist from "./phlebotomist.js"
-import radiology from "./radiology.js"
-import resident from "./resident.js"
-import tech from "./tech.js"
-import triageNurse from "./triage-nurse.js"
-import xray from "./xray.js" 
+import greeterNurse from "./greeter-nurse.js";
+import nurse from "./nurse.js";
+import triageNurse from "./triage-nurse.js";
+import janitorial from "./janitorial.js";
+import tech from "./tech.js";
+import resident from "./resident.js";
+import ct from "./ct.js";
+import xray from "./xray.js";
+import radiology from "./radiology.js";
+import phlebotomist from "./phlebotomist.js";
+import pharmacist from "./pharmacist.js";
+import attending from "./attending.js";
 
-import greeterNurseThesis from "./thesis/greeter-nurse-thesis.js";
-import traigeNurseThesis from "./thesis/triage-nurse-thesis.js";
-
-
+// THIS CLASS INITIALIZES MEDICAL AGENT BEHAVIOR TREES
 class MedicalAgent extends AMedicalStaff {
   startX;
   startY;
@@ -33,9 +26,11 @@ class MedicalAgent extends AMedicalStaff {
   inSimulation = false;
   hasEntered = false;
   behavior;
+  
   // SHIFT CHANGE
   replacement = false;
   onTheClock = false;
+  moving = false;
 
   static index = 0;
   idx; //Corresponds to the internal idx number used by recast

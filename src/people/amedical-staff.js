@@ -1,5 +1,6 @@
 import APerson from "./aperson.js"
 
+// THIS CLASS HAS ALL THE IMPORTANT MEDICAL-AGENT DATA
 class AMedicalStaff extends APerson {
     medicalStaffType; //MedicalStaffClass -> string
     medicalStaffSubclass; //MedicalStaffSublcass -> string
@@ -11,6 +12,12 @@ class AMedicalStaff extends APerson {
     responsibility; //AResponsibility
     computer; //IRoom -> ARoom
 	busy = false; //boolean (if the nurse needs to finish their behavior before getting another patient)
+	task; //Task
+	
+	// TESTING VARIABLES
+	idleTime = 0;
+	amIdle = true;
+	lengthOfStay = 0;
 
 	constructor(location, UUID, medicalStaffType, medicalStaffSubclass, doctorYear, arrivalTick) {
 		super(location, UUID, arrivalTick);
@@ -27,8 +34,6 @@ class AMedicalStaff extends APerson {
 		this.myRooms = [];
 		this.patientList = [];
 		this.triageList = [];
-
-
 	}
 
 	getBusy() {
@@ -56,6 +61,14 @@ class AMedicalStaff extends APerson {
         this.responsibility = responsibility;
         this.setCurrentPatient(responsibility.entry.patient);
     }
+
+	getTask() {
+		return this.task;
+	}
+
+	setTask(task) {
+		this.task = task;
+	}
 
     get MyRooms() {
         return this.myRooms;

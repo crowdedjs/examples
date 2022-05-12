@@ -7,6 +7,8 @@ class CTResponsibilities extends AResponsibilityFactory{
 
 	get(entry, medicalStaff) {
 
+		medicalStaff.amIdle = false;
+
 		if (Hospital.emergencyQueue.length > 0) {
 			let emergencyPatients = Hospital.computer.entries.filter(i=>i.getPatient().getSeverity() == "ESI1");
 			for (let i = 0; i < emergencyPatients.length; i++) {
@@ -30,6 +32,8 @@ class CTResponsibilities extends AResponsibilityFactory{
 			return new CTCATDoScanResponsibility(entry, medicalStaff);
 		}
 		
+		medicalStaff.amIdle = true;
+
 		return null;
 	}
 

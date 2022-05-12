@@ -78,6 +78,7 @@ class LookForArrivingPatient {
             }
           }
         }
+
         // IF THERE ARE NO PATIENTS WAITING, KEEP LOOKING
         if (me().PatientList.length == 0) {
           return fluentBehaviorTree.BehaviorTreeStatus.Running;

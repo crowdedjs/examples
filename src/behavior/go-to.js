@@ -21,10 +21,9 @@ class GoTo {
       })
       //Now return null as we head to that destination
       //We return running until we're close to it.
-      .do("Traveling to goal", (t) => {
+      .do("Traveling to goal", (t) => {      
         let agent = Hospital.agents.find(a=>a.id==self.index);
         let frameAgentDetail = t.crowd.find(a=>a.id == self.index);
-        agent.destination = new Vector3(self.start.x,self.start.y,self.start.z);
         let simulationAgent = t.crowd.find(a=>a.id == self.index);
         let loc = new Vector3(simulationAgent.location.x, simulationAgent.location.y, simulationAgent.location.z);
         let waypoint = Vector3.fromObject(self.start);
@@ -33,12 +32,20 @@ class GoTo {
         //let distanceToWaypoint = difference.length();
         let distanceToWaypoint = difference.lengthSquared();
 
-        //if (distanceToWaypoint < 2)
         if (distanceToWaypoint < 4)
         {
+          if (!agent.replacement) {
+            agent.destination = new Vector3(loc.x, loc.y, loc.z);
+          }
+          if (agent.severity != null) {
+            agent.destination = new Vector3(loc.x, loc.y, loc.z);
+          }
           frameAgentDetail.pose = "Idle";
           return fluentBehaviorTree.BehaviorTreeStatus.Success;
         }
+
+        agent.destination = new Vector3(self.start.x,self.start.y,self.start.z);
+        
         return fluentBehaviorTree.BehaviorTreeStatus.Running;
       })
       .end()

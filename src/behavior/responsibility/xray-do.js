@@ -6,6 +6,7 @@ class XRayDoScanResponsibility extends AResponsibility  {
 	
 	constructor(entry, medicalStaff) {
 		super("XRay Do Scan", 1 * 1, entry, 4, ResponsibilitySubject.COMPUTER, medicalStaff);
+		//super("XRay Do Scan", 72, entry, 4, ResponsibilitySubject.COMPUTER, medicalStaff);
 	}
 
 	doFinish() {

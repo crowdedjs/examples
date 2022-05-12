@@ -6,6 +6,8 @@ class XRayResponsibilities extends AResponsibilityFactory{
 
 	get(entry, medicalStaff) {
 
+		medicalStaff.amIdle = false;
+
 		if (Hospital.emergencyQueue.length > 0 && Hospital.aTeam[5] == medicalStaff) {
 			let emergencyPatients = Hospital.computer.entries.filter(i=>i.getPatient().getSeverity() == "ESI1");
 			for (let i = 0; i < emergencyPatients.length; i++) {
@@ -20,6 +22,8 @@ class XRayResponsibilities extends AResponsibilityFactory{
 			return new XRayDoScanResponsibility(entry, medicalStaff);
 		}
 		
+		medicalStaff.amIdle = true;
+
 		return null;
 	}
 

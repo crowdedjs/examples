@@ -6,6 +6,8 @@ import ACK from "./ack.js"
 class RadiologyResponsibilities extends AResponsibilityFactory{
 
 	get(entry, medicalStaff) {
+		
+		medicalStaff.amIdle = false;
 
 		if (Hospital.emergencyQueue.length > 0) {
 			let emergencyPatients = Hospital.computer.entries.filter(i=>i.getPatient().getSeverity() == "ESI1");
@@ -21,6 +23,8 @@ class RadiologyResponsibilities extends AResponsibilityFactory{
 			return new RadiologyReviewScanResponsibilities(entry, medicalStaff);
 		}
 		
+		medicalStaff.amIdle = true;
+
 		return null;
 	}
 

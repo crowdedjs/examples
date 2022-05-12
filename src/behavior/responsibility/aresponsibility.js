@@ -12,6 +12,8 @@ class AResponsibility {
 	calledStarted = false; //Has this responsibility been started?
 	calledFinished = false;	//Has this responsibility been finished?
 
+	test = 0;
+
 	constructor(name, duration, entry, priority, subject, medicalStaff) {
 
 		this.name = name;
@@ -90,6 +92,7 @@ class AResponsibility {
 			this.calledStarted = true;
 			this.start();
 		}
+
 		this.remaining -= amount;
 		if (this.remaining <= 0 && !this.calledFinished) {
 			this.calledFinished = true;

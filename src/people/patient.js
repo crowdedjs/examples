@@ -3,8 +3,7 @@ import GoToLazy from "../behavior/go-to-lazy.js";
 // import LOG 
 import Stop from "../behavior/stop.js";
 import fluentBehaviorTree from "@crowdedjs/fluent-behavior-tree"
-
-
+import PatientTempState from "../support/patient-temp-state.js";
 
 class patient {
 
@@ -26,45 +25,71 @@ class patient {
     let wait = Hospital.locations.find(l=> l.name == "Waiting Room");
 
     this.tree = builder
-    .sequence("Patient Actions")
-
-      .splice(new GoToLazy(myIndex, () => myGoal.location).tree)
-
-      .splice(new Stop(myIndex).tree)
-
-      // Make patient go to the Waiting Room after being checked in
-      .do("Waiting Room", async function (t) {
-        if (goToName == "Ambulance Entrance") {
-          wait = myGoal;
-        }
-        else if(me().getPermanentRoom() == null) {
-          return fluentBehaviorTree.BehaviorTreeStatus.Running;
-        }
-        else if (me().getInstructor().MedicalStaffSubclass == "Greeter Nurse") {
-          wait = Hospital.locations.find(l=> l.name == "Waiting Room");
-        }
-        else {
-          wait = myGoal;
-        }
-        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      })
-
-      .splice(new GoToLazy(myIndex, () => wait.location).tree)
-
+    // PATIENT BEHAVIOR TREE
+    .sequence("Patient Tree")
+      // NEW TREE SETUP. FIND DOABLE ACTION THEN START OVER WHEN IT IS DONE.
+      .selector("Patient Actions")
+        .sequence("Check In")
+          .condition("Just Arrived", async (t) => me().getPatientTempState() == PatientTempState.ARRIVED)
+          // GO TO CHECK IN COUNTER
+          .splice(new GoToLazy(myIndex, () => myGoal.location).tree)
+          // STAY STILL WHILE BEING CHECKED IN
+          .splice(new Stop(myIndex).tree)
+          // Make patient go to the Waiting Room after being checked in
+          .do("Waiting Room", async function (t) {
+            if (goToName == "Ambulance Entrance") {
+              wait = myGoal;
+            }            
+            else if (me().getInstructor() != null && me().getInstructor().MedicalStaffSubclass == "Greeter Nurse") {
+              wait = Hospital.locations.find(l=> l.name == "Waiting Room");
+              //me().waitToCheckIn = false;
+              me().waitInWaitingRoom = true;
+            }
+            else if(me().getPermanentRoom() == null) {
+              return fluentBehaviorTree.BehaviorTreeStatus.Running;
+            }
+            else {
+              wait = myGoal;
+              //if (wait != Hospital.locations.find(l=> l.name == "Waiting Room")) {
+                // me().waitToCheckIn = false;
+                // me().waitInWaitingRoom = false;
+              //}
+            }
+            return fluentBehaviorTree.BehaviorTreeStatus.Success;
+          })
+          // GO TO WAITING ROOM OR STAY WHERE YOU ARE
+          .splice(new GoToLazy(myIndex, () => wait.location).tree)
+      .end()
+      // PHYSICALLY FOLLOW NURSES AND STAY IN HOSPITAL ROOM
       .splice(new FollowInstructions(myIndex).tree)
-      .do("Done following instructions", async function (t) {
-        console.log("Done following instructions")
-        return fluentBehaviorTree.BehaviorTreeStatus.Success;
-      })
-
     .end()
     .build();
   }
 
   async update(crowd, msec) {
-    //this.toReturn = null;//Set the default return value to null (don't change destination)
+    let myself = Hospital.agents.find(a=>a.id==this.index);
+    myself.ticksPresent++;
+    if (myself.getPatientTempState() == PatientTempState.WAITING || myself.getPatientTempState() == PatientTempState.ARRIVED) {
+      myself.waitingTime++;
+    }
+    // WAIT TIME TEST VALUES
+    if (myself.waitInRoom2) {
+      myself.waitInRoom2Value++;
+    }
+    else if (myself.waitInScanRoom) {
+      myself.waitInScanRoomValue++;
+    }
+    else if (myself.waitInRoom1) {
+      myself.waitInRoom1Value++;
+    }
+    else if (myself.waitInWaitingRoom) {
+      myself.waitInWaitingRoomValue++;
+    }
+    else if (myself.waitToCheckIn) {
+      myself.waitToCheckInValue++;
+    }
+
     await this.tree.tick({ crowd, msec }) //Call the behavior tree
-    //return this.toReturn; //Return what the behavior tree set the return value to
   }
 
 }
